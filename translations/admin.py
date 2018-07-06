@@ -1,4 +1,5 @@
 from django.contrib.contenttypes.admin import GenericStackedInline
+from django.contrib import admin
 
 from .models import Translation, Translatable
 from .forms import generate_translation_form
@@ -31,6 +32,14 @@ class TranslatableAdminMixin(object):
         remove_inlines.reverse()
         for index in remove_inlines:
             inlines.pop(index)
+
+
+class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
+    def get_inline_instances(self, request, obj=None):
+        inlines = super(TranslatableAdmin, self).get_inline_instances(request, obj)
+        inlines = list(inlines)
+        self.handle_translation_inlines(inlines)
+        return inlines
 
 
 """
