@@ -57,7 +57,7 @@ def get_translations(context, *relations, iso_alpha_2_language_code=None):
     queries = []
 
     # ------------ query the translations for context itself
-    if issubclass(model, translations.models.TranslatableModel):
+    if issubclass(model, translations.models.Translatable):
         related_query_name = model._meta.get_field('translations').related_query_name()
         queries.append(
             models.Q(**{'{}__{}'.format(related_query_name, filter_string): context_value})
@@ -82,7 +82,7 @@ def get_translations(context, *relations, iso_alpha_2_language_code=None):
             rel_model = rel.related_model
             related_query_name_list.append(rel.remote_field.name)
             if index == len(parts) - 1:
-                if issubclass(rel_model, translations.models.TranslatableModel):
+                if issubclass(rel_model, translations.models.Translatable):
                     rel_related_query_name = rel_model._meta.get_field('translations').related_query_name()
                     related_query_name_list.append(rel_related_query_name)
                 else:
@@ -105,7 +105,7 @@ def get_translations(context, *relations, iso_alpha_2_language_code=None):
             filter_query |= query
         queryset = queryset.filter(filter_query).distinct()
     else:
-        queryset = translations.models.TranslatableModel.objects.none()
+        queryset = translations.models.Translatable.objects.none()
 
     return queryset
 
@@ -147,7 +147,7 @@ def translate(context, *relations, iso_alpha_2_language_code=None, translations_
         translations_queryset = translations_queryset_dict
 
     # ------------ translate context itself
-    if issubclass(model, translations.models.TranslatableModel):
+    if issubclass(model, translations.models.Translatable):
         content_type = ContentType.objects.get_for_model(model)
         translatable_fields = model.get_translatable_fields()
 
@@ -218,7 +218,7 @@ def renew_translations(context, iso_alpha_2_language_code=None):
         raise Exception('`context` is neither a model instance or a queryset or a list')
 
     # ------------ renew transaction
-    if issubclass(model, translations.models.TranslatableModel):
+    if issubclass(model, translations.models.Translatable):
         translatable_fields = model.get_translatable_fields()
         try:
             with transaction.atomic():

@@ -11,13 +11,13 @@ from translations.managers import TranslatableManager
 class Translation(models.Model):
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
-        help_text=_('the model we would like to translate'),
+        help_text=_('the content type of the object to translate'),
         to=ContentType,
         on_delete=models.CASCADE
     )
-    object_id = models.PositiveIntegerField(
+    object_id = models.TextField(
         verbose_name=_('object id'),
-        help_text=_('the id of the object we would like to translate')
+        help_text=_('the id of the object to translate')
     )
     content_object = GenericForeignKey(
         ct_field='content_type',
@@ -25,22 +25,25 @@ class Translation(models.Model):
     )
     field = models.CharField(
         verbose_name=_('field'),
-        help_text=_('the field of the object we would like to translate'),
-        max_length=512
+        help_text=_('the field of the object to translate'),
+        max_length=64
     )
     language = models.CharField(
         verbose_name=_('language'),
-        help_text=_('the language of the field we would like to translate'),
+        help_text=_('the language of the translation'),
         max_length=32,
         choices=settings.LANGUAGES
     )
     text = models.TextField(
         verbose_name=_('text'),
-        help_text=_('the text of the field we would like to translate')
+        help_text=_('the text of the translation')
     )
 
     def __str__(self):
-        return '{id}: {text}'.format(id=self.id, text=self.text)
+        return '{source}: {translation}'.format(
+            source=getattr(self.content_object, self.field), 
+            translation=self.text
+        )
 
     class Meta:
         unique_together = ('content_type', 'object_id', 'field', 'language',)
@@ -48,13 +51,13 @@ class Translation(models.Model):
         verbose_name_plural = _('translations')
 
 
-class TranslatableModel(models.Model):
+class Translatable(models.Model):
     objects = TranslatableManager()
     translations = GenericRelation(
         Translation,
         content_type_field='content_type',
         object_id_field='object_id',
-        related_query_name="%(app_label)s_%(class)ss"
+        related_query_name="%(app_label)s_%(class)s"
     )
 
     # -------------- META classes

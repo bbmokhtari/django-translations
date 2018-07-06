@@ -1,6 +1,6 @@
 from django.contrib.contenttypes.admin import GenericStackedInline
 
-from .models import Translation, TranslatableModel
+from .models import Translation, Translatable
 from .forms import generate_translation_form
 
 
@@ -14,7 +14,7 @@ class TranslatableAdminMixin(object):
         choices = [
             (None, '---------')
         ]
-        if issubclass(self.model, TranslatableModel):
+        if issubclass(self.model, Translatable):
             for field in self.model.get_translatable_fields():
                 choices.append((field.name, field.verbose_name))
         return choices
