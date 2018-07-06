@@ -14,25 +14,21 @@
 #
 import os
 import sys
+
+# `Django setup` below, will add the path to `translations` module automatically
+# because it's been included in `example.settings`, so no need to import it here
+
+# -- Django setup ------------------------------------------------------------
+
+# `example` project settings
 import django
 
-# add project base directory as python path
 sys.path.insert(
     0, 
-    os.path.dirname(
-        os.path.abspath('.')
-    )
+    os.path.join(os.path.dirname(os.path.abspath('.')), 'example')
 )
-# add `example` django project as python path
-sys.path.insert(
-    1, 
-    os.path.join(
-        os.path.dirname(
-            os.path.abspath('.')
-        ), 
-        'example'
-    )
-)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
+django.setup()
 
 # -- Project information -----------------------------------------------------
 
