@@ -108,7 +108,7 @@ Now that you've made your models translatable. you can use the ORM::
     <Question: What's up?>
     >>> q.question_text = 'Quoi de neuf?'
     >>> q.category = 'habituels'
-    >>> q.renew_translations(
+    >>> q.update_translations(
     ...     lang='fr'
     ... )
     >>> q.get_translated(lang='en')

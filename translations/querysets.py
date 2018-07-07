@@ -1,6 +1,6 @@
 from django.db import models, transaction
 
-from translations.utils import get_translations, translate, renew_translations
+from translations.utils import get_translations, translate, update_translations
 
 
 class TranslatableQuerySet(models.QuerySet):
@@ -20,7 +20,7 @@ class TranslatableQuerySet(models.QuerySet):
         try:
             with transaction.atomic():
                 instance = self.create(**kwargs)
-                renew_translations(instance, iso_alpha_2_language_code=iso_alpha_2_language_code)
+                update_translations(instance, iso_alpha_2_language_code=iso_alpha_2_language_code)
                 return instance
         except Exception:
             raise

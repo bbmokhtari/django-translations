@@ -198,7 +198,7 @@ def translate(context, *relations, iso_alpha_2_language_code=None, translations_
             translate_rel(context)
 
 
-def renew_translations(context, iso_alpha_2_language_code=None):
+def update_translations(context, iso_alpha_2_language_code=None):
     iso_alpha_2_language_code = get_iso_alpha_2_language_code(iso_alpha_2_language_code)
 
     # ------------ process context
