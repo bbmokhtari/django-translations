@@ -3,8 +3,8 @@ This module contains the models for the Translations app.
 
 Classes:
 
-- `Translation`, the model which represents the translations
-- `Translatable`, an abstract model which can be inherited by the
+- `Translation`: the model which represents the translations
+- `Translatable`: an abstract model which can be inherited by the
   models we want translation support on.
 """
 
@@ -66,7 +66,7 @@ class Translation(models.Model):
     def __str__(self):
         """Return the representation of the translation."""
         return '{source}: {translation}'.format(
-            source=getattr(self.content_object, self.field), 
+            source=getattr(self.content_object, self.field),
             translation=self.text
         )
 
@@ -97,7 +97,13 @@ class Translatable(models.Model):
         abstract = True
 
     class TranslatableMeta:
-        """This class contains meta information about translation process."""
+        """
+        This class contains meta information about translation process.
+
+        This includes setting the `fields` attribute. which specifies which
+        fields the user wants translated. If this attribute is not set the
+        fields will be determined automatically.
+        """
         # the reason to chose None over an empty list ([]) is that the user
         # might want to set `fields` explicitly to an empty list.
         fields = None
@@ -137,21 +143,28 @@ class Translatable(models.Model):
 
     def update_translations(self, lang=None):
         """
-        Update the translations of the object based on the given language code.
+        Update the translations of the object based on the language code.
         """
         update_translations(self, lang=lang)
 
     def get_translations(self, *relations, lang=None):
         """
-        Return the translations of the object based on the given language code.
+        Return the translations of the object and its relations based on the
+        language code.
         """
         return get_translations(self, *relations, lang=lang)
 
-    def get_translated(self, *relations, lang=None, translations_queryset=None):
-        """Return the translated object based on the language code."""
+    def get_translated(self, *relations, lang=None, translations=None):
+        """
+        Return the translated object and its relations based on the language
+        code.
+
+        Optionally a `translations` queryset can be passed as well, if it is
+        not passed it will be queried automatically.
+        """
         translate(
             self, *relations,
             lang=lang,
-            translations_queryset=translations_queryset
+            translations_queryset=translations
         )
         return self
