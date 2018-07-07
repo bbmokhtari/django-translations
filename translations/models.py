@@ -4,7 +4,7 @@ This module contains the models for the Translations app.
 .. rubric:: Classes:
 
 :class:`Translatable`
-    An abstract model which can be inherited by any model which needs
+    An abstract model which can be inherited by any model that needs
     translation capabilities.
 :class:`Translation`
     The model which represents the translations.
@@ -48,6 +48,7 @@ class Translation(models.Model):
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
     """
+
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
         help_text=_('the content type of the object to translate'),
@@ -96,9 +97,18 @@ class Translatable(models.Model):
     This abstract model can be inherited by any model which needs translation
     capabilities.
 
-    Inheriting this abstract model adds :attr:`translations` relation and
-    changes the :attr:`objects` manager to add translation capabilities to
-    the ORM.
+    Inheriting this model adds :attr:`translations` relation to the model and
+    changes the :attr:`objects` manager of the model to add translation
+    capabilities to the ORM.
+
+    .. note::
+       There is **no need for migrations** after inheriting this model. Simply
+       just use it afterwards!
+
+    .. note::
+       The :attr:`translations` relation is a reverse relation to the
+       :class:`~django.contrib.contenttypes.fields.GenericForeignKey`
+       described in :class:`Translation`.
     """
 
     objects = TranslatableManager()
@@ -114,9 +124,10 @@ class Translatable(models.Model):
 
     class TranslatableMeta:
         """This class contains meta information about translation process."""
+
         fields = None
         """
-        :var fields: the fields of the model to be translated, ``None`` means
+        :var fields: The fields of the model to be translated, ``None`` means
             use all text based fields automatically, ``[]`` means no fields
             should be translatable.
         :vartype fields: list(str) or None
@@ -173,8 +184,7 @@ class Translatable(models.Model):
 
     def get_translations(self, *relations, lang=None):
         r"""
-        Return the translations of the object and the relations of it in a
-        language.
+        Return the translations of the object and its relations in a language.
 
         :param \*relations: a list of relations to fetch the translations for.
         :type \*relations: list(str)
@@ -188,14 +198,22 @@ class Translatable(models.Model):
 
     def get_translated(self, *relations, lang=None, translations=None):
         r"""
-        Return the translated object and the relations of it in a language.
+        Return the translated object and its relations in a language.
 
-        Translate the current object and the relations of it in a language
-        based on a translations queryset and return it. If no translations
-        queryset is given one will be created based on the relations and the
-        language parameters.
+        Translate the current object and its relations in a language
+        based on a queryset of translations and return it. If no translations
+        queryset is given one will be created based on the ``relations`` and
+        the ``lang`` parameters.
 
-        :param \*relations: a list of the translated relations
+        .. note::
+           It's recommended that the ``translations`` queryset is not passed
+           in, so it's calculated automatically. Translations app is pretty
+           smart, it will fetch all the translations for the object and its
+           relations doing the minimum amount of queries needed (usually one).
+           It's only there just in case there is a need to query the
+           translations manually.
+
+        :param \*relations: a list of relations to be translated
         :type \*relations: list(str)
         :param lang: the language of the translation, if ``None``
             is given the current active language will be used.
