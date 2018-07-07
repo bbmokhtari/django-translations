@@ -1,11 +1,15 @@
 """
 This module contains the models for the Translations app.
 
-Classes:
+.. rubric:: Classes:
 
-- `Translation`: the model which represents the translations
-- `Translatable`: an abstract model which can be inherited by the
-  models we want translation support on.
+:class:`Translatable`
+    An abstract model which must be inherited by the
+    models needing translation capabilities.
+:class:`Translation`
+    The model which represents the translations.
+
+----
 """
 
 from django.db import models
