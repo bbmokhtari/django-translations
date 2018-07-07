@@ -135,23 +135,23 @@ class Translatable(models.Model):
             )
         return fields
 
-    def update_translations(self, iso_alpha_2_language_code=None):
+    def update_translations(self, lang=None):
         """
         Update the translations of the object based on the given language code.
         """
-        update_translations(self, iso_alpha_2_language_code=iso_alpha_2_language_code)
+        update_translations(self, lang=lang)
 
-    def get_translations(self, *relations, iso_alpha_2_language_code=None):
+    def get_translations(self, *relations, lang=None):
         """
         Return the translations of the object based on the given language code.
         """
-        return get_translations(self, *relations, iso_alpha_2_language_code=iso_alpha_2_language_code)
+        return get_translations(self, *relations, lang=lang)
 
-    def get_translated(self, *relations, iso_alpha_2_language_code=None, translations_queryset=None):
+    def get_translated(self, *relations, lang=None, translations_queryset=None):
         """Return the translated object based on the language code."""
         translate(
             self, *relations,
-            iso_alpha_2_language_code=iso_alpha_2_language_code,
+            lang=lang,
             translations_queryset=translations_queryset
         )
         return self

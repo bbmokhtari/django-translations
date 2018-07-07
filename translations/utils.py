@@ -25,17 +25,17 @@ def get_relations_dict(*relations):
     return relations_dict
 
 
-def get_iso_alpha_2_language_code(iso_alpha_2_language_code=None):
-    iso_alpha_2_language_code = iso_alpha_2_language_code or get_language()
+def get_lang(lang=None):
+    lang = lang or get_language()
 
-    if iso_alpha_2_language_code not in [language[0] for language in settings.LANGUAGES]:
+    if lang not in [language[0] for language in settings.LANGUAGES]:
         raise Exception("Language not supported")
 
-    return iso_alpha_2_language_code
+    return lang
 
 
-def get_translations(context, *relations, iso_alpha_2_language_code=None):
-    iso_alpha_2_language_code = get_iso_alpha_2_language_code(iso_alpha_2_language_code)
+def get_translations(context, *relations, lang=None):
+    lang = get_lang(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -96,7 +96,7 @@ def get_translations(context, *relations, iso_alpha_2_language_code=None):
             )
 
     # ------------ translations queryset
-    queryset = translations.models.Translation.objects.filter(language=iso_alpha_2_language_code)
+    queryset = translations.models.Translation.objects.filter(language=lang)
 
     # perform OR between Q objects
     if len(queries) > 0:
@@ -110,8 +110,8 @@ def get_translations(context, *relations, iso_alpha_2_language_code=None):
     return queryset
 
 
-def translate(context, *relations, iso_alpha_2_language_code=None, translations_queryset=None):
-    iso_alpha_2_language_code = get_iso_alpha_2_language_code(iso_alpha_2_language_code)
+def translate(context, *relations, lang=None, translations_queryset=None):
+    lang = get_lang(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -131,7 +131,7 @@ def translate(context, *relations, iso_alpha_2_language_code=None, translations_
         translations_queryset = get_translations(
             context,
             *relations,
-            iso_alpha_2_language_code=iso_alpha_2_language_code
+            lang=lang
         )
 
     # ------------ convert translations queryset to dict for faster access
@@ -186,7 +186,7 @@ def translate(context, *relations, iso_alpha_2_language_code=None, translations_
                     translate(
                         relation_value,
                         *relation_descendants,
-                        iso_alpha_2_language_code=iso_alpha_2_language_code,
+                        lang=lang,
                         translations_queryset=translations_queryset
                     )
 
@@ -198,8 +198,8 @@ def translate(context, *relations, iso_alpha_2_language_code=None, translations_
             translate_rel(context)
 
 
-def update_translations(context, iso_alpha_2_language_code=None):
-    iso_alpha_2_language_code = get_iso_alpha_2_language_code(iso_alpha_2_language_code)
+def update_translations(context, lang=None):
+    lang = get_lang(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -225,7 +225,7 @@ def update_translations(context, iso_alpha_2_language_code=None):
                 # ------------ delete old translations
                 translations_queryset = get_translations(
                     context,
-                    iso_alpha_2_language_code=iso_alpha_2_language_code
+                    lang=lang
                 )
                 translations_queryset.select_for_update().delete()
 
@@ -240,7 +240,7 @@ def update_translations(context, iso_alpha_2_language_code=None):
                             translations_objects.append(
                                 translations.models.Translation(
                                     content_object=obj,
-                                    language=iso_alpha_2_language_code,
+                                    language=lang,
                                     field=field.name,
                                     text=field_value
                                 )
