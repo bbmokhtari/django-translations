@@ -201,9 +201,9 @@ class Translatable(models.Model):
         Return the translated object and its relations in a language.
 
         Translate the current object and its relations in a language
-        based on a queryset of translations and return it. If no translations
-        queryset is given one will be created based on the ``relations`` and
-        the ``lang`` parameters.
+        based on a queryset of translations and return it. If no
+        ``translations`` queryset is given one will be created based on the
+        ``relations`` and the ``lang`` parameters.
 
         .. note::
            It's recommended that the ``translations`` queryset is not passed
