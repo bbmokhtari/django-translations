@@ -4,8 +4,8 @@ This module contains the models for the Translations app.
 .. rubric:: Classes:
 
 :class:`Translatable`
-    An abstract model which must be inherited by the
-    models needing translation capabilities.
+    An abstract model which can be inherited by the models needing translation
+    capabilities.
 :class:`Translation`
     The model which represents the translations.
 
@@ -30,12 +30,23 @@ class Translation(models.Model):
     """
     This model represents the translations.
 
-    Each translation belongs to a unique database address. Each address is
-    combined of a `content_type` (model), `object_id` (row) and a `field`
-    (column).
+    Each translation belongs to a *unique* database address. Each address is
+    combined of a :attr:`content_type` (table), an :attr:`object_id` (row) and
+    a :attr:`field` (column).
 
     Each unique address must have only one translation in a specific
-    `language`.
+    :attr:`language`.
+
+    .. note::
+
+       :class:`~django.contrib.contenttypes.models.ContentType` is a django
+       model which comes with the :mod:`~django.contrib.contenttypes` app.
+       This model represents the tables created in the database.
+
+       :attr:`content_type` and :attr:`object_id` together form something
+       called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
+       This kind of foreign key contrary to the normal foreign key (which can
+       point to a row in only one table) can point to a row in any table.
     """
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
