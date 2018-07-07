@@ -4,8 +4,8 @@ This module contains the models for the Translations app.
 .. rubric:: Classes:
 
 :class:`Translatable`
-    An abstract model which can be inherited by the models needing translation
-    capabilities.
+    An abstract model which can be inherited by any model which needs
+    translation capabilities.
 :class:`Translation`
     The model which represents the translations.
 
@@ -93,11 +93,12 @@ class Translation(models.Model):
 
 class Translatable(models.Model):
     """
-    This abstract model can be inherited by another model to make it
-    translatable.
+    This abstract model can be inherited by any model which needs translation
+    capabilities.
 
-    Inheriting this abstract model adds `translations` relation and changes the
-    `objects` manager to add translation capabilities to the ORM.
+    Inheriting this abstract model adds :attr:`translations` relation and
+    changes the :attr:`objects` manager to add translation capabilities to
+    the ORM.
     """
 
     objects = TranslatableManager()
@@ -112,24 +113,25 @@ class Translatable(models.Model):
         abstract = True
 
     class TranslatableMeta:
-        """
-        This class contains meta information about translation process.
-
-        This includes setting the `fields` attribute. which specifies which
-        fields the user wants translated. If this attribute is not set the
-        fields will be determined automatically.
-        """
-        # the reason to chose None over an empty list ([]) is that the user
-        # might want to set `fields` explicitly to an empty list.
+        """This class contains meta information about translation process."""
         fields = None
+        """
+        :var fields: the fields of the model to be translated, ``None`` means
+            use all text based fields automatically, ``[]`` means no fields
+            should be translatable.
+        :vartype fields: list(str) or None
+        """
 
     @classmethod
     def get_translatable_fields(cls):
         """
-        Return a list of translatable fields.
+        Return the list of translatable fields.
 
-        Do this either using the `TranslatableMeta`.`fields` property or do
-        this automatically.
+        Return the translatable fields for the model based on
+        :attr:`TranslatableMeta.fields`.
+
+        :return: The list of translatable fields
+        :rtype: list(~django.db.models.Field)
         """
         if hasattr(cls, 'TranslatableMeta'):
             if cls.TranslatableMeta.fields is None:
@@ -158,24 +160,48 @@ class Translatable(models.Model):
 
     def update_translations(self, lang=None):
         """
-        Update the translations of the object based on the language code.
+        Update the translations of the object based on the object properties.
+
+        Use the current properties of the object to update the translations in
+        a language.
+
+        :param lang: the language of the translations to update, if ``None``
+            is given the current active language will be used.
+        :type lang: str or None
         """
         update_translations(self, lang=lang)
 
     def get_translations(self, *relations, lang=None):
-        """
-        Return the translations of the object and its relations based on the
-        language code.
+        r"""
+        Return the translations of the object and the relations of it in a
+        language.
+
+        :param \*relations: a list of relations to fetch the translations for.
+        :type \*relations: list(str)
+        :param lang: the language of the translations to fetch, if ``None``
+            is given the current active language will be used.
+        :type lang: str or None
+        :return: the translations
+        :rtype: ~django.db.models.query.QuerySet
         """
         return get_translations(self, *relations, lang=lang)
 
     def get_translated(self, *relations, lang=None, translations=None):
-        """
-        Return the translated object and its relations based on the language
-        code.
+        r"""
+        Return the translated object and the relations of it in a language.
 
-        Optionally a `translations` queryset can be passed as well, if it is
-        not passed it will be queried automatically.
+        Translate the current object and the relations of it in a language
+        based on a translations queryset and return it. If no translations
+        queryset is given one will be created based on the relations and the
+        language parameters.
+
+        :param \*relations: a list of the translated relations
+        :type \*relations: list(str)
+        :param lang: the language of the translation, if ``None``
+            is given the current active language will be used.
+        :type lang: str or None
+        :return: the object itself
+        :rtype: Translatable
         """
         translate(
             self, *relations,
