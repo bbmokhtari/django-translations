@@ -1,7 +1,7 @@
 """
 This module contains the models for the Translations app.
 
-This module defines the following classes:
+Classes:
 
 - `Translation`, the model which represents the translations
 - `Translatable`, an abstract model which can be inherited by the
@@ -30,8 +30,8 @@ class Translation(models.Model):
     combined of a `content_type` (model), `object_id` (row) and a `field`
     (column).
 
-    Also this unique address is made unique together with a `language`, because
-    we may want this specific address to be translated in multiple languages.
+    Each unique address must have only one translation in a specific
+    `language`.
     """
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
@@ -81,8 +81,8 @@ class Translatable(models.Model):
     This abstract model can be inherited by another model to make it
     translatable.
 
-    Inheriting this abstract model adds custom relationships, querysets,
-    managers and methods to the model.
+    Inheriting this abstract model adds `translations` relation and changes the
+    `objects` manager to add translation capabilities to the ORM.
     """
 
     objects = TranslatableManager()
@@ -142,7 +142,9 @@ class Translatable(models.Model):
         update_translations(self, iso_alpha_2_language_code=iso_alpha_2_language_code)
 
     def get_translations(self, *relations, iso_alpha_2_language_code=None):
-        """Return the `Translation`\ s for to the object as a queryset."""
+        """
+        Return the translations of the object based on the given language code.
+        """
         return get_translations(self, *relations, iso_alpha_2_language_code=iso_alpha_2_language_code)
 
     def get_translated(self, *relations, iso_alpha_2_language_code=None, translations_queryset=None):
