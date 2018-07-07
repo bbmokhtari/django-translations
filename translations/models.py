@@ -31,7 +31,7 @@ class Translation(models.Model):
     This model represents the translations.
 
     Each translation belongs to a *unique* database address. Each address is
-    combined of a :attr:`content_type` (table), an :attr:`object_id` (row) and
+    composed of a :attr:`content_type` (table), an :attr:`object_id` (row) and
     a :attr:`field` (column).
 
     Each unique address must have only one translation in a specific
