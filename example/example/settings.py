@@ -22,6 +22,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'places.apps.PlacesConfig',
     'translations.apps.TranslationsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
