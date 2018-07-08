@@ -48,56 +48,60 @@ class Translation(models.Model):
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
 
-    Although it's *not recommended* to use the :class:`Translation` model
-    directly, here's an example of how you can work with it manually for
-    the sake of understanding.
+    .. warning:: Never work with the :class:`Translation` model directly
+       unless you really have to. (it's unlikely it ever happens)
 
-    first create an object:
+       Working directly with the :class:`Translation` model is discouraged
+       because it leads to hard, error prone and inefficient code. so never
+       do this. Here's an example why.
 
-    >>> from polls.models import Question
-    >>> from django.utils import timezone
-    >>> question = Question.objects.create(
-    ...     question_text='How old are you?',
-    ...     pub_date=timezone.now()
-    ... )
+       first create an object:
 
-    now let's create a translation for it manually.
+       >>> from polls.models import Question
+       >>> from django.utils import timezone
+       >>> question = Question.objects.create(
+       ...     question_text='How old are you?',
+       ...     pub_date=timezone.now()
+       ... )
 
-    >>> # the hard and error prone way number 1
-    >>> from django.contrib.contenttypes.models import ContentType
-    >>> from translations.models import Translation
-    >>> question_ct = ContentType.objects.get_for_model(Question)
-    >>> Translation.objects.create(
-    ...     content_type=question_ct,
-    ...     object_id=question.id,
-    ...     field='question_text',
-    ...     language='fr',
-    ...     text='Quel âge avez-vous?'
-    ... )
-    <Translation: How old are you?: Quel âge avez-vous?>
+       now let's create a translation for it manually:
 
-    The same can also be achieved with this.
+       >>> # hard: look at the amount of effort to do this
+       >>> # error prone: note the `field` is set manually
+       >>> # inefficient: consider the creation of multiple translations
+       >>> from django.contrib.contenttypes.models import ContentType
+       >>> from translations.models import Translation
+       >>> question_ct = ContentType.objects.get_for_model(Question)
+       >>> Translation.objects.create(
+       ...     content_type=question_ct,
+       ...     object_id=question.id,
+       ...     field='question_text',
+       ...     language='fr',
+       ...     text='Quel âge avez-vous?'
+       ... )
+       <Translation: How old are you?: Quel âge avez-vous?>
 
-    >>> # the hard and error prone way number 2
-    >>> from translations.models import Translation
-    >>> Translation.objects.create(
-    ...     content_object=question,
-    ...     field='question_text',
-    ...     language='fr',
-    ...     text='Quel âge avez-vous?'
-    ... )
-    <Translation: How old are you?: Quel âge avez-vous?>
+       The same can also be achieved with this.
 
-    *Never do this!* These were just for demonstration.
+       >>> # hard, error prone and inefficient AGAIN
+       >>> from translations.models import Translation
+       >>> Translation.objects.create(
+       ...     content_object=question,
+       ...     field='question_text',
+       ...     language='fr',
+       ...     text='Quel âge avez-vous?'
+       ... )
+       <Translation: How old are you?: Quel âge avez-vous?>
 
-    The *correct way* to do this is through the APIs provided by the
-    Translations app.
+       Never do this! This was just for the sake of demonstration.
 
-    >>> # the easy and the correct way
-    >>> # inherit `Question` model from `Translatable`
-    >>> question.question_text = 'Quel âge avez-vous?'
-    >>> question.update_translations(lang='fr')
-    <Question: Quel âge avez-vous?>
+       The correct way to do this, is to use the :class:`Translatable` model.
+
+       >>> # the easy, correct and efficient way
+       >>> # inherit `Question` model from `Translatable`
+       >>> question.question_text = 'Quel âge avez-vous?'
+       >>> question.update_translations(lang='fr')
+       <Question: Quel âge avez-vous?>
     """
 
     content_type = models.ForeignKey(
