@@ -47,6 +47,57 @@ class Translation(models.Model):
        called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
+
+    Although it's *not recommended* to use the :class:`Translation` model
+    directly, here's an example of how you can work with it manually for
+    the sake of understanding.
+
+    first create an object:
+
+    >>> from polls.models import Question
+    >>> from django.utils import timezone
+    >>> question = Question.objects.create(
+    ...     question_text='How old are you?',
+    ...     pub_date=timezone.now()
+    ... )
+
+    now let's create a translation for it manually.
+
+    >>> # the hard and error prone way number 1
+    >>> from django.contrib.contenttypes.models import ContentType
+    >>> from translations.models import Translation
+    >>> question_ct = ContentType.objects.get_for_model(Question)
+    >>> Translation.objects.create(
+    ...     content_type=question_ct,
+    ...     object_id=question.id,
+    ...     field='question_text',
+    ...     language='fr',
+    ...     text='Quel âge avez-vous?'
+    ... )
+    <Translation: How old are you?: Quel âge avez-vous?>
+
+    The same can also be achieved with this.
+
+    >>> # the hard and error prone way number 2
+    >>> from translations.models import Translation
+    >>> Translation.objects.create(
+    ...     content_object=question,
+    ...     field='question_text',
+    ...     language='fr',
+    ...     text='Quel âge avez-vous?'
+    ... )
+    <Translation: How old are you?: Quel âge avez-vous?>
+
+    *Never do this!* These were just for demonstration.
+
+    The *correct way* to do this is through the APIs provided by the
+    Translations app.
+
+    >>> # the easy and the correct way
+    >>> # inherit `Question` model from `Translatable`
+    >>> question.question_text = 'Quel âge avez-vous?'
+    >>> question.update_translations(lang='fr')
+    <Question: Quel âge avez-vous?>
     """
 
     content_type = models.ForeignKey(
