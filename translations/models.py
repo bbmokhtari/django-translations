@@ -93,7 +93,7 @@ class Translation(models.Model):
        ... )
        <Translation: How old are you?: Quel âge avez-vous?>
 
-       Never do this! This was just for the sake of demonstration.
+       Never do this! This is just for the sake of demonstration.
 
        The correct way to do this, is to use the :class:`Translatable` model.
 
