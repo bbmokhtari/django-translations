@@ -110,9 +110,10 @@ class Translation(models.Model):
         to=ContentType,
         on_delete=models.CASCADE
     )
-    object_id = models.TextField(
+    object_id = models.CharField(
         verbose_name=_('object id'),
-        help_text=_('the id of the object to translate')
+        help_text=_('the id of the object to translate'),
+        max_length=128,
     )
     content_object = GenericForeignKey(
         ct_field='content_type',
