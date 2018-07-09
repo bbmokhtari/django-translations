@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import utils
 from translations.models import Translation
 
-from .models import Continent
+from .models import Continent, Country, City
 
 
 class TranslationTest(TestCase):
@@ -125,6 +125,42 @@ class TranslationTest(TestCase):
 class TranslatableTest(TestCase):
 
     def test_translations(self):
+        continent_eu = Continent.objects.create(name="Europe", code="EU")
+        continent_eu.translations.create(field="name", language="fr", text="L'Europe")
+        self.assertQuerysetEqual(continent_eu.translations.all(), ["<Translation: Europe: L'Europe>"])
+
+    def test_two_different_translations(self):
+        continent_eu = Continent.objects.create(name="Europe", code="EU")
+        continent_as = Continent.objects.create(name="Asia", code="AS")
+        continent_eu.translations.create(field="name", language="fr", text="L'Europe")
+        continent_as.translations.create(field="name", language="fr", text="Asie")
+        self.assertQuerysetEqual(continent_eu.translations.all(), ["<Translation: Europe: L'Europe>"])
+        self.assertQuerysetEqual(continent_as.translations.all(), ["<Translation: Asia: Asie>"])
+
+    def test_fields(self):
+        self.assertListEqual(Continent.get_translatable_fields(), [Continent._meta.get_field("name")])
+
+    def test_get_translations_for_object(self):
         continent = Continent.objects.create(name="Europe", code="EU")
+        country = Country.objects.create(name="France", code="FR", continent=continent)
+        country.translations.create(field="name", language="fr", text="France")
+        self.assertQuerysetEqual(country.get_translations(lang="fr"), ["<Translation: France: France>"])
+
+    def test_get_translations_for_object_and_relations(self):
+        continent = Continent.objects.create(name="Europe", code="EU")
+        country = continent.countries.create(name="France", code="FR")
+        paris = country.cities.create(name="Paris")
+        marseille = country.cities.create(name="Marseille")
         continent.translations.create(field="name", language="fr", text="L'Europe")
-        self.assertQuerysetEqual(continent.translations.all(), ["<Translation: Europe: L'Europe>"])
+        country.translations.create(field="name", language="fr", text="France")
+        paris.translations.create(field="name", language="fr", text="Paris")
+        marseille.translations.create(field="name", language="fr", text="Marseille")
+        self.assertQuerysetEqual(
+            country.get_translations('continent', 'cities', lang="fr").order_by('text'),
+            [
+                "<Translation: France: France>",
+                "<Translation: Europe: L'Europe>",
+                "<Translation: Marseille: Marseille>",
+                "<Translation: Paris: Paris>",
+            ]
+        )
