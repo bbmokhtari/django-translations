@@ -120,3 +120,11 @@ class TranslationTest(TestCase):
             error.exception.args[0],
             "UNIQUE constraint failed: translations_translation.content_type_id, translations_translation.object_id, translations_translation.field, translations_translation.language",
         )
+
+
+class TranslatableTest(TestCase):
+
+    def test_translations(self):
+        continent = Continent.objects.create(name="Europe", code="EU")
+        continent.translations.create(field="name", language="fr", text="L'Europe")
+        self.assertQuerysetEqual(continent.translations.all(), ["<Translation: Europe: L'Europe>"])
