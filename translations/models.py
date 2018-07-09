@@ -225,19 +225,6 @@ class Translatable(models.Model):
             )
         return fields
 
-    def update_translations(self, lang=None):
-        """
-        Update the translations of the object based on the object properties.
-
-        Use the current properties of the object to update the translations in
-        a language.
-
-        :param lang: the language of the translations to update, if ``None``
-            is given the current active language will be used.
-        :type lang: str or None
-        """
-        update_translations(self, lang=lang)
-
     def get_translations(self, *relations, lang=None):
         r"""
         Return the translations of the object and its relations in a language.
@@ -283,3 +270,16 @@ class Translatable(models.Model):
             translations_queryset=translations
         )
         return self
+
+    def update_translations(self, lang=None):
+        """
+        Update the translations of the object based on the object properties.
+
+        Use the current properties of the object to update the translations in
+        a language.
+
+        :param lang: the language of the translations to update, if ``None``
+            is given the current active language will be used.
+        :type lang: str or None
+        """
+        update_translations(self, lang=lang)
