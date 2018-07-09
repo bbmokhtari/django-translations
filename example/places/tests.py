@@ -6,9 +6,9 @@ from translations.models import Translation
 from .models import Continent
 
 
-class ContinentTest(TestCase):
+class TranslationTest(TestCase):
 
-    def test_translation_content_type_none(self):
+    def test_content_type_none(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
@@ -23,7 +23,7 @@ class ContinentTest(TestCase):
             "NOT NULL constraint failed: translations_translation.content_type_id",
         )
 
-    def test_translation_object_id_none(self):
+    def test_object_id_none(self):
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
@@ -38,7 +38,7 @@ class ContinentTest(TestCase):
             "NOT NULL constraint failed: translations_translation.object_id",
         )
 
-    def test_translation_field_none(self):
+    def test_field_none(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
@@ -54,7 +54,7 @@ class ContinentTest(TestCase):
             "NOT NULL constraint failed: translations_translation.field",
         )
 
-    def test_translation_language_none(self):
+    def test_language_none(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
@@ -70,7 +70,7 @@ class ContinentTest(TestCase):
             "NOT NULL constraint failed: translations_translation.language",
         )
 
-    def test_translation_text_none(self):
+    def test_text_none(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
@@ -86,7 +86,7 @@ class ContinentTest(TestCase):
             "NOT NULL constraint failed: translations_translation.text",
         )
 
-    def test_translation_str(self):
+    def test_str(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         translation = Translation.objects.create(
@@ -98,7 +98,7 @@ class ContinentTest(TestCase):
         )
         self.assertEqual(str(translation), "Europe: L'Europe")
 
-    def test_translation_uniqueness(self):
+    def test_uniqueness(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         Translation.objects.create(
