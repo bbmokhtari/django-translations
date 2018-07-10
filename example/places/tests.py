@@ -250,3 +250,10 @@ class TranslatableTest(TestCase):
                 "<Translation: Tokio: Tokio>",
             ]
         )
+
+    def test_translate_for_object(self):
+        """Make sure `translate` works."""
+        europe = Continent.objects.create(name="Europe", code="EU")
+        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translate(lang="fr")
+        self.assertEqual(europe.name, "L'Europe")

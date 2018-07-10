@@ -154,7 +154,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
         # translate obj function
         def translate_obj(obj):
             try:
-                obj_translations = translations_queryset[content_type.id][obj.id]
+                obj_translations = translations_queryset[content_type.id][str(obj.id)]
             except KeyError:
                 pass
             else:
