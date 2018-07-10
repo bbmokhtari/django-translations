@@ -239,9 +239,9 @@ class Translatable(models.Model):
         """
         return get_translations(self, *relations, lang=lang)
 
-    def get_translated(self, *relations, lang=None, translations=None):
+    def translate(self, *relations, lang=None, translations=None):
         r"""
-        Return the translated object and its relations in a language.
+        Translate the object and its relations (in place) in a language.
 
         Translate the current object and its relations in a language
         based on a queryset of translations and return it. If no
@@ -256,20 +256,17 @@ class Translatable(models.Model):
            It's only there just in case there is a need to query the
            translations manually.
 
-        :param \*relations: a list of relations to be translated
+        :param \*relations: a list of relations to translate
         :type \*relations: list(str)
         :param lang: the language of the translation, if ``None``
             is given the current active language will be used.
         :type lang: str or None
-        :return: the object itself
-        :rtype: Translatable
         """
         translate(
             self, *relations,
             lang=lang,
             translations_queryset=translations
         )
-        return self
 
     def update_translations(self, lang=None):
         """
