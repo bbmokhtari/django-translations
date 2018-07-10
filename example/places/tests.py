@@ -38,6 +38,19 @@ class TranslationTest(TestCase):
             "NOT NULL constraint failed: translations_translation.object_id",
         )
 
+    def test_content_object_none(self):
+        with self.assertRaises(utils.IntegrityError) as error:
+            Translation.objects.create(
+                content_object=None,
+                field="name",
+                language="fr",
+                text="L'Europe",
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "NOT NULL constraint failed: translations_translation.object_id",
+        )
+
     def test_field_none(self):
         continent = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
