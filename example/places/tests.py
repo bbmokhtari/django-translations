@@ -9,11 +9,11 @@ from .models import Continent, Country, City
 class TranslationTest(TestCase):
 
     def test_content_type_none(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=None,
-                object_id=continent.id,
+                object_id=europe.id,
                 field="name",
                 language="fr",
                 text="L'Europe",
@@ -52,12 +52,12 @@ class TranslationTest(TestCase):
         )
 
     def test_field_none(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=continent.id,
+                object_id=europe.id,
                 field=None,
                 language="fr",
                 text="L'Europe",
@@ -68,12 +68,12 @@ class TranslationTest(TestCase):
         )
 
     def test_language_none(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=continent.id,
+                object_id=europe.id,
                 field="name",
                 language=None,
                 text="L'Europe",
@@ -84,12 +84,12 @@ class TranslationTest(TestCase):
         )
 
     def test_text_none(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=continent.id,
+                object_id=europe.id,
                 field="name",
                 language="fr",
                 text=None,
@@ -100,11 +100,11 @@ class TranslationTest(TestCase):
         )
 
     def test_str(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         translation = Translation.objects.create(
             content_type=continent_ct,
-            object_id=continent.id,
+            object_id=europe.id,
             field="name",
             language="fr",
             text="L'Europe"
@@ -112,11 +112,11 @@ class TranslationTest(TestCase):
         self.assertEqual(str(translation), "Europe: L'Europe")
 
     def test_uniqueness(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         continent_ct = ContentType.objects.get_for_model(Continent)
         Translation.objects.create(
             content_type=continent_ct,
-            object_id=continent.id,
+            object_id=europe.id,
             field="name",
             language="fr",
             text="L'Europe"
@@ -124,7 +124,7 @@ class TranslationTest(TestCase):
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=continent.id,
+                object_id=europe.id,
                 field="name",
                 language="fr",
                 text="Europe"
@@ -138,38 +138,52 @@ class TranslationTest(TestCase):
 class TranslatableTest(TestCase):
 
     def test_translations(self):
-        continent_eu = Continent.objects.create(name="Europe", code="EU")
-        continent_eu.translations.create(field="name", language="fr", text="L'Europe")
-        self.assertQuerysetEqual(continent_eu.translations.all(), ["<Translation: Europe: L'Europe>"])
+        europe = Continent.objects.create(name="Europe", code="EU")
+        europe.translations.create(field="name", language="fr", text="L'Europe")
+        self.assertQuerysetEqual(europe.translations.all(), ["<Translation: Europe: L'Europe>"])
 
     def test_two_different_translations(self):
-        continent_eu = Continent.objects.create(name="Europe", code="EU")
-        continent_as = Continent.objects.create(name="Asia", code="AS")
-        continent_eu.translations.create(field="name", language="fr", text="L'Europe")
-        continent_as.translations.create(field="name", language="fr", text="Asie")
-        self.assertQuerysetEqual(continent_eu.translations.all(), ["<Translation: Europe: L'Europe>"])
-        self.assertQuerysetEqual(continent_as.translations.all(), ["<Translation: Asia: Asie>"])
+        europe = Continent.objects.create(name="Europe", code="EU")
+        europe.translations.create(field="name", language="fr", text="L'Europe")
+
+        asia = Continent.objects.create(name="Asia", code="AS")
+        asia.translations.create(field="name", language="fr", text="Asie")
+
+        self.assertQuerysetEqual(europe.translations.all(), ["<Translation: Europe: L'Europe>"])
+        self.assertQuerysetEqual(asia.translations.all(), ["<Translation: Asia: Asie>"])
 
     def test_fields(self):
         self.assertListEqual(Continent.get_translatable_fields(), [Continent._meta.get_field("name")])
 
     def test_get_translations_for_object(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
-        country = Country.objects.create(name="France", code="FR", continent=continent)
-        country.translations.create(field="name", language="fr", text="France")
-        self.assertQuerysetEqual(country.get_translations(lang="fr"), ["<Translation: France: France>"])
+        europe = Continent.objects.create(name="Europe", code="EU")
+        europe.translations.create(field="name", language="fr", text="L'Europe")
+        self.assertQuerysetEqual(europe.get_translations(lang="fr"), ["<Translation: Europe: L'Europe>"])
+
+    def test_get_translations_for_two_objects(self):
+        europe = Continent.objects.create(name="Europe", code="EU")
+        europe.translations.create(field="name", language="fr", text="L'Europe")
+
+        asia = Continent.objects.create(name="Asia")
+        asia.translations.create(field="name", language="fr", text="Asie")
+
+        self.assertQuerysetEqual(europe.get_translations(lang="fr"), ["<Translation: Europe: L'Europe>"])
+        self.assertQuerysetEqual(asia.get_translations(lang="fr"), ["<Translation: Asia: Asie>"])
 
     def test_get_translations_for_object_and_relations(self):
-        continent = Continent.objects.create(name="Europe", code="EU")
-        country = continent.countries.create(name="France", code="FR")
-        paris = country.cities.create(name="Paris")
-        marseille = country.cities.create(name="Marseille")
-        continent.translations.create(field="name", language="fr", text="L'Europe")
-        country.translations.create(field="name", language="fr", text="France")
+        europe = Continent.objects.create(name="Europe", code="EU")
+        europe.translations.create(field="name", language="fr", text="L'Europe")
+
+        france = europe.countries.create(name="France", code="FR")
+        france.translations.create(field="name", language="fr", text="France")
+
+        paris = france.cities.create(name="Paris")
         paris.translations.create(field="name", language="fr", text="Paris")
+        marseille = france.cities.create(name="Marseille")
         marseille.translations.create(field="name", language="fr", text="Marseille")
+
         self.assertQuerysetEqual(
-            country.get_translations('continent', 'cities', lang="fr").order_by('text'),
+            france.get_translations('continent', 'cities', lang="fr").order_by('text'),
             [
                 "<Translation: France: France>",
                 "<Translation: Europe: L'Europe>",
