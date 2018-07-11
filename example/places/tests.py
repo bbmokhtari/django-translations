@@ -245,8 +245,8 @@ class TranslatableTest(TestCase):
             [
                 "<Translation: Asia: Asien>",
                 "<Translation: Persia: Persien>",
-                "<Translation: Tehran: Teheran>",
                 "<Translation: Shiraz: Schiras>",
+                "<Translation: Tehran: Teheran>",
             ]
         )
 
