@@ -16,8 +16,8 @@ class TranslationTest(TestCase):
                 content_type=None,
                 object_id=europe.id,
                 field="name",
-                language="fr",
-                text="L'Europe",
+                language="de",
+                text="Europa",
             )
         self.assertEqual(
             error.exception.args[0],
@@ -32,8 +32,8 @@ class TranslationTest(TestCase):
                 content_type=continent_ct,
                 object_id=None,
                 field="name",
-                language="fr",
-                text="L'Europe",
+                language="de",
+                text="Europa",
             )
         self.assertEqual(
             error.exception.args[0],
@@ -46,8 +46,8 @@ class TranslationTest(TestCase):
             Translation.objects.create(
                 content_object=None,
                 field="name",
-                language="fr",
-                text="L'Europe",
+                language="de",
+                text="Europa",
             )
         self.assertEqual(
             error.exception.args[0],
@@ -63,8 +63,8 @@ class TranslationTest(TestCase):
                 content_type=continent_ct,
                 object_id=europe.id,
                 field=None,
-                language="fr",
-                text="L'Europe",
+                language="de",
+                text="Europa",
             )
         self.assertEqual(
             error.exception.args[0],
@@ -81,7 +81,7 @@ class TranslationTest(TestCase):
                 object_id=europe.id,
                 field="name",
                 language=None,
-                text="L'Europe",
+                text="Europa",
             )
         self.assertEqual(
             error.exception.args[0],
@@ -97,7 +97,7 @@ class TranslationTest(TestCase):
                 content_type=continent_ct,
                 object_id=europe.id,
                 field="name",
-                language="fr",
+                language="de",
                 text=None,
             )
         self.assertEqual(
@@ -113,10 +113,10 @@ class TranslationTest(TestCase):
             content_type=continent_ct,
             object_id=europe.id,
             field="name",
-            language="fr",
-            text="L'Europe"
+            language="de",
+            text="Europa"
         )
-        self.assertEqual(str(translation), "Europe: L'Europe")
+        self.assertEqual(str(translation), "Europe: Europa")
 
     def test_uniqueness(self):
         """Make sure `content_type`, `object_id`, `field` and `language` combination is unique."""
@@ -126,16 +126,16 @@ class TranslationTest(TestCase):
             content_type=continent_ct,
             object_id=europe.id,
             field="name",
-            language="fr",
-            text="L'Europe"
+            language="de",
+            text="Europa"
         )
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.id,
                 field="name",
-                language="fr",
-                text="Europe"
+                language="de",
+                text="Europa"
             )
         self.assertEqual(
             error.exception.args[0],
@@ -148,19 +148,19 @@ class TranslatableTest(TestCase):
     def test_translations(self):
         """Make sure `translations` rel works."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
-        self.assertQuerysetEqual(europe.translations.all(), ["<Translation: Europe: L'Europe>"])
+        europe.translations.create(field="name", language="de", text="Europa")
+        self.assertQuerysetEqual(europe.translations.all(), ["<Translation: Europe: Europa>"])
 
     def test_two_different_translations(self):
         """Make sure `translations` for distinct objects are different."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
         asia = Continent.objects.create(name="Asia", code="AS")
-        asia.translations.create(field="name", language="fr", text="Asie")
+        asia.translations.create(field="name", language="de", text="Asien")
 
-        self.assertQuerysetEqual(europe.translations.all(), ["<Translation: Europe: L'Europe>"])
-        self.assertQuerysetEqual(asia.translations.all(), ["<Translation: Asia: Asie>"])
+        self.assertQuerysetEqual(europe.translations.all(), ["<Translation: Europe: Europa>"])
+        self.assertQuerysetEqual(asia.translations.all(), ["<Translation: Asia: Asien>"])
 
     def test_fields(self):
         """Make sure `TranslatableMeta.fields` works."""
@@ -169,163 +169,161 @@ class TranslatableTest(TestCase):
     def test_get_translations_for_object(self):
         """Make sure `get_translations` works."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
-        self.assertQuerysetEqual(europe.get_translations(lang="fr"), ["<Translation: Europe: L'Europe>"])
+        europe.translations.create(field="name", language="de", text="Europa")
+        self.assertQuerysetEqual(europe.get_translations(lang="de"), ["<Translation: Europe: Europa>"])
 
     def test_get_translations_for_two_objects(self):
         """Make sure `get_translations` works for two distinct objects."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
         asia = Continent.objects.create(name="Asia")
-        asia.translations.create(field="name", language="fr", text="Asie")
+        asia.translations.create(field="name", language="de", text="Asien")
 
-        self.assertQuerysetEqual(europe.get_translations(lang="fr"), ["<Translation: Europe: L'Europe>"])
-        self.assertQuerysetEqual(asia.get_translations(lang="fr"), ["<Translation: Asia: Asie>"])
+        self.assertQuerysetEqual(europe.get_translations(lang="de"), ["<Translation: Europe: Europa>"])
+        self.assertQuerysetEqual(asia.get_translations(lang="de"), ["<Translation: Asia: Asien>"])
 
     def test_get_translations_for_object_and_relations(self):
         """Make sure `get_translations` works with `relations` argument."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
-        france = europe.countries.create(name="France", code="FR")
-        france.translations.create(field="name", language="fr", text="France")
+        germany = europe.countries.create(name="Germany", code="DE")
+        germany.translations.create(field="name", language="de", text="Deutschland")
 
-        paris = france.cities.create(name="Paris")
-        paris.translations.create(field="name", language="fr", text="Paris")
-        marseille = france.cities.create(name="Marseille")
-        marseille.translations.create(field="name", language="fr", text="Marseille")
+        cologne = germany.cities.create(name="Cologne")
+        cologne.translations.create(field="name", language="de", text="Köln")
+        munich = germany.cities.create(name="Munich")
+        munich.translations.create(field="name", language="de", text="München")
 
         self.assertQuerysetEqual(
-            france.get_translations('continent', 'cities', lang="fr").order_by('text'),
+            germany.get_translations('continent', 'cities', lang="de").order_by('text'),
             [
-                "<Translation: France: France>",
-                "<Translation: Europe: L'Europe>",
-                "<Translation: Marseille: Marseille>",
-                "<Translation: Paris: Paris>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: Europe: Europa>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Munich: München>",
             ]
         )
 
     def test_get_translations_for_two_objects_and_relations(self):
         """Make sure `get_translations` works with `relations` argument for two distinct objects."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
         asia = Continent.objects.create(name="Asia", code="AS")
-        asia.translations.create(field="name", language="fr", text="Asie")
+        asia.translations.create(field="name", language="de", text="Asien")
 
-        france = europe.countries.create(name="France", code="FR")
-        france.translations.create(field="name", language="fr", text="France")
+        germany = europe.countries.create(name="Germany", code="DE")
+        germany.translations.create(field="name", language="de", text="Deutschland")
 
-        japan = asia.countries.create(name="Japan", code="JP")
-        japan.translations.create(field="name", language="fr", text="Japon")
+        persia = asia.countries.create(name="Persia", code="IR")
+        persia.translations.create(field="name", language="de", text="Persien")
 
-        paris = france.cities.create(name="Paris")
-        paris.translations.create(field="name", language="fr", text="Paris")
-        marseille = france.cities.create(name="Marseille")
-        marseille.translations.create(field="name", language="fr", text="Marseille")
+        cologne = germany.cities.create(name="Cologne")
+        cologne.translations.create(field="name", language="de", text="Köln")
+        munich = germany.cities.create(name="Munich")
+        munich.translations.create(field="name", language="de", text="München")
 
-        tokio = japan.cities.create(name="Tokio")
-        tokio.translations.create(field="name", language="fr", text="Tokio")
-
-        kioto = japan.cities.create(name="Kioto")
-        kioto.translations.create(field="name", language="fr", text="Kioto")
+        tehran = persia.cities.create(name="Tehran")
+        tehran.translations.create(field="name", language="de", text="Teheran")
+        shiraz = persia.cities.create(name="Shiraz")
+        shiraz.translations.create(field="name", language="de", text="Schiras")
 
         self.assertQuerysetEqual(
-            france.get_translations('continent', 'cities', lang="fr").order_by('text'),
+            germany.get_translations('continent', 'cities', lang="de").order_by('text'),
             [
-                "<Translation: France: France>",
-                "<Translation: Europe: L'Europe>",
-                "<Translation: Marseille: Marseille>",
-                "<Translation: Paris: Paris>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: Europe: Europa>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Munich: München>",
             ]
         )
 
         self.assertQuerysetEqual(
-            japan.get_translations('continent', 'cities', lang="fr").order_by('text'),
+            persia.get_translations('continent', 'cities', lang="de").order_by('text'),
             [
-                "<Translation: Asia: Asie>",
-                "<Translation: Japan: Japon>",
-                "<Translation: Kioto: Kioto>",
-                "<Translation: Tokio: Tokio>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Persia: Persien>",
+                "<Translation: Tehran: Teheran>",
+                "<Translation: Shiraz: Schiras>",
             ]
         )
 
     def test_translate_for_object(self):
         """Make sure `translate` works."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
-        europe.translate(lang="fr")
-        self.assertEqual(europe.name, "L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
+        europe.translate(lang="de")
+        self.assertEqual(europe.name, "Europa")
 
     def test_translate_for_two_objects(self):
         """Make sure `translate` works for two distinct objects."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
         asia = Continent.objects.create(name="Asia")
-        asia.translations.create(field="name", language="fr", text="Asie")
+        asia.translations.create(field="name", language="de", text="Asien")
 
-        europe.translate(lang="fr")
-        asia.translate(lang="fr")
+        europe.translate(lang="de")
+        asia.translate(lang="de")
 
-        self.assertEqual(europe.name, "L'Europe")
-        self.assertEqual(asia.name, "Asie")
+        self.assertEqual(europe.name, "Europa")
+        self.assertEqual(asia.name, "Asien")
 
     def test_translate_for_object_and_relations(self):
         """Make sure `translate` works with `relations` argument."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
-        france = europe.countries.create(name="France", code="FR")
-        france.translations.create(field="name", language="fr", text="France")
+        germany = europe.countries.create(name="Germany", code="DE")
+        germany.translations.create(field="name", language="de", text="Deutschland")
 
-        paris = france.cities.create(name="Paris")
-        paris.translations.create(field="name", language="fr", text="Paris")
-        marseille = france.cities.create(name="Marseille")
-        marseille.translations.create(field="name", language="fr", text="Marseille")
+        cologne = germany.cities.create(name="Cologne")
+        cologne.translations.create(field="name", language="de", text="Köln")
+        munich = germany.cities.create(name="Munich")
+        munich.translations.create(field="name", language="de", text="München")
 
-        france.translate("continent", "cities", lang="fr")
+        germany.translate("continent", "cities", lang="de")
 
-        self.assertEqual(france.name, "France")
-        self.assertEqual(france.continent.name, "L'Europe")
-        for city in france.cities.all():
-            self.assertIn(city.name, ["Marseille", "Paris"])
+        self.assertEqual(germany.name, "Deutschland")
+        self.assertEqual(germany.continent.name, "Europa")
+        for city in germany.cities.all():
+            self.assertIn(city.name, ["Köln", "München"])
 
     def test_translate_for_two_objects_and_relations(self):
         """Make sure `translate` works with `relations` argument for two distinct objects."""
         europe = Continent.objects.create(name="Europe", code="EU")
-        europe.translations.create(field="name", language="fr", text="L'Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
 
         asia = Continent.objects.create(name="Asia", code="AS")
-        asia.translations.create(field="name", language="fr", text="Asie")
+        asia.translations.create(field="name", language="de", text="Asien")
 
-        france = europe.countries.create(name="France", code="FR")
-        france.translations.create(field="name", language="fr", text="France")
+        germany = europe.countries.create(name="Germany", code="DE")
+        germany.translations.create(field="name", language="de", text="Deutschland")
 
-        japan = asia.countries.create(name="Japan", code="JP")
-        japan.translations.create(field="name", language="fr", text="Japon")
+        persia = asia.countries.create(name="Persia", code="IR")
+        persia.translations.create(field="name", language="de", text="Persien")
 
-        paris = france.cities.create(name="Paris")
-        paris.translations.create(field="name", language="fr", text="Paris")
-        marseille = france.cities.create(name="Marseille")
-        marseille.translations.create(field="name", language="fr", text="Marseille")
+        cologne = germany.cities.create(name="Cologne")
+        cologne.translations.create(field="name", language="de", text="Köln")
+        munich = germany.cities.create(name="Munich")
+        munich.translations.create(field="name", language="de", text="München")
 
-        tokio = japan.cities.create(name="Tokio")
-        tokio.translations.create(field="name", language="fr", text="Tokio")
+        tehran = persia.cities.create(name="Tehran")
+        tehran.translations.create(field="name", language="de", text="Teheran")
+        shiraz = persia.cities.create(name="Shiraz")
+        shiraz.translations.create(field="name", language="de", text="Schiras")
 
-        kioto = japan.cities.create(name="Kioto")
-        kioto.translations.create(field="name", language="fr", text="Kioto")
+        germany.translate("continent", "cities", lang="de")
+        persia.translate("continent", "cities", lang="de")
 
-        france.translate("continent", "cities", lang="fr")
-        japan.translate("continent", "cities", lang="fr")
+        self.assertEqual(germany.name, "Deutschland")
+        self.assertEqual(germany.continent.name, "Europa")
+        for city in germany.cities.all():
+            self.assertIn(city.name, ["Köln", "München"])
 
-        self.assertEqual(france.name, "France")
-        self.assertEqual(france.continent.name, "L'Europe")
-        for city in france.cities.all():
-            self.assertIn(city.name, ["Marseille", "Paris"])
-
-        self.assertEqual(japan.name, "Japon")
-        self.assertEqual(japan.continent.name, "Asie")
-        for city in japan.cities.all():
-            self.assertIn(city.name, ["Kioto", "Tokio"])
+        self.assertEqual(persia.name, "Persien")
+        self.assertEqual(persia.continent.name, "Asien")
+        for city in persia.cities.all():
+            self.assertIn(city.name, ["Teheran", "Schiras"])
