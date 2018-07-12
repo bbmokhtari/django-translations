@@ -28,6 +28,19 @@ def get_relations_hierarchy(*relations):
     Return a dict of first level relations as keys and their nested relations
     as values.
 
+    >>> get_relations_hierarchy()
+    {}
+    >>> get_relations_hierarchy('countries')
+    {'countries': []}
+    >>> get_relations_hierarchy('countries__states')
+    {'countries': ['states']}
+    >>> get_relations_hierarchy(
+    ... 'countries__states__cities',
+    ... 'countries__states__villages',
+    ... 'countries__phone_number',
+    ... )
+    {'countries': ['states__cities', 'states__villages', 'phone_number']}
+
     :param \*relations: a list of deeply nested relations to get their
         hierarchy.
     :type \*relations: list(str)
