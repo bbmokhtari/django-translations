@@ -1,3 +1,16 @@
+"""
+This module contains the utilities for the Translations app.
+
+.. rubric:: Functions:
+
+:func:`get_relations_hierarchy`
+    Return
+:func:`get_lang`
+    Return
+
+----
+"""
+
 from django.db import models, transaction
 from django.db.models.constants import LOOKUP_SEP
 from django.contrib.contenttypes.models import ContentType
@@ -7,22 +20,41 @@ from django.conf import settings
 import translations.models
 
 
-def get_relations_dict(*relations):
-    relations_dict = {}
+__docformat__ = 'restructuredtext'
+
+
+def get_relations_hierarchy(*relations):
+    r"""
+    Return a dict of first level relations as keys and their nested relations
+    as values.
+
+    :param \*relations: a list of deeply nested relations to get their
+        hierarchy.
+    :type \*relations: list(str)
+    :return: the first level relations and their nested relations.
+    :rtype: dict(str, list(str))
+    :raise ValueError: for invalid nested relations
+    """
+    hierarchy = {}
+
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
-        while True:
-            try:
-                parts.remove('')
-            except ValueError:
-                break
-        if len(parts) > 0:
-            base = parts.pop(0)
-            if not relations_dict.get(base):
-                relations_dict[base] = []
-            if len(parts) > 0:
-                relations_dict[base].append(LOOKUP_SEP.join(parts))
-    return relations_dict
+
+        if '' in parts:
+            raise ValueError(
+                '`{}` is not a valid relationship.'.format(
+                    LOOKUP_SEP.join(parts)
+                )
+            )
+
+        root = parts[0]
+        nest = LOOKUP_SEP.join(parts[1:])
+
+        hierarchy.setdefault(root, [])
+        if nest:
+            hierarchy[root].append(nest)
+
+    return hierarchy
 
 
 def get_lang(lang=None):
@@ -173,7 +205,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
             translate_obj(context)
 
     # ------------ translate context relations
-    relations_dict = get_relations_dict(*relations)
+    relations_dict = get_relations_hierarchy(*relations)
 
     if len(relations_dict) > 0:
         # translate rel function
