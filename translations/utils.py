@@ -176,42 +176,34 @@ def get_translations(context, *relations, lang=None):
 
     # ------------ query the translations for context itself
     if issubclass(model, translations.models.Translatable):
-        related_query_name = model._meta.get_field('translations').related_query_name()
         queries.append(
-            models.Q(**{'{}__{}'.format(related_query_name, filter_string): context_value})
+            models.Q(**{
+                '{}__{}'.format(
+                    reverse_relation(model),
+                    filter_string,
+                ): context_value
+            })
         )
 
     # ------------ query the translations for context relations
     for relation in relations:
-        base = model
         parts = relation.split(LOOKUP_SEP)
 
-        # remove invalid relation parts
-        while True:
-            try:
-                parts.remove('')
-            except ValueError:
-                break
-
-        # generate related query name
-        related_query_name_list = []
-        for index, part in enumerate(parts):
-            rel = base._meta.get_field(part)
-            rel_model = rel.related_model
-            related_query_name_list.append(rel.remote_field.name)
-            if index == len(parts) - 1:
-                if issubclass(rel_model, translations.models.Translatable):
-                    rel_related_query_name = rel_model._meta.get_field('translations').related_query_name()
-                    related_query_name_list.append(rel_related_query_name)
-                else:
-                    break  # won't run else - so no queries will be appended cuz relation model is not translatable
-            base = rel_model
-        else:
-            related_query_name_list.reverse()
-            relation_related_query_name = LOOKUP_SEP.join(related_query_name_list)
-            queries.append(
-                models.Q(**{'{}__{}'.format(relation_related_query_name, filter_string): context_value})
+        if '' in parts:
+            raise ValueError(
+                '`{}` is not a valid relationship.'.format(
+                    LOOKUP_SEP.join(parts)
+                )
             )
+
+        queries.append(
+            models.Q(**{
+                '{}__{}'.format(
+                    reverse_relation(model, *parts),
+                    filter_string,
+                ): context_value
+            })
+        )
 
     # ------------ translations queryset
     queryset = translations.models.Translation.objects.filter(language=lang)
