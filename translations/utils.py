@@ -3,12 +3,12 @@ This module contains the utilities for the Translations app.
 
 .. rubric:: Functions:
 
+:func:`get_standard_language`
+    Return the standard language code based on input or the current active
+    language.
 :func:`get_relations_hierarchy`
     Return a dict of first level relations as keys and their nested relations
     as values.
-:func:`get_lang`
-    Return the standard language code based on input or the current active
-    language.
 
 ----
 """
@@ -23,6 +23,40 @@ import translations.models
 
 
 __docformat__ = 'restructuredtext'
+
+
+def get_standard_language(lang=None):
+    """
+    Return the standard language code based on the given language code or the
+    current language code.
+
+    >>> from django.utils.translation import activate
+    >>> activate('en')
+    >>> get_standard_language()
+    'en'
+    >>> get_standard_language('de')
+    'de'
+    >>> get_standard_language('xx')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    ValueError: Language not supported
+
+    :param lang: the language code to standardize, ``None`` means the current
+        active language.
+    :type lang: str or None
+    :return: the standard language code
+    :rtype: str
+    :raise ValueError: when the language code is invalid [#invalidcode]_
+
+    .. [#invalidcode] what is meant by the language code being invalid is, it not being
+       in the :data:`~settings.LANGUAGES`.
+    """
+    lang = lang or get_language()
+
+    if lang not in [language[0] for language in settings.LANGUAGES]:
+        raise ValueError("Language not supported")
+
+    return lang
 
 
 def get_relations_hierarchy(*relations):
@@ -70,38 +104,6 @@ def get_relations_hierarchy(*relations):
             hierarchy[root].append(nest)
 
     return hierarchy
-
-
-def get_lang(lang=None):
-    """
-    Return the standard language code based on input or the current active
-    language.
-
-    >>> get_lang()
-    'en'
-    >>> get_lang('de')
-    'de'
-    >>> get_lang('xx')
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    ValueError: Language not supported
-
-    :param lang: the language code to standardize, ``None`` means the current
-        active language.
-    :type lang: str or None
-    :return: the standard language code
-    :rtype: str
-    :raise ValueError: when the language code is invalid [#invalidcode]_
-
-    .. [#invalidcode] what is meant by the language code being invalid is, it not being
-       in the :data:`~settings.LANGUAGES`.
-    """
-    lang = lang or get_language()
-
-    if lang not in [language[0] for language in settings.LANGUAGES]:
-        raise ValueError("Language not supported")
-
-    return lang
 
 
 def reverse_relation(model, *parts):
@@ -153,7 +155,7 @@ def get_translations(context, *relations, lang=None):
     :return: the translations
     :rtype: ~django.db.models.query.QuerySet
     """
-    lang = get_lang(lang)
+    lang = get_standard_language(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -221,7 +223,7 @@ def get_translations(context, *relations, lang=None):
 
 
 def translate(context, *relations, lang=None, translations_queryset=None):
-    lang = get_lang(lang)
+    lang = get_standard_language(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -309,7 +311,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
 
 
 def update_translations(context, lang=None):
-    lang = get_lang(lang)
+    lang = get_standard_language(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
