@@ -128,8 +128,8 @@ def reverse_relation(model, *parts):
     else:
         if issubclass(model, translations.models.Translatable):
             trans_field = model._meta.get_field('translations')
-            trans_rqn = trans_field.related_query_name()
-            return trans_rqn
+            trans_query_name = trans_field.related_query_name()
+            return trans_query_name
         else:
             raise TypeError(
                 '{model} is not a `Translatable` type.'.format(
