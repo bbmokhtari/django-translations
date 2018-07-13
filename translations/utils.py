@@ -4,9 +4,11 @@ This module contains the utilities for the Translations app.
 .. rubric:: Functions:
 
 :func:`get_relations_hierarchy`
-    Return
+    Return a dict of first level relations as keys and their nested relations
+    as values.
 :func:`get_lang`
-    Return
+    Return the standard language code based on input or the current active
+    language.
 
 ----
 """
@@ -71,15 +73,52 @@ def get_relations_hierarchy(*relations):
 
 
 def get_lang(lang=None):
+    """
+    Return the standard language code based on input or the current active
+    language.
+
+    >>> get_lang()
+    'en'
+    >>> get_lang('de')
+    'de'
+    >>> get_lang('xx')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    ValueError: Language not supported
+
+    :param lang: the language code to standardize, ``None`` means the current
+        active language.
+    :type lang: str or None
+    :return: the standard language code
+    :rtype: str
+    :raise ValueError: when the language code is invalid [#invalidcode]_
+
+    .. [#invalidcode] what is meant by the language code being invalid is, it not being
+       in the :data:`~settings.LANGUAGES`.
+    """
     lang = lang or get_language()
 
     if lang not in [language[0] for language in settings.LANGUAGES]:
-        raise Exception("Language not supported")
+        raise ValueError("Language not supported")
 
     return lang
 
 
 def get_translations(context, *relations, lang=None):
+    r"""
+    Return the translations of the context and its relations in a language.
+
+    :param context: the context to translate
+    :type context: ~django.db.models.query.QuerySet, ~django.db.models.Model
+        or list(~django.db.models.Model)
+    :param \*relations: a list of relations to fetch the translations for.
+    :type \*relations: list(str)
+    :param lang: the language of the translations to fetch, if ``None``
+            is given the current active language will be used.
+    :type lang: str or None
+    :return: the translations
+    :rtype: ~django.db.models.query.QuerySet
+    """
     lang = get_lang(lang)
 
     # ------------ process context
