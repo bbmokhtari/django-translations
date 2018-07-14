@@ -62,7 +62,7 @@ def get_related_query_name(model, relation):
         represent a deeply nested relation
     :type relation: str
     :return: The related query name of the relation
-    :rtpye: str
+    :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
