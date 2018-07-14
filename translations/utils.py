@@ -49,10 +49,10 @@ def get_validated_language(lang=None):
     return lang
 
 
-def reverse_relation(model, *parts):
+def get_query_param(model, *parts):
     r"""
-    Return the reverse of a relation to
-    :class:`~translations.models.Translation` based on relation parts.
+    Return the parameter to query :class:`Translation` for a relation
+    of a model.
 
     :param model: the model to find the reverse relation for.
     :type model: ~translations.models.Translatable
@@ -68,7 +68,7 @@ def reverse_relation(model, *parts):
         rel_field = model._meta.get_field(parts[0])
         rel_model = rel_field.related_model
         rel_reverse = rel_field.remote_field.name
-        depth = reverse_relation(rel_model, *parts[1:])
+        depth = get_query_param(rel_model, *parts[1:])
         return '{}__{}'.format(depth, rel_reverse)
     else:
         if issubclass(model, translations.models.Translatable):
@@ -171,7 +171,7 @@ def get_translations(context, *relations, lang=None):
         queries.append(
             models.Q(**{
                 '{}__{}'.format(
-                    reverse_relation(model),
+                    get_query_param(model),
                     filter_string,
                 ): context_value
             })
@@ -191,7 +191,7 @@ def get_translations(context, *relations, lang=None):
         queries.append(
             models.Q(**{
                 '{}__{}'.format(
-                    reverse_relation(model, *parts),
+                    get_query_param(model, *parts),
                     filter_string,
                 ): context_value
             })
