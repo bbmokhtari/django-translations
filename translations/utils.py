@@ -9,8 +9,6 @@ This module contains the utilities for the Translations app.
 :func:`get_relations_hierarchy`
     Return a dict of first level relations as keys and their nested relations
     as values.
-
-----
 """
 
 from django.db import models, transaction
