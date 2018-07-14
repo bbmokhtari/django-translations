@@ -73,6 +73,10 @@ def get_related_query_name(model, relation):
     >>> # Using this related query name we can query `City` with a `Continent`
     >>> City.objects.filter(country__continent=eu)
     <QuerySet [<City: Cologne>]>
+    >>> get_related_query_name(Continent, 'countries__wrong')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
