@@ -3,60 +3,49 @@ This module contains the utilities for the Translations app.
 
 .. rubric:: Functions:
 
-:func:`get_standard_language`
-    Return the standard language code based on the given language code or the
-    current active language code.
-:func:`get_relations_hierarchy`
-    Return a dict of first level relations as keys and their nested relations
-    as values.
+:func:`get_validated_language`
+    Return the validated given language code or the current active language
+    code.
 """
 
 from django.db import models, transaction
 from django.db.models.constants import LOOKUP_SEP
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
-from django.conf import settings
 
 import translations.models
+from translations.validators import validate_language
 
 
 __docformat__ = 'restructuredtext'
 
 
-def get_standard_language(lang=None):
+def get_validated_language(lang=None):
     """
-    Return the standard language code based on the given language code or the
-    current active language code.
+    Return the validated given language code or the current active language
+    code.
 
-    The given language code must be present in the
-    :data:`~django.conf.settings.LANGUAGES` setting to be considered a valid
-    language code.
+    :param lang: The language code to validate, ``None`` means the current
+        active language
+    :type lang: str or None
+    :return: The validated language code
+    :rtype: str
+    :raise ~django.core.exceptions.ValidationError: If the language code is
+        not supported in the :data:`~django.conf.settings.LANGUAGES` settings.
 
     >>> from django.utils.translation import activate
     >>> activate('en')
-    >>> get_standard_language()
+    >>> get_validated_language()
     'en'
-    >>> get_standard_language('de')
+    >>> get_validated_language('de')
     'de'
-    >>> get_standard_language('xx')
+    >>> get_validated_language('xx')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    ValueError: The language is not present in the `LANGUAGES` setting.
-
-    :param lang: The language code to standardize, ``None`` means the current
-        active language
-    :type lang: str or None
-    :return: The standard language code
-    :rtype: str
-    :raise ValueError: If the language code is invalid
+    django.core.exceptions.ValidationError: ['The language code `xx` is not supported.']
     """
-    lang = lang or get_language()
-
-    if lang not in [language[0] for language in settings.LANGUAGES]:
-        raise ValueError(
-            "The language is not present in the `LANGUAGES` setting."
-        )
-
+    lang = lang if lang else get_language()
+    validate_language(lang)
     return lang
 
 
@@ -156,7 +145,7 @@ def get_translations(context, *relations, lang=None):
     :return: the translations
     :rtype: ~django.db.models.query.QuerySet
     """
-    lang = get_standard_language(lang)
+    lang = get_validated_language(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -224,7 +213,7 @@ def get_translations(context, *relations, lang=None):
 
 
 def translate(context, *relations, lang=None, translations_queryset=None):
-    lang = get_standard_language(lang)
+    lang = get_validated_language(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):
@@ -312,7 +301,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
 
 
 def update_translations(context, lang=None):
-    lang = get_standard_language(lang)
+    lang = get_validated_language(lang)
 
     # ------------ process context
     if isinstance(context, models.QuerySet):

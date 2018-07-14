@@ -4,6 +4,6 @@ Utilities
 
 .. automodule:: translations.utils
 
-   ---
+   -----
 
-   .. autofunction:: get_standard_language
+   .. autofunction:: get_validated_language
