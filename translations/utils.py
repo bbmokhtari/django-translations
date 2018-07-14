@@ -31,7 +31,7 @@ def get_validated_language(lang=None):
     :return: The validated language code
     :rtype: str
     :raise ~django.core.exceptions.ValidationError: If the language code is
-        not supported in the :data:`~django.conf.settings.LANGUAGES` settings.
+        not supported in the :data:`~django.conf.settings.LANGUAGES` settings
 
     >>> from django.utils.translation import activate
     >>> activate('en')
@@ -51,18 +51,16 @@ def get_validated_language(lang=None):
 
 def get_related_query_name(model, relation):
     r"""
-    Return the parameter to query :class:`Translation` for a relation
-    of a model.
+    Return the related query name for a relation of a model.
 
-    :param model: the model to find the reverse relation for.
-    :type model: ~translations.models.Translatable
-    :param \*parts: the parts of the relation, already separated by
-        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``)
-    :type \*parts: list(str)
-    :return: the reverse of the relation based on relation parts
+    :param model: The model for the related query name
+    :type model: ~django.db.models.Model
+    :param relation: A relation of the model - can include
+        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
+        represent a deeply nested relation
+    :type relation: str
+    :return: The related query name of the relation
     :rtpye: str
-    :raise TypeError: if the model and relation combination is not
-        translatable.
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]

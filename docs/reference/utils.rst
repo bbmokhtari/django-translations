@@ -7,4 +7,4 @@ Utilities
    -----
 
    .. autofunction:: get_validated_language
-   .. autofunction:: reverse_relation
+   .. autofunction:: get_related_query_name
