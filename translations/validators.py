@@ -5,8 +5,6 @@ This module contains the validators for the Translations app.
 
 :func:`validate_language`
     Validate the given language code.
-
-----
 """
 
 from django.core.exceptions import ValidationError
