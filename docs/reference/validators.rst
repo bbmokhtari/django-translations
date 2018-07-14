@@ -7,3 +7,4 @@ Validators
    ----
 
    .. autofunction:: validate_language
+   .. autofunction:: validate_context
