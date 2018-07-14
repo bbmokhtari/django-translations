@@ -49,6 +49,40 @@ def get_validated_language(lang=None):
     return lang
 
 
+def reverse_relation(model, *parts):
+    r"""
+    Return the reverse of a relation to
+    :class:`~translations.models.Translation` based on relation parts.
+
+    :param model: the model to find the reverse relation for.
+    :type model: ~translations.models.Translatable
+    :param \*parts: the parts of the relation, already separated by
+        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``)
+    :type \*parts: list(str)
+    :return: the reverse of the relation based on relation parts
+    :rtpye: str
+    :raise TypeError: if the model and relation combination is not
+        translatable.
+    """
+    if parts:
+        rel_field = model._meta.get_field(parts[0])
+        rel_model = rel_field.related_model
+        rel_reverse = rel_field.remote_field.name
+        depth = reverse_relation(rel_model, *parts[1:])
+        return '{}__{}'.format(depth, rel_reverse)
+    else:
+        if issubclass(model, translations.models.Translatable):
+            trans_field = model._meta.get_field('translations')
+            trans_query_name = trans_field.related_query_name()
+            return trans_query_name
+        else:
+            raise TypeError(
+                '{model} is not a `Translatable` type.'.format(
+                    model=model
+                )
+            )
+
+
 def get_relations_hierarchy(*relations):
     r"""
     Return a dict of first level relations as keys and their nested relations
@@ -94,40 +128,6 @@ def get_relations_hierarchy(*relations):
             hierarchy[root].append(nest)
 
     return hierarchy
-
-
-def reverse_relation(model, *parts):
-    r"""
-    Return the reverse of a relation to
-    :class:`~translations.models.Translation` based on relation parts.
-
-    :param model: the model to find the reverse relation for.
-    :type model: ~translations.models.Translatable
-    :param \*parts: the parts of the relation, already separated by
-        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``)
-    :type \*parts: list(str)
-    :return: the reverse of the relation based on relation parts
-    :rtpye: str
-    :raise TypeError: if the model and relation combination is not
-        translatable.
-    """
-    if parts:
-        rel_field = model._meta.get_field(parts[0])
-        rel_model = rel_field.related_model
-        rel_reverse = rel_field.remote_field.name
-        depth = reverse_relation(rel_model, *parts[1:])
-        return '{}__{}'.format(depth, rel_reverse)
-    else:
-        if issubclass(model, translations.models.Translatable):
-            trans_field = model._meta.get_field('translations')
-            trans_query_name = trans_field.related_query_name()
-            return trans_query_name
-        else:
-            raise TypeError(
-                '{model} is not a `Translatable` type.'.format(
-                    model=model
-                )
-            )
 
 
 def get_translations(context, *relations, lang=None):
