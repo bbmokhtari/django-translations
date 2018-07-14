@@ -63,6 +63,13 @@ def get_related_query_name(model, relation):
     :rtpye: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
+
+    >>> # Let's suppose we want a list of all the cities in Europe
+    >>> eu = Continent.objects.get(code="EU")
+    >>> get_related_query_name(Continent, 'countries__states__cities')
+    state__country__continent
+    >>> # Using this related query name we can query `City` with a `Continent`
+    >>> City.objects.filter(state__country__continent=eu)
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
