@@ -6,6 +6,8 @@ This module contains the utilities for the Translations app.
 :func:`get_validated_language`
     Return the validated given language code or the current active language
     code.
+:func:`get_related_query_name`
+    Return the related query name of a relation to point to a model.
 """
 
 from django.db import models, transaction
@@ -51,7 +53,7 @@ def get_validated_language(lang=None):
 
 def get_related_query_name(model, relation):
     r"""
-    Return the related query name of the relation to point to the model.
+    Return the related query name of a relation to point to a model.
 
     :param model: The model the related query name has to point to
     :type model: ~django.db.models.Model
