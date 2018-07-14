@@ -4,8 +4,8 @@ This module contains the utilities for the Translations app.
 .. rubric:: Functions:
 
 :func:`get_standard_language`
-    Return the standard language code based on input or the current active
-    language.
+    Return the standard language code based on the given language code or the
+    current active language code.
 :func:`get_relations_hierarchy`
     Return a dict of first level relations as keys and their nested relations
     as values.
@@ -28,7 +28,11 @@ __docformat__ = 'restructuredtext'
 def get_standard_language(lang=None):
     """
     Return the standard language code based on the given language code or the
-    current language code.
+    current active language code.
+
+    The given language code must be present in the
+    :data:`~django.conf.settings.LANGUAGES` setting to be considered a valid
+    language code.
 
     >>> from django.utils.translation import activate
     >>> activate('en')
@@ -39,22 +43,21 @@ def get_standard_language(lang=None):
     >>> get_standard_language('xx')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    ValueError: Language not supported
+    ValueError: The language is not present in the `LANGUAGES` setting.
 
-    :param lang: the language code to standardize, ``None`` means the current
-        active language.
+    :param lang: The language code to standardize, ``None`` means the current
+        active language
     :type lang: str or None
-    :return: the standard language code
+    :return: The standard language code
     :rtype: str
-    :raise ValueError: when the language code is invalid [#invalidcode]_
-
-    .. [#invalidcode] what is meant by the language code being invalid is, it not being
-       in the :data:`~settings.LANGUAGES`.
+    :raise ValueError: If the language code is invalid
     """
     lang = lang or get_language()
 
     if lang not in [language[0] for language in settings.LANGUAGES]:
-        raise ValueError("Language not supported")
+        raise ValueError(
+            "The language is not present in the `LANGUAGES` setting."
+        )
 
     return lang
 

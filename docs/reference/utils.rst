@@ -3,4 +3,5 @@ Utilities
 *********
 
 .. automodule:: translations.utils
-   :members:
+   
+   .. autofunction:: get_standard_language
