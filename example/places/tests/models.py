@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
+
 from translations.models import Translation
 
-from .models import Continent, Country, City
+from places.models import Continent, Country, City
 
 
 class TranslationTest(TestCase):
