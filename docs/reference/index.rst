@@ -12,3 +12,4 @@ deeper level, we recommend you to read the reference.
    models
    admin
    utils
+   validators
