@@ -95,6 +95,83 @@ def get_related_query_name(model, relation):
         return related_query_name
 
 
+def get_translations(context, *relations, lang=None):
+    r"""
+    Return the translations of the context and its relations in a language.
+
+    :param context: The context to fetch the translations for
+    :type context: ~django.db.models.query.QuerySet, ~django.db.models.Model
+        or list(~django.db.models.Model)
+    :param \*relations: The list of relations to fetch the translations for
+    :type \*relations: list(str)
+    :param lang: The language to fetch the translations for, ``None`` means
+        the current active language
+    :type lang: str or None
+    :return: The translations
+    :rtype: ~django.db.models.query.QuerySet
+    """
+    lang = get_validated_language(lang)
+
+    # ------------ process context
+    if isinstance(context, models.QuerySet):
+        model = context.model
+        filter_string = 'id__in'
+        context_value = [instance.id for instance in context]
+    elif isinstance(context, list):
+        model = type(context[0])
+        filter_string = 'id__in'
+        context_value = [instance.id for instance in context]
+    elif isinstance(context, models.Model):
+        model = type(context)
+        filter_string = 'id'
+        context_value = context.id
+    else:
+        raise Exception('`context` is neither a model instance or a queryset or a list')
+
+    # list of Q objects to perform Translation query on
+    queries = []
+
+    # query the translations for context itself
+    if issubclass(model, translations.models.Translatable):
+        queries.append(
+            models.Q(**{
+                '{}__{}'.format(
+                    get_related_query_name(model, 'translations'),
+                    filter_string,
+                ): context_value
+            })
+        )
+
+    # query the translations for context relations
+    for relation in relations:
+        related_query_name = get_related_query_name(
+            model,
+            '{}__{}'.format(relation, 'translations')
+        )
+        queries.append(
+            models.Q(**{
+                '{}__{}'.format(
+                    related_query_name,
+                    filter_string,
+                ): context_value
+            })
+        )
+
+    # translations queryset
+    queryset = translations.models.Translation.objects.filter(language=lang)
+
+    # perform OR between Q objects
+    if len(queries) > 0:
+        filter_query = queries.pop()
+        for query in queries:
+            filter_query |= query
+        queryset = queryset.filter(filter_query).distinct()
+    else:
+        queryset = translations.models.Translatable.objects.none()
+
+    return queryset
+
+
 def get_relations_hierarchy(*relations):
     r"""
     Return a dict of first level relations as keys and their nested relations
@@ -140,88 +217,6 @@ def get_relations_hierarchy(*relations):
             hierarchy[root].append(nest)
 
     return hierarchy
-
-
-def get_translations(context, *relations, lang=None):
-    r"""
-    Return the translations of the context and its relations in a language.
-
-    :param context: the context to translate
-    :type context: ~django.db.models.query.QuerySet, ~django.db.models.Model
-        or list(~django.db.models.Model)
-    :param \*relations: a list of relations to fetch the translations for.
-    :type \*relations: list(str)
-    :param lang: the language of the translations to fetch, if ``None``
-            is given the current active language will be used.
-    :type lang: str or None
-    :return: the translations
-    :rtype: ~django.db.models.query.QuerySet
-    """
-    lang = get_validated_language(lang)
-
-    # ------------ process context
-    if isinstance(context, models.QuerySet):
-        model = context.model
-        filter_string = 'id__in'
-        context_value = [instance.id for instance in context]
-    elif isinstance(context, list):
-        model = type(context[0])
-        filter_string = 'id__in'
-        context_value = [instance.id for instance in context]
-    elif isinstance(context, models.Model):
-        model = type(context)
-        filter_string = 'id'
-        context_value = context.id
-    else:
-        raise Exception('`context` is neither a model instance or a queryset or a list')
-
-    # ------------ list of Q objects to perform Translation query on
-    queries = []
-
-    # ------------ query the translations for context itself
-    if issubclass(model, translations.models.Translatable):
-        queries.append(
-            models.Q(**{
-                '{}__{}'.format(
-                    get_query_param(model),
-                    filter_string,
-                ): context_value
-            })
-        )
-
-    # ------------ query the translations for context relations
-    for relation in relations:
-        parts = relation.split(LOOKUP_SEP)
-
-        if '' in parts:
-            raise ValueError(
-                '`{}` is not a valid relationship.'.format(
-                    LOOKUP_SEP.join(parts)
-                )
-            )
-
-        queries.append(
-            models.Q(**{
-                '{}__{}'.format(
-                    get_query_param(model, *parts),
-                    filter_string,
-                ): context_value
-            })
-        )
-
-    # ------------ translations queryset
-    queryset = translations.models.Translation.objects.filter(language=lang)
-
-    # perform OR between Q objects
-    if len(queries) > 0:
-        filter_query = queries.pop()
-        for query in queries:
-            filter_query |= query
-        queryset = queryset.filter(filter_query).distinct()
-    else:
-        queryset = translations.models.Translatable.objects.none()
-
-    return queryset
 
 
 def translate(context, *relations, lang=None, translations_queryset=None):
