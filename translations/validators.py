@@ -27,5 +27,5 @@ def validate_language(lang):
     """
     if lang not in [language[0] for language in settings.LANGUAGES]:
         raise ValidationError(
-            "`{}` is not supported in the `LANGUAGES` setting.".format(lang)
+            "The language code `{}` is not supported.".format(lang)
         )
