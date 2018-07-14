@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from translations.validators import validate_language
 
 
-class ValidatorsTest(TestCase):
+class ValidateLanguageTest(TestCase):
 
     def test_validate_language(self):
         self.assertIs(validate_language('en'), None)
