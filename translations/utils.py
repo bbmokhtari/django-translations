@@ -68,10 +68,11 @@ def get_related_query_name(model, relation):
 
     >>> # Let's suppose we want a list of all the cities in Europe
     >>> eu = Continent.objects.get(code="EU")
-    >>> get_related_query_name(Continent, 'countries__states__cities')
-    state__country__continent
+    >>> get_related_query_name(Continent, 'countries__cities')
+    'country__continent'
     >>> # Using this related query name we can query `City` with a `Continent`
-    >>> City.objects.filter(state__country__continent=eu)
+    >>> City.objects.filter(country__continent=eu)
+    <QuerySet [<City: Cologne>]>
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
