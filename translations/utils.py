@@ -51,11 +51,11 @@ def get_validated_language(lang=None):
 
 def get_related_query_name(model, relation):
     r"""
-    Return the related query name for a relation of a model.
+    Return the related query name of the relation to point to the model.
 
-    :param model: The model for the related query name
+    :param model: The model the related query name has to point to
     :type model: ~django.db.models.Model
-    :param relation: A relation of the model - can include
+    :param relation: The relation of the model - can include
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation
     :type relation: str
