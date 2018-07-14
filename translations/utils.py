@@ -49,7 +49,7 @@ def get_validated_language(lang=None):
     return lang
 
 
-def get_query_param(model, *parts):
+def get_related_query_name(model, relation):
     r"""
     Return the parameter to query :class:`Translation` for a relation
     of a model.
@@ -64,23 +64,26 @@ def get_query_param(model, *parts):
     :raise TypeError: if the model and relation combination is not
         translatable.
     """
-    if parts:
-        rel_field = model._meta.get_field(parts[0])
-        rel_model = rel_field.related_model
-        rel_reverse = rel_field.remote_field.name
-        depth = get_query_param(rel_model, *parts[1:])
-        return '{}__{}'.format(depth, rel_reverse)
+    parts = relation.split(LOOKUP_SEP)
+    root = parts[0]
+    branch = parts[1:]
+
+    field = model._meta.get_field(root)
+    related_query_name = field.remote_field.name
+
+    if branch:
+        branch_model = field.related_model
+        branch_relation = LOOKUP_SEP.join(branch)
+        branch_related_query_name = get_related_query_name(
+            branch_model,
+            branch_relation
+        )
+        return '{}__{}'.format(
+            branch_related_query_name,
+            related_query_name
+        )
     else:
-        if issubclass(model, translations.models.Translatable):
-            trans_field = model._meta.get_field('translations')
-            trans_query_name = trans_field.related_query_name()
-            return trans_query_name
-        else:
-            raise TypeError(
-                '{model} is not a `Translatable` type.'.format(
-                    model=model
-                )
-            )
+        return related_query_name
 
 
 def get_relations_hierarchy(*relations):
