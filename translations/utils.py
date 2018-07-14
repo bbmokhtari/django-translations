@@ -61,6 +61,8 @@ def get_related_query_name(model, relation):
     :type relation: str
     :return: The related query name of the relation
     :rtpye: str
+    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+        pointing to the fields that don't exist
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
