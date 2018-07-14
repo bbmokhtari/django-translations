@@ -24,6 +24,12 @@ def validate_language(lang):
     :type lang: str
     :raise ~django.core.exceptions.ValidationError: If the language code is
         not supported in the :data:`~django.conf.settings.LANGUAGES` settings.
+
+    >>> validate_language('de')
+    >>> validate_language('xx')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    django.core.exceptions.ValidationError: ['The language code `xx` is not supported.']
     """
     if lang not in [language[0] for language in settings.LANGUAGES]:
         raise ValidationError(
