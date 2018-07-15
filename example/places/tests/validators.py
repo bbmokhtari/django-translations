@@ -8,12 +8,12 @@ from places.models import Continent
 
 class ValidateLanguageTest(TestCase):
 
-    def test_validate_language(self):
-        """Make sure it works."""
+    def test_validate_language_with_valid_lang(self):
+        """Make sure it works with a valid language code."""
         self.assertIs(validate_language('en'), None)
 
-    def test_validate_language_raises(self):
-        """Make sure it raises on invalid input."""
+    def test_validate_language_with_invalid_lang(self):
+        """Make sure it raises on an invalid language code."""
         with self.assertRaises(ValidationError) as error:
             validate_language('xx')
         self.assertEqual(

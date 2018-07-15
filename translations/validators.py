@@ -24,7 +24,7 @@ def validate_language(lang):
     :param lang: The language code to validate
     :type lang: str
     :raise ~django.core.exceptions.ValidationError: If the language code is
-        not supported in the :data:`~django.conf.settings.LANGUAGES` settings
+        not included in the :data:`~django.conf.settings.LANGUAGES` settings
 
     >>> validate_language('de')
     >>> validate_language('xx')
