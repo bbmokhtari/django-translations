@@ -29,11 +29,18 @@ class ValidateContextTest(TestCase):
         eu = Continent.objects.create(name="Europe", code="EU")
         self.assertIs(validate_context(eu), None)
 
-    def test_validate_context_with_model_iterable(self):
-        """Make sure it works with a model iterable."""
+    def test_validate_context_with_model_queryset(self):
+        """Make sure it works with a model queryset."""
         Continent.objects.create(name="Europe", code="EU")
         Continent.objects.create(name="Asia", code="AS")
         continents = Continent.objects.all()
+        self.assertIs(validate_context(continents), None)
+
+    def test_validate_context_with_model_iterable(self):
+        """Make sure it works with a model iterable."""
+        continents = []
+        continents.append(Continent.objects.create(name="Europe", code="EU"))
+        continents.append(Continent.objects.create(name="Asia", code="AS"))
         self.assertIs(validate_context(continents), None)
 
     def test_validate_context_with_empty_list(self):
