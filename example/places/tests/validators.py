@@ -24,12 +24,12 @@ class ValidateLanguageTest(TestCase):
 
 class ValidateContextTest(TestCase):
 
-    def test_validate_context_with_instance(self):
+    def test_validate_context_with_model_instance(self):
         """Make sure it works with a model instance."""
         eu = Continent.objects.create(name="Europe", code="EU")
         self.assertIs(validate_context(eu), None)
 
-    def test_validate_context_with_iterable(self):
+    def test_validate_context_with_model_iterable(self):
         """Make sure it works with a model iterable."""
         Continent.objects.create(name="Europe", code="EU")
         Continent.objects.create(name="Asia", code="AS")
@@ -41,11 +41,11 @@ class ValidateContextTest(TestCase):
         self.assertIs(validate_context([]), None)
 
     def test_validate_context_with_empty_queryset(self):
-        """Make sure it works with an empty queryset"""
+        """Make sure it works with an empty queryset."""
         self.assertIs(validate_context(Continent.objects.none()), None)
 
-    def test_validate_context_raises_on_wrong_object(self):
-        """Make sure it raises on invalid object input."""
+    def test_validate_context_with_simple_instance(self):
+        """Make sure it raises on simple instance."""
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -64,8 +64,8 @@ class ValidateContextTest(TestCase):
             "`Behzad` is neither a model instance nor an iterable of model instances."
         )
 
-    def test_validate_context_raises_on_wrong_iterable(self):
-        """Make sure it raises on invalid iterable input."""
+    def test_validate_context_with_simple_iterable(self):
+        """Make sure it raises on simple iterable."""
         class Person:
             def __init__(self, name):
                 self.name = name
