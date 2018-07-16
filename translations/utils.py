@@ -38,11 +38,15 @@ def get_validated_language(lang=None):
         the :data:`~django.conf.settings.LANGUAGES` settings
 
     >>> from django.utils.translation import activate
+    >>> from translations.utils import get_validated_language
+    >>> # An already active language
     >>> activate('en')
     >>> get_validated_language()
     'en'
+    >>> # A custom language
     >>> get_validated_language('de')
     'de'
+    >>> # A language that doesn't exist in `LANGUAGES`
     >>> get_validated_language('xx')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
@@ -70,14 +74,24 @@ def get_validated_context_info(context):
     :raise TypeError: If the context is neither a model instance nor
         an iterable of model instances
 
+    >>> from places.models import Continent
+    >>> from translations.utils import get_validated_context_info
+    >>> # A model instance
+    >>> europe = Continent.objects.get(code="EU", name="Europe")
+    >>> get_validated_context_info(europe)
+    (<class 'places.models.Continent'>, False)
+    >>> # A model iterable
     >>> continents = Continent.objects.all()
     >>> get_validated_context_info(continents)
     (<class 'places.models.Continent'>, True)
-    >>> eu = Continent.objects.get(code="EU")
-    >>> get_validated_context_info(eu)
-    (<class 'places.models.Continent'>, False)
+    >>> # An empty queryset
+    >>> continents.delete()
+    >>> get_validated_context_info(continents)
+    (None, True)
+    >>> # An empty list
     >>> get_validated_context_info([])
     (None, True)
+    >>> # An invalid type
     >>> get_validated_context_info(123)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
@@ -125,12 +139,23 @@ def get_related_query_name(model, relation):
         pointing to the fields that don't exist
 
     >>> # Let's suppose we want a list of all the cities in Europe
-    >>> eu = Continent.objects.get(code="EU")
+    >>> from places.models import Continent, Country, City
+    >>> from translations.utils import get_related_query_name
+    >>> europe = Continent.objects.create(code="EU", name="Europe")
+    >>> germany = Country.objects.create(
+    ...     code="DE",
+    ...     name="Germany",
+    ...     continent=europe
+    ... )
+    >>> cologne = City.objects.create(name="Cologne", country=germany)
+    >>> # To get the cities:
     >>> get_related_query_name(Continent, 'countries__cities')
     'country__continent'
     >>> # Using this related query name we can query `City` with a `Continent`
-    >>> City.objects.filter(country__continent=eu)
+    >>> City.objects.filter(country__continent=europe)
     <QuerySet [<City: Cologne>]>
+    >>> # Done! Cities fetched.
+    >>> # An invalid relation of the model
     >>> get_related_query_name(Continent, 'countries__wrong')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
