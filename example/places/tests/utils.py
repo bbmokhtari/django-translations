@@ -44,36 +44,36 @@ class GetValidatedLanguageTest(TestCase):
 
 class GetRelatedQueryNameTest(TestCase):
 
-    def test_get_related_query_name(self):
-        """Make sure the function works properly."""
+    def test_get_related_query_name_with_valid_relation(self):
+        """Make sure it works with a valid relation."""
         self.assertEqual(
             get_related_query_name(Continent, 'countries__cities'),
             'country__continent'
         )
 
-    def test_get_related_query_name_with_reverse(self):
-        """Make sure the other way around works as well."""
+    def test_get_related_query_name_with_reverse_valid_relation(self):
+        """Make sure it works with a valid relation in reverse."""
         self.assertEqual(
             get_related_query_name(City, 'country__continent'),
             'countries__cities'
         )
 
     def test_get_related_query_name_with_translations(self):
-        """Make sure translation works."""
+        """Make sure it works with translations relation."""
         self.assertEqual(
             get_related_query_name(Continent, 'countries__cities__translations'),
             'places_city__country__continent'
         )
 
     def test_get_related_query_name_with_reverse_translations(self):
-        """Make sure translation works the other way around."""
+        """Make sure it works with translations relation in reverse."""
         self.assertEqual(
             get_related_query_name(City, 'country__continent__translations'),
             'places_continent__countries__cities'
         )
 
-    def test_get_related_query_name_raises_field_does_not_exist_empty(self):
-        """Make sure field error is raised on empty field name."""
+    def test_get_related_query_name_with_empty_relation(self):
+        """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_related_query_name(
                 Continent,
@@ -84,8 +84,8 @@ class GetRelatedQueryNameTest(TestCase):
             "Continent has no field named ''"
         )
 
-    def test_get_related_query_name_raises_field_does_not_exist_wrong(self):
-        """Make sure field error is raised on wrong field name."""
+    def test_get_related_query_name_with_invalid_relation(self):
+        """Make sure it raises on an invalid relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_related_query_name(
                 Continent,
@@ -96,8 +96,8 @@ class GetRelatedQueryNameTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_get_related_query_name_raises_field_does_not_exist_nested(self):
-        """Make sure field error is raised on wrong nested field."""
+    def test_get_related_query_name_with_invalid_nested_relation(self):
+        """Make sure it raises on an invalid nested relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_related_query_name(
                 Continent,
