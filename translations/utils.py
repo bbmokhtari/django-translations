@@ -52,7 +52,7 @@ def get_validated_language(lang=None):
 
 
 def get_related_query_name(model, relation):
-    r"""
+    """
     Return the related query name for a relation of a model.
 
     :param model: The model which contains the relation and which the related
