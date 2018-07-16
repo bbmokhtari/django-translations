@@ -66,9 +66,6 @@ def get_validated_context_info(context):
     if isinstance(context, models.Model):
         model = type(context)
         iterable = False
-    elif isinstance(context, models.QuerySet):
-        model = context.model
-        iterable = True
     elif hasattr(context, '__iter__'):
         if len(context) > 0:
             if isinstance(context[0], models.Model):
