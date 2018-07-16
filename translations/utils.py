@@ -8,8 +8,8 @@ This module contains the utilities for the Translations app.
     code.
 :func:`get_validated_context_info`
     Return the model and iteration information about the validated context.
-:func:`get_related_query_name`
-    Return the related query name for a relation of a model.
+:func:`get_reverse_relation`
+    Return the reverse of a relation for a model.
 """
 
 from django.db import models, transaction
@@ -122,26 +122,26 @@ def get_validated_context_info(context):
     return model, iterable
 
 
-def get_related_query_name(model, relation):
+def get_reverse_relation(model, relation):
     """
-    Return the related query name for a relation of a model.
+    Return the reverse of a relation for a model.
 
-    :param model: The model which contains the relation and which the related
-        query name has to point to
+    :param model: The model which contains the relation and which the reverse
+        relation will point to
     :type model: type(~django.db.models.Model)
-    :param relation: The relation of the model to get the related query name
-        of - can include
+    :param relation: The relation of the model to get the reverse of -
+        can include
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation
     :type relation: str
-    :return: The related query name for the relation of the model
+    :return: The reverse of the relation for the model
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
     >>> # Let's suppose we want a list of all the cities in Europe
     >>> from places.models import Continent, Country, City
-    >>> from translations.utils import get_related_query_name
+    >>> from translations.utils import get_reverse_relation
     >>> europe = Continent.objects.create(code="EU", name="Europe")
     >>> germany = Country.objects.create(
     ...     code="DE",
@@ -150,14 +150,14 @@ def get_related_query_name(model, relation):
     ... )
     >>> cologne = City.objects.create(name="Cologne", country=germany)
     >>> # To get the cities:
-    >>> get_related_query_name(Continent, 'countries__cities')
+    >>> get_reverse_relation(Continent, 'countries__cities')
     'country__continent'
-    >>> # Using this related query name we can query `City` with a `Continent`
+    >>> # Using this reverse relation we can query `City` with a `Continent`
     >>> City.objects.filter(country__continent=europe)
     <TranslatableQuerySet [<City: Cologne>]>
     >>> # Done! Cities fetched.
     >>> # An invalid relation of the model
-    >>> get_related_query_name(Continent, 'countries__wrong')
+    >>> get_reverse_relation(Continent, 'countries__wrong')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
@@ -167,38 +167,38 @@ def get_related_query_name(model, relation):
     branch = parts[1:]
 
     field = model._meta.get_field(root)
-    related_query_name = field.remote_field.name
+    reverse_relation = field.remote_field.name
 
     if branch:
         branch_model = field.related_model
         branch_relation = LOOKUP_SEP.join(branch)
-        branch_related_query_name = get_related_query_name(
+        branch_reverse_relation = get_reverse_relation(
             branch_model,
             branch_relation
         )
         return '{}__{}'.format(
-            branch_related_query_name,
-            related_query_name
+            branch_reverse_relation,
+            reverse_relation
         )
     else:
-        return related_query_name
+        return reverse_relation
 
 
-def get_translations_related_query_name(model, relation=None):
+def get_translations_reverse_relation(model, relation=None):
     if relation:
         translations_relation = '{}__{}'.format(relation, 'translations')
     else:
         translations_relation = 'translations'
 
-    return get_related_query_name(model, translations_relation)
+    return get_reverse_relation(model, translations_relation)
 
 
 def get_query(model, condition, relation=None):
-    translations_related_query_name = get_translations_related_query_name(
+    translations_reverse_relation = get_translations_reverse_relation(
         model,
         relation
     )
-    query = '{}__{}'.format(translations_related_query_name, condition)
+    query = '{}__{}'.format(translations_reverse_relation, condition)
     return query
 
 

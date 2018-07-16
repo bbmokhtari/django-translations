@@ -8,4 +8,4 @@ Utilities
 
    .. autofunction:: get_validated_language
    .. autofunction:: get_validated_context_info
-   .. autofunction:: get_related_query_name
+   .. autofunction:: get_reverse_relation
