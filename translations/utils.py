@@ -184,15 +184,21 @@ def get_related_query_name(model, relation):
         return related_query_name
 
 
-def get_query(model, condition, relation=None):
+def get_translations_related_query_name(model, relation=None):
     if relation:
         translations_relation = '{}__{}'.format(relation, 'translations')
     else:
         translations_relation = 'translations'
 
-    related_query_name = get_related_query_name(model, translations_relation)
-    query = '{}__{}'.format(related_query_name, condition)
+    return get_related_query_name(model, translations_relation)
 
+
+def get_query(model, condition, relation=None):
+    translations_related_query_name = get_translations_related_query_name(
+        model,
+        relation
+    )
+    query = '{}__{}'.format(translations_related_query_name, condition)
     return query
 
 
