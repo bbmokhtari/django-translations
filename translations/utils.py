@@ -10,6 +10,9 @@ This module contains the utilities for the Translations app.
     Return the model and iteration information about the validated context.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
+:func:`get_translations_reverse_relation`
+    Return the reverse of the translations relation for a model, or
+    translations relation of a relation for the model.
 """
 
 from django.db import models, transaction
@@ -134,7 +137,7 @@ def get_reverse_relation(model, relation):
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation
     :type relation: str
-    :return: The reverse of the relation for the model
+    :return: The reverse of the relation
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
@@ -185,6 +188,55 @@ def get_reverse_relation(model, relation):
 
 
 def get_translations_reverse_relation(model, relation=None):
+    """
+    Return the reverse of the translations relation for a model, or
+    translations relation *of a relation* for the model.
+
+    :param model: The model which contains the translations relation directly
+        or indirectly (meaning it contains the translations relation itself,
+        or the specified relation has it) and which the reverse relation will
+        point to
+    :type model: type(~django.db.models.Model)
+    :param relation: The relation of the model which contains the translations
+        relation, to get the reverse of - can include
+        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
+        represent a deeply nested relation
+    :type relation: str
+    :return: The reverse of the translations relation
+    :rtype: str
+    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+        pointing to the fields that don't exist
+
+    >>> # Let's suppose we want a list of all the cities translations
+    >>> from places.models import Continent, Country, City
+    >>> from translations.models import Translation
+    >>> from translations.utils import get_translations_reverse_relation
+    >>> europe = Continent.objects.create(code="EU", name="Europe")
+    >>> germany = Country.objects.create(
+    ...     code="DE",
+    ...     name="Germany",
+    ...     continent=europe
+    ... )
+    >>> cologne = City.objects.create(name="Cologne", country=germany)
+    >>> cologne.translations.create(field="name", language="de", text="Köln")
+    <Translation: Cologne: Köln>
+    >>> # To get the city translations:
+    >>> get_translations_reverse_relation(Continent, 'countries__cities')
+    'places_city__country__continent'
+    >>> # Using this translations reverse relation we can query the
+    >>> # `Translation` for the `City` with a `Continent`
+    >>> Translation.objects.filter(places_city__country__continent=europe)
+    <QuerySet [<Translation: Cologne: Köln>]>
+    >>> # Done! Cities translations fetched.
+    >>> # Translations reverse relation of a model
+    >>> get_translations_reverse_relation(Continent)
+    'places_continent'
+    >>> # An invalid relation of the model
+    >>> get_translations_reverse_relation(Continent, 'countries__wrong')
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
+    """
     if relation:
         translations_relation = '{}__{}'.format(relation, 'translations')
     else:
