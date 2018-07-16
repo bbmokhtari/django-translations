@@ -6,6 +6,8 @@ This module contains the utilities for the Translations app.
 :func:`get_validated_language`
     Return the validated given language code or the current active language
     code.
+:func:`get_validated_context_info`
+    Return the model and iteration information about the validated context.
 :func:`get_related_query_name`
     Return the related query name for a relation of a model.
 """
