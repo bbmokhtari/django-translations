@@ -9,31 +9,31 @@ from places.models import Continent, Country, City
 
 class GetValidatedLanguageTest(TestCase):
 
-    def test_get_validated_language(self):
-        """Make sure default active language works."""
+    def test_get_validated_language_with_active_lang(self):
+        """Make sure it works with an active language."""
         activate('en')
         self.assertEqual(
             get_validated_language(),
             'en'
         )
 
-    def test_get_validated_language_with_new_active_language(self):
-        """Make sure a new active language works."""
+    def test_get_validated_language_with_new_active_lang(self):
+        """Make sure it works with a new active language."""
         activate('de')
         self.assertEqual(
             get_validated_language(),
             'de'
         )
 
-    def test_get_validated_language_with_given_language(self):
-        """Make sure it works with argument passed."""
+    def test_get_validated_language_with_valid_lang(self):
+        """Make sure it works with a valid language code."""
         self.assertEqual(
             get_validated_language('de'),
             'de'
         )
 
-    def test_get_validated_language_raises_validation_error(self):
-        """Make sure it raises `ValidationError` on invalid argument."""
+    def test_get_validated_language_with_invalid_lang(self):
+        """Make sure it raises on an invalid language code."""
         with self.assertRaises(ValidationError) as error:
             get_validated_language('xx')
         self.assertEqual(
