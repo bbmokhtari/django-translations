@@ -77,7 +77,7 @@ def get_validated_context_info(context):
     >>> from places.models import Continent
     >>> from translations.utils import get_validated_context_info
     >>> # A model instance
-    >>> europe = Continent.objects.get(code="EU", name="Europe")
+    >>> europe = Continent.objects.create(code="EU", name="Europe")
     >>> get_validated_context_info(europe)
     (<class 'places.models.Continent'>, False)
     >>> # A model iterable
@@ -86,6 +86,7 @@ def get_validated_context_info(context):
     (<class 'places.models.Continent'>, True)
     >>> # An empty queryset
     >>> continents.delete()
+    (1, {'translations.Translation': 0, 'places.Continent': 1})
     >>> get_validated_context_info(continents)
     (None, True)
     >>> # An empty list
@@ -153,7 +154,7 @@ def get_related_query_name(model, relation):
     'country__continent'
     >>> # Using this related query name we can query `City` with a `Continent`
     >>> City.objects.filter(country__continent=europe)
-    <QuerySet [<City: Cologne>]>
+    <TranslatableQuerySet [<City: Cologne>]>
     >>> # Done! Cities fetched.
     >>> # An invalid relation of the model
     >>> get_related_query_name(Continent, 'countries__wrong')
