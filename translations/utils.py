@@ -56,6 +56,34 @@ def get_validated_language(lang=None):
     return lang
 
 
+def get_validated_context_info(context):
+    error_message = '`{}` is neither {} nor {}.'.format(
+        context,
+        'a model instance',
+        'an iterable of model instances'
+    )
+
+    if isinstance(context, models.Model):
+        model = type(context)
+        iterable = False
+    elif isinstance(context, models.QuerySet):
+        model = context.model
+        iterable = True
+    elif hasattr(context, '__iter__'):
+        if len(context) > 0:
+            if isinstance(context[0], models.Model):
+                model = type(context[0])
+            else:
+                raise TypeError(error_message)
+        else:
+            model = None
+        iterable = True
+    else:
+        raise TypeError(error_message)
+
+    return model, iterable
+
+
 def get_related_query_name(model, relation):
     """
     Return the related query name for a relation of a model.
