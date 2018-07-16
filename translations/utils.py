@@ -14,9 +14,9 @@ from django.db import models, transaction
 from django.db.models.constants import LOOKUP_SEP
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
+from django.conf import settings
 
 import translations.models
-from translations.validators import validate_language
 
 
 __docformat__ = 'restructuredtext'
@@ -47,7 +47,12 @@ def get_validated_language(lang=None):
     django.core.exceptions.ValidationError: ['The language code `xx` is not supported.']
     """
     lang = lang if lang else get_language()
-    validate_language(lang)
+
+    if lang not in [language[0] for language in settings.LANGUAGES]:
+        raise ValueError(
+            "The language code `{}` is not supported.".format(lang)
+        )
+
     return lang
 
 

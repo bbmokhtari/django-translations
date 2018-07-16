@@ -1,25 +1,8 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
 
-from translations.validators import validate_language, validate_context
+from translations.validators import validate_context
 
 from places.models import Continent
-
-
-class ValidateLanguageTest(TestCase):
-
-    def test_validate_language_with_valid_lang(self):
-        """Make sure it works with a valid language code."""
-        self.assertIs(validate_language('en'), None)
-
-    def test_validate_language_with_invalid_lang(self):
-        """Make sure it raises on an invalid language code."""
-        with self.assertRaises(ValidationError) as error:
-            validate_language('xx')
-        self.assertEqual(
-            error.exception.args[0],
-            "The language code `xx` is not supported."
-        )
 
 
 class ValidateContextTest(TestCase):
@@ -64,7 +47,7 @@ class ValidateContextTest(TestCase):
                 return self.name
 
         behzad = Person('Behzad')
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(TypeError) as error:
             validate_context(behzad)
         self.assertEqual(
             error.exception.args[0],
@@ -86,7 +69,7 @@ class ValidateContextTest(TestCase):
         people = []
         people.append(Person('Behzad'))
         people.append(Person('Max'))
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(TypeError) as error:
             validate_context(people)
         self.assertEqual(
             error.exception.args[0],

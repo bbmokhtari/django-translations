@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError, FieldDoesNotExist
+from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate
 
 from translations.utils import get_validated_language, get_related_query_name
@@ -34,7 +34,7 @@ class GetValidatedLanguageTest(TestCase):
 
     def test_get_validated_language_with_invalid_lang(self):
         """Make sure it raises on an invalid language code."""
-        with self.assertRaises(ValidationError) as error:
+        with self.assertRaises(ValueError) as error:
             get_validated_language('xx')
         self.assertEqual(
             error.exception.args[0],
