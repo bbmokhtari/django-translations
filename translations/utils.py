@@ -44,7 +44,7 @@ def get_validated_language(lang=None):
     >>> get_validated_language('xx')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    ValueError: ['The language code `xx` is not supported.']
+    ValueError: The language code `xx` is not supported.
     """
     lang = lang if lang else get_language()
 
@@ -57,6 +57,30 @@ def get_validated_language(lang=None):
 
 
 def get_validated_context_info(context):
+    """
+    Return the model and iteration information about the validated context.
+
+    :param context: The context to validate
+    :type context: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :return: A tuple representing the context information as (model, iterable)
+    :rtype: tuple(type(~django.db.models.Model), bool)
+    :raise TypeError: If the context is neither a model instance nor
+        an iterable of model instances
+
+    >>> continents = Continent.objects.all()
+    >>> get_validated_context_info(continents)
+    (<class 'places.models.Continent'>, True)
+    >>> eu = Continent.objects.get(code="EU")
+    >>> get_validated_context_info(eu)
+    (<class 'places.models.Continent'>, False)
+    >>> get_validated_context_info([])
+    (None, True)
+    >>> get_validated_context_info(123)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    TypeError: `123` is neither a model instance nor an iterable of model instances.
+    """
     error_message = '`{}` is neither {} nor {}.'.format(
         context,
         'a model instance',
@@ -87,7 +111,7 @@ def get_related_query_name(model, relation):
 
     :param model: The model which contains the relation and which the related
         query name has to point to
-    :type model: ~django.db.models.Model
+    :type model: type(~django.db.models.Model)
     :param relation: The relation of the model to get the related query name
         of - can include
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
