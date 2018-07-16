@@ -20,8 +20,8 @@ def validate_context(context):
     :param context: The context to validate
     :type context: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :raise ~django.core.exceptions.ValidationError: If the context is
-        neither a model instance nor an iterable of model instances
+    :raise TypeError: If the context is neither a model instance nor
+        an iterable of model instances
 
     >>> continents = Continent.objects.all()
     >>> validate_context(continents)
@@ -31,7 +31,7 @@ def validate_context(context):
     >>> validate_context(123)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    django.core.exceptions.ValidationError: ['`123` is neither a model instance nor an iterable of model instances.']
+    TypeError: ['`123` is neither a model instance nor an iterable of model instances.']
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         context,

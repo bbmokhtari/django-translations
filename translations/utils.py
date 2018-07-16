@@ -32,8 +32,8 @@ def get_validated_language(lang=None):
     :type lang: str or None
     :return: The validated language code
     :rtype: str
-    :raise ~django.core.exceptions.ValidationError: If the language code is
-        not included in the :data:`~django.conf.settings.LANGUAGES` settings
+    :raise ValueError: If the language code is not included in
+        the :data:`~django.conf.settings.LANGUAGES` settings
 
     >>> from django.utils.translation import activate
     >>> activate('en')
@@ -44,7 +44,7 @@ def get_validated_language(lang=None):
     >>> get_validated_language('xx')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
-    django.core.exceptions.ValidationError: ['The language code `xx` is not supported.']
+    ValueError: ['The language code `xx` is not supported.']
     """
     lang = lang if lang else get_language()
 
