@@ -12,7 +12,7 @@ This module contains the utilities for the Translations app.
     Return the reverse of a relation for a model.
 :func:`get_translations_reverse_relation`
     Return the reverse of the translations relation for a model, or
-    translations relation of a relation for the model.
+    translations relation *of a relation* for the model.
 """
 
 from django.db import models, transaction
