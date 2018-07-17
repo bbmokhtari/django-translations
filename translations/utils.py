@@ -237,10 +237,10 @@ def get_translations_reverse_relation(model, relation=None):
       File "<stdin>", line 1, in <module>
     django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
-    if relation:
-        translations_relation = '{}__{}'.format(relation, 'translations')
-    else:
+    if relation is None:
         translations_relation = 'translations'
+    else:
+        translations_relation = '{}__{}'.format(relation, 'translations')
 
     return get_reverse_relation(model, translations_relation)
 
