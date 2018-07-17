@@ -13,6 +13,9 @@ This module contains the utilities for the Translations app.
 :func:`get_translations_reverse_relation`
     Return the reverse of the translations relation for a model, or
     translations relation *of a relation* for the model.
+:func:`get_translations`
+    Return the translations of a context and the relations of it in a
+    language.
 """
 
 from django.db import models, transaction
@@ -247,14 +250,16 @@ def get_translations_reverse_relation(model, relation=None):
 
 
 def get_translations(context, *relations, lang=None):
-    r"""
-    Return the translations of the context and its relations in a language.
+    """
+    Return the translations of a context and the relations of it in a
+    language.
 
     :param context: The context to fetch the translations for
-    :type context: ~django.db.models.query.QuerySet, ~django.db.models.Model
-        or list(~django.db.models.Model)
-    :param \*relations: The list of relations to fetch the translations for
-    :type \*relations: list(str)
+    :type context: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :param relations: The relations of the context to fetch the
+        translations for
+    :type relations: list(str)
     :param lang: The language to fetch the translations for, ``None`` means
         the current active language
     :type lang: str or None
