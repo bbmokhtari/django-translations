@@ -363,18 +363,18 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(europe, lang="tr").order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>"
-            ]
-        )
-
-        self.assertQuerysetEqual(
             get_translations(asia, lang="de").order_by("id"),
             [
                 "<Translation: Asia: Asien>",
                 "<Translation: Asian: Asiatisch>"
+            ]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(europe, lang="tr").order_by("id"),
+            [
+                "<Translation: Europe: Avrupa>",
+                "<Translation: European: Avrupalı>"
             ]
         )
         self.assertQuerysetEqual(
@@ -382,5 +382,236 @@ class GetTranslationsTest(TestCase):
             [
                 "<Translation: Asia: Asya>",
                 "<Translation: Asian: Asyalı>"
+            ]
+        )
+
+    def test_instance_with_relation_and_with_lang(self):
+        europe = Continent.objects.create(
+            code="EU", name="Europe", denonym="European"
+        )
+        germany = europe.countries.create(
+            code="DE", name="Germany", denonym="German"
+        )
+        cologne = germany.cities.create(
+            name="Cologne", denonym="Cologner"
+        )
+
+        asia = Continent.objects.create(
+            code="AS", name="Asia", denonym="Asian"
+        )
+        persia = asia.countries.create(
+            code="IR", name="Persia", denonym="Persian"
+        )
+        shiraz = persia.cities.create(
+            name="Shiraz", denonym="Shirazer"
+        )
+
+        europe.translations.create(
+            field="name", language="de", text="Europa"
+        )
+        europe.translations.create(
+            field="denonym", language="de", text="Europäisch"
+        )
+        germany.translations.create(
+            field="name", language="de", text="Deutschland"
+        )
+        germany.translations.create(
+            field="denonym", language="de", text="Deutsche"
+        )
+        cologne.translations.create(
+            field="name", language="de", text="Köln"
+        )
+        cologne.translations.create(
+            field="denonym", language="de", text="Kölnisch"
+        )
+        europe.translations.create(
+            field="name", language="tr", text="Avrupa"
+        )
+        europe.translations.create(
+            field="denonym", language="tr", text="Avrupalı"
+        )
+        germany.translations.create(
+            field="name", language="tr", text="Almanya"
+        )
+        germany.translations.create(
+            field="denonym", language="tr", text="Almanca"
+        )
+        cologne.translations.create(
+            field="name", language="tr", text="Koln"
+        )
+        cologne.translations.create(
+            field="denonym", language="tr", text="Kolnlı"
+        )
+
+        asia.translations.create(
+            field="name", language="de", text="Asien"
+        )
+        asia.translations.create(
+            field="denonym", language="de", text="Asiatisch"
+        )
+        persia.translations.create(
+            field="name", language="de", text="Persien"
+        )
+        persia.translations.create(
+            field="denonym", language="de", text="Persisch"
+        )
+        shiraz.translations.create(
+            field="name", language="de", text="Schiras"
+        )
+        shiraz.translations.create(
+            field="denonym", language="de", text="Schirasisch"
+        )
+        asia.translations.create(
+            field="name", language="tr", text="Asya"
+        )
+        asia.translations.create(
+            field="denonym", language="tr", text="Asyalı"
+        )
+        persia.translations.create(
+            field="name", language="tr", text="İran"
+        )
+        persia.translations.create(
+            field="denonym", language="tr", text="İranlı"
+        )
+        shiraz.translations.create(
+            field="name", language="tr", text="Şiraz"
+        )
+        shiraz.translations.create(
+            field="denonym", language="tr", text="Şirazlı"
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                europe, lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                europe, "countries", lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                europe, "countries", "countries__cities", lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölnisch>",
+            ]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                asia, lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                asia, "countries", lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: Persia: Persien>",
+                "<Translation: Persian: Persisch>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                asia, "countries", "countries__cities", lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: Persia: Persien>",
+                "<Translation: Persian: Persisch>",
+                "<Translation: Shiraz: Schiras>",
+                "<Translation: Shirazer: Schirasisch>",
+            ]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                europe, lang="tr"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Avrupa>",
+                "<Translation: European: Avrupalı>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                europe, "countries", lang="tr"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Avrupa>",
+                "<Translation: European: Avrupalı>",
+                "<Translation: Germany: Almanya>",
+                "<Translation: German: Almanca>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                europe, "countries", "countries__cities", lang="tr"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Avrupa>",
+                "<Translation: European: Avrupalı>",
+                "<Translation: Germany: Almanya>",
+                "<Translation: German: Almanca>",
+                "<Translation: Cologne: Koln>",
+                "<Translation: Cologner: Kolnlı>",
+            ]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                asia, lang="tr"
+            ).order_by("id"),
+            [
+                "<Translation: Asia: Asya>",
+                "<Translation: Asian: Asyalı>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                asia, "countries", lang="tr"
+            ).order_by("id"),
+            [
+                "<Translation: Asia: Asya>",
+                "<Translation: Asian: Asyalı>",
+                "<Translation: Persia: İran>",
+                "<Translation: Persian: İranlı>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                asia, "countries", "countries__cities", lang="tr"
+            ).order_by("id"),
+            [
+                "<Translation: Asia: Asya>",
+                "<Translation: Asian: Asyalı>",
+                "<Translation: Persia: İran>",
+                "<Translation: Persian: İranlı>",
+                "<Translation: Shiraz: Şiraz>",
+                "<Translation: Shirazer: Şirazlı>",
             ]
         )
