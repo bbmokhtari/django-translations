@@ -4,7 +4,7 @@ from django.utils.translation import activate
 
 from translations.utils import get_validated_language, \
     get_validated_context_info, get_reverse_relation, \
-    get_translations_reverse_relation
+    get_translations_reverse_relation, get_translations
 
 from places.models import Continent, Country, City
 
@@ -50,9 +50,9 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
-        eu = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name="Europe", code="EU")
         self.assertEqual(
-            get_validated_context_info(eu),
+            get_validated_context_info(europe),
             (Continent, False)
         )
 
@@ -245,4 +245,80 @@ class GetTranslationsReverseRelationTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
+        )
+
+
+class GetTranslationsTest(TestCase):
+    """Tests for get_translations."""
+
+    def test_one_instance_with_no_translation(self):
+        asia = Continent.objects.create(code="AS", name="Asia")
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="de"),
+            []
+        )
+
+    def test_one_instance_with_one_translation(self):
+        asia = Continent.objects.create(code="AS", name="Asia")
+        asia.translations.create(field="name", language="de", text="Asien")
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="de"),
+            ["<Translation: Asia: Asien>"]
+        )
+
+    def test_one_instance_with_two_translation(self):
+        asia = Continent.objects.create(code="AS", name="Asia")
+        asia.translations.create(field="name", language="de", text="Asien")
+        asia.translations.create(field="name", language="tr", text="Asya")
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="de"),
+            ["<Translation: Asia: Asien>"]
+        )
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="tr"),
+            ["<Translation: Asia: Asya>"]
+        )
+
+    def test_two_instances_with_one_translation(self):
+        asia = Continent.objects.create(code="AS", name="Asia")
+        asia.translations.create(field="name", language="de", text="Asien")
+
+        europe = Continent.objects.create(code="EU", name="Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
+
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="de"),
+            ["<Translation: Asia: Asien>"]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(europe, lang="de"),
+            ["<Translation: Europe: Europa>"]
+        )
+
+    def test_two_instances_with_two_translation(self):
+        asia = Continent.objects.create(code="AS", name="Asia")
+        asia.translations.create(field="name", language="de", text="Asien")
+        asia.translations.create(field="name", language="tr", text="Asya")
+
+        europe = Continent.objects.create(code="EU", name="Europe")
+        europe.translations.create(field="name", language="de", text="Europa")
+        europe.translations.create(field="name", language="tr", text="Avrupa")
+
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="de"),
+            ["<Translation: Asia: Asien>"]
+        )
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="tr"),
+            ["<Translation: Asia: Asya>"]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(europe, lang="de"),
+            ["<Translation: Europe: Europa>"]
+        )
+        self.assertQuerysetEqual(
+            get_translations(europe, lang="tr"),
+            ["<Translation: Europe: Avrupa>"]
         )
