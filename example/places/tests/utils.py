@@ -10,8 +10,9 @@ from places.models import Continent, Country, City
 
 
 class GetValidatedLanguageTest(TestCase):
+    """Tests for get_validated_language."""
 
-    def test_get_validated_language_with_active_lang(self):
+    def test_active_lang(self):
         """Make sure it works with an active language."""
         activate('en')
         self.assertEqual(
@@ -19,7 +20,7 @@ class GetValidatedLanguageTest(TestCase):
             'en'
         )
 
-    def test_get_validated_language_with_new_active_lang(self):
+    def test_new_active_lang(self):
         """Make sure it works with a new active language."""
         activate('de')
         self.assertEqual(
@@ -27,14 +28,14 @@ class GetValidatedLanguageTest(TestCase):
             'de'
         )
 
-    def test_get_validated_language_with_valid_lang(self):
+    def test_valid_lang(self):
         """Make sure it works with a valid language code."""
         self.assertEqual(
             get_validated_language('de'),
             'de'
         )
 
-    def test_get_validated_language_with_invalid_lang(self):
+    def test_invalid_lang(self):
         """Make sure it raises on an invalid language code."""
         with self.assertRaises(ValueError) as error:
             get_validated_language('xx')
@@ -45,8 +46,9 @@ class GetValidatedLanguageTest(TestCase):
 
 
 class GetValidatedContextInfoTest(TestCase):
+    """Tests for get_validated_context_info."""
 
-    def test_get_validated_context_info_with_model_instance(self):
+    def test_model_instance(self):
         """Make sure it works with a model instance."""
         eu = Continent.objects.create(name="Europe", code="EU")
         self.assertEqual(
@@ -54,7 +56,7 @@ class GetValidatedContextInfoTest(TestCase):
             (Continent, False)
         )
 
-    def test_get_validated_context_info_with_model_queryset(self):
+    def test_model_queryset(self):
         """Make sure it works with a model queryset."""
         Continent.objects.create(name="Europe", code="EU")
         Continent.objects.create(name="Asia", code="AS")
@@ -64,7 +66,7 @@ class GetValidatedContextInfoTest(TestCase):
             (Continent, True)
         )
 
-    def test_get_validated_context_info_with_model_iterable(self):
+    def test_model_iterable(self):
         """Make sure it works with a model iterable."""
         continents = []
         continents.append(Continent.objects.create(name="Europe", code="EU"))
@@ -74,21 +76,21 @@ class GetValidatedContextInfoTest(TestCase):
             (Continent, True)
         )
 
-    def test_get_validated_context_info_with_empty_list(self):
+    def test_empty_list(self):
         """Make sure it works with an empty list."""
         self.assertEqual(
             get_validated_context_info([]),
             (None, True)
         )
 
-    def test_get_validated_context_info_with_empty_queryset(self):
+    def test_empty_queryset(self):
         """Make sure it works with an empty queryset."""
         self.assertEqual(
             get_validated_context_info(Continent.objects.none()),
             (None, True)
         )
 
-    def test_get_validated_context_info_with_simple_instance(self):
+    def test_simple_instance(self):
         """Make sure it raises on simple instance."""
         class Person:
             def __init__(self, name):
@@ -108,7 +110,7 @@ class GetValidatedContextInfoTest(TestCase):
             "`Behzad` is neither a model instance nor an iterable of model instances."
         )
 
-    def test_get_validated_context_info_with_simple_iterable(self):
+    def test_simple_iterable(self):
         """Make sure it raises on simple iterable."""
         class Person:
             def __init__(self, name):
@@ -132,22 +134,23 @@ class GetValidatedContextInfoTest(TestCase):
 
 
 class GetReverseRelationTest(TestCase):
+    """Tests for get_reverse_relation."""
 
-    def test_get_reverse_relation_with_valid_relation(self):
+    def test_valid_relation(self):
         """Make sure it works with a valid relation."""
         self.assertEqual(
             get_reverse_relation(Continent, 'countries__cities'),
             'country__continent'
         )
 
-    def test_get_reverse_relation_with_reverse_valid_relation(self):
+    def test_reverse_valid_relation(self):
         """Make sure it works with a valid relation in reverse."""
         self.assertEqual(
             get_reverse_relation(City, 'country__continent'),
             'countries__cities'
         )
 
-    def test_get_reverse_relation_with_empty_relation(self):
+    def test_empty_relation(self):
         """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_reverse_relation(
@@ -159,7 +162,7 @@ class GetReverseRelationTest(TestCase):
             "Continent has no field named ''"
         )
 
-    def test_get_reverse_relation_with_invalid_relation(self):
+    def test_invalid_relation(self):
         """Make sure it raises on an invalid relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_reverse_relation(
@@ -171,7 +174,7 @@ class GetReverseRelationTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_get_reverse_relation_with_invalid_nested_relation(self):
+    def test_invalid_nested_relation(self):
         """Make sure it raises on an invalid nested relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_reverse_relation(
@@ -185,29 +188,30 @@ class GetReverseRelationTest(TestCase):
 
 
 class GetTranslationsReverseRelationTest(TestCase):
+    """Tests for get_translations_reverse_relation."""
 
-    def test_get_translations_reverse_relation_with_valid_relation(self):
+    def test_valid_relation(self):
         """Make sure it works with a valid relation."""
         self.assertEqual(
             get_translations_reverse_relation(Continent, 'countries__cities'),
             'places_city__country__continent'
         )
 
-    def test_get_translations_reverse_relation_with_reverse_valid_relation(self):
+    def test_reverse_valid_relation(self):
         """Make sure it works with a valid relation in reverse."""
         self.assertEqual(
             get_translations_reverse_relation(City, 'country__continent'),
             'places_continent__countries__cities'
         )
 
-    def test_get_translations_reverse_relation_with_none_relation(self):
+    def test_none_relation(self):
         """Make sure it works with None relation."""
         self.assertEqual(
             get_translations_reverse_relation(Continent),
             'places_continent'
         )
 
-    def test_get_translations_reverse_relation_with_empty_relation(self):
+    def test_empty_relation(self):
         """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_translations_reverse_relation(
@@ -219,7 +223,7 @@ class GetTranslationsReverseRelationTest(TestCase):
             "Continent has no field named ''"
         )
 
-    def test_get_translations_reverse_relation_with_invalid_relation(self):
+    def test_invalid_relation(self):
         """Make sure it raises on an invalid relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_translations_reverse_relation(
@@ -231,7 +235,7 @@ class GetTranslationsReverseRelationTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_get_translations_reverse_relation_with_invalid_nested_relation(self):
+    def test_invalid_nested_relation(self):
         """Make sure it raises on an invalid nested relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_translations_reverse_relation(
