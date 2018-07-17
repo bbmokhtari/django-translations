@@ -10,6 +10,12 @@ class Continent(Translatable):
         help_text=_('the name of the continent'),
         max_length=64,
     )
+    denonym = models.CharField(
+        verbose_name=_('denonym'),
+        help_text=_('the denonym of the continent'),
+        max_length=64,
+        blank=True,
+    )
     code = models.CharField(
         verbose_name=_('code'),
         help_text=_('the code of the continent'),
@@ -33,6 +39,12 @@ class Country(Translatable):
         verbose_name=_('name'),
         help_text=_('the name of the country'),
         max_length=64,
+    )
+    denonym = models.CharField(
+        verbose_name=_('denonym'),
+        help_text=_('the denonym of the country'),
+        max_length=64,
+        blank=True,
     )
     code = models.CharField(
         verbose_name=_('code'),
@@ -64,6 +76,12 @@ class City(Translatable):
         verbose_name=_('name'),
         help_text=_('the name of the city'),
         max_length=64,
+    )
+    denonym = models.CharField(
+        verbose_name=_('denonym'),
+        help_text=_('the denonym of the city'),
+        max_length=64,
+        blank=True,
     )
     country = models.ForeignKey(
         verbose_name=_('country'),
