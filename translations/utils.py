@@ -200,8 +200,9 @@ def get_translations_reverse_relation(model, relation=None):
     :param relation: The relation of the model which contains the translations
         relation, to get the reverse of - can include
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
-        represent a deeply nested relation
-    :type relation: str
+        represent a deeply nested relation, ``None`` means the translations
+        relation is not for a relation but for the model itself
+    :type relation: str or None
     :return: The reverse of the translations relation
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
