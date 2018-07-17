@@ -50,7 +50,9 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(
+            name="Europe", code="EU", denonym="European"
+        )
         self.assertEqual(
             get_validated_context_info(europe),
             (Continent, False)
@@ -251,219 +253,39 @@ class GetTranslationsReverseRelationTest(TestCase):
 class GetTranslationsTest(TestCase):
     """Tests for get_translations."""
 
-    def test_one_instance_with_no_translation(self):
-        asia = Continent.objects.create(code="AS", name="Asia")
+    def test_instances_with_no_translations(self):
+        europe = Continent.objects.create(
+            code="EU", name="Europe", denonym="European"
+        )
+        asia = Continent.objects.create(
+            code="AS", name="Asia", denonym="Asian"
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(europe, lang="de"),
+            []
+        )
+        self.assertQuerysetEqual(
+            get_translations(europe, lang="tr"),
+            []
+        )
+
         self.assertQuerysetEqual(
             get_translations(asia, lang="de"),
             []
         )
-
-    def test_one_instance_with_one_lang_on_one_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de"),
-            ["<Translation: Asia: Asien>"]
-        )
-
-    def test_one_instance_with_two_lang_on_one_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-        asia.translations.create(
-            field="name", language="tr", text="Asya"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de"),
-            ["<Translation: Asia: Asien>"]
-        )
         self.assertQuerysetEqual(
             get_translations(asia, lang="tr"),
-            ["<Translation: Asia: Asya>"]
+            []
         )
 
-    def test_one_instance_with_one_lang_on_two_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia", denonym="Asian"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-        asia.translations.create(
-            field="denonym", language="de", text="Asiatisch"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de").order_by("id"),
-            ["<Translation: Asia: Asien>", "<Translation: Asian: Asiatisch>"]
-        )
-
-    def test_one_instance_with_two_lang_on_two_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia", denonym="Asian"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-        asia.translations.create(
-            field="denonym", language="de", text="Asiatisch"
-        )
-        asia.translations.create(
-            field="name", language="tr", text="Asya"
-        )
-        asia.translations.create(
-            field="denonym", language="tr", text="Asyalı"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de").order_by("id"),
-            ["<Translation: Asia: Asien>", "<Translation: Asian: Asiatisch>"]
-        )
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="tr").order_by("id"),
-            ["<Translation: Asia: Asya>", "<Translation: Asian: Asyalı>"]
-        )
-
-    def test_two_instances_with_one_lang_on_one_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia"
-        )
-
-        europe = Continent.objects.create(
-            code="EU", name="Europe"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-
-        europe.translations.create(
-            field="name", language="de", text="Europa"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de"),
-            ["<Translation: Asia: Asien>"]
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(europe, lang="de"),
-            ["<Translation: Europe: Europa>"]
-        )
-
-    def test_two_instances_with_two_lang_on_one_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia"
-        )
-
-        europe = Continent.objects.create(
-            code="EU", name="Europe"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-        asia.translations.create(
-            field="name", language="tr", text="Asya"
-        )
-
-        europe.translations.create(
-            field="name", language="de", text="Europa"
-        )
-        europe.translations.create(
-            field="name", language="tr", text="Avrupa"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de"),
-            ["<Translation: Asia: Asien>"]
-        )
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="tr"),
-            ["<Translation: Asia: Asya>"]
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(europe, lang="de"),
-            ["<Translation: Europe: Europa>"]
-        )
-        self.assertQuerysetEqual(
-            get_translations(europe, lang="tr"),
-            ["<Translation: Europe: Avrupa>"]
-        )
-
-    def test_two_instances_with_one_lang_on_two_field(self):
-        asia = Continent.objects.create(
-            code="AS", name="Asia", denonym="Asian"
-        )
-
+    def test_instances_with_translations(self):
         europe = Continent.objects.create(
             code="EU", name="Europe", denonym="European"
         )
 
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-        asia.translations.create(
-            field="denonym", language="de", text="Asiatisch"
-        )
-
-        europe.translations.create(
-            field="name", language="de", text="Europa"
-        )
-        europe.translations.create(
-            field="denonym", language="de", text="Europäisch"
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de").order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>"
-            ]
-        )
-
-        self.assertQuerysetEqual(
-            get_translations(europe, lang="de").order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>"
-            ]
-        )
-
-    def test_two_instances_with_two_lang_on_two_field(self):
         asia = Continent.objects.create(
             code="AS", name="Asia", denonym="Asian"
-        )
-
-        europe = Continent.objects.create(
-            code="EU", name="Europe", denonym="European"
-        )
-
-        asia.translations.create(
-            field="name", language="de", text="Asien"
-        )
-        asia.translations.create(
-            field="denonym", language="de", text="Asiatisch"
-        )
-        asia.translations.create(
-            field="name", language="tr", text="Asya"
-        )
-        asia.translations.create(
-            field="denonym", language="tr", text="Asyalı"
         )
 
         europe.translations.create(
@@ -479,19 +301,17 @@ class GetTranslationsTest(TestCase):
             field="denonym", language="tr", text="Avrupalı"
         )
 
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de").order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>"
-            ]
+        asia.translations.create(
+            field="name", language="de", text="Asien"
         )
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="tr").order_by("id"),
-            [
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>"
-            ]
+        asia.translations.create(
+            field="denonym", language="de", text="Asiatisch"
+        )
+        asia.translations.create(
+            field="name", language="tr", text="Asya"
+        )
+        asia.translations.create(
+            field="denonym", language="tr", text="Asyalı"
         )
 
         self.assertQuerysetEqual(
@@ -506,5 +326,20 @@ class GetTranslationsTest(TestCase):
             [
                 "<Translation: Europe: Avrupa>",
                 "<Translation: European: Avrupalı>"
+            ]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="de").order_by("id"),
+            [
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(asia, lang="tr").order_by("id"),
+            [
+                "<Translation: Asia: Asya>",
+                "<Translation: Asian: Asyalı>"
             ]
         )
