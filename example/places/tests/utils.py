@@ -253,33 +253,17 @@ class GetTranslationsReverseRelationTest(TestCase):
 class GetTranslationsTest(TestCase):
     """Tests for get_translations."""
 
-    def test_instances_with_no_translations(self):
+    def test_instance_with_no_translations(self):
         europe = Continent.objects.create(
             code="EU", name="Europe", denonym="European"
         )
-        asia = Continent.objects.create(
-            code="AS", name="Asia", denonym="Asian"
-        )
 
         self.assertQuerysetEqual(
-            get_translations(europe, lang="de"),
-            []
-        )
-        self.assertQuerysetEqual(
-            get_translations(europe, lang="tr"),
+            get_translations(europe, lang="en"),
             []
         )
 
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="de"),
-            []
-        )
-        self.assertQuerysetEqual(
-            get_translations(asia, lang="tr"),
-            []
-        )
-
-    def test_instances_with_translations(self):
+    def test_instance_with_translations(self):
         europe = Continent.objects.create(
             code="EU", name="Europe", denonym="European"
         )
