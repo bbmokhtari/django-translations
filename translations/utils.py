@@ -254,6 +254,11 @@ def get_translations(context, *relations, lang=None):
     Return the translations of a context and the relations of it in a
     language.
 
+    This function collects all the reverse relations of the context and its
+    relations to :class:`~translations.models.Translation` and uses them to
+    query the database with the minimum amount of queries needed (usually
+    one).
+
     :param context: The context to fetch the translations for
     :type context: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
@@ -265,6 +270,51 @@ def get_translations(context, *relations, lang=None):
     :type lang: str or None
     :return: The translations
     :rtype: ~django.db.models.query.QuerySet
+    :raise ValueError: If the language code is not included in
+        the :data:`~django.conf.settings.LANGUAGES` settings
+    :raise TypeError: If the context is neither a model instance nor
+        an iterable of model instances
+    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+        pointing to the fields that don't exist
+
+    >>> # Let's suppose we want the translations of a continent and
+    >>> # its countries and cities
+    >>> from places.models import Continent, Country, City
+    >>> from translations.utils import get_translations
+    >>> europe = Continent.objects.create(code="EU", name="Europe")
+    >>> europe.translations.create(field="name", language="de", text="Europa")
+    <Translation: Europe: Europa>
+    >>> germany = Country.objects.create(
+    ...     code="DE",
+    ...     name="Germany",
+    ...     continent=europe
+    ... )
+    >>> germany.translations.create(
+    ...     field="name",
+    ...     language="de",
+    ...     text="Deutschland"
+    ... )
+    <Translation: Germany: Deutschland>
+    >>> cologne = City.objects.create(name="Cologne", country=germany)
+    >>> cologne.translations.create(field="name", language="de", text="Köln")
+    <Translation: Cologne: Köln>
+    >>> # To get the translations:
+    >>> get_translations(europe, "countries", "countries__cities", lang="de")
+    <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: Deutschland>, <Translation: Cologne: Köln>]>
+    >>> # Done! translations fetched.
+    >>> # An invalid relation of the model
+    >>> get_translations(europe, "countries", "countries__cities", lang="xx")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    ValueError: The language code `xx` is not supported.
+    >>> get_translations(123, "countries", "countries__cities", lang="de")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    TypeError: `123` is neither a model instance nor an iterable of model instances.
+    >>> get_translations(europe, "countries", "countries__wrong", lang="de")
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
     lang = get_validated_language(lang)
     model, iterable = get_validated_context_info(context)
