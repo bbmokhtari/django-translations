@@ -246,15 +246,6 @@ def get_translations_reverse_relation(model, relation=None):
     return get_reverse_relation(model, translations_relation)
 
 
-def get_query(model, condition, relation=None):
-    translations_reverse_relation = get_translations_reverse_relation(
-        model,
-        relation
-    )
-    query = '{}__{}'.format(translations_reverse_relation, condition)
-    return query
-
-
 def get_translations(context, *relations, lang=None):
     r"""
     Return the translations of the context and its relations in a language.
@@ -286,13 +277,17 @@ def get_translations(context, *relations, lang=None):
     queries = []
 
     if issubclass(model, translations.models.Translatable):
+        trans = get_translations_reverse_relation(model)
+        prop = '{}__{}'.format(trans, condition)
         queries.append(
-            models.Q(**{get_query(model, condition): value})
+            models.Q(**{prop: value})
         )
 
     for relation in relations:
+        trans = get_translations_reverse_relation(model, relation)
+        prop = '{}__{}'.format(trans, condition)
         queries.append(
-            models.Q(**{get_query(model, condition, relation): value})
+            models.Q(**{prop: value})
         )
 
     if len(queries) == 0:
