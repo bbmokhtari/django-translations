@@ -200,6 +200,13 @@ class GetTranslationsReverseRelationTest(TestCase):
             'places_continent__countries__cities'
         )
 
+    def test_get_translations_reverse_relation_with_none_relation(self):
+        """Make sure it works with None relation."""
+        self.assertEqual(
+            get_translations_reverse_relation(Continent),
+            'places_continent'
+        )
+
     def test_get_translations_reverse_relation_with_empty_relation(self):
         """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
