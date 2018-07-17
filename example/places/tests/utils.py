@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import FieldDoesNotExist
-from django.utils.translation import activate
+from django.utils.translation import activate, deactivate
 
 from translations.utils import get_validated_language, \
     get_validated_context_info, get_reverse_relation, \
@@ -253,17 +253,74 @@ class GetTranslationsReverseRelationTest(TestCase):
 class GetTranslationsTest(TestCase):
     """Tests for get_translations."""
 
-    def test_instance_with_no_translations(self):
+    def test_instance_with_no_relation_and_with_no_lang(self):
         europe = Continent.objects.create(
             code="EU", name="Europe", denonym="European"
         )
 
-        self.assertQuerysetEqual(
-            get_translations(europe, lang="en"),
-            []
+        asia = Continent.objects.create(
+            code="AS", name="Asia", denonym="Asian"
         )
 
-    def test_instance_with_translations(self):
+        europe.translations.create(
+            field="name", language="de", text="Europa"
+        )
+        europe.translations.create(
+            field="denonym", language="de", text="Europäisch"
+        )
+        europe.translations.create(
+            field="name", language="tr", text="Avrupa"
+        )
+        europe.translations.create(
+            field="denonym", language="tr", text="Avrupalı"
+        )
+
+        asia.translations.create(
+            field="name", language="de", text="Asien"
+        )
+        asia.translations.create(
+            field="denonym", language="de", text="Asiatisch"
+        )
+        asia.translations.create(
+            field="name", language="tr", text="Asya"
+        )
+        asia.translations.create(
+            field="denonym", language="tr", text="Asyalı"
+        )
+
+        activate("de")
+        self.assertQuerysetEqual(
+            get_translations(europe).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(asia).order_by("id"),
+            [
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>"
+            ]
+        )
+
+        activate("tr")
+        self.assertQuerysetEqual(
+            get_translations(europe).order_by("id"),
+            [
+                "<Translation: Europe: Avrupa>",
+                "<Translation: European: Avrupalı>"
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(asia).order_by("id"),
+            [
+                "<Translation: Asia: Asya>",
+                "<Translation: Asian: Asyalı>"
+            ]
+        )
+
+    def test_instance_with_no_relation_and_with_lang(self):
         europe = Continent.objects.create(
             code="EU", name="Europe", denonym="European"
         )
