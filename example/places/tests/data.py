@@ -411,6 +411,64 @@ COUNTRIES = [
             },
         ],
     },
+    {
+        "code": "BR",
+        "name": "Brazil",
+        "denonym": "Brazilian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Brasilien",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Brasilianisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Brezilya",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Brezilyalı",
+            },
+        ],
+    },
+    {
+        "code": "AR",
+        "name": "Argentina",
+        "denonym": "Argentinian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Argentinien",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Argentinisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Arjantin",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Arjantinlı",
+            },
+        ],
+    },
 ]
 
 
