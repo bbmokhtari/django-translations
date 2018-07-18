@@ -530,6 +530,7 @@ COUNTRIES = [
 ]
 
 CITIES = [
+    # Germany
     {
         "name": "Cologne",
         "denonym": "Cologner",
@@ -583,6 +584,177 @@ CITIES = [
                 "field": "denonym",
                 "language": "tr",
                 "text": "Münihlı",
+            },
+        ],
+    },
+    # Turkey
+    {
+        "name": "Istanbul",
+        "denonym": "Istanbulian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Ïstanbul",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Ïstanbulisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "İstanbul",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "İstanbullı",
+            },
+        ],
+    },
+    {
+        "name": "Izmir",
+        "denonym": "Izmirian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Ïzmir",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Ïzmirisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "İzmir",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "İzmirlı",
+            },
+        ],
+    },
+    # South Korea
+    {
+        "name": "Seoul",
+        "denonym": "Seouler",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Seül",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Seülisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Seul",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Seullı",
+            },
+        ],
+    },
+    {
+        "name": "Ulsan",
+        "denonym": "Ulsanian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Ulsän",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Ulsänisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Ülsan",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Ülsanlı",
+            },
+        ],
+    },
+    # India
+    {
+        "name": "Mumbai",
+        "denonym": "Mumbaian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Mumbaï",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Mumbäisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Bombay",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Ülsanlı",
+            },
+        ],
+    },
+    {
+        "name": "New Delhi",
+        "denonym": "New Delhian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Neu-Delhi",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Neu-Delhisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Yeni Delhi",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Yeni Delhilı",
             },
         ],
     },
