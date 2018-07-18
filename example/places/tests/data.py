@@ -529,15 +529,74 @@ COUNTRIES = [
     },
 ]
 
+CITIES = [
+    {
+        "name": "Cologne",
+        "denonym": "Cologner",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Köln",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Kölner",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Koln",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Kolnlı",
+            },
+        ],
+    },
+    {
+        "name": "Munich",
+        "denonym": "Munichian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "München",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Münchner",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Münih",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Münihlı",
+            },
+        ],
+    },
+]
 
-def create_continent(code, fields, langs):
+
+def create_continent(name, fields, langs):
     for continent in CONTINENTS:
-        if code == continent["code"]:
+        if name == continent["name"]:
             translations = continent.pop("translations")
             continent = Continent.objects.create(**continent)
             break
     else:
-        raise ValueError("No continent coded `{}`.".format(code))
+        raise ValueError("No continent named `{}`.".format(name))
 
     for translation in translations:
         if translation["field"] in fields and translation["language"] in langs:
