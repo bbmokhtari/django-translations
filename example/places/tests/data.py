@@ -869,12 +869,12 @@ CITIES = [
             {
                 "field": "name",
                 "language": "tr",
-                "text": "Johannesburk",
+                "text": "Yohannesburg",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "Johannesburklı",
+                "text": "Yohannesburglı",
             },
         ],
     },
@@ -932,6 +932,291 @@ CITIES = [
                 "field": "denonym",
                 "language": "tr",
                 "text": "Yeni Jerseylı",
+            },
+        ],
+    },
+    # Mexico
+    {
+        "name": "Mexico City",
+        "denonym": "Mexico Citian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Mexiko Stadt",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Mexiko Stadtisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Meksika şehri",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Meksika şehrilı",
+            },
+        ],
+    },
+    {
+        "name": "Cancun",
+        "denonym": "Cancunian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Cancún",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Cancúnisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Cancün",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Cancünlı",
+            },
+        ],
+    },
+    # Brazil
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    # Argentina
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    # Indonesia
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    # New Zealand
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
+            },
+        ],
+    },
+    {
+        "name": "",
+        "denonym": "",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "",
             },
         ],
     },
