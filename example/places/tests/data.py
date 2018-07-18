@@ -1227,8 +1227,12 @@ CITIES = [
 def create_continent(name, fields, langs):
     for continent in CONTINENTS:
         if name == continent["name"]:
-            translations = continent.pop("translations")
-            continent = Continent.objects.create(**continent)
+            translations = continent["translations"]
+            continent = Continent.objects.create(
+                code=continent["code"],
+                name=continent["name"],
+                denonym=continent["denonym"],
+            )
             break
     else:
         raise ValueError("No continent named `{}`.".format(name))
@@ -1238,3 +1242,44 @@ def create_continent(name, fields, langs):
             continent.translations.create(**translation)
 
     return continent
+
+
+def create_country(continent, name, fields, langs):
+    for country in COUNTRIES:
+        if name == country["name"]:
+            translations = country["translations"]
+            country = Country.objects.create(
+                continent=continent,
+                code=country["code"],
+                name=country["name"],
+                denonym=country["denonym"],
+            )
+            break
+    else:
+        raise ValueError("No country named `{}`.".format(name))
+
+    for translation in translations:
+        if translation["field"] in fields and translation["language"] in langs:
+            country.translations.create(**translation)
+
+    return country
+
+
+def create_city(country, name, fields, langs):
+    for city in CITIES:
+        if name == city["name"]:
+            translations = city["translations"]
+            city = City.objects.create(
+                country=country,
+                name=city["name"],
+                denonym=city["denonym"],
+            )
+            break
+    else:
+        raise ValueError("No country named `{}`.".format(name))
+
+    for translation in translations:
+        if translation["field"] in fields and translation["language"] in langs:
+            city.translations.create(**translation)
+
+    return city
