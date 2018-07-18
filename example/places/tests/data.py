@@ -994,115 +994,115 @@ CITIES = [
     },
     # Brazil
     {
-        "name": "",
-        "denonym": "",
+        "name": "Sao Paulo",
+        "denonym": "Sao Pauloean",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "São Paulo",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "São Pauloisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Sao Paülo",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Sao Paülolı",
             },
         ],
     },
     {
-        "name": "",
-        "denonym": "",
+        "name": "Rio de Janeiro",
+        "denonym": "Rio de Janeiroean",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Rio von Janeiro",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Rio von Janeiroisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Rio de Janeirü",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Rio de Janeirülı",
             },
         ],
     },
     # Argentina
     {
-        "name": "",
-        "denonym": "",
+        "name": "Buenos Aires",
+        "denonym": "Buenos Airesean",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Büenos Äires",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Büenos Äiresisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Büenos Aires",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Büenos Aireslı",
             },
         ],
     },
     {
-        "name": "",
-        "denonym": "",
+        "name": "Tucuman",
+        "denonym": "Tucumanian",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Tucumán",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Tucumánisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Tucüman",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Tucümanlı",
             },
         ],
     },
