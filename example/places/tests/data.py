@@ -758,6 +758,120 @@ CITIES = [
             },
         ],
     },
+    # Egypt
+    {
+        "name": "Cairo",
+        "denonym": "Cairoian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Kairo",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Kairoisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Kahire",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Kahirelı",
+            },
+        ],
+    },
+    {
+        "name": "Giza",
+        "denonym": "Gizaian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Gizeh",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Gizehisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Çizeh",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Çizehlı",
+            },
+        ],
+    },
+    # South Africa
+    {
+        "name": "Cape Town",
+        "denonym": "Cape Towner",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Kapstadt",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Kapstadtisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Kap Şehri",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Kap Şehrilı",
+            },
+        ],
+    },
+    {
+        "name": "Johannesburg",
+        "denonym": "Johannesburgian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Johannesbürg",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Johannesbürgisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Johannesburk",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Johannesburklı",
+            },
+        ],
+    },
 ]
 
 
