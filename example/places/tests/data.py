@@ -179,6 +179,7 @@ CONTINENTS = [
 ]
 
 COUNTRIES = [
+    # Europe
     {
         "code": "DE",
         "name": "Germany",
@@ -237,6 +238,7 @@ COUNTRIES = [
             },
         ],
     },
+    # Asia
     {
         "code": "KR",
         "name": "South Korea",
@@ -295,6 +297,7 @@ COUNTRIES = [
             },
         ],
     },
+    # Africa
     {
         "code": "EG",
         "name": "Egypt",
@@ -353,6 +356,7 @@ COUNTRIES = [
             },
         ],
     },
+    # North America
     {
         "code": "US",
         "name": "United States of America",
@@ -411,6 +415,7 @@ COUNTRIES = [
             },
         ],
     },
+    # South America
     {
         "code": "BR",
         "name": "Brazil",
@@ -469,6 +474,7 @@ COUNTRIES = [
             },
         ],
     },
+    # Australia
     {
         "code": "ID",
         "name": "Indonesia",
@@ -869,6 +875,63 @@ CITIES = [
                 "field": "denonym",
                 "language": "tr",
                 "text": "Johannesburklı",
+            },
+        ],
+    },
+    # United States of America
+    {
+        "name": "New York",
+        "denonym": "New Yorker",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Neu York",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Neu Yorkisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Yeni York",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Yeni Yorklı",
+            },
+        ],
+    },
+    {
+        "name": "New Jersey",
+        "denonym": "New Jerseyian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Neu Jersey",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Neu Jerseyisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Yeni Jersey",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Yeni Jerseylı",
             },
         ],
     },
