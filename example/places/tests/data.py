@@ -1,6 +1,7 @@
 from places.models import Continent, Country, City
 
-
+# Some translation spellings are written wrong on purpose to be able to
+# test them
 CONTINENTS = [
     {
         "code": "EU",
