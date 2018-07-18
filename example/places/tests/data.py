@@ -469,6 +469,64 @@ COUNTRIES = [
             },
         ],
     },
+    {
+        "code": "ID",
+        "name": "Indonesia",
+        "denonym": "Indonesian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Indonesien",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Indonesier",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Endonezya",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Endonezyalı",
+            },
+        ],
+    },
+    {
+        "code": "NZ",
+        "name": "New Zealand",
+        "denonym": "New Zealandian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Neuseeland",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Neuseeländisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Yeni Zelanda",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Yeni Zelandalı",
+            },
+        ],
+    },
 ]
 
 
