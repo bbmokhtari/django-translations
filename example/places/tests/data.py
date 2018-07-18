@@ -265,7 +265,7 @@ COUNTRIES = [
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "güney Koreli",
+                "text": "Güney Koreli",
             },
         ],
     },
@@ -733,7 +733,7 @@ CITIES = [
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "Ülsanlı",
+                "text": "Bombaylı",
             },
         ],
     },
@@ -796,7 +796,7 @@ CITIES = [
     },
     {
         "name": "Giza",
-        "denonym": "Gizaian",
+        "denonym": "Gizean",
         "translations": [
             # de
             {
@@ -807,7 +807,7 @@ CITIES = [
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "Gizehisch",
+                "text": "Gizisch",
             },
             # tr
             {
@@ -910,7 +910,7 @@ CITIES = [
     },
     {
         "name": "New Jersey",
-        "denonym": "New Jerseyian",
+        "denonym": "New Jersean",
         "translations": [
             # de
             {
@@ -921,7 +921,7 @@ CITIES = [
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "Neu Jerseyisch",
+                "text": "Neu Jersisch",
             },
             # tr
             {
@@ -996,7 +996,7 @@ CITIES = [
     # Brazil
     {
         "name": "Sao Paulo",
-        "denonym": "Sao Pauloean",
+        "denonym": "Sao Paulean",
         "translations": [
             # de
             {
@@ -1007,7 +1007,7 @@ CITIES = [
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "São Pauloisch",
+                "text": "São Paulisch",
             },
             # tr
             {
@@ -1024,7 +1024,7 @@ CITIES = [
     },
     {
         "name": "Rio de Janeiro",
-        "denonym": "Rio de Janeiroean",
+        "denonym": "Rio de Janeirean",
         "translations": [
             # de
             {
@@ -1035,7 +1035,7 @@ CITIES = [
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "Rio von Janeiroisch",
+                "text": "Rio von Janeirisch",
             },
             # tr
             {
@@ -1110,7 +1110,7 @@ CITIES = [
     # Indonesia
     {
         "name": "Jakarta",
-        "denonym": "Jakartaean",
+        "denonym": "Jakartean",
         "translations": [
             # de
             {
@@ -1138,7 +1138,7 @@ CITIES = [
     },
     {
         "name": "Surabaya",
-        "denonym": "Surabayaean",
+        "denonym": "Surabayean",
         "translations": [
             # de
             {
@@ -1149,7 +1149,7 @@ CITIES = [
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "Suräbayaisch",
+                "text": "Suräbayisch",
             },
             # tr
             {
