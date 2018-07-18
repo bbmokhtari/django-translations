@@ -353,6 +353,64 @@ COUNTRIES = [
             },
         ],
     },
+    {
+        "code": "US",
+        "name": "United States of America",
+        "denonym": "American",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Vereinigte Staaten von Amerika",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Amerikanisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Amerika Birleşik Devletleri",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Amerikalı",
+            },
+        ],
+    },
+    {
+        "code": "MX",
+        "name": "Mexico",
+        "denonym": "Mexican",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Mexiko",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Mexikaner",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Meksika",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Meksikalı",
+            },
+        ],
+    },
 ]
 
 
