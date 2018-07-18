@@ -1109,115 +1109,115 @@ CITIES = [
     },
     # Indonesia
     {
-        "name": "",
-        "denonym": "",
+        "name": "Jakarta",
+        "denonym": "Jakartaean",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Jäkarta",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Jäkartaisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Jákarta",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Jákartalı",
             },
         ],
     },
     {
-        "name": "",
-        "denonym": "",
+        "name": "Surabaya",
+        "denonym": "Surabayaean",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Suräbaya",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Suräbayaisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Suràbaya",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Suràbayalı",
             },
         ],
     },
     # New Zealand
     {
-        "name": "",
-        "denonym": "",
+        "name": "Auckland",
+        "denonym": "Aucklandean",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Äuckland",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Äucklandisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Akland",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Aklandlı",
             },
         ],
     },
     {
-        "name": "",
-        "denonym": "",
+        "name": "Wellington",
+        "denonym": "Wellingtonian",
         "translations": [
             # de
             {
                 "field": "name",
                 "language": "de",
-                "text": "",
+                "text": "Wellingtön",
             },
             {
                 "field": "denonym",
                 "language": "de",
-                "text": "",
+                "text": "Wellingtönisch",
             },
             # tr
             {
                 "field": "name",
                 "language": "tr",
-                "text": "",
+                "text": "Velington",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "",
+                "text": "Velingtonlı",
             },
         ],
     },
