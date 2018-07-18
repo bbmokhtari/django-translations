@@ -178,6 +178,183 @@ CONTINENTS = [
     },
 ]
 
+COUNTRIES = [
+    {
+        "code": "DE",
+        "name": "Germany",
+        "denonym": "German",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Deutschland",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Deutsche",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Almanya",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Almanca",
+            },
+        ],
+    },
+    {
+        "code": "TR",
+        "name": "Turkey",
+        "denonym": "Turk",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Türkei",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Türke",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Türkiye",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Türk",
+            },
+        ],
+    },
+    {
+        "code": "KR",
+        "name": "South Korea",
+        "denonym": "South Korean",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Südkorea",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Südkoreanisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Güney Kore",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "güney Koreli",
+            },
+        ],
+    },
+    {
+        "code": "IN",
+        "name": "India",
+        "denonym": "Indian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Indien",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Indisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Hindistan",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Hintli",
+            },
+        ],
+    },
+    {
+        "code": "EG",
+        "name": "Egypt",
+        "denonym": "Egyptian",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Ägypten",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Ägyptisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Mısır",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Mısırli",
+            },
+        ],
+    },
+    {
+        "code": "ZA",
+        "name": "South Africa",
+        "denonym": "South African",
+        "translations": [
+            # de
+            {
+                "field": "name",
+                "language": "de",
+                "text": "Südafrika",
+            },
+            {
+                "field": "denonym",
+                "language": "de",
+                "text": "Südafrikanisch",
+            },
+            # tr
+            {
+                "field": "name",
+                "language": "tr",
+                "text": "Güney Afrika",
+            },
+            {
+                "field": "denonym",
+                "language": "tr",
+                "text": "Güney Afrikalı",
+            },
+        ],
+    },
+]
+
 
 def create_continent(code, fields, langs):
     for continent in CONTINENTS:
