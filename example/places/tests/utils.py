@@ -93,8 +93,8 @@ class GetValidatedContextInfoTest(TestCase):
             (None, True)
         )
 
-    def test_simple_instance(self):
-        """Make sure it raises on simple instance."""
+    def test_invalid_instance(self):
+        """Make sure it raises on invalid instance."""
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -113,8 +113,8 @@ class GetValidatedContextInfoTest(TestCase):
             "`Behzad` is neither a model instance nor an iterable of model instances."
         )
 
-    def test_simple_iterable(self):
-        """Make sure it raises on simple iterable."""
+    def test_invalid_iterable(self):
+        """Make sure it raises on invalid iterable."""
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -139,15 +139,29 @@ class GetValidatedContextInfoTest(TestCase):
 class GetReverseRelationTest(TestCase):
     """Tests for `get_reverse_relation`."""
 
-    def test_valid_relation(self):
-        """Make sure it works with a valid relation."""
+    def test_simple_relation(self):
+        """Make sure it works with a simple relation."""
+        self.assertEqual(
+            get_reverse_relation(Continent, 'countries'),
+            'continent'
+        )
+
+    def test_simple_reverse_relation(self):
+        """Make sure it works with a simple relation in reverse."""
+        self.assertEqual(
+            get_reverse_relation(Country, 'continent'),
+            'countries'
+        )
+
+    def test_nested_relation(self):
+        """Make sure it works with a nested relation."""
         self.assertEqual(
             get_reverse_relation(Continent, 'countries__cities'),
             'country__continent'
         )
 
-    def test_reverse_valid_relation(self):
-        """Make sure it works with a valid relation in reverse."""
+    def test_nested_reverse_relation(self):
+        """Make sure it works with a nested relation in reverse."""
         self.assertEqual(
             get_reverse_relation(City, 'country__continent'),
             'countries__cities'
@@ -165,8 +179,8 @@ class GetReverseRelationTest(TestCase):
             "Continent has no field named ''"
         )
 
-    def test_invalid_relation(self):
-        """Make sure it raises on an invalid relation."""
+    def test_invalid_simple_relation(self):
+        """Make sure it raises on an invalid simple relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_reverse_relation(
                 Continent,
@@ -191,17 +205,31 @@ class GetReverseRelationTest(TestCase):
 
 
 class GetTranslationsReverseRelationTest(TestCase):
-    """Tests for get_translations_reverse_relation."""
+    """Tests for `get_translations_reverse_relation`."""
 
-    def test_valid_relation(self):
-        """Make sure it works with a valid relation."""
+    def test_simple_relation(self):
+        """Make sure it works with a simple relation."""
+        self.assertEqual(
+            get_translations_reverse_relation(Continent, 'countries'),
+            'places_country__continent'
+        )
+
+    def test_simple_reverse_relation(self):
+        """Make sure it works with a simple relation in reverse."""
+        self.assertEqual(
+            get_translations_reverse_relation(Country, 'continent'),
+            'places_continent__countries'
+        )
+
+    def test_nested_relation(self):
+        """Make sure it works with a nested relation."""
         self.assertEqual(
             get_translations_reverse_relation(Continent, 'countries__cities'),
             'places_city__country__continent'
         )
 
-    def test_reverse_valid_relation(self):
-        """Make sure it works with a valid relation in reverse."""
+    def test_nested_reverse_relation(self):
+        """Make sure it works with a nested relation in reverse."""
         self.assertEqual(
             get_translations_reverse_relation(City, 'country__continent'),
             'places_continent__countries__cities'
@@ -226,8 +254,8 @@ class GetTranslationsReverseRelationTest(TestCase):
             "Continent has no field named ''"
         )
 
-    def test_invalid_relation(self):
-        """Make sure it raises on an invalid relation."""
+    def test_invalid_simple_relation(self):
+        """Make sure it raises on an invalid simple relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
             get_translations_reverse_relation(
                 Continent,
