@@ -266,7 +266,7 @@ COUNTRIES = [
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "Güney Koreli",
+                "text": "Güney Korelı",
             },
         ],
     },
@@ -295,7 +295,7 @@ COUNTRIES = [
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "Hintli",
+                "text": "Hintlı",
             },
         ],
     },
@@ -325,7 +325,7 @@ COUNTRIES = [
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "Mısırli",
+                "text": "Mısırlı",
             },
         ],
     },
