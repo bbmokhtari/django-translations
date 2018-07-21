@@ -291,7 +291,9 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(europe).order_by("id"),
+            get_translations(
+                europe
+            ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
                 "<Translation: European: Europäisch>",
@@ -313,7 +315,10 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(europe, "countries").order_by("id"),
+            get_translations(
+                europe,
+                "countries"
+            ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
                 "<Translation: European: Europäisch>",
@@ -343,7 +348,90 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(europe, "countries").order_by("id"),
+            get_translations(
+                europe,
+                "countries", "countries__cities"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölner>",
+            ]
+        )
+
+    def test_instance_with_no_relation_and_with_lang(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"],
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                europe,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+            ]
+        )
+
+    def test_instance_with_simple_relation_and_with_lang(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_country(
+            europe,
+            "germany",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                europe,
+                "countries",
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+            ]
+        )
+
+    def test_instance_with_nested_relation_and_with_lang(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        germany = create_country(
+            europe,
+            "germany",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_city(
+            germany,
+            "cologne",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                europe,
+                "countries", "countries__cities",
+                lang="de"
+            ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
                 "<Translation: European: Europäisch>",
