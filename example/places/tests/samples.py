@@ -1,5 +1,6 @@
 from places.models import Continent, Country, City
 
+
 # Some translation spellings are written wrong on purpose to be able to
 # test them
 CONTINENTS = [
@@ -1224,9 +1225,11 @@ CITIES = [
 ]
 
 
-def create_continent(name, fields, langs):
+def create_continent(name, fields=None, langs=None):
+    fields = fields if fields is not None else []
+    langs = langs if langs is not None else []
     for continent in CONTINENTS:
-        if name == continent["name"]:
+        if name.lower() == continent["name"].lower():
             translations = continent["translations"]
             continent = Continent.objects.create(
                 code=continent["code"],
@@ -1244,9 +1247,11 @@ def create_continent(name, fields, langs):
     return continent
 
 
-def create_country(continent, name, fields, langs):
+def create_country(continent, name, fields=None, langs=None):
+    fields = fields if fields is not None else []
+    langs = langs if langs is not None else []
     for country in COUNTRIES:
-        if name == country["name"]:
+        if name.lower() == country["name"].lower():
             translations = country["translations"]
             country = Country.objects.create(
                 continent=continent,
@@ -1265,9 +1270,11 @@ def create_country(continent, name, fields, langs):
     return country
 
 
-def create_city(country, name, fields, langs):
+def create_city(country, name, fields=None, langs=None):
+    fields = fields if fields is not None else []
+    langs = langs if langs is not None else []
     for city in CITIES:
-        if name == city["name"]:
+        if name.lower() == city["name"].lower():
             translations = city["translations"]
             city = City.objects.create(
                 country=country,

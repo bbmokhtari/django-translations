@@ -8,9 +8,11 @@ from translations.utils import get_validated_language, \
 
 from places.models import Continent, Country, City
 
+from .samples import create_continent, create_country, create_city
+
 
 class GetValidatedLanguageTest(TestCase):
-    """Tests for get_validated_language."""
+    """Tests for `get_validated_language`."""
 
     def test_active_lang(self):
         """Make sure it works with an active language."""
@@ -46,13 +48,11 @@ class GetValidatedLanguageTest(TestCase):
 
 
 class GetValidatedContextInfoTest(TestCase):
-    """Tests for get_validated_context_info."""
+    """Tests for `get_validated_context_info`."""
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
-        europe = Continent.objects.create(
-            name="Europe", code="EU", denonym="European"
-        )
+        europe = create_continent("europe")
         self.assertEqual(
             get_validated_context_info(europe),
             (Continent, False)
@@ -60,8 +60,8 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_model_queryset(self):
         """Make sure it works with a model queryset."""
-        Continent.objects.create(name="Europe", code="EU")
-        Continent.objects.create(name="Asia", code="AS")
+        create_continent("europe")
+        create_continent("asia")
         continents = Continent.objects.all()
         self.assertEqual(
             get_validated_context_info(continents),
@@ -71,8 +71,8 @@ class GetValidatedContextInfoTest(TestCase):
     def test_model_iterable(self):
         """Make sure it works with a model iterable."""
         continents = []
-        continents.append(Continent.objects.create(name="Europe", code="EU"))
-        continents.append(Continent.objects.create(name="Asia", code="AS"))
+        continents.append(create_continent("europe"))
+        continents.append(create_continent("asia"))
         self.assertEqual(
             get_validated_context_info(continents),
             (Continent, True)
@@ -87,8 +87,9 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_empty_queryset(self):
         """Make sure it works with an empty queryset."""
+        continents = Continent.objects.none()
         self.assertEqual(
-            get_validated_context_info(Continent.objects.none()),
+            get_validated_context_info(continents),
             (None, True)
         )
 
@@ -136,7 +137,7 @@ class GetValidatedContextInfoTest(TestCase):
 
 
 class GetReverseRelationTest(TestCase):
-    """Tests for get_reverse_relation."""
+    """Tests for `get_reverse_relation`."""
 
     def test_valid_relation(self):
         """Make sure it works with a valid relation."""
