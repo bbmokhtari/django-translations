@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.db import models
 from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate, deactivate
 
@@ -662,7 +663,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_no_relation_instance_filtering(self):
+    def test_instance_with_no_relation_context_filtering(self):
         europe = create_continent(
             "europe",
             fields=["name", "denonym"],
@@ -695,7 +696,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_simple_relation_instance_filtering(self):
+    def test_instance_with_simple_relation_context_filtering(self):
         europe = create_continent(
             "europe",
             fields=["name", "denonym"],
@@ -747,7 +748,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_nested_relation_instance_filtering(self):
+    def test_instance_with_nested_relation_context_filtering(self):
         europe = create_continent(
             "europe",
             fields=["name", "denonym"],
@@ -1711,158 +1712,273 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    # def test_instance_with_no_relation_instance_filtering(self):
-    #     europe = create_continent(
-    #         "europe",
-    #         fields=["name", "denonym"],
-    #         langs=["de"],
-    #     )
-    #     asia = create_continent(
-    #         "asia",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
+    def test_queryset_with_no_relation_context_filtering(self):
+        create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"],
+        )
+        create_continent(
+            "asia",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_continent(
+            "africa",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_continent(
+            "north america",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
 
-    #     self.assertQuerysetEqual(
-    #         get_translations(
-    #             europe,
-    #             lang="de"
-    #         ).order_by("id"),
-    #         [
-    #             "<Translation: Europe: Europa>",
-    #             "<Translation: European: Europäisch>",
-    #         ]
-    #     )
-    #     self.assertQuerysetEqual(
-    #         get_translations(
-    #             asia,
-    #             lang="de"
-    #         ).order_by("id"),
-    #         [
-    #             "<Translation: Asia: Asien>",
-    #             "<Translation: Asian: Asiatisch>",
-    #         ]
-    #     )
+        eurasia = Continent.objects.filter(
+            models.Q(name="Asia") | models.Q(name="Europe")
+        )
+        afromerica = Continent.objects.filter(
+            models.Q(name="Africa") | models.Q(name="North America")
+        )
 
-    # def test_instance_with_simple_relation_instance_filtering(self):
-    #     europe = create_continent(
-    #         "europe",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
-    #     create_country(
-    #         europe,
-    #         "germany",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
+        self.assertQuerysetEqual(
+            get_translations(
+                eurasia,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                afromerica,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Africa: Afrika>",
+                "<Translation: African: Afrikanisch>",
+                "<Translation: North America: Nordamerika>",
+                "<Translation: North American: Nordamerikanisch>",
+            ]
+        )
 
-    #     asia = create_continent(
-    #         "asia",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
-    #     create_country(
-    #         asia,
-    #         "india",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
+    def test_queryset_with_simple_relation_context_filtering(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_country(
+            europe,
+            "germany",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
 
-    #     self.assertQuerysetEqual(
-    #         get_translations(
-    #             europe,
-    #             "countries",
-    #             lang="de"
-    #         ).order_by("id"),
-    #         [
-    #             "<Translation: Europe: Europa>",
-    #             "<Translation: European: Europäisch>",
-    #             "<Translation: Germany: Deutschland>",
-    #             "<Translation: German: Deutsche>",
-    #         ]
-    #     )
-    #     self.assertQuerysetEqual(
-    #         get_translations(
-    #             asia,
-    #             "countries",
-    #             lang="de"
-    #         ).order_by("id"),
-    #         [
-    #             "<Translation: Asia: Asien>",
-    #             "<Translation: Asian: Asiatisch>",
-    #             "<Translation: India: Indien>",
-    #             "<Translation: Indian: Indisch>",
-    #         ]
-    #     )
+        asia = create_continent(
+            "asia",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_country(
+            asia,
+            "india",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
 
-    # def test_instance_with_nested_relation_instance_filtering(self):
-    #     europe = create_continent(
-    #         "europe",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
-    #     germany = create_country(
-    #         europe,
-    #         "germany",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
-    #     create_city(
-    #         germany,
-    #         "cologne",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
+        africa = create_continent(
+            "africa",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_country(
+            africa,
+            "egypt",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
 
-    #     asia = create_continent(
-    #         "asia",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
-    #     india = create_country(
-    #         asia,
-    #         "india",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
-    #     create_city(
-    #         india,
-    #         "mumbai",
-    #         fields=["name", "denonym"],
-    #         langs=["de"]
-    #     )
+        north_america = create_continent(
+            "north america",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_country(
+            north_america,
+            "mexico",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
 
-    #     self.assertQuerysetEqual(
-    #         get_translations(
-    #             europe,
-    #             "countries", "countries__cities",
-    #             lang="de"
-    #         ).order_by("id"),
-    #         [
-    #             "<Translation: Europe: Europa>",
-    #             "<Translation: European: Europäisch>",
-    #             "<Translation: Germany: Deutschland>",
-    #             "<Translation: German: Deutsche>",
-    #             "<Translation: Cologne: Köln>",
-    #             "<Translation: Cologner: Kölner>",
-    #         ]
-    #     )
-    #     self.assertQuerysetEqual(
-    #         get_translations(
-    #             asia,
-    #             "countries", "countries__cities",
-    #             lang="de"
-    #         ).order_by("id"),
-    #         [
-    #             "<Translation: Asia: Asien>",
-    #             "<Translation: Asian: Asiatisch>",
-    #             "<Translation: India: Indien>",
-    #             "<Translation: Indian: Indisch>",
-    #             "<Translation: Mumbai: Mumbaï>",
-    #             "<Translation: Mumbaian: Mumbäisch>",
-    #         ]
-    #     )
+        eurasia = Continent.objects.filter(
+            models.Q(name="Asia") | models.Q(name="Europe")
+        )
+        afromerica = Continent.objects.filter(
+            models.Q(name="Africa") | models.Q(name="North America")
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                eurasia,
+                "countries",
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: India: Indien>",
+                "<Translation: Indian: Indisch>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                afromerica,
+                "countries",
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Africa: Afrika>",
+                "<Translation: African: Afrikanisch>",
+                "<Translation: Egypt: Ägypten>",
+                "<Translation: Egyptian: Ägyptisch>",
+                "<Translation: North America: Nordamerika>",
+                "<Translation: North American: Nordamerikanisch>",
+                "<Translation: Mexico: Mexiko>",
+                "<Translation: Mexican: Mexikaner>",
+            ]
+        )
+
+    def test_queryset_with_nested_relation_context_filtering(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        germany = create_country(
+            europe,
+            "germany",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_city(
+            germany,
+            "cologne",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        asia = create_continent(
+            "asia",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        india = create_country(
+            asia,
+            "india",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_city(
+            india,
+            "mumbai",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        africa = create_continent(
+            "africa",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        egypt = create_country(
+            africa,
+            "egypt",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_city(
+            egypt,
+            "cairo",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        north_america = create_continent(
+            "north america",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        mexico = create_country(
+            north_america,
+            "mexico",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        create_city(
+            mexico,
+            "mexico city",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        eurasia = Continent.objects.filter(
+            models.Q(name="Asia") | models.Q(name="Europe")
+        )
+        afromerica = Continent.objects.filter(
+            models.Q(name="Africa") | models.Q(name="North America")
+        )
+
+        self.assertQuerysetEqual(
+            get_translations(
+                eurasia,
+                "countries", "countries__cities",
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölner>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: India: Indien>",
+                "<Translation: Indian: Indisch>",
+                "<Translation: Mumbai: Mumbaï>",
+                "<Translation: Mumbaian: Mumbäisch>",
+            ]
+        )
+        self.assertQuerysetEqual(
+            get_translations(
+                afromerica,
+                "countries", "countries__cities",
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Africa: Afrika>",
+                "<Translation: African: Afrikanisch>",
+                "<Translation: Egypt: Ägypten>",
+                "<Translation: Egyptian: Ägyptisch>",
+                "<Translation: Cairo: Kairo>",
+                "<Translation: Cairoian: Kairoisch>",
+                "<Translation: North America: Nordamerika>",
+                "<Translation: North American: Nordamerikanisch>",
+                "<Translation: Mexico: Mexiko>",
+                "<Translation: Mexican: Mexikaner>",
+                "<Translation: Mexico City: Mexiko Stadt>",
+                "<Translation: Mexico Citian: Mexiko Stadtisch>",
+            ]
+        )
 
     # # ---- global filtering testing ------------------------------------------
 

@@ -82,12 +82,12 @@ CONTINENTS = [
             {
                 "field": "name",
                 "language": "tr",
-                "text": "Afrika",
+                "text": "Àfrika",
             },
             {
                 "field": "denonym",
                 "language": "tr",
-                "text": "Afrikalı",
+                "text": "Àfrikalı",
             },
         ],
     },
