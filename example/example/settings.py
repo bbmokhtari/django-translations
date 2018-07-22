@@ -92,6 +92,9 @@ def get_database_conf():
     if PASSWORD:
         conf['PASSWORD'] = PASSWORD
 
+    return conf
+
+
 DATABASES = {
     'default': get_database_conf()
 }
