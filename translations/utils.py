@@ -16,6 +16,8 @@ This module contains the utilities for the Translations app.
 :func:`get_translations`
     Return the translations of a context and the relations of it in a
     language.
+:func:`get_translations_map`
+    Return a lightweight map of translations.
 """
 
 from django.db import models, transaction
@@ -359,7 +361,45 @@ def get_translations(context, *relations, lang=None):
 
 
 def get_translations_map(translations):
-    """Return a map of translations."""
+    """
+    Return a lightweight map of translations.
+
+    The result is a map of
+    :class:`~django.contrib.contenttypes.models.ContentType` IDs as keys and
+    object maps as values. The object map consists of the ``object_id`` of the
+    parent dict (``content_type``) as keys and field maps as values. The field
+    map consists of the ``field`` of the parent dict (``object_id``) as keys
+    and translations of the fields as values.
+
+    :param translations: the translations to process
+    :type translations: ~django.db.models.query.QuerySet
+    :return: the map of translations
+    :rtype: dict(int, dict(str, dict(str, str)))
+
+    >>> from places.models import Continent, Country, City
+    >>> from translations.models import Translation
+    >>> europe = Continent.objects.create(code="EU", name="Europe")
+    >>> europe.translations.create(field="name", language="de", text="Europa")
+    <Translation: Europe: Europa>
+    >>> germany = Country.objects.create(
+    ...     code="DE",
+    ...     name="Germany",
+    ...     continent=europe
+    ... )
+    >>> germany.translations.create(
+    ...     field="name",
+    ...     language="de",
+    ...     text="Deutschland"
+    ... )
+    <Translation: Germany: Deutschland>
+    >>> cologne = City.objects.create(name="Cologne", country=germany)
+    >>> cologne.translations.create(field="name", language="de", text="Köln")
+    <Translation: Cologne: Köln>
+    >>> get_translations_map(Translation.objects.all())
+    {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
+    3: {'1': {'name': 'Deutschland', 'denonym': 'Deutsche'}},
+    1: {'1': {'name': 'Köln', 'denonym': 'Kölner'}}}
+    """
     the_map = {}
 
     for obj in translations:
