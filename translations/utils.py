@@ -396,9 +396,9 @@ def get_translations_map(translations):
     >>> cologne.translations.create(field="name", language="de", text="Köln")
     <Translation: Cologne: Köln>
     >>> get_translations_map(Translation.objects.all())
-    {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
-    3: {'1': {'name': 'Deutschland', 'denonym': 'Deutsche'}},
-    1: {'1': {'name': 'Köln', 'denonym': 'Kölner'}}}
+    {2: {'1': {'name': 'Europa'}},
+    3: {'1': {'name': 'Deutschland'}},
+    1: {'1': {'name': 'Köln'}}}
     """
     the_map = {}
 
