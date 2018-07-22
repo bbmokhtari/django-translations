@@ -369,7 +369,8 @@ def get_translations_map(translations):
     object maps as values. The object map consists of the ``object_id`` of the
     parent dict (``content_type``) as keys and field maps as values. The field
     map consists of the ``field`` of the parent dict (``object_id``) as keys
-    and translations of the fields as values.
+    and translations of the fields as values. The end result is something like
+    this: ``{content_type: {object_id: {field1: text1, field2: text2}}}``
 
     :param translations: the translations to process
     :type translations: ~django.db.models.query.QuerySet
