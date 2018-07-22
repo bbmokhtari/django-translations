@@ -414,56 +414,52 @@ def get_dictionary(translations):
     return dictionary
 
 
-def get_relations_hierarchy(*relations):
-    r"""
-    Return a dict of first level relations as keys and their nested relations
-    as values.
+def get_hierarchy(*relations):
+    """
+    Return a hierarchy of the relations.
 
-    >>> get_relations_hierarchy()
+    >>> get_hierarchy()
     {}
-    >>> get_relations_hierarchy('countries')
-    {'countries': []}
-    >>> get_relations_hierarchy('countries__states')
-    {'countries': ['states']}
-    >>> get_relations_hierarchy(
-    ... 'countries__states__cities',
-    ... 'countries__states__villages',
-    ... 'countries__phone_number',
-    ... )
-    {'countries': ['states__cities', 'states__villages', 'phone_number']}
+    >>> get_hierarchy('countries')
+    {'countries': {'included': True, 'relations': []}}
+    >>> get_hierarchy('countries__cities')
+    {'countries': {'included': False, 'relations': ['cities']}}
+    >>> get_hierarchy('countries', 'countries__cities')
+    {'countries': {'included': True, 'relations': ['cities']}}
 
-    :param \*relations: a list of deeply nested relations to get their
-        hierarchy.
-    :type \*relations: list(str)
-    :return: the first level relations and their nested relations.
+    :param relations: a list of relations.
+    :type relations: list(str)
+    :return: the relations hierarchy
     :rtype: dict(str, list(str))
-    :raise ValueError: for invalid nested relations
     """
     hierarchy = {}
 
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
 
-        if '' in parts:
-            raise ValueError(
-                '`{}` is not a valid relationship.'.format(
-                    LOOKUP_SEP.join(parts)
-                )
-            )
-
         root = parts[0]
         nest = LOOKUP_SEP.join(parts[1:])
 
-        hierarchy.setdefault(root, [])
+        if root not in hierarchy.keys():
+            hierarchy[root] = {
+                "included": False,
+                "relations": []
+            }
+
         if nest:
-            hierarchy[root].append(nest)
+            hierarchy[root]["relations"].append(nest)
+        else:
+            hierarchy[root]["included"] = True
 
     return hierarchy
 
 
-def translate(context, *relations, lang=None, dictionary=None):
+def translate(context, *relations, lang=None, dictionary=None, included=True):
     lang = get_validated_language(lang)
     model, iterable = get_validated_context_info(context)
+
+    if model is None:
+        return
 
     if dictionary is None:
         dictionary = get_dictionary(
@@ -474,43 +470,41 @@ def translate(context, *relations, lang=None, dictionary=None):
             )
         )
 
-    content_type = ContentType.objects.get_for_model(model)
-    objects = dictionary[content_type.id]
-    if objects:
-        def translate_obj(obj):
-            try:
-                fields = objects[str(obj.id)]
-            except KeyError:
-                pass
+    if included:
+        content_type = ContentType.objects.get_for_model(model)
+        objects = dictionary[content_type.id]
+        if objects:
+            def translate_obj(obj):
+                try:
+                    fields = objects[str(obj.id)]
+                except KeyError:
+                    pass
+                else:
+                    for (field, text) in fields.items():
+                        setattr(obj, field, text)
+
+            if iterable:
+                for obj in context:
+                    translate_obj(obj)
             else:
-                for (field, text) in fields.items():
-                    setattr(obj, field, text)
+                translate_obj(context)
 
-        if iterable:
-            for obj in context:
-                translate_obj(obj)
-        else:
-            translate_obj(context)
-
-    # ------------ translate context relations
-    relations_dict = get_relations_hierarchy(*relations)
-
-    if len(relations_dict) > 0:
-        # translate rel function
+    hierarchy = get_hierarchy(*relations)
+    if hierarchy:
         def translate_rel(obj):
-            for (relation_key, relation_descendants) in relations_dict.items():
-                relation_value = getattr(obj, relation_key, None)
-                if relation_value is not None:
-                    if isinstance(relation_value, models.Manager):
-                        relation_value = relation_value.all()
+            for (relation, details) in hierarchy.items():
+                value = getattr(obj, relation, None)
+                if value is not None:
+                    if isinstance(value, models.Manager):
+                        value = value.all()
                     translate(
-                        relation_value,
-                        *relation_descendants,
+                        value,
+                        *details['relations'],
                         lang=lang,
-                        dictionary=dictionary
+                        dictionary=dictionary,
+                        included=details['included'],
                     )
 
-        # translate based on plural/singular
         if iterable:
             for obj in context:
                 translate_rel(obj)
