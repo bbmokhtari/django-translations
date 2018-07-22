@@ -66,11 +66,34 @@ WSGI_APPLICATION = 'example.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+DEFAULT_ENGINE = 'sqlite3'
+DEFAULT_NAME = os.path.join(BASE_DIR, 'db.sqlite3'),
+
+ENGINE = os.environ.get('EXAMPLE_ENGINE', DEFAULT_ENGINE)
+NAME = os.environ.get('EXAMPLE_NAME', DEFAULT_NAME)
+HOST = os.environ.get('EXAMPLE_HOST', None)
+PORT = os.environ.get('EXAMPLE_PORT', None)
+USER = os.environ.get('EXAMPLE_USER', None)
+PASSWORD = os.environ.get('EXAMPLE_PASSWORD', None)
+
+
+def get_database_conf():
+    conf = {}
+
+    conf['ENGINE'] = 'django.db.backends.{}'.format(ENGINE)
+    conf['NAME'] = NAME
+
+    if HOST:
+        conf['HOST'] = HOST
+    if PORT:
+        conf['PORT'] = PORT
+    if USER:
+        conf['USER'] = USER
+    if PASSWORD:
+        conf['PASSWORD'] = PASSWORD
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': get_database_conf()
 }
 
 
