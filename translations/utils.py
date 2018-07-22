@@ -16,7 +16,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations`
     Return the translations of a context and the relations of it in a
     language.
-:func:`get_translations_map`
+:func:`get_dictionary`
     Return a lightweight map of translations.
 """
 
@@ -360,7 +360,7 @@ def get_translations(context, *relations, lang=None):
     return queryset
 
 
-def get_translations_map(translations):
+def get_dictionary(translations):
     """
     Return a lightweight map of translations.
 
@@ -396,7 +396,7 @@ def get_translations_map(translations):
     >>> cologne = City.objects.create(name="Cologne", country=germany)
     >>> cologne.translations.create(field="name", language="de", text="Köln")
     <Translation: Cologne: Köln>
-    >>> get_translations_map(Translation.objects.all())
+    >>> get_dictionary(Translation.objects.all())
     {2: {'1': {'name': 'Europa'}},
     3: {'1': {'name': 'Deutschland'}},
     1: {'1': {'name': 'Köln'}}}
@@ -465,12 +465,12 @@ def get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def translate(context, *relations, lang=None, translations_map=None):
+def translate(context, *relations, lang=None, dictionary=None):
     lang = get_validated_language(lang)
     model, iterable = get_validated_context_info(context)
 
-    if translations_map is None:
-        translations_map = get_translations_map(
+    if dictionary is None:
+        dictionary = get_dictionary(
             get_translations(
                 context,
                 *relations,
@@ -479,7 +479,7 @@ def translate(context, *relations, lang=None, translations_map=None):
         )
 
     content_type = ContentType.objects.get_for_model(model)
-    objects = translations_map[content_type.id]
+    objects = dictionary[content_type.id]
     if objects:
         def translate_obj(obj):
             try:
@@ -511,7 +511,7 @@ def translate(context, *relations, lang=None, translations_map=None):
                         relation_value,
                         *relation_descendants,
                         lang=lang,
-                        translations_map=translations_map
+                        dictionary=dictionary
                     )
 
         # translate based on plural/singular

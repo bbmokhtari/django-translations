@@ -8,11 +8,11 @@ class TranslatableQuerySet(models.QuerySet):
     def get_translations(self, *relations, lang=None):
         return get_translations(self, *relations, lang=lang)
 
-    def get_translated(self, *relations, lang=None, translations_queryset=None):
+    def get_translated(self, *relations, lang=None, dictionary=None):
         translate(
             self, *relations,
             lang=lang,
-            translations_queryset=translations_queryset
+            dictionary=dictionary
         )
         return self
 

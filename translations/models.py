@@ -265,7 +265,7 @@ class Translatable(models.Model):
         translate(
             self, *relations,
             lang=lang,
-            translations_queryset=translations
+            dictionary=translations
         )
 
     def update_translations(self, lang=None):

@@ -17,11 +17,11 @@ class TranslatableManager(models.Manager):
     def get_translated(self,
                        *relations,
                        lang=None,
-                       translations_queryset=None):
+                       dictionary=None):
         return self.get_queryset().get_translated(
             *relations,
             lang=lang,
-            translations_queryset=translations_queryset
+            dictionary=dictionary
         )
 
     def create_translated(self, lang=None, **kwargs):
