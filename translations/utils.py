@@ -358,6 +358,25 @@ def get_translations(context, *relations, lang=None):
     return queryset
 
 
+def get_translations_map(translations):
+    """Return a map of translations."""
+    the_map = {}
+
+    for obj in translations:
+        content_type = obj.content_type.id
+        object_id = obj.object_id
+
+        if content_type not in the_map.keys():
+            the_map[content_type] = {}
+
+        if object_id not in the_map[content_type].keys():
+            the_map[content_type][object_id] = {}
+
+        the_map[content_type][object_id][obj.field] = obj.text
+
+    return the_map
+
+
 def get_relations_hierarchy(*relations):
     r"""
     Return a dict of first level relations as keys and their nested relations
@@ -419,15 +438,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
 
     # ------------ convert translations queryset to dict for faster access
     if type(translations_queryset) != dict:
-        translations_queryset = translations_queryset.select_related('content_type')
-        translations_queryset_dict = {}
-        for obj in translations_queryset:
-            if obj.content_type.id not in translations_queryset_dict.keys():
-                translations_queryset_dict[obj.content_type.id] = {}
-            if obj.object_id not in translations_queryset_dict[obj.content_type.id].keys():
-                translations_queryset_dict[obj.content_type.id][obj.object_id] = []
-            translations_queryset_dict[obj.content_type.id][obj.object_id].append(obj)
-        translations_queryset = translations_queryset_dict
+        pass
 
     # ------------ translate context itself
     if issubclass(model, translations.models.Translatable):
