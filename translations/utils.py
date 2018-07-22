@@ -465,42 +465,31 @@ def get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def translate(context, *relations, lang=None, translations_queryset=None):
+def translate(context, *relations, lang=None, translations_map=None):
     lang = get_validated_language(lang)
     model, iterable = get_validated_context_info(context)
 
-    # ------------ generate translations queryset if none passed
-    if translations_queryset is None:
-        translations_queryset = get_translations(
-            context,
-            *relations,
-            lang=lang
+    if translations_map is None:
+        translations_map = get_translations_map(
+            get_translations(
+                context,
+                *relations,
+                lang=lang
+            )
         )
 
-    # ------------ convert translations queryset to dict for faster access
-    if type(translations_queryset) != dict:
-        pass
-
-    # ------------ translate context itself
-    if issubclass(model, translations.models.Translatable):
-        content_type = ContentType.objects.get_for_model(model)
-        translatable_fields = model.get_translatable_fields()
-
-        # translate obj function
+    content_type = ContentType.objects.get_for_model(model)
+    objects = translations_map[content_type.id]
+    if objects:
         def translate_obj(obj):
             try:
-                obj_translations = translations_queryset[content_type.id][str(obj.id)]
+                fields = objects[str(obj.id)]
             except KeyError:
                 pass
             else:
-                for obj_translation in obj_translations:
-                    field = model._meta.get_field(obj_translation.field)
-                    if field in translatable_fields \
-                            and hasattr(obj, obj_translation.field) \
-                            and obj_translation.text:
-                        setattr(obj, obj_translation.field, obj_translation.text)
+                for (field, text) in fields.items():
+                    setattr(obj, field, text)
 
-        # translate based on plural/singular
         if iterable:
             for obj in context:
                 translate_obj(obj)
@@ -522,7 +511,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
                         relation_value,
                         *relation_descendants,
                         lang=lang,
-                        translations_queryset=translations_queryset
+                        translations_map=translations_map
                     )
 
         # translate based on plural/singular
