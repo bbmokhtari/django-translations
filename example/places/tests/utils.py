@@ -2416,3 +2416,60 @@ class GetTranslationsTest(TestCase):
                 "<Translation: Mexico Citian: Meksika şehrilı>",
             ]
         )
+
+    # ---- error testing -----------------------------------------------------
+
+    def test_invalid_lang(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+        with self.assertRaises(ValueError) as error:
+            get_translations(
+                europe,
+                lang="xx"
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "The language code `xx` is not supported."
+        )
+
+    def test_invalid_relation(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+        with self.assertRaises(FieldDoesNotExist) as error:
+            get_translations(
+                europe,
+                'wrong',
+                lang="de"
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Continent has no field named 'wrong'"
+        )
+
+    def test_invalid_context(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+        with self.assertRaises(TypeError) as error:
+            get_translations(
+                behzad,
+                lang="de"
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "`Behzad` is neither a model instance nor an iterable of model instances."
+        )
