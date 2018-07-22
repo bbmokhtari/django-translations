@@ -407,19 +407,7 @@ def get_relations_hierarchy(*relations):
 
 def translate(context, *relations, lang=None, translations_queryset=None):
     lang = get_validated_language(lang)
-
-    # ------------ process context
-    if isinstance(context, models.QuerySet):
-        model = context.model
-        is_plural = True
-    elif isinstance(context, list):
-        model = type(context[0])
-        is_plural = True
-    elif isinstance(context, models.Model):
-        model = type(context)
-        is_plural = False
-    else:
-        raise Exception('`context` is neither a model instance or a queryset or a list')
+    model, iterable = get_validated_context_info(context)
 
     # ------------ generate translations queryset if none passed
     if translations_queryset is None:
@@ -461,7 +449,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
                         setattr(obj, obj_translation.field, obj_translation.text)
 
         # translate based on plural/singular
-        if is_plural:
+        if iterable:
             for obj in context:
                 translate_obj(obj)
         else:
@@ -486,7 +474,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
                     )
 
         # translate based on plural/singular
-        if is_plural:
+        if iterable:
             for obj in context:
                 translate_rel(obj)
         else:
@@ -495,22 +483,7 @@ def translate(context, *relations, lang=None, translations_queryset=None):
 
 def update_translations(context, lang=None):
     lang = get_validated_language(lang)
-
-    # ------------ process context
-    if isinstance(context, models.QuerySet):
-        model = context.model
-        is_plural = True
-    elif isinstance(context, list):
-        if len(context) > 0:
-            model = type(context[0])
-            is_plural = True
-        else:
-            return
-    elif isinstance(context, models.Model):
-        model = type(context)
-        is_plural = False
-    else:
-        raise Exception('`context` is neither a model instance or a queryset or a list')
+    model, iterable = get_validated_context_info(context)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):
@@ -542,7 +515,7 @@ def update_translations(context, lang=None):
                             )
 
                 # translate based on plural/singular
-                if is_plural:
+                if iterable:
                     for obj in context:
                         add_translations(obj)
                 else:
