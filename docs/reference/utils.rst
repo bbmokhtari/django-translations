@@ -11,4 +11,4 @@ Utilities
    .. autofunction:: get_reverse_relation
    .. autofunction:: get_translations_reverse_relation
    .. autofunction:: get_translations
-   .. autofunction:: get_translations_map
+   .. autofunction:: get_dictionary

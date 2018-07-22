@@ -17,7 +17,7 @@ This module contains the utilities for the Translations app.
     Return the translations of a context and the relations of it in a
     language.
 :func:`get_dictionary`
-    Return a lightweight map of translations.
+    Return a dictionary which contains the translations.
 """
 
 from django.db import models, transaction
@@ -362,19 +362,14 @@ def get_translations(context, *relations, lang=None):
 
 def get_dictionary(translations):
     """
-    Return a lightweight map of translations.
+    Return a dictionary which contains the translations.
 
-    The result is a map of
-    :class:`~django.contrib.contenttypes.models.ContentType` IDs as keys and
-    object maps as values. The object map consists of the ``object_id`` of the
-    parent dict (``content_type``) as keys and field maps as values. The field
-    map consists of the ``field`` of the parent dict (``object_id``) as keys
-    and translations of the fields as values. The end result is something like
-    this: ``{content_type: {object_id: {field1: text1, field2: text2}}}``
+    The end result is something like this:
+    ``{content_type_id: {object_id: {field1: text1, field2: text2}}}``
 
     :param translations: the translations to process
     :type translations: ~django.db.models.query.QuerySet
-    :return: the map of translations
+    :return: the dictionary of translations
     :rtype: dict(int, dict(str, dict(str, str)))
 
     >>> from places.models import Continent, Country, City
@@ -401,21 +396,22 @@ def get_dictionary(translations):
     3: {'1': {'name': 'Deutschland'}},
     1: {'1': {'name': 'Köln'}}}
     """
-    the_map = {}
+    dictionary = {}
 
-    for obj in translations:
-        content_type = obj.content_type.id
-        object_id = obj.object_id
+    for translation in translations:
+        content_type_id = translation.content_type.id
+        object_id = translation.object_id
+        field = translation.field
 
-        if content_type not in the_map.keys():
-            the_map[content_type] = {}
+        if content_type_id not in dictionary.keys():
+            dictionary[content_type_id] = {}
 
-        if object_id not in the_map[content_type].keys():
-            the_map[content_type][object_id] = {}
+        if object_id not in dictionary[content_type_id].keys():
+            dictionary[content_type_id][object_id] = {}
 
-        the_map[content_type][object_id][obj.field] = obj.text
+        dictionary[content_type_id][object_id][field] = translation.text
 
-    return the_map
+    return dictionary
 
 
 def get_relations_hierarchy(*relations):
