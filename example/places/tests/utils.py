@@ -2,10 +2,14 @@ from django.test import TestCase
 from django.db import models
 from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate, deactivate
+from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import get_validated_language, \
     get_validated_context_info, get_reverse_relation, \
-    get_translations_reverse_relation, get_translations
+    get_translations_reverse_relation, get_translations, \
+    get_dictionary
+
+from translations.models import Translation
 
 from places.models import Continent, Country, City
 
@@ -2472,4 +2476,313 @@ class GetTranslationsTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             "`Behzad` is neither a model instance nor an iterable of model instances."
+        )
+
+
+class GetDictionaryTest(TestCase):
+
+    def test_translations_none(self):
+        europe = create_continent("europe")
+        self.assertDictEqual(
+            get_dictionary(europe.translations.all()),
+            {}
+        )
+
+    def test_one_conent_type_one_object_id_one_field(self):
+        europe = create_continent(
+            "europe",
+            fields=["name"],
+            langs=["de"]
+        )
+
+        continent_ct_id = ContentType.objects.get_for_model(Continent).id
+        europe_id = str(europe.id)
+
+        self.assertDictEqual(
+            get_dictionary(Translation.objects.all()),
+            {
+                continent_ct_id: {
+                    europe_id: {
+                        'name': 'Europa'
+                    }
+                }
+            }
+        )
+
+    def test_multiple_conent_type_one_object_id_one_field(self):
+        europe = create_continent(
+            "europe",
+            fields=["name"],
+            langs=["de"]
+        )
+        germany = create_country(
+            europe,
+            "germany",
+            fields=["name"],
+            langs=["de"]
+        )
+        cologne = create_city(
+            germany,
+            "cologne",
+            fields=["name"],
+            langs=["de"]
+        )
+
+        continent_ct_id = ContentType.objects.get_for_model(Continent).id
+        country_ct_id = ContentType.objects.get_for_model(Country).id
+        city_ct_id = ContentType.objects.get_for_model(City).id
+
+        europe_id = str(europe.id)
+        germany_id = str(germany.id)
+        cologne_id = str(cologne.id)
+
+        self.assertDictEqual(
+            get_dictionary(Translation.objects.all()),
+            {
+                continent_ct_id: {
+                    europe_id: {
+                        'name': 'Europa',
+                    }
+                },
+                country_ct_id: {
+                    germany_id: {
+                        'name': 'Deutschland',
+                    }
+                },
+                city_ct_id: {
+                    cologne_id: {
+                        'name': 'Köln',
+                    }
+                }
+            }
+        )
+
+    def test_one_conent_type_multiple_object_id_one_field(self):
+        europe = create_continent(
+            "europe",
+            fields=["name"],
+            langs=["de"]
+        )
+        asia = create_continent(
+            "asia",
+            fields=["name"],
+            langs=["de"]
+        )
+
+        continent_ct_id = ContentType.objects.get_for_model(Continent).id
+        europe_id = str(europe.id)
+        asia_id = str(asia.id)
+
+        self.assertDictEqual(
+            get_dictionary(Translation.objects.all()),
+            {
+                continent_ct_id: {
+                    europe_id: {
+                        'name': 'Europa',
+                    },
+                    asia_id: {
+                        'name': 'Asien',
+                    }
+                },
+            }
+        )
+
+    def test_one_conent_type_one_object_id_multiple_field(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        continent_ct_id = ContentType.objects.get_for_model(Continent).id
+        europe_id = str(europe.id)
+
+        self.assertDictEqual(
+            get_dictionary(Translation.objects.all()),
+            {
+                continent_ct_id: {
+                    europe_id: {
+                        'name': 'Europa',
+                        'denonym': 'Europäisch',
+                    },
+                },
+            }
+        )
+
+    def test_multiple_conent_type_multiple_object_id_multiple_field(self):
+        europe = create_continent(
+            "europe",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        germany = create_country(
+            europe,
+            "germany",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        cologne = create_city(
+            germany,
+            "cologne",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        munich = create_city(
+            germany,
+            "munich",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        turkey = create_country(
+            europe,
+            "turkey",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        istanbul = create_city(
+            turkey,
+            "istanbul",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        izmir = create_city(
+            turkey,
+            "izmir",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        asia = create_continent(
+            "asia",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        india = create_country(
+            asia,
+            "india",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        mumbai = create_city(
+            india,
+            "mumbai",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        new_delhi = create_city(
+            india,
+            "new delhi",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        south_korea = create_country(
+            asia,
+            "south korea",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        seoul = create_city(
+            south_korea,
+            "seoul",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+        ulsan = create_city(
+            south_korea,
+            "ulsan",
+            fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        continent_ct_id = ContentType.objects.get_for_model(Continent).id
+        country_ct_id = ContentType.objects.get_for_model(Country).id
+        city_ct_id = ContentType.objects.get_for_model(City).id
+
+        europe_id = str(europe.id)
+        asia_id = str(asia.id)
+
+        germany_id = str(germany.id)
+        turkey_id = str(turkey.id)
+        india_id = str(india.id)
+        south_korea_id = str(south_korea.id)
+
+        cologne_id = str(cologne.id)
+        munich_id = str(munich.id)
+        istanbul_id = str(istanbul.id)
+        izmir_id = str(izmir.id)
+        mumbai_id = str(mumbai.id)
+        new_delhi_id = str(new_delhi.id)
+        seoul_id = str(seoul.id)
+        ulsan_id = str(ulsan.id)
+
+        self.assertDictEqual(
+            get_dictionary(Translation.objects.all()),
+            {
+                continent_ct_id: {
+                    europe_id: {
+                        'name': 'Europa',
+                        'denonym': 'Europäisch',
+                    },
+                    asia_id: {
+                        'name': 'Asien',
+                        'denonym': 'Asiatisch',
+                    },
+                },
+                country_ct_id: {
+                    germany_id: {
+                        'name': 'Deutschland',
+                        'denonym': 'Deutsche',
+                    },
+                    turkey_id: {
+                        'name': 'Türkei',
+                        'denonym': 'Türke',
+                    },
+                    india_id: {
+                        'name': 'Indien',
+                        'denonym': 'Indisch',
+                    },
+                    south_korea_id: {
+                        'name': 'Südkorea',
+                        'denonym': 'Südkoreanisch',
+                    },
+                },
+                city_ct_id: {
+                    cologne_id: {
+                        'name': 'Köln',
+                        'denonym': 'Kölner',
+                    },
+                    munich_id: {
+                        'name': 'München',
+                        'denonym': 'Münchner',
+                    },
+                    istanbul_id: {
+                        'name': 'Ïstanbul',
+                        'denonym': 'Ïstanbulisch',
+                    },
+                    izmir_id: {
+                        'name': 'Ïzmir',
+                        'denonym': 'Ïzmirisch',
+                    },
+                    mumbai_id: {
+                        'name': 'Mumbaï',
+                        'denonym': 'Mumbäisch',
+                    },
+                    new_delhi_id: {
+                        'name': 'Neu-Delhi',
+                        'denonym': 'Neu-Delhisch',
+                    },
+                    seoul_id: {
+                        'name': 'Seül',
+                        'denonym': 'Seülisch',
+                    },
+                    ulsan_id: {
+                        'name': 'Ulsän',
+                        'denonym': 'Ulsänisch',
+                    },
+                }
+            }
         )
