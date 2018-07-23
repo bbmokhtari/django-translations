@@ -353,6 +353,7 @@ def get_translations(context, *relations, lang=None):
     filters = queries.pop()
     for query in queries:
         filters |= query
+
     queryset = translations.models.Translation.objects.filter(
         language=lang
     ).filter(
@@ -366,8 +367,23 @@ def get_dictionary(translations):
     """
     Return a dictionary which contains the translations.
 
-    The end result is something like this:
-    ``{content_type_id: {object_id: {field1: text1, field2: text2}}}``
+    The end result is something like this::
+
+        {
+            content_type_id_1: {
+                object_id_1: {
+                    field_1: text_1,
+                    field_2: ...
+                },
+                object_id_2: ...
+            },
+            content_type_id_2: ...
+        }
+
+    The ``content_type_id`` represents the
+    :class:`django.contrib.contenttypes.models.ContentType` IDs, ``object_id``
+    represents the IDs of the objects in that content type, ``field``
+    represents the name of the field for that object.
 
     :param translations: the translations to process
     :type translations: ~django.db.models.query.QuerySet
@@ -376,9 +392,23 @@ def get_dictionary(translations):
 
     >>> from places.models import Continent, Country, City
     >>> from translations.models import Translation
-    >>> europe = Continent.objects.create(code="EU", name="Europe")
-    >>> europe.translations.create(field="name", language="de", text="Europa")
+    >>> europe = Continent.objects.create(
+    ...     code="EU",
+    ...     name="Europe"
+    ...     denonym="European",
+    ... )
+    >>> europe.translations.create(
+    ...     field="name",
+    ...     language="de",
+    ...     text="Europa"
+    ... )
     <Translation: Europe: Europa>
+    >>> europe.translations.create(
+    ...     field="denonym",
+    ...     language="de",
+    ...     text="Europäisch"
+    ... )
+    <Translation: European: Europäisch>
     >>> germany = Country.objects.create(
     ...     code="DE",
     ...     name="Germany",
@@ -394,7 +424,7 @@ def get_dictionary(translations):
     >>> cologne.translations.create(field="name", language="de", text="Köln")
     <Translation: Cologne: Köln>
     >>> get_dictionary(Translation.objects.all())
-    {2: {'1': {'name': 'Europa'}},
+    {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
     3: {'1': {'name': 'Deutschland'}},
     1: {'1': {'name': 'Köln'}}}
     """
@@ -405,11 +435,8 @@ def get_dictionary(translations):
         object_id = translation.object_id
         field = translation.field
 
-        if content_type_id not in dictionary.keys():
-            dictionary[content_type_id] = {}
-
-        if object_id not in dictionary[content_type_id].keys():
-            dictionary[content_type_id][object_id] = {}
+        dictionary.setdefault(content_type_id, {})
+        dictionary[content_type_id].setdefault(object_id, {})
 
         dictionary[content_type_id][object_id][field] = translation.text
 
