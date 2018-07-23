@@ -381,8 +381,8 @@ def get_dictionary(translations):
         }
 
     The ``content_type_id`` represents the
-    :class:`django.contrib.contenttypes.models.ContentType` IDs, ``object_id``
-    represents the IDs of the objects in that content type, ``field``
+    :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
+    represents the ID of the object in that content type, ``field``
     represents the name of the field for that object.
 
     :param translations: the translations to process
