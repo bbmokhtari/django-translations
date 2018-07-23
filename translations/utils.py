@@ -443,22 +443,22 @@ def get_dictionary(translations):
     return dictionary
 
 
-def get_hierarchy(*relations):
+def get_relations_details(*relations):
     """
-    Return a hierarchy of the relations.
+    Return the details of the relations.
 
-    :param relations: The relations to hierarchize
+    :param relations: The relations to get the details of
     :type relations: list(str)
-    :return: The relations hierarchy
-    :rtype: dict(str, list(str))
+    :return: The relations details
+    :rtype: dict(str, dict)
 
-    >>> get_hierarchy()
+    >>> get_relations_details()
     {}
-    >>> get_hierarchy('countries')
+    >>> get_relations_details('countries')
     {'countries': {'included': True, 'relations': []}}
-    >>> get_hierarchy('countries__cities')
+    >>> get_relations_details('countries__cities')
     {'countries': {'included': False, 'relations': ['cities']}}
-    >>> get_hierarchy('countries', 'countries__cities')
+    >>> get_relations_details('countries', 'countries__cities')
     {'countries': {'included': True, 'relations': ['cities']}}
     """
     hierarchy = {}
@@ -469,11 +469,10 @@ def get_hierarchy(*relations):
         root = parts[0]
         nest = LOOKUP_SEP.join(parts[1:])
 
-        if root not in hierarchy.keys():
-            hierarchy[root] = {
-                "included": False,
-                "relations": []
-            }
+        hierarchy.setdefault(root, {
+            "included": False,
+            "relations": []
+        })
 
         if nest:
             hierarchy[root]["relations"].append(nest)
@@ -518,7 +517,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
             else:
                 translate_obj(context)
 
-    hierarchy = get_hierarchy(*relations)
+    hierarchy = get_relations_details(*relations)
     if hierarchy:
         def translate_rel(obj):
             for (relation, details) in hierarchy.items():
