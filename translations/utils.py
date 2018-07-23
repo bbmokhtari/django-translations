@@ -355,7 +355,9 @@ def get_translations(context, *relations, lang=None):
         filters |= query
     queryset = translations.models.Translation.objects.filter(
         language=lang
-    ).filter(filters).distinct()
+    ).filter(
+        filters
+    ).distinct().select_related('content_type')
 
     return queryset
 
