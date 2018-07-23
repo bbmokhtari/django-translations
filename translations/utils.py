@@ -385,9 +385,9 @@ def get_dictionary(translations):
     represents the ID of the object in that content type, ``field``
     represents the name of the field for that object.
 
-    :param translations: the translations to process
+    :param translations: The translations to process
     :type translations: ~django.db.models.query.QuerySet
-    :return: the dictionary of translations
+    :return: The dictionary of translations
     :rtype: dict(int, dict(str, dict(str, str)))
 
     >>> from places.models import Continent, Country, City
@@ -447,6 +447,11 @@ def get_hierarchy(*relations):
     """
     Return a hierarchy of the relations.
 
+    :param relations: The relations to hierarchize
+    :type relations: list(str)
+    :return: The relations hierarchy
+    :rtype: dict(str, list(str))
+
     >>> get_hierarchy()
     {}
     >>> get_hierarchy('countries')
@@ -455,11 +460,6 @@ def get_hierarchy(*relations):
     {'countries': {'included': False, 'relations': ['cities']}}
     >>> get_hierarchy('countries', 'countries__cities')
     {'countries': {'included': True, 'relations': ['cities']}}
-
-    :param relations: a list of relations.
-    :type relations: list(str)
-    :return: the relations hierarchy
-    :rtype: dict(str, list(str))
     """
     hierarchy = {}
 
