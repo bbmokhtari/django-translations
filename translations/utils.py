@@ -18,6 +18,8 @@ This module contains the utilities for the Translations app.
     language.
 :func:`get_dictionary`
     Return a dictionary which contains the translations.
+:func:`get_relations_details`
+    Return the details of the relations.
 """
 
 from django.db import models, transaction
