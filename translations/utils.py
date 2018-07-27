@@ -461,7 +461,7 @@ def get_relations_details(*relations):
     >>> get_relations_details('countries', 'countries__cities')
     {'countries': {'included': True, 'relations': ['cities']}}
     """
-    hierarchy = {}
+    details = {}
 
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
@@ -469,17 +469,17 @@ def get_relations_details(*relations):
         root = parts[0]
         nest = LOOKUP_SEP.join(parts[1:])
 
-        hierarchy.setdefault(root, {
+        details.setdefault(root, {
             "included": False,
             "relations": []
         })
 
         if nest:
-            hierarchy[root]["relations"].append(nest)
+            details[root]["relations"].append(nest)
         else:
-            hierarchy[root]["included"] = True
+            details[root]["included"] = True
 
-    return hierarchy
+    return details
 
 
 def translate(context, *relations, lang=None, dictionary=None, included=True):
@@ -517,10 +517,10 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
             else:
                 translate_obj(context)
 
-    hierarchy = get_relations_details(*relations)
-    if hierarchy:
+    details = get_relations_details(*relations)
+    if details:
         def translate_rel(obj):
-            for (relation, details) in hierarchy.items():
+            for (relation, details) in details.items():
                 value = getattr(obj, relation, None)
                 if value is not None:
                     if isinstance(value, models.Manager):
