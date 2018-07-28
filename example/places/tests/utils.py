@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import get_validated_language, \
     get_validated_context_info, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
-    get_dictionary
+    get_dictionary, get_relations_details
 
 from translations.models import Translation
 
@@ -2784,5 +2784,102 @@ class GetDictionaryTest(TestCase):
                         'denonym': 'Ulsänisch',
                     },
                 }
+            }
+        )
+
+
+class GetRelationsDetailsTest(TestCase):
+
+    def test_no_relations(self):
+        self.assertDictEqual(
+            get_relations_details(),
+            {}
+        )
+
+    def test_one_included_relation(self):
+        self.assertEqual(
+            get_relations_details('countries'),
+            {
+                'countries': {
+                    'included': True,
+                    'relations': []
+                }
+            }
+        )
+
+    def test_many_included_relations(self):
+        self.assertEqual(
+            get_relations_details('countries', 'unions'),
+            {
+                'countries': {
+                    'included': True,
+                    'relations': []
+                },
+                'unions': {
+                    'included': True,
+                    'relations': []
+                },
+            }
+        )
+
+    def test_one_nested_relation(self):
+        self.assertEqual(
+            get_relations_details('countries__cities'),
+            {
+                'countries': {
+                    'included': False,
+                    'relations': ['cities']
+                }
+            }
+        )
+
+    def test_many_nested_relations(self):
+        self.assertEqual(
+            get_relations_details('countries__cities', 'countries__politic'),
+            {
+                'countries': {
+                    'included': False,
+                    'relations': [
+                        'cities',
+                        'politic'
+                    ]
+                }
+            }
+        )
+
+    def test_one_included_one_nested_relations(self):
+        self.assertEqual(
+            get_relations_details('countries', 'countries__cities'),
+            {
+                'countries': {
+                    'included': True,
+                    'relations': [
+                        'cities'
+                    ]
+                }
+            }
+        )
+
+    def test_many_included_one_nested_relations(self):
+        self.assertEqual(
+            get_relations_details(
+                'countries',
+                'countries__cities',
+                'unions',
+                'unions__countries'
+            ),
+            {
+                'countries': {
+                    'included': True,
+                    'relations': [
+                        'cities'
+                    ]
+                },
+                'unions': {
+                    'included': True,
+                    'relations': [
+                        'countries'
+                    ]
+                },
             }
         )
