@@ -2796,9 +2796,11 @@ class GetRelationsDetailsTest(TestCase):
             {}
         )
 
-    def test_one_included_relation(self):
+    def test_one_included_no_nested_relations(self):
         self.assertEqual(
-            get_relations_details('countries'),
+            get_relations_details(
+                'countries'
+            ),
             {
                 'countries': {
                     'included': True,
@@ -2807,9 +2809,12 @@ class GetRelationsDetailsTest(TestCase):
             }
         )
 
-    def test_many_included_relations(self):
+    def test_many_included_no_nested_relations(self):
         self.assertEqual(
-            get_relations_details('countries', 'unions'),
+            get_relations_details(
+                'countries',
+                'unions'
+            ),
             {
                 'countries': {
                     'included': True,
@@ -2822,9 +2827,11 @@ class GetRelationsDetailsTest(TestCase):
             }
         )
 
-    def test_one_nested_relation(self):
+    def test_one_unincluded_one_nested_relation(self):
         self.assertEqual(
-            get_relations_details('countries__cities'),
+            get_relations_details(
+                'countries__cities'
+            ),
             {
                 'countries': {
                     'included': False,
@@ -2833,15 +2840,62 @@ class GetRelationsDetailsTest(TestCase):
             }
         )
 
-    def test_many_nested_relations(self):
+    def test_many_unincluded_one_nested_relation(self):
         self.assertEqual(
-            get_relations_details('countries__cities', 'countries__politic'),
+            get_relations_details(
+                'countries__cities',
+                'unions__countries',
+            ),
+            {
+                'countries': {
+                    'included': False,
+                    'relations': ['cities']
+                },
+                'unions': {
+                    'included': False,
+                    'relations': ['countries']
+                }
+            }
+        )
+
+    def test_one_uincluded_many_nested_relations(self):
+        self.assertEqual(
+            get_relations_details(
+                'countries__cities',
+                'countries__currency'
+            ),
             {
                 'countries': {
                     'included': False,
                     'relations': [
                         'cities',
-                        'politic'
+                        'currency'
+                    ]
+                }
+            }
+        )
+
+    def test_many_uincluded_many_nested_relations(self):
+        self.assertEqual(
+            get_relations_details(
+                'countries__cities',
+                'countries__currency',
+                'unions__countries',
+                'unions__currency'
+            ),
+            {
+                'countries': {
+                    'included': False,
+                    'relations': [
+                        'cities',
+                        'currency'
+                    ]
+                },
+                'unions': {
+                    'included': False,
+                    'relations': [
+                        'countries',
+                        'currency'
                     ]
                 }
             }
@@ -2849,7 +2903,10 @@ class GetRelationsDetailsTest(TestCase):
 
     def test_one_included_one_nested_relations(self):
         self.assertEqual(
-            get_relations_details('countries', 'countries__cities'),
+            get_relations_details(
+                'countries',
+                'countries__cities'
+            ),
             {
                 'countries': {
                     'included': True,
@@ -2879,6 +2936,52 @@ class GetRelationsDetailsTest(TestCase):
                     'included': True,
                     'relations': [
                         'countries'
+                    ]
+                },
+            }
+        )
+
+    def test_one_included_many_nested_relations(self):
+        self.assertEqual(
+            get_relations_details(
+                'countries',
+                'countries__cities',
+                'countries__currency'
+            ),
+            {
+                'countries': {
+                    'included': True,
+                    'relations': [
+                        'cities',
+                        'currency'
+                    ]
+                }
+            }
+        )
+
+    def test_many_included_many_nested_relations(self):
+        self.assertEqual(
+            get_relations_details(
+                'countries',
+                'countries__cities',
+                'countries__currency',
+                'unions',
+                'unions__countries',
+                'unions__currency'
+            ),
+            {
+                'countries': {
+                    'included': True,
+                    'relations': [
+                        'cities',
+                        'currency'
+                    ]
+                },
+                'unions': {
+                    'included': True,
+                    'relations': [
+                        'countries',
+                        'currency'
                     ]
                 },
             }
