@@ -19,6 +19,8 @@ This module contains the utilities for the Translations app.
     Return a dictionary which contains the translations.
 :func:`get_relations_details`
     Return the details of the relations.
+:func:`translate`
+    Translate the context.
 """
 
 from django.db import models, transaction
@@ -483,6 +485,24 @@ def get_relations_details(*relations):
 
 
 def translate(context, *relations, lang=None, dictionary=None, included=True):
+    """
+    Translate the context.
+
+    :param context: The context to translate.
+    :type context: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :param relations: The relations of the context to translate
+    :type relations: list(str)
+    :param lang: The language to translate the context and its relations in,
+        ``None`` means the current active language
+    :type lang: str or None
+    :raise ValueError: If the language code is not included in
+        the :data:`~django.conf.settings.LANGUAGES` settings
+    :raise TypeError: If the context is neither a model instance nor
+        an iterable of model instances
+    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+        pointing to the fields that don't exist
+    """
     lang = get_translation_language(lang)
     model, iterable = get_context_details(context)
 
