@@ -502,7 +502,12 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
     :param lang: The language to translate the context and its relations in,
         ``None`` means the current active language
     :type lang: str or None
-    :param dictionary: The dictionary which is
+    :param dictionary: The dictionary to use for translation, ``None`` means
+        create the dictionary automatically
+    :type dictionary: dict(int, dict(str, dict(str, str))) or None
+    :param included: Whether the context should be translated itself along
+        with the relations or not, the default is ``True``
+    :type included: bool
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` settings
     :raise TypeError: If the context is neither a model instance nor
