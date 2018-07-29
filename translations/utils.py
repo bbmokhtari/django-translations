@@ -516,9 +516,10 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
         pointing to the fields that don't exist
 
     .. note::
-       Always use :meth:`~django.db.models.query.QuerySet.select_related` and
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` for fetching
-       the relations of the context before using :func:`translate`.
+       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects` for fetching the
+       relations of the context before using :func:`translate`.
     """
     lang = get_translation_language(lang)
     model, iterable = get_context_details(context)
