@@ -4,10 +4,9 @@ This module contains the utilities for the Translations app.
 .. rubric:: Functions:
 
 :func:`get_translation_language`
-    Return the validated given language code or the current active language
-    code.
+    Return the given language code or the current active language code.
 :func:`get_context_details`
-    Return the model and iteration information about the validated context.
+    Return the model and iteration details of the context.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
 :func:`get_translations_reverse_relation`
@@ -36,8 +35,7 @@ __docformat__ = 'restructuredtext'
 
 def get_translation_language(lang=None):
     """
-    Return the validated given language code or the current active language
-    code.
+    Return the given language code or the current active language code.
 
     :param lang: The language code to validate, ``None`` means the current
         active language
@@ -74,7 +72,7 @@ def get_translation_language(lang=None):
 
 def get_context_details(context):
     """
-    Return the model and iteration information about the validated context.
+    Return the model and iteration details of the context.
 
     :param context: The context to validate
     :type context: ~django.db.models.Model or
