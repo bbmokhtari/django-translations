@@ -3,7 +3,7 @@ This module contains the utilities for the Translations app.
 
 .. rubric:: Functions:
 
-:func:`get_validated_language`
+:func:`get_translation_language`
     Return the validated given language code or the current active language
     code.
 :func:`get_validated_context_info`
@@ -34,7 +34,7 @@ import translations.models
 __docformat__ = 'restructuredtext'
 
 
-def get_validated_language(lang=None):
+def get_translation_language(lang=None):
     """
     Return the validated given language code or the current active language
     code.
@@ -48,16 +48,16 @@ def get_validated_language(lang=None):
         the :data:`~django.conf.settings.LANGUAGES` settings
 
     >>> from django.utils.translation import activate
-    >>> from translations.utils import get_validated_language
+    >>> from translations.utils import get_translation_language
     >>> # An already active language
     >>> activate('en')
-    >>> get_validated_language()
+    >>> get_translation_language()
     'en'
     >>> # A custom language
-    >>> get_validated_language('de')
+    >>> get_translation_language('de')
     'de'
     >>> # A language that doesn't exist in `LANGUAGES`
-    >>> get_validated_language('xx')
+    >>> get_translation_language('xx')
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     ValueError: The language code `xx` is not supported.
@@ -320,7 +320,7 @@ def get_translations(context, *relations, lang=None):
       File "<stdin>", line 1, in <module>
     django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
-    lang = get_validated_language(lang)
+    lang = get_translation_language(lang)
     model, iterable = get_validated_context_info(context)
 
     if model is None:
@@ -485,7 +485,7 @@ def get_relations_details(*relations):
 
 
 def translate(context, *relations, lang=None, dictionary=None, included=True):
-    lang = get_validated_language(lang)
+    lang = get_translation_language(lang)
     model, iterable = get_validated_context_info(context)
 
     if model is None:
@@ -543,7 +543,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
 
 
 def update_translations(context, lang=None):
-    lang = get_validated_language(lang)
+    lang = get_translation_language(lang)
     model, iterable = get_validated_context_info(context)
 
     # ------------ renew transaction

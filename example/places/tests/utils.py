@@ -4,7 +4,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate, deactivate
 from django.contrib.contenttypes.models import ContentType
 
-from translations.utils import get_validated_language, \
+from translations.utils import get_translation_language, \
     get_validated_context_info, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
     get_dictionary, get_relations_details
@@ -17,13 +17,13 @@ from .samples import create_continent, create_country, create_city
 
 
 class GetValidatedLanguageTest(TestCase):
-    """Tests for `get_validated_language`."""
+    """Tests for `get_translation_language`."""
 
     def test_active_lang(self):
         """Make sure it works with an active language."""
         activate('en')
         self.assertEqual(
-            get_validated_language(),
+            get_translation_language(),
             'en'
         )
 
@@ -31,21 +31,21 @@ class GetValidatedLanguageTest(TestCase):
         """Make sure it works with a new active language."""
         activate('de')
         self.assertEqual(
-            get_validated_language(),
+            get_translation_language(),
             'de'
         )
 
     def test_valid_lang(self):
         """Make sure it works with a valid language code."""
         self.assertEqual(
-            get_validated_language('de'),
+            get_translation_language('de'),
             'de'
         )
 
     def test_invalid_lang(self):
         """Make sure it raises on an invalid language code."""
         with self.assertRaises(ValueError) as error:
-            get_validated_language('xx')
+            get_translation_language('xx')
         self.assertEqual(
             error.exception.args[0],
             "The language code `xx` is not supported."
