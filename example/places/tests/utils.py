@@ -5,7 +5,7 @@ from django.utils.translation import activate, deactivate
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import get_translation_language, \
-    get_validated_context_info, get_reverse_relation, \
+    get_context_details, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
     get_dictionary, get_relations_details
 
@@ -53,13 +53,13 @@ class GetValidatedLanguageTest(TestCase):
 
 
 class GetValidatedContextInfoTest(TestCase):
-    """Tests for `get_validated_context_info`."""
+    """Tests for `get_context_details`."""
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
         europe = create_continent("europe")
         self.assertEqual(
-            get_validated_context_info(europe),
+            get_context_details(europe),
             (Continent, False)
         )
 
@@ -69,7 +69,7 @@ class GetValidatedContextInfoTest(TestCase):
         create_continent("asia")
         continents = Continent.objects.all()
         self.assertEqual(
-            get_validated_context_info(continents),
+            get_context_details(continents),
             (Continent, True)
         )
 
@@ -79,14 +79,14 @@ class GetValidatedContextInfoTest(TestCase):
         continents.append(create_continent("europe"))
         continents.append(create_continent("asia"))
         self.assertEqual(
-            get_validated_context_info(continents),
+            get_context_details(continents),
             (Continent, True)
         )
 
     def test_empty_list(self):
         """Make sure it works with an empty list."""
         self.assertEqual(
-            get_validated_context_info([]),
+            get_context_details([]),
             (None, True)
         )
 
@@ -94,7 +94,7 @@ class GetValidatedContextInfoTest(TestCase):
         """Make sure it works with an empty queryset."""
         continents = Continent.objects.none()
         self.assertEqual(
-            get_validated_context_info(continents),
+            get_context_details(continents),
             (None, True)
         )
 
@@ -112,7 +112,7 @@ class GetValidatedContextInfoTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            get_validated_context_info(behzad)
+            get_context_details(behzad)
         self.assertEqual(
             error.exception.args[0],
             "`Behzad` is neither a model instance nor an iterable of model instances."
@@ -134,7 +134,7 @@ class GetValidatedContextInfoTest(TestCase):
         people.append(Person('Behzad'))
         people.append(Person('Max'))
         with self.assertRaises(TypeError) as error:
-            get_validated_context_info(people)
+            get_context_details(people)
         self.assertEqual(
             error.exception.args[0],
             "`[Behzad, Max]` is neither a model instance nor an iterable of model instances."

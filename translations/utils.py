@@ -6,7 +6,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translation_language`
     Return the validated given language code or the current active language
     code.
-:func:`get_validated_context_info`
+:func:`get_context_details`
     Return the model and iteration information about the validated context.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
@@ -72,7 +72,7 @@ def get_translation_language(lang=None):
     return lang
 
 
-def get_validated_context_info(context):
+def get_context_details(context):
     """
     Return the model and iteration information about the validated context.
 
@@ -85,25 +85,25 @@ def get_validated_context_info(context):
         an iterable of model instances
 
     >>> from places.models import Continent
-    >>> from translations.utils import get_validated_context_info
+    >>> from translations.utils import get_context_details
     >>> # A model instance
     >>> europe = Continent.objects.create(code="EU", name="Europe")
-    >>> get_validated_context_info(europe)
+    >>> get_context_details(europe)
     (<class 'places.models.Continent'>, False)
     >>> # A model iterable
     >>> continents = Continent.objects.all()
-    >>> get_validated_context_info(continents)
+    >>> get_context_details(continents)
     (<class 'places.models.Continent'>, True)
     >>> # An empty queryset
     >>> continents.delete()
     (1, {'translations.Translation': 0, 'places.Continent': 1})
-    >>> get_validated_context_info(continents)
+    >>> get_context_details(continents)
     (None, True)
     >>> # An empty list
-    >>> get_validated_context_info([])
+    >>> get_context_details([])
     (None, True)
     >>> # An invalid type
-    >>> get_validated_context_info(123)
+    >>> get_context_details(123)
     Traceback (most recent call last):
       File "<stdin>", line 1, in <module>
     TypeError: `123` is neither a model instance nor an iterable of model instances.
@@ -321,7 +321,7 @@ def get_translations(context, *relations, lang=None):
     django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
     lang = get_translation_language(lang)
-    model, iterable = get_validated_context_info(context)
+    model, iterable = get_context_details(context)
 
     if model is None:
         return translations.models.Translation.objects.none()
@@ -486,7 +486,7 @@ def get_relations_details(*relations):
 
 def translate(context, *relations, lang=None, dictionary=None, included=True):
     lang = get_translation_language(lang)
-    model, iterable = get_validated_context_info(context)
+    model, iterable = get_context_details(context)
 
     if model is None:
         return
@@ -544,7 +544,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
 
 def update_translations(context, lang=None):
     lang = get_translation_language(lang)
-    model, iterable = get_validated_context_info(context)
+    model, iterable = get_context_details(context)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):

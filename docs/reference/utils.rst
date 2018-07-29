@@ -7,7 +7,7 @@ Utilities
    -----
 
    .. autofunction:: get_translation_language
-   .. autofunction:: get_validated_context_info
+   .. autofunction:: get_context_details
    .. autofunction:: get_reverse_relation
    .. autofunction:: get_translations_reverse_relation
    .. autofunction:: get_translations
