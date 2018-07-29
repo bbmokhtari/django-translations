@@ -488,7 +488,13 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
     """
     Translate the context.
 
-    :param context: The context to translate.
+    This function translates the context and its relations using a dictionary.
+    If the dictionary isn't provided it will fetch all the translations for
+    the context and its relations in a language using :func:`get_translations`
+    and convert them to a dictionary using :func:`get_dictionary` and use that
+    for translation.
+
+    :param context: The context to translate
     :type context: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the context to translate
@@ -496,6 +502,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
     :param lang: The language to translate the context and its relations in,
         ``None`` means the current active language
     :type lang: str or None
+    :param dictionary: The dictionary which is
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` settings
     :raise TypeError: If the context is neither a model instance nor
