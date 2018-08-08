@@ -4,7 +4,7 @@ python:
 
 before_install: true
 
-install: pip install requirements.txt
+install: pip install -r requirements.txt
 
 before_script:
   - cd example
