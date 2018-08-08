@@ -1,6 +1,9 @@
 Translations
 ============
 
+.. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
+    :target: https://travis-ci.com/perplexionist/django-translations
+
 Translations is a Django application which provides support for model
 translation.
 
