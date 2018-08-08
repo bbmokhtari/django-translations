@@ -2,6 +2,14 @@ language: python
 python:
   - 3.6
 
+git:
+  depth: 3
+
+branches:
+  only:
+    - master
+    - /^(\d+\.)?(\d+\.)?\d+(-\w+)*$/
+
 before_install: true
 
 install: pip install -r requirements.txt
