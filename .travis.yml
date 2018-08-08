@@ -12,10 +12,9 @@ before_script:
 
 script:
   - python manage.py test
-  - cd ../docs && make doctest
 
 after_success:
-  - make html
+  - cd ../docs && make html
 
 after_failure: true
 
