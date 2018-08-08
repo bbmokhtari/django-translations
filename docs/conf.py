@@ -36,10 +36,13 @@ project = 'Django Translations'
 copyright = '2018, Behzad B. Mokhtari'
 author = 'Behzad B. Mokhtari'
 
+# By GitHub and Travis tagging
+TRAVIS_BRANCH = os.environ.get('TRAVIS_BRANCH', 'master')
+
 # The short X.Y version
-version = ''
+version = TRAVIS_BRANCH # TODO: remove rc, beta, etc.
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = TRAVIS_BRANCH
 
 
 # -- General configuration ---------------------------------------------------
