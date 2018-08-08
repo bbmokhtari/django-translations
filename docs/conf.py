@@ -37,7 +37,7 @@ copyright = '2018, Behzad B. Mokhtari'
 author = 'Behzad B. Mokhtari'
 
 # By GitHub and Travis tagging
-TRAVIS_BRANCH = os.environ.get('TRAVIS_BRANCH', 'master')
+TRAVIS_BRANCH = os.environ.get('TRAVIS_BRANCH', '(master)')
 
 # The short X.Y version
 version = TRAVIS_BRANCH # TODO: remove rc, beta, etc.
