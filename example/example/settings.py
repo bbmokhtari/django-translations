@@ -94,7 +94,7 @@ def get_database_conf():
 
     return conf
 
-print(get_database_conf())
+
 DATABASES = {
     'default': get_database_conf()
 }
