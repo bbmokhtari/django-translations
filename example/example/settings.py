@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'example.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DEFAULT_ENGINE = 'sqlite3'
-DEFAULT_NAME = os.path.join(BASE_DIR, 'db.sqlite3'),
+DEFAULT_NAME = os.path.join(BASE_DIR, 'db.sqlite3')
 
 ENGINE = os.environ.get('EXAMPLE_ENGINE', DEFAULT_ENGINE)
 NAME = os.environ.get('EXAMPLE_NAME', DEFAULT_NAME)
@@ -94,7 +94,7 @@ def get_database_conf():
 
     return conf
 
-
+print(get_database_conf())
 DATABASES = {
     'default': get_database_conf()
 }
