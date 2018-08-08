@@ -1,0 +1,38 @@
+language: python
+python:
+  - 3.6
+
+git:
+  depth: 3
+
+branches:
+  only:
+    - master
+    - /^(\d+\.)?(\d+\.)?\d+(-\w+)*$/
+
+before_install: true
+
+install: pip install -r requirements.txt
+
+before_script:
+  - cd example
+  - python manage.py migrate
+
+script:
+  - python manage.py test
+
+after_success:
+  - cd ../docs && make html
+
+after_failure: true
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  local-dir: docs/_build/html
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
+  on:
+    branch: gh-pages
+
+after_script: true

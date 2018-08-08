@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'example.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DEFAULT_ENGINE = 'sqlite3'
-DEFAULT_NAME = os.path.join(BASE_DIR, 'db.sqlite3'),
+DEFAULT_NAME = os.path.join(BASE_DIR, 'db.sqlite3')
 
 ENGINE = os.environ.get('EXAMPLE_ENGINE', DEFAULT_ENGINE)
 NAME = os.environ.get('EXAMPLE_NAME', DEFAULT_NAME)
@@ -139,6 +139,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Logging settings
+LOG_LEVEL = os.environ.get('LOG_LEVEL', 'INFO')
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -150,11 +151,11 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': LOG_LEVEL,
         },
         'django.db': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': LOG_LEVEL,
         },
     },
 }
