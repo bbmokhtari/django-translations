@@ -30,7 +30,9 @@ jobs:
       python: 3.6
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
-      install: pip install sphinx
+      install:
+        - pip install django==2.0
+        - pip install sphinx
       before_script: skip
       script: cd docs && make html
       deploy:
