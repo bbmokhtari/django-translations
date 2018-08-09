@@ -33,8 +33,6 @@ jobs:
         - EXAMPLE_NAME=example
         - EXAMPLE_USER=root
       before_install:
-        - mysql -e 'SET NAMES "utf8";'
-        - mysql -e 'CHARSET "utf8";'
         - mysql -e 'CREATE DATABASE example CHARACTER SET utf8 COLLATE utf8_general_ci;'
       install:
         - pip install django==2.0
