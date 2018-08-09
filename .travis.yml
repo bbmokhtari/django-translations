@@ -2,7 +2,6 @@ language: python
 python:
   - 3.5
   - 3.6
-  - 3.7
 
 git:
   depth: 3
@@ -35,6 +34,6 @@ deploy:
   github-token: $GITHUB_TOKEN
   keep-history: true
   on:
-    branch: master
+    branch: /^(\d+\.)?(\d+\.)?\d+(-\w+)*$/
 
 after_script: true
