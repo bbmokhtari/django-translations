@@ -92,11 +92,6 @@ def get_database_conf():
     if PASSWORD:
         conf['PASSWORD'] = PASSWORD
 
-    if ENGINE == 'mysql':
-        conf['OPTIONS'] = {
-            'read_default_file': os.path.join(BASE_DIR, 'my.cnf'),
-        }
-
     return conf
 
 
