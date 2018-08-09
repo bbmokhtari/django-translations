@@ -25,32 +25,6 @@ jobs:
       install: pip install django==2.0
       before_script: cd example && python manage.py migrate
       script: python manage.py test
-    - name: "Python 3.5, Django 2.0, MySQL - Unit Test"
-      sudo: required
-      dist: trusty
-      services: mysql
-      addons:
-        apt:
-          sources:
-            - mysql-8.0-trusty
-          packages:
-            - mysql-server
-            - mysql-client
-      python: 3.5
-      env:
-        - EXAMPLE_ENGINE=mysql
-        - EXAMPLE_NAME=example
-        - EXAMPLE_USER=root
-      before_install:
-        - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
-        - sudo mysql_upgrade
-        - sudo service mysql restart
-        - mysql -e 'CREATE DATABASE example CHARACTER SET utf8 COLLATE utf8_general_ci;'
-      install:
-        - pip install django==2.0
-        - pip install mysqlclient
-      before_script: cd example && python manage.py migrate
-      script: python manage.py test
     - stage: deploy
       name: "Generate Doc & Upload to GitHub Pages"
       python: 3.6
