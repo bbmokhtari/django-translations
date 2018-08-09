@@ -26,7 +26,8 @@ jobs:
       before_script: cd example && python manage.py migrate
       script: python manage.py test
     - name: "Python 3.5, Django 2.0, MySQL - Unit Test"
-      sudo: enabled
+      sudo: required
+      dist: trusty
       python: 3.5
       services: mysql
       env:
