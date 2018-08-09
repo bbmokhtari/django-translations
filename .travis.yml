@@ -1,7 +1,15 @@
 language: python
-python:
-  - 3.5
-  - 3.6
+
+matrix:
+  include:
+    - name: "Python 3.5, Django 2.0, SQLite"
+      python: 3.5
+      env:
+        - EXAMPLE_ENGINE=sqlite3
+    - name: "Python 3.6, Django 2.0, SQLite"
+      python: 3.6
+      env:
+        - EXAMPLE_ENGINE=sqlite3
 
 git:
   depth: 3
