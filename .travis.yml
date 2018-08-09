@@ -32,7 +32,7 @@ jobs:
         - EXAMPLE_ENGINE=mysql
         - EXAMPLE_NAME=example
         - EXAMPLE_USER=root
-      before_install: mysql -e 'CREATE DATABASE example;'
+      before_install: mysql -e 'CREATE DATABASE example CHARACTER SET utf8 COLLATE utf8_general_ci;'
       install:
         - pip install django==2.0
         - pip install mysqlclient
