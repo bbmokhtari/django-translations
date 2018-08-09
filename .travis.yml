@@ -25,6 +25,19 @@ jobs:
       install: pip install django==2.0
       before_script: cd example && python manage.py migrate
       script: python manage.py test
+    - name: "Python 3.5, Django 2.0, MySQL - Unit Test"
+      python: 3.5
+      services: mysql
+      env:
+        - EXAMPLE_ENGINE=mysql
+        - EXAMPLE_NAME=example
+        - EXAMPLE_USER=root
+      before_install: mysql -e 'CREATE DATABASE example;'
+      install:
+        - pip install django==2.0
+        - pip install mysqlclient
+      before_script: cd example && python manage.py migrate
+      script: python manage.py test
     - stage: deploy
       name: "Generate Doc & Upload to GitHub Pages"
       python: 3.6
