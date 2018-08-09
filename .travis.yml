@@ -26,6 +26,7 @@ jobs:
       before_script: cd example && python manage.py migrate
       script: python manage.py test
     - name: "Python 3.5, Django 2.0, MySQL - Unit Test"
+      sudo: true
       python: 3.5
       services: mysql
       env:
@@ -33,6 +34,10 @@ jobs:
         - EXAMPLE_NAME=example
         - EXAMPLE_USER=root
       before_install:
+        - echo "[mysqld]" > /etc/mysql/my.cnf
+        - echo "character-set-server=utf8" >> /etc/mysql/my.cnf
+        - echo "collation-server=utf8_general_ci" >> /etc/mysql/my.cnf
+        - sudo service mysql restart
         - mysql -e 'CREATE DATABASE example CHARACTER SET utf8 COLLATE utf8_general_ci;'
       install:
         - pip install django==2.0
