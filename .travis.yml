@@ -1,3 +1,13 @@
+sudo: true
+
+addons:
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+      - mysql-client
+
 language: python
 
 git:
