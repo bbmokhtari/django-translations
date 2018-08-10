@@ -1,5 +1,5 @@
 import setuptools
-import info
+from info import info
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()

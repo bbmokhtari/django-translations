@@ -32,7 +32,12 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-from .. import info
+sys.path.insert(
+    0,
+    os.path.join(os.path.dirname(os.path.abspath('.')), 'info')
+)
+
+import info
 
 project = 'Django Translations'
 copyright = '{year}, {author}'.format(year=info.YEAR, author=info.AUTHOR)
