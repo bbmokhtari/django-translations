@@ -42,4 +42,4 @@ jobs:
         github-token: $GITHUB_TOKEN
         keep-history: true
         on:
-          branch: /^(\d+\.\d+\.\d+)((a|b|rc|\.dev|\.post)(\d+))?$/
+          tags: true
