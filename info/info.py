@@ -18,19 +18,23 @@ release_pattern = re.compile(
     r'$'
 )
 
-# Release: 1.0.0rc2
+# Release, e.g. `1.0.0rc2`
 RELEASE = os.environ['TRAVIS_TAG']
+
+# Semantic Version, e.g. `1.0.0` in case of `1.0.0rc2`
 VERSION = ''
+
+# Status, e.g. `rc` in case of `1.0.0rc2`
 STATUS = ''
+
+# Development Status, e.g. `5 - Production/Stable` in case of `1.0.0rc2`
 DEV_STATUS = ''
 
 if RELEASE:
     release_components = release_pattern.match(RELEASE).groupdict()
 
-    # Semantic Version: 1.0.0
     VERSION = release_components['version']
 
-    # Development Status: .dev | a | b | rc | `empty string` | .post
     STATUS = release_components['status']
 
     if STATUS == '.dev':
