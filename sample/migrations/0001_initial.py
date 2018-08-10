@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text='the name of the country', max_length=64, verbose_name='name')),
                 ('denonym', models.CharField(blank=True, help_text='the denonym of the country', max_length=64, verbose_name='denonym')),
                 ('code', models.CharField(help_text='the code of the country', max_length=2, unique=True, verbose_name='code')),
-                ('continent', models.ForeignKey(help_text='the continent of the country', on_delete=django.db.models.deletion.CASCADE, related_name='countries', to='places.Continent', verbose_name='continent')),
+                ('continent', models.ForeignKey(help_text='the continent of the country', on_delete=django.db.models.deletion.CASCADE, related_name='countries', to='sample.Continent', verbose_name='continent')),
             ],
             options={
                 'verbose_name': 'country',
@@ -54,6 +54,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='city',
             name='country',
-            field=models.ForeignKey(help_text='the country of the city', on_delete=django.db.models.deletion.CASCADE, related_name='cities', to='places.Country', verbose_name='country'),
+            field=models.ForeignKey(help_text='the country of the city', on_delete=django.db.models.deletion.CASCADE, related_name='cities', to='sample.Country', verbose_name='country'),
         ),
     ]

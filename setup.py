@@ -36,6 +36,12 @@ setuptools.setup(
         "Source": info["source"],
         "Tracker": info["tracker"],
     },
-    packages=setuptools.find_packages(exclude=["docs", "example"]),
+    packages=setuptools.find_packages(
+        exclude=[
+            'sample',
+            'sample.migrations',
+            'sample.tests',
+        ]
+    ),
     python_requires=">=3.5, <4",
 )

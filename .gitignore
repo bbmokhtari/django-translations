@@ -109,3 +109,6 @@ venv.bak/
 
 # generated config.json
 config.json
+
+# generated django project
+project

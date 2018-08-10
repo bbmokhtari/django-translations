@@ -11,7 +11,7 @@ from translations.utils import get_translation_language, \
 
 from translations.models import Translation
 
-from places.models import Continent, Country, City
+from sample.models import Continent, Country, City
 
 from .samples import create_continent, create_country, create_city
 
@@ -216,35 +216,35 @@ class GetTranslationsReverseRelationTest(TestCase):
         """Make sure it works with a simple relation."""
         self.assertEqual(
             get_translations_reverse_relation(Continent, 'countries'),
-            'places_country__continent'
+            'sample_country__continent'
         )
 
     def test_simple_reverse_relation(self):
         """Make sure it works with a simple relation in reverse."""
         self.assertEqual(
             get_translations_reverse_relation(Country, 'continent'),
-            'places_continent__countries'
+            'sample_continent__countries'
         )
 
     def test_nested_relation(self):
         """Make sure it works with a nested relation."""
         self.assertEqual(
             get_translations_reverse_relation(Continent, 'countries__cities'),
-            'places_city__country__continent'
+            'sample_city__country__continent'
         )
 
     def test_nested_reverse_relation(self):
         """Make sure it works with a nested relation in reverse."""
         self.assertEqual(
             get_translations_reverse_relation(City, 'country__continent'),
-            'places_continent__countries__cities'
+            'sample_continent__countries__cities'
         )
 
     def test_none_relation(self):
         """Make sure it works with None relation."""
         self.assertEqual(
             get_translations_reverse_relation(Continent),
-            'places_continent'
+            'sample_continent'
         )
 
     def test_empty_relation(self):
