@@ -43,7 +43,7 @@ jobs:
         keep-history: true
         on:
           tags: true
-    - name: "Generate Dist & Upload to PyPi"
+    - name: "Build Dist & Upload to PyPi"
       python: 3.6
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
@@ -52,6 +52,7 @@ jobs:
       script: skip
       deploy:
         provider: pypi
+        skip-cleanup: true
         user: perplexionist
         password: $PYPI_PASSWORD
         server: https://test.pypi.org/legacy/
