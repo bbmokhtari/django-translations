@@ -1,7 +1,12 @@
 prune docs
-prune example
+prune project
+prune sample
 
 graft translations
+
+exclude .travis.yml
+exclude config.py
+exclude create.py
 
 include config.json
 include LICENSE
