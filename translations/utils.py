@@ -84,19 +84,19 @@ def get_context_details(context):
     :raise TypeError: If the context is neither a model instance nor
         an iterable of model instances
 
-    >>> from places.models import Continent
+    >>> from sample.models import Continent
     >>> from translations.utils import get_context_details
     >>> # A model instance
     >>> europe = Continent.objects.create(code="EU", name="Europe")
     >>> get_context_details(europe)
-    (<class 'places.models.Continent'>, False)
+    (<class 'sample.models.Continent'>, False)
     >>> # A model iterable
     >>> continents = Continent.objects.all()
     >>> get_context_details(continents)
-    (<class 'places.models.Continent'>, True)
+    (<class 'sample.models.Continent'>, True)
     >>> # An empty queryset
     >>> continents.delete()
-    (1, {'translations.Translation': 0, 'places.Continent': 1})
+    (1, {'translations.Translation': 0, 'sample.Continent': 1})
     >>> get_context_details(continents)
     (None, True)
     >>> # An empty list
@@ -150,7 +150,7 @@ def get_reverse_relation(model, relation):
         pointing to the fields that don't exist
 
     >>> # Let's suppose we want a list of all the cities in Europe
-    >>> from places.models import Continent, Country, City
+    >>> from sample.models import Continent, Country, City
     >>> from translations.utils import get_reverse_relation
     >>> europe = Continent.objects.create(code="EU", name="Europe")
     >>> germany = Country.objects.create(
@@ -216,7 +216,7 @@ def get_translations_reverse_relation(model, relation=None):
         pointing to the fields that don't exist
 
     >>> # Let's suppose we want a list of all the cities translations
-    >>> from places.models import Continent, Country, City
+    >>> from sample.models import Continent, Country, City
     >>> from translations.models import Translation
     >>> from translations.utils import get_translations_reverse_relation
     >>> europe = Continent.objects.create(code="EU", name="Europe")
@@ -230,15 +230,15 @@ def get_translations_reverse_relation(model, relation=None):
     <Translation: Cologne: Köln>
     >>> # To get the city translations:
     >>> get_translations_reverse_relation(Continent, 'countries__cities')
-    'places_city__country__continent'
+    'sample_city__country__continent'
     >>> # Using this translations reverse relation we can query the
     >>> # `Translation` for the `City` with a `Continent`
-    >>> Translation.objects.filter(places_city__country__continent=europe)
+    >>> Translation.objects.filter(sample_city__country__continent=europe)
     <QuerySet [<Translation: Cologne: Köln>]>
     >>> # Done! Cities translations fetched.
     >>> # Translations reverse relation of a model
     >>> get_translations_reverse_relation(Continent)
-    'places_continent'
+    'sample_continent'
     >>> # An invalid relation of the model
     >>> get_translations_reverse_relation(Continent, 'countries__wrong')
     Traceback (most recent call last):
@@ -283,7 +283,7 @@ def get_translations(context, *relations, lang=None):
 
     >>> # Let's suppose we want the translations of a continent and
     >>> # its countries and cities
-    >>> from places.models import Continent, Country, City
+    >>> from sample.models import Continent, Country, City
     >>> from translations.utils import get_translations
     >>> europe = Continent.objects.create(code="EU", name="Europe")
     >>> europe.translations.create(field="name", language="de", text="Europa")
@@ -392,7 +392,7 @@ def get_dictionary(translations):
     :return: The dictionary of translations
     :rtype: dict(int, dict(str, dict(str, str)))
 
-    >>> from places.models import Continent, Country, City
+    >>> from sample.models import Continent, Country, City
     >>> from translations.models import Translation
     >>> europe = Continent.objects.create(
     ...     code="EU",
@@ -523,7 +523,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
 
     >>> # Let's suppose we want to translate a continent and
     >>> # its countries and cities
-    >>> from places.models import Continent, Country, City
+    >>> from sample.models import Continent, Country, City
     >>> from translations.utils import translate
     >>> # --------------------------------
     >>> # BUILD:

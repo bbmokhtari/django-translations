@@ -4,7 +4,7 @@
 
 # from translations.models import Translation
 
-# from places.models import Continent, Country, City
+# from sample.models import Continent, Country, City
 
 
 # class TranslationTest(TestCase):
