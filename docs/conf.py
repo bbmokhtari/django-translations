@@ -24,7 +24,7 @@ import sys
 import django
 
 sys.path.insert(
-    0, 
+    0,
     os.path.join(os.path.dirname(os.path.abspath('.')), 'example')
 )
 os.environ['DJANGO_SETTINGS_MODULE'] = 'example.settings'
@@ -32,17 +32,21 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-project = 'Django Translations'
-copyright = '2018, Behzad B. Mokhtari'
-author = 'Behzad B. Mokhtari'
+sys.path.insert(
+    0,
+    os.path.join(os.path.dirname(os.path.abspath('.')), 'info')
+)
 
-# By GitHub and Travis tagging
-TRAVIS_BRANCH = os.environ.get('TRAVIS_BRANCH', '(master)')
+import info
+
+project = 'Django Translations'
+copyright = '{year}, {author}'.format(year=info.YEAR, author=info.AUTHOR)
+author = info.AUTHOR
 
 # The short X.Y version
-version = TRAVIS_BRANCH # TODO: remove rc, beta, etc.
+version = info.VERSION
 # The full version, including alpha/beta/rc tags
-release = TRAVIS_BRANCH
+release = info.RELEASE
 
 
 # -- General configuration ---------------------------------------------------

@@ -6,7 +6,7 @@ git:
 branches:
   only:
     - master
-    - /^(\d+\.)?(\d+\.)?\d+(-\w+)*$/
+    - /^(\d+\.\d+\.\d+)((a|b|rc|\.dev|\.post)(\d+))?$/
 
 jobs:
   include:
@@ -42,4 +42,4 @@ jobs:
         github-token: $GITHUB_TOKEN
         keep-history: true
         on:
-          branch: /^(\d+\.)?(\d+\.)?\d+(-\w+)*$/
+          tags: true
