@@ -20,24 +20,28 @@ release_pattern = re.compile(
 
 # Release: 1.0.0rc2
 RELEASE = os.environ['TRAVIS_TAG']
-release_components = release_pattern.match(RELEASE).groupdict()
-
-# Semantic Version: 1.0.0
-VERSION = release_components['version']
-
-# Development Status: .dev | a | b | rc | `empty string` | .post
-STATUS = release_components['status']
-
+VERSION = ''
+STATUS = ''
 DEV_STATUS = ''
-if STATUS == '.dev':
-    DEV_STATUS = '2 - Pre-Alpha'
-elif STATUS == 'a':
-    DEV_STATUS = '3 - Alpha'
-elif STATUS == 'b':
-    DEV_STATUS = '4 - Beta'
-elif STATUS == 'rc':
-    DEV_STATUS = '5 - Production/Stable'
-elif STATUS is None or STATUS == '.post':
-    DEV_STATUS = '6 - Mature'
-else:
-    raise Exception('Release must have a development status.')
+
+if RELEASE:
+    release_components = release_pattern.match(RELEASE).groupdict()
+
+    # Semantic Version: 1.0.0
+    VERSION = release_components['version']
+
+    # Development Status: .dev | a | b | rc | `empty string` | .post
+    STATUS = release_components['status']
+
+    if STATUS == '.dev':
+        DEV_STATUS = '2 - Pre-Alpha'
+    elif STATUS == 'a':
+        DEV_STATUS = '3 - Alpha'
+    elif STATUS == 'b':
+        DEV_STATUS = '4 - Beta'
+    elif STATUS == 'rc':
+        DEV_STATUS = '5 - Production/Stable'
+    elif STATUS is None or STATUS == '.post':
+        DEV_STATUS = '6 - Mature'
+    else:
+        raise Exception('Release must have a development status.')
