@@ -32,22 +32,44 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-sys.path.insert(
-    0,
-    os.path.join(os.path.dirname(os.path.abspath('.')), 'info')
-)
+import json
+import datetime
 
-import info
 
-project = 'Django Translations'
-copyright = '{year}, {author}'.format(year=info.YEAR, author=info.AUTHOR)
-author = info.AUTHOR
+with open(
+        os.path.join(
+            os.path.dirname(os.path.abspath('.')),
+            'config.json'
+        ), "r") as fh:
+    info = json.load(fh)
+
+
+# project
+project = info["name"]
+
+# documentation
+documentation = '{} {}'.format(project, 'Documentation')
+
+# description
+description = info["description"]
+
+# author
+author = info["author"]
 
 # The short X.Y version
-version = info.VERSION
-# The full version, including alpha/beta/rc tags
-release = info.RELEASE
+version = info["version"]
 
+# The full version, including alpha/beta/rc tags
+release = info["release"]
+
+# year
+year = datetime.datetime.now().year
+
+# copyright
+copyright = '{year}, {author}'.format(
+    year=year,
+    author=author
+)
 
 # -- General configuration ---------------------------------------------------
 
@@ -153,8 +175,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'DjangoTranslations.tex', 'Django Translations Documentation',
-     'Behzad B. Mokhtari', 'manual'),
+    (master_doc, 'DjangoTranslations.tex', documentation,
+     author, 'manual'),
 ]
 
 
@@ -163,7 +185,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'djangotranslations', 'Django Translations Documentation',
+    (master_doc, 'djangotranslations', documentation,
      [author], 1)
 ]
 
@@ -174,8 +196,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'DjangoTranslations', 'Django Translations Documentation',
-     author, 'DjangoTranslations', 'One line description of project.',
+    (master_doc, 'DjangoTranslations', documentation,
+     author, 'DjangoTranslations', description,
      'Miscellaneous'),
 ]
 

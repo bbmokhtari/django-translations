@@ -1,20 +1,25 @@
 import setuptools
-from info import info
+import json
+
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
+with open("config.json", "r") as fh:
+    info = json.load(fh)
+
+
 setuptools.setup(
-    name="django-translations",
-    version=info.RELEASE,
-    description="A Django app which provides support for model translation.",
+    name=info["dist"],
+    version=info["release"],
+    description=info["description"],
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url=info.SOURCE,
-    author=info.AUTHOR,
-    author_email=info.EMAIL,
+    url=info["source"],
+    author=info["author"],
+    author_email=info["email"],
     classifiers=[
-        "Development Status :: " + info.DEV_STATUS,
+        "Development Status :: " + info["verbose_status"],
         "Framework :: Django :: 2.0",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
@@ -24,13 +29,13 @@ setuptools.setup(
         "Programming Language :: Python :: 3.6",
         "Topic :: Software Development :: Internationalization",
     ],
-    keywords="django internationalization",
+    keywords=" ".join(info["keywords"]),
     project_urls={
-        "Documentation": info.DOCS,
-        "Funding": info.FUND,
-        "Source": info.SOURCE,
-        "Tracker": info.TRACKER,
+        "Documentation": info["documentation"],
+        "Funding": info["funding"],
+        "Source": info["source"],
+        "Tracker": info["tracker"],
     },
-    packages=setuptools.find_packages(exclude=["docs", "example", "info"]),
+    packages=setuptools.find_packages(exclude=["docs", "example"]),
     python_requires=">=3.5, <4",
 )
