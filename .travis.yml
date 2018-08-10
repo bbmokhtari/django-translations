@@ -55,7 +55,6 @@ jobs:
         skip-cleanup: true
         user: perplexionist
         password: $PYPI_PASSWORD
-        server: https://test.pypi.org/legacy/
         distributions: "sdist bdist_wheel"
         on:
           tags: true
