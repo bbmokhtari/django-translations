@@ -1,5 +1,8 @@
-include LICENSE
-include README.rst
-graft translations
 prune docs
 prune example
+
+graft translations
+
+include config.json
+include LICENSE
+include README.rst

@@ -33,7 +33,7 @@ jobs:
       install:
         - pip install django==2.0
         - pip install sphinx
-      before_script: skip
+      before_script: python config.py
       script: cd docs && make html
       deploy:
         provider: pages
@@ -48,7 +48,7 @@ jobs:
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
       install: skip
-      before_script: skip
+      before_script: python config.py
       script: skip
       deploy:
         provider: pypi
