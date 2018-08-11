@@ -47,21 +47,21 @@ def get_translation_language(lang=None):
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` settings
 
-    >>> from django.utils.translation import activate
-    >>> from translations.utils import get_translation_language
-    >>> # An already active language
-    >>> activate('en')
-    >>> get_translation_language()
-    'en'
-    >>> # A custom language
-    >>> get_translation_language('de')
-    'de'
-    >>> # A language that doesn't exist in `LANGUAGES`
-    >>> get_translation_language('xx')
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    ValueError: The language code `xx` is not supported.
     """
+    # >>> from django.utils.translation import activate
+    # >>> from translations.utils import get_translation_language
+    # >>> # An already active language
+    # >>> activate('en')
+    # >>> get_translation_language()
+    # 'en'
+    # >>> # A custom language
+    # >>> get_translation_language('de')
+    # 'de'
+    # >>> # A language that doesn't exist in `LANGUAGES`
+    # >>> get_translation_language('xx')
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # ValueError: The language code `xx` is not supported.
     lang = lang if lang else get_language()
 
     if lang not in [language[0] for language in settings.LANGUAGES]:
@@ -84,30 +84,30 @@ def get_context_details(context):
     :raise TypeError: If the context is neither a model instance nor
         an iterable of model instances
 
-    >>> from sample.models import Continent
-    >>> from translations.utils import get_context_details
-    >>> # A model instance
-    >>> europe = Continent.objects.create(code="EU", name="Europe")
-    >>> get_context_details(europe)
-    (<class 'sample.models.Continent'>, False)
-    >>> # A model iterable
-    >>> continents = Continent.objects.all()
-    >>> get_context_details(continents)
-    (<class 'sample.models.Continent'>, True)
-    >>> # An empty queryset
-    >>> continents.delete()
-    (1, {'translations.Translation': 0, 'sample.Continent': 1})
-    >>> get_context_details(continents)
-    (None, True)
-    >>> # An empty list
-    >>> get_context_details([])
-    (None, True)
-    >>> # An invalid type
-    >>> get_context_details(123)
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    TypeError: `123` is neither a model instance nor an iterable of model instances.
     """
+    # >>> from sample.models import Continent
+    # >>> from translations.utils import get_context_details
+    # >>> # A model instance
+    # >>> europe = Continent.objects.create(code="EU", name="Europe")
+    # >>> get_context_details(europe)
+    # (<class 'sample.models.Continent'>, False)
+    # >>> # A model iterable
+    # >>> continents = Continent.objects.all()
+    # >>> get_context_details(continents)
+    # (<class 'sample.models.Continent'>, True)
+    # >>> # An empty queryset
+    # >>> continents.delete()
+    # (1, {'translations.Translation': 0, 'sample.Continent': 1})
+    # >>> get_context_details(continents)
+    # (None, True)
+    # >>> # An empty list
+    # >>> get_context_details([])
+    # (None, True)
+    # >>> # An invalid type
+    # >>> get_context_details(123)
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # TypeError: `123` is neither a model instance nor an iterable of model instances.
     error_message = '`{}` is neither {} nor {}.'.format(
         context,
         'a model instance',
@@ -149,29 +149,29 @@ def get_reverse_relation(model, relation):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
-    >>> # Let's suppose we want a list of all the cities in Europe
-    >>> from sample.models import Continent, Country, City
-    >>> from translations.utils import get_reverse_relation
-    >>> europe = Continent.objects.create(code="EU", name="Europe")
-    >>> germany = Country.objects.create(
-    ...     code="DE",
-    ...     name="Germany",
-    ...     continent=europe
-    ... )
-    >>> cologne = City.objects.create(name="Cologne", country=germany)
-    >>> # To get the cities:
-    >>> get_reverse_relation(Continent, 'countries__cities')
-    'country__continent'
-    >>> # Using this reverse relation we can query `City` with a `Continent`
-    >>> City.objects.filter(country__continent=europe)
-    <TranslatableQuerySet [<City: Cologne>]>
-    >>> # Done! Cities fetched.
-    >>> # An invalid relation of the model
-    >>> get_reverse_relation(Continent, 'countries__wrong')
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
+    # >>> # Let's suppose we want a list of all the cities in Europe
+    # >>> from sample.models import Continent, Country, City
+    # >>> from translations.utils import get_reverse_relation
+    # >>> europe = Continent.objects.create(code="EU", name="Europe")
+    # >>> germany = Country.objects.create(
+    # ...     code="DE",
+    # ...     name="Germany",
+    # ...     continent=europe
+    # ... )
+    # >>> cologne = City.objects.create(name="Cologne", country=germany)
+    # >>> # To get the cities:
+    # >>> get_reverse_relation(Continent, 'countries__cities')
+    # 'country__continent'
+    # >>> # Using this reverse relation we can query `City` with a `Continent`
+    # >>> City.objects.filter(country__continent=europe)
+    # <TranslatableQuerySet [<City: Cologne>]>
+    # >>> # Done! Cities fetched.
+    # >>> # An invalid relation of the model
+    # >>> get_reverse_relation(Continent, 'countries__wrong')
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
     branch = parts[1:]
@@ -215,36 +215,36 @@ def get_translations_reverse_relation(model, relation=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
-    >>> # Let's suppose we want a list of all the cities translations
-    >>> from sample.models import Continent, Country, City
-    >>> from translations.models import Translation
-    >>> from translations.utils import get_translations_reverse_relation
-    >>> europe = Continent.objects.create(code="EU", name="Europe")
-    >>> germany = Country.objects.create(
-    ...     code="DE",
-    ...     name="Germany",
-    ...     continent=europe
-    ... )
-    >>> cologne = City.objects.create(name="Cologne", country=germany)
-    >>> cologne.translations.create(field="name", language="de", text="Köln")
-    <Translation: Cologne: Köln>
-    >>> # To get the city translations:
-    >>> get_translations_reverse_relation(Continent, 'countries__cities')
-    'sample_city__country__continent'
-    >>> # Using this translations reverse relation we can query the
-    >>> # `Translation` for the `City` with a `Continent`
-    >>> Translation.objects.filter(sample_city__country__continent=europe)
-    <QuerySet [<Translation: Cologne: Köln>]>
-    >>> # Done! Cities translations fetched.
-    >>> # Translations reverse relation of a model
-    >>> get_translations_reverse_relation(Continent)
-    'sample_continent'
-    >>> # An invalid relation of the model
-    >>> get_translations_reverse_relation(Continent, 'countries__wrong')
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
+    # >>> # Let's suppose we want a list of all the cities translations
+    # >>> from sample.models import Continent, Country, City
+    # >>> from translations.models import Translation
+    # >>> from translations.utils import get_translations_reverse_relation
+    # >>> europe = Continent.objects.create(code="EU", name="Europe")
+    # >>> germany = Country.objects.create(
+    # ...     code="DE",
+    # ...     name="Germany",
+    # ...     continent=europe
+    # ... )
+    # >>> cologne = City.objects.create(name="Cologne", country=germany)
+    # >>> cologne.translations.create(field="name", language="de", text="Köln")
+    # <Translation: Cologne: Köln>
+    # >>> # To get the city translations:
+    # >>> get_translations_reverse_relation(Continent, 'countries__cities')
+    # 'sample_city__country__continent'
+    # >>> # Using this translations reverse relation we can query the
+    # >>> # `Translation` for the `City` with a `Continent`
+    # >>> Translation.objects.filter(sample_city__country__continent=europe)
+    # <QuerySet [<Translation: Cologne: Köln>]>
+    # >>> # Done! Cities translations fetched.
+    # >>> # Translations reverse relation of a model
+    # >>> get_translations_reverse_relation(Continent)
+    # 'sample_continent'
+    # >>> # An invalid relation of the model
+    # >>> get_translations_reverse_relation(Continent, 'countries__wrong')
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     if relation is None:
         translations_relation = 'translations'
     else:
@@ -281,45 +281,45 @@ def get_translations(context, *relations, lang=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
-    >>> # Let's suppose we want the translations of a continent and
-    >>> # its countries and cities
-    >>> from sample.models import Continent, Country, City
-    >>> from translations.utils import get_translations
-    >>> europe = Continent.objects.create(code="EU", name="Europe")
-    >>> europe.translations.create(field="name", language="de", text="Europa")
-    <Translation: Europe: Europa>
-    >>> germany = Country.objects.create(
-    ...     code="DE",
-    ...     name="Germany",
-    ...     continent=europe
-    ... )
-    >>> germany.translations.create(
-    ...     field="name",
-    ...     language="de",
-    ...     text="Deutschland"
-    ... )
-    <Translation: Germany: Deutschland>
-    >>> cologne = City.objects.create(name="Cologne", country=germany)
-    >>> cologne.translations.create(field="name", language="de", text="Köln")
-    <Translation: Cologne: Köln>
-    >>> # To get the translations:
-    >>> get_translations(europe, "countries", "countries__cities", lang="de")
-    <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: Deutschland>, <Translation: Cologne: Köln>]>
-    >>> # Done! translations fetched.
-    >>> # An invalid relation of the model
-    >>> get_translations(europe, "countries", "countries__cities", lang="xx")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    ValueError: The language code `xx` is not supported.
-    >>> get_translations(123, "countries", "countries__cities", lang="de")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    TypeError: `123` is neither a model instance nor an iterable of model instances.
-    >>> get_translations(europe, "countries", "countries__wrong", lang="de")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
+    # >>> # Let's suppose we want the translations of a continent and
+    # >>> # its countries and cities
+    # >>> from sample.models import Continent, Country, City
+    # >>> from translations.utils import get_translations
+    # >>> europe = Continent.objects.create(code="EU", name="Europe")
+    # >>> europe.translations.create(field="name", language="de", text="Europa")
+    # <Translation: Europe: Europa>
+    # >>> germany = Country.objects.create(
+    # ...     code="DE",
+    # ...     name="Germany",
+    # ...     continent=europe
+    # ... )
+    # >>> germany.translations.create(
+    # ...     field="name",
+    # ...     language="de",
+    # ...     text="Deutschland"
+    # ... )
+    # <Translation: Germany: Deutschland>
+    # >>> cologne = City.objects.create(name="Cologne", country=germany)
+    # >>> cologne.translations.create(field="name", language="de", text="Köln")
+    # <Translation: Cologne: Köln>
+    # >>> # To get the translations:
+    # >>> get_translations(europe, "countries", "countries__cities", lang="de")
+    # <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: Deutschland>, <Translation: Cologne: Köln>]>
+    # >>> # Done! translations fetched.
+    # >>> # An invalid relation of the model
+    # >>> get_translations(europe, "countries", "countries__cities", lang="xx")
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # ValueError: The language code `xx` is not supported.
+    # >>> get_translations(123, "countries", "countries__cities", lang="de")
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # TypeError: `123` is neither a model instance nor an iterable of model instances.
+    # >>> get_translations(europe, "countries", "countries__wrong", lang="de")
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     lang = get_translation_language(lang)
     model, iterable = get_context_details(context)
 
@@ -392,44 +392,44 @@ def get_dictionary(translations):
     :return: The dictionary of translations
     :rtype: dict(int, dict(str, dict(str, str)))
 
-    >>> from sample.models import Continent, Country, City
-    >>> from translations.models import Translation
-    >>> europe = Continent.objects.create(
-    ...     code="EU",
-    ...     name="Europe"
-    ...     denonym="European",
-    ... )
-    >>> europe.translations.create(
-    ...     field="name",
-    ...     language="de",
-    ...     text="Europa"
-    ... )
-    <Translation: Europe: Europa>
-    >>> europe.translations.create(
-    ...     field="denonym",
-    ...     language="de",
-    ...     text="Europäisch"
-    ... )
-    <Translation: European: Europäisch>
-    >>> germany = Country.objects.create(
-    ...     code="DE",
-    ...     name="Germany",
-    ...     continent=europe
-    ... )
-    >>> germany.translations.create(
-    ...     field="name",
-    ...     language="de",
-    ...     text="Deutschland"
-    ... )
-    <Translation: Germany: Deutschland>
-    >>> cologne = City.objects.create(name="Cologne", country=germany)
-    >>> cologne.translations.create(field="name", language="de", text="Köln")
-    <Translation: Cologne: Köln>
-    >>> get_dictionary(Translation.objects.all())
-    {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
-    3: {'1': {'name': 'Deutschland'}},
-    1: {'1': {'name': 'Köln'}}}
     """
+    # >>> from sample.models import Continent, Country, City
+    # >>> from translations.models import Translation
+    # >>> europe = Continent.objects.create(
+    # ...     code="EU",
+    # ...     name="Europe"
+    # ...     denonym="European",
+    # ... )
+    # >>> europe.translations.create(
+    # ...     field="name",
+    # ...     language="de",
+    # ...     text="Europa"
+    # ... )
+    # <Translation: Europe: Europa>
+    # >>> europe.translations.create(
+    # ...     field="denonym",
+    # ...     language="de",
+    # ...     text="Europäisch"
+    # ... )
+    # <Translation: European: Europäisch>
+    # >>> germany = Country.objects.create(
+    # ...     code="DE",
+    # ...     name="Germany",
+    # ...     continent=europe
+    # ... )
+    # >>> germany.translations.create(
+    # ...     field="name",
+    # ...     language="de",
+    # ...     text="Deutschland"
+    # ... )
+    # <Translation: Germany: Deutschland>
+    # >>> cologne = City.objects.create(name="Cologne", country=germany)
+    # >>> cologne.translations.create(field="name", language="de", text="Köln")
+    # <Translation: Cologne: Köln>
+    # >>> get_dictionary(Translation.objects.all())
+    # {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
+    # 3: {'1': {'name': 'Deutschland'}},
+    # 1: {'1': {'name': 'Köln'}}}
     dictionary = {}
 
     for translation in translations:
@@ -454,15 +454,15 @@ def get_relations_details(*relations):
     :return: The relations details
     :rtype: dict(str, dict)
 
-    >>> get_relations_details()
-    {}
-    >>> get_relations_details('countries')
-    {'countries': {'included': True, 'relations': []}}
-    >>> get_relations_details('countries__cities')
-    {'countries': {'included': False, 'relations': ['cities']}}
-    >>> get_relations_details('countries', 'countries__cities')
-    {'countries': {'included': True, 'relations': ['cities']}}
     """
+    # >>> get_relations_details()
+    # {}
+    # >>> get_relations_details('countries')
+    # {'countries': {'included': True, 'relations': []}}
+    # >>> get_relations_details('countries__cities')
+    # {'countries': {'included': False, 'relations': ['cities']}}
+    # >>> get_relations_details('countries', 'countries__cities')
+    # {'countries': {'included': True, 'relations': ['cities']}}
     details = {}
 
     for relation in relations:
@@ -521,131 +521,131 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
        :func:`~django.db.models.prefetch_related_objects` for fetching the
        relations of the context before using :func:`translate`.
 
-    >>> # Let's suppose we want to translate a continent and
-    >>> # its countries and cities
-    >>> from sample.models import Continent, Country, City
-    >>> from translations.utils import translate
-    >>> # --------------------------------
-    >>> # BUILD:
-    >>> # --------------------------------
-    >>> # Let's create a continent and the translations of it
-    >>> europe = Continent.objects.create(
-    ...     code="EU",
-    ...     name="Europe",
-    ...     denonym="European",
-    ... )
-    >>> europe.translations.create(
-    ...     field="name",
-    ...     language="de",
-    ...     text="Europa"
-    ... )
-    <Translation: Europe: Europa>
-    >>> europe.translations.create(
-    ...     field="denonym",
-    ...     language="de",
-    ...     text="Europäisch"
-    ... )
-    <Translation: European: Europäisch>
-    >>> # Let's create a country and the translations of it
-    >>> germany = Country.objects.create(
-    ...     code="DE",
-    ...     name="Germany",
-    ...     denonym="German",
-    ...     continent=europe
-    ... )
-    >>> germany.translations.create(
-    ...     field="name",
-    ...     language="de",
-    ...     text="Deutschland"
-    ... )
-    <Translation: Germany: Deutschland>
-    >>> germany.translations.create(
-    ...     field="denonym",
-    ...     language="de",
-    ...     text="Deutsche"
-    ... )
-    <Translation: German: Deutsche>
-    >>> # Let's create a city and the translations of it
-    >>> cologne = City.objects.create(
-    ...     name="Cologne",
-    ...     denonym="Cologner",
-    ...     country=germany
-    ... )
-    >>> cologne.translations.create(
-    ...     field="name",
-    ...     language="de",
-    ...     text="Köln"
-    ... )
-    <Translation: Cologne: Köln>
-    >>> cologne.translations.create(
-    ...     field="denonym",
-    ...     language="de",
-    ...     text="Kölner"
-    ... )
-    <Translation: Cologner: Kölner>
-    >>> # --------------------------------
-    >>> # DJANGO DEFAULT BEHAVIOUR:
-    >>> # --------------------------------
-    >>> europe = Continent.objects.prefetch_related(
-    ...     'countries',
-    ...     'countries__cities',
-    ... ).get(code="EU")
-    >>> germany = europe.countries.all()[0]
-    >>> cologne = germany.cities.all()[0]
-    >>> europe.name
-    Europe
-    >>> europe.denonym
-    European
-    >>> germany.name
-    Germany
-    >>> germany.denonym
-    German
-    >>> cologne.name
-    Cologn
-    >>> cologne.denonym
-    Cologner
-    >>> # --------------------------------
-    >>> # USAGE:
-    >>> # --------------------------------
-    >>> # MAKE SURE: `select_related` and `prefetch_related`
-    >>> europe = Continent.objects.prefetch_related(
-    ...     'countries',
-    ...     'countries__cities',
-    ... ).get(code="EU")
-    >>> # Translate:
-    >>> translate(europe, "countries", "countries__cities", lang="de")
-    >>> # Done!
-    >>> germany = europe.countries.all()[0]
-    >>> cologne = germany.cities.all()[0]
-    >>> europe.name
-    Europa
-    >>> europe.denonym
-    Europäisch
-    >>> germany.name
-    Deutschland
-    >>> germany.denonym
-    Deutsche
-    >>> cologne.name
-    Köln
-    >>> cologne.denonym
-    Kölner
-    >>> # --------------------------------
-    >>> # ERRORS:
-    >>> # --------------------------------
-    >>> # An invalid relation of the model
-    >>> translate(europe, "countries", "countries__cities", lang="xx")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    ValueError: The language code `xx` is not supported.
-    >>> translate(123, "countries", "countries__cities", lang="de")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    TypeError: `123` is neither a model instance nor an iterable of model instances.
-    >>> translate(europe, "countries", "countries__wrong", lang="de")
-    Traceback (most recent call last):
-      File "<stdin>", line 1, in <module>
-    django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     """
+    # >>> # Let's suppose we want to translate a continent and
+    # >>> # its countries and cities
+    # >>> from sample.models import Continent, Country, City
+    # >>> from translations.utils import translate
+    # >>> # --------------------------------
+    # >>> # BUILD:
+    # >>> # --------------------------------
+    # >>> # Let's create a continent and the translations of it
+    # >>> europe = Continent.objects.create(
+    # ...     code="EU",
+    # ...     name="Europe",
+    # ...     denonym="European",
+    # ... )
+    # >>> europe.translations.create(
+    # ...     field="name",
+    # ...     language="de",
+    # ...     text="Europa"
+    # ... )
+    # <Translation: Europe: Europa>
+    # >>> europe.translations.create(
+    # ...     field="denonym",
+    # ...     language="de",
+    # ...     text="Europäisch"
+    # ... )
+    # <Translation: European: Europäisch>
+    # >>> # Let's create a country and the translations of it
+    # >>> germany = Country.objects.create(
+    # ...     code="DE",
+    # ...     name="Germany",
+    # ...     denonym="German",
+    # ...     continent=europe
+    # ... )
+    # >>> germany.translations.create(
+    # ...     field="name",
+    # ...     language="de",
+    # ...     text="Deutschland"
+    # ... )
+    # <Translation: Germany: Deutschland>
+    # >>> germany.translations.create(
+    # ...     field="denonym",
+    # ...     language="de",
+    # ...     text="Deutsche"
+    # ... )
+    # <Translation: German: Deutsche>
+    # >>> # Let's create a city and the translations of it
+    # >>> cologne = City.objects.create(
+    # ...     name="Cologne",
+    # ...     denonym="Cologner",
+    # ...     country=germany
+    # ... )
+    # >>> cologne.translations.create(
+    # ...     field="name",
+    # ...     language="de",
+    # ...     text="Köln"
+    # ... )
+    # <Translation: Cologne: Köln>
+    # >>> cologne.translations.create(
+    # ...     field="denonym",
+    # ...     language="de",
+    # ...     text="Kölner"
+    # ... )
+    # <Translation: Cologner: Kölner>
+    # >>> # --------------------------------
+    # >>> # DJANGO DEFAULT BEHAVIOUR:
+    # >>> # --------------------------------
+    # >>> europe = Continent.objects.prefetch_related(
+    # ...     'countries',
+    # ...     'countries__cities',
+    # ... ).get(code="EU")
+    # >>> germany = europe.countries.all()[0]
+    # >>> cologne = germany.cities.all()[0]
+    # >>> europe.name
+    # Europe
+    # >>> europe.denonym
+    # European
+    # >>> germany.name
+    # Germany
+    # >>> germany.denonym
+    # German
+    # >>> cologne.name
+    # Cologn
+    # >>> cologne.denonym
+    # Cologner
+    # >>> # --------------------------------
+    # >>> # USAGE:
+    # >>> # --------------------------------
+    # >>> # MAKE SURE: `select_related` and `prefetch_related`
+    # >>> europe = Continent.objects.prefetch_related(
+    # ...     'countries',
+    # ...     'countries__cities',
+    # ... ).get(code="EU")
+    # >>> # Translate:
+    # >>> translate(europe, "countries", "countries__cities", lang="de")
+    # >>> # Done!
+    # >>> germany = europe.countries.all()[0]
+    # >>> cologne = germany.cities.all()[0]
+    # >>> europe.name
+    # Europa
+    # >>> europe.denonym
+    # Europäisch
+    # >>> germany.name
+    # Deutschland
+    # >>> germany.denonym
+    # Deutsche
+    # >>> cologne.name
+    # Köln
+    # >>> cologne.denonym
+    # Kölner
+    # >>> # --------------------------------
+    # >>> # ERRORS:
+    # >>> # --------------------------------
+    # >>> # An invalid relation of the model
+    # >>> translate(europe, "countries", "countries__cities", lang="xx")
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # ValueError: The language code `xx` is not supported.
+    # >>> translate(123, "countries", "countries__cities", lang="de")
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # TypeError: `123` is neither a model instance nor an iterable of model instances.
+    # >>> translate(europe, "countries", "countries__wrong", lang="de")
+    # Traceback (most recent call last):
+    #   File "<stdin>", line 1, in <module>
+    # django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     lang = get_translation_language(lang)
     model, iterable = get_context_details(context)
 

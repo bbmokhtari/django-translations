@@ -212,3 +212,17 @@ intersphinx_mapping = {
     'python': ('https://docs.python.org/', None),
     'django': ('http://django.readthedocs.org/en/latest/', None),
 }
+
+# -- Options for doctest extension -------------------------------------------
+
+doctest_global_setup = """
+from django.test import TestCase
+
+TestCase.setUpClass()
+"""
+
+doctest_global_cleanup = """
+from django.test import TestCase
+
+TestCase.tearDownClass()
+"""

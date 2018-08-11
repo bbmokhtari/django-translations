@@ -55,6 +55,7 @@ class Translation(models.Model):
        because it leads to hard, error prone and inefficient code. so never
        do this. Here's an example why.
 
+    .. commented doctest
        first create an object:
 
        >>> from polls.models import Question
