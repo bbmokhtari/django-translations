@@ -1,1292 +1,817 @@
 from sample.models import Continent, Country, City
 
 
+# -------------------------------------------------------------------- samples
+
+
 # Some translation spellings are written wrong on purpose to be able to
 # test them
-CONTINENTS = [
-    {
-        "code": "EU",
-        "name": "Europe",
-        "denonym": "European",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Europa",
+SAMPLES = {
+    'europe': {
+        'code': 'EU',
+        'name': 'Europe',
+        'denonym': 'European',
+        'translations': {
+            'de': {
+                'name': 'Europa',
+                'denonym': 'Europäisch'
             },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Europäisch",
+            'tr': {
+                'name': 'Avrupa',
+                'denonym': 'Avrupalı'
+            }
+        },
+        'countries': {
+            'germany': {
+                'code': 'DE',
+                'name': 'Germany',
+                'denonym': 'German',
+                'translations': {
+                    'de': {
+                        'name': 'Deutschland',
+                        'denonym': 'Deutsche'
+                    },
+                    'tr': {
+                        'name': 'Almanya',
+                        'denonym': 'Almanca'
+                    }
+                },
+                'cities': {
+                    'cologne': {
+                        'name': 'Cologne',
+                        'denonym': 'Cologner',
+                        'translations': {
+                            'de': {
+                                'name': 'Köln',
+                                'denonym': 'Kölner'
+                            },
+                            'tr': {
+                                'name': 'Koln',
+                                'denonym': 'Kolnlı'
+                            }
+                        }
+                    },
+                    'munich': {
+                        'name': 'Munich',
+                        'denonym': 'Munichian',
+                        'translations': {
+                            'de': {
+                                'name': 'München',
+                                'denonym': 'Münchner'
+                            },
+                            'tr': {
+                                'name': 'Münih',
+                                'denonym': 'Münihlı'
+                            }
+                        }
+                    },
+                },
             },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Avrupa",
+            'turkey': {
+                'code': 'TR',
+                'name': 'Turkey',
+                'denonym': 'Turk',
+                'translations': {
+                    'de': {
+                        'name': 'Türkei',
+                        'denonym': 'Türke'
+                    },
+                    'tr': {
+                        'name': 'Türkiye',
+                        'denonym': 'Türk'
+                    }
+                },
+                'cities': {
+                    'istanbul': {
+                        'name': 'Istanbul',
+                        'denonym': 'Istanbulian',
+                        'translations': {
+                            'de': {
+                                'name': 'Ïstanbul',
+                                'denonym': 'Ïstanbulisch'
+                            },
+                            'tr': {
+                                'name': 'İstanbul',
+                                'denonym': 'İstanbullı'
+                            }
+                        }
+                    },
+                    'izmir': {
+                        'name': 'Izmir',
+                        'denonym': 'Izmirian',
+                        'translations': {
+                            'de': {
+                                'name': 'Ïzmir',
+                                'denonym': 'Ïzmirisch'
+                            },
+                            'tr': {
+                                'name': 'İzmir',
+                                'denonym': 'İzmirlı'
+                            }
+                        }
+                    },
+                },
             },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Avrupalı",
-            },
-        ],
+        },
     },
-    {
-        "code": "AS",
-        "name": "Asia",
-        "denonym": "Asian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Asien",
+    'asia': {
+        'code': 'AS',
+        'name': 'Asia',
+        'denonym': 'Asian',
+        'translations': {
+            'de': {
+                'name': 'Asien',
+                'denonym': 'Asiatisch'
             },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Asiatisch",
+            'tr': {
+                'name': 'Asya',
+                'denonym': 'Asyalı'
+            }
+        },
+        'countries': {
+            'south korea': {
+                'code': 'KR',
+                'name': 'South Korea',
+                'denonym': 'South Korean',
+                'translations': {
+                    'de': {
+                        'name': 'Südkorea',
+                        'denonym': 'Südkoreanisch'
+                    },
+                    'tr': {
+                        'name': 'Güney Kore',
+                        'denonym': 'Güney Korelı'
+                    }
+                },
+                'cities': {
+                    'seoul': {
+                        'name': 'Seoul',
+                        'denonym': 'Seouler',
+                        'translations': {
+                            'de': {
+                                'name': 'Seül',
+                                'denonym': 'Seülisch'
+                            },
+                            'tr': {
+                                'name': 'Seul',
+                                'denonym': 'Seullı'
+                            }
+                        }
+                    },
+                    'ulsan': {
+                        'name': 'Ulsan',
+                        'denonym': 'Ulsanian',
+                        'translations': {
+                            'de': {
+                                'name': 'Ulsän',
+                                'denonym': 'Ulsänisch'
+                            },
+                            'tr': {
+                                'name': 'Ülsan',
+                                'denonym': 'Ülsanlı'
+                            }
+                        }
+                    },
+                },
             },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Asya",
+            'india': {
+                'code': 'IN',
+                'name': 'India',
+                'denonym': 'Indian',
+                'translations': {
+                    'de': {
+                        'name': 'Indien',
+                        'denonym': 'Indisch'
+                    },
+                    'tr': {
+                        'name': 'Hindistan',
+                        'denonym': 'Hintlı'
+                    }
+                },
+                'cities': {
+                    'mumbai': {
+                        'name': 'Mumbai',
+                        'denonym': 'Mumbaian',
+                        'translations': {
+                            'de': {
+                                'name': 'Mumbaï',
+                                'denonym': 'Mumbäisch'
+                            },
+                            'tr': {
+                                'name': 'Bombay',
+                                'denonym': 'Bombaylı'
+                            }
+                        }
+                    },
+                    'new delhi': {
+                        'name': 'New Delhi',
+                        'denonym': 'New Delhian',
+                        'translations': {
+                            'de': {
+                                'name': 'Neu-Delhi',
+                                'denonym': 'Neu-Delhisch'
+                            },
+                            'tr': {
+                                'name': 'Yeni Delhi',
+                                'denonym': 'Yeni Delhilı'
+                            }
+                        }
+                    },
+                },
             },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Asyalı",
-            },
-        ],
+        },
     },
-    {
-        "code": "AF",
-        "name": "Africa",
-        "denonym": "African",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Afrika",
+    'africa': {
+        'code': 'AF',
+        'name': 'Africa',
+        'denonym': 'African',
+        'translations': {
+            'de': {
+                'name': 'Afrika',
+                'denonym': 'Afrikanisch'
             },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Afrikanisch",
+            'tr': {
+                'name': 'Àfrika',
+                'denonym': 'Àfrikalı'
+            }
+        },
+        'countries': {
+            'egypt': {
+                'code': 'EG',
+                'name': 'Egypt',
+                'denonym': 'Egyptian',
+                'translations': {
+                    'de': {
+                        'name': 'Ägypten',
+                        'denonym': 'Ägyptisch'
+                    },
+                    'tr': {
+                        'name': 'Mısır',
+                        'denonym': 'Mısırlı'
+                    }
+                },
+                'cities': {
+                    'cairo': {
+                        'name': 'Cairo',
+                        'denonym': 'Cairoian',
+                        'translations': {
+                            'de': {
+                                'name': 'Kairo',
+                                'denonym': 'Kairoisch'
+                            },
+                            'tr': {
+                                'name': 'Kahire',
+                                'denonym': 'Kahirelı'
+                            }
+                        }
+                    },
+                    'giza': {
+                        'name': 'Giza',
+                        'denonym': 'Gizean',
+                        'translations': {
+                            'de': {
+                                'name': 'Gizeh',
+                                'denonym': 'Gizisch'
+                            },
+                            'tr': {
+                                'name': 'Çizeh',
+                                'denonym': 'Çizehlı'
+                            }
+                        }
+                    },
+                },
             },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Àfrika",
+            'south africa': {
+                'code': 'ZA',
+                'name': 'South Africa',
+                'denonym': 'South African',
+                'translations': {
+                    'de': {
+                        'name': 'Südafrika',
+                        'denonym': 'Südafrikanisch'
+                    },
+                    'tr': {
+                        'name': 'Güney Afrika',
+                        'denonym': 'Güney Afrikalı'
+                    }
+                },
+                'cities': {
+                    'cape town': {
+                        'name': 'Cape Town',
+                        'denonym': 'Cape Towner',
+                        'translations': {
+                            'de': {
+                                'name': 'Kapstadt',
+                                'denonym': 'Kapstadtisch'
+                            },
+                            'tr': {
+                                'name': 'Kap Şehri',
+                                'denonym': 'Kap Şehrilı'
+                            }
+                        }
+                    },
+                    'johannesburg': {
+                        'name': 'Johannesburg',
+                        'denonym': 'Johannesburgian',
+                        'translations': {
+                            'de': {
+                                'name': 'Johannesbürg',
+                                'denonym': 'Johannesbürgisch'
+                            },
+                            'tr': {
+                                'name': 'Yohannesburg',
+                                'denonym': 'Yohannesburglı'
+                            }
+                        }
+                    },
+                },
             },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Àfrikalı",
-            },
-        ],
+        },
     },
-    {
-        "code": "NA",
-        "name": "North America",
-        "denonym": "North American",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Nordamerika",
+    'north america': {
+        'code': 'NA',
+        'name': 'North America',
+        'denonym': 'North American',
+        'translations': {
+            'de': {
+                'name': 'Nordamerika',
+                'denonym': 'Nordamerikanisch'
             },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Nordamerikanisch",
+            'tr': {
+                'name': 'Kuzey Amerika',
+                'denonym': 'Kuzey Amerikalı'
+            }
+        },
+        'countries': {
+            'united states of america': {
+                'code': 'US',
+                'name': 'United States of America',
+                'denonym': 'American',
+                'translations': {
+                    'de': {
+                        'name': 'Vereinigte Staaten von Amerika',
+                        'denonym': 'Amerikanisch'
+                    },
+                    'tr': {
+                        'name': 'Amerika Birleşik Devletleri',
+                        'denonym': 'Amerikalı'
+                    }
+                },
+                'cities': {
+                    'new york': {
+                        'name': 'New York',
+                        'denonym': 'New Yorker',
+                        'translations': {
+                            'de': {
+                                'name': 'Neu York',
+                                'denonym': 'Neu Yorkisch'
+                            },
+                            'tr': {
+                                'name': 'Yeni York',
+                                'denonym': 'Yeni Yorklı'
+                            }
+                        }
+                    },
+                    'new jersey': {
+                        'name': 'New Jersey',
+                        'denonym': 'New Jersean',
+                        'translations': {
+                            'de': {
+                                'name': 'Neu Jersey',
+                                'denonym': 'Neu Jersisch'
+                            },
+                            'tr': {
+                                'name': 'Yeni Jersey',
+                                'denonym': 'Yeni Jerseylı'
+                            }
+                        }
+                    },
+                },
             },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Kuzey Amerika",
+            'mexico': {
+                'code': 'MX',
+                'name': 'Mexico',
+                'denonym': 'Mexican',
+                'translations': {
+                    'de': {
+                        'name': 'Mexiko',
+                        'denonym': 'Mexikaner'
+                    },
+                    'tr': {
+                        'name': 'Meksika',
+                        'denonym': 'Meksikalı'
+                    }
+                },
+                'cities': {
+                    'mexico city': {
+                        'name': 'Mexico City',
+                        'denonym': 'Mexico Citian',
+                        'translations': {
+                            'de': {
+                                'name': 'Mexiko Stadt',
+                                'denonym': 'Mexiko Stadtisch'
+                            },
+                            'tr': {
+                                'name': 'Meksika şehri',
+                                'denonym': 'Meksika şehrilı'
+                            }
+                        }
+                    },
+                    'cancun': {
+                        'name': 'Cancun',
+                        'denonym': 'Cancunian',
+                        'translations': {
+                            'de': {
+                                'name': 'Cancún',
+                                'denonym': 'Cancúnisch'
+                            },
+                            'tr': {
+                                'name': 'Cancün',
+                                'denonym': 'Cancünlı'
+                            }
+                        }
+                    },
+                },
             },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Kuzey Amerikalı",
-            },
-        ],
+        },
     },
-    {
-        "code": "SA",
-        "name": "South America",
-        "denonym": "South American",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Südamerika",
+    'south america': {
+        'code': 'SA',
+        'name': 'South America',
+        'denonym': 'South American',
+        'translations': {
+            'de': {
+                'name': 'Südamerika',
+                'denonym': 'Südamerikanisch'
             },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Südamerikanisch",
+            'tr': {
+                'name': 'Güney Amerika',
+                'denonym': 'Güney Amerikalı'
+            }
+        },
+        'countries': {
+            'brazil': {
+                'code': 'BR',
+                'name': 'Brazil',
+                'denonym': 'Brazilian',
+                'translations': {
+                    'de': {
+                        'name': 'Brasilien',
+                        'denonym': 'Brasilianisch'
+                    },
+                    'tr': {
+                        'name': 'Brezilya',
+                        'denonym': 'Brezilyalı'
+                    }
+                },
+                'cities': {
+                    'sao paulo': {
+                        'name': 'Sao Paulo',
+                        'denonym': 'Sao Paulean',
+                        'translations': {
+                            'de': {
+                                'name': 'São Paulo',
+                                'denonym': 'São Paulisch'
+                            },
+                            'tr': {
+                                'name': 'Sao Paülo',
+                                'denonym': 'Sao Paülolı'
+                            }
+                        }
+                    },
+                    'rio de janeiro': {
+                        'name': 'Rio de Janeiro',
+                        'denonym': 'Rio de Janeirean',
+                        'translations': {
+                            'de': {
+                                'name': 'Rio von Janeiro',
+                                'denonym': 'Rio von Janeirisch'
+                            },
+                            'tr': {
+                                'name': 'Rio de Janeirü',
+                                'denonym': 'Rio de Janeirülı'
+                            }
+                        }
+                    },
+                },
             },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Güney Amerika",
+            'argentina': {
+                'code': 'AR',
+                'name': 'Argentina',
+                'denonym': 'Argentinian',
+                'translations': {
+                    'de': {
+                        'name': 'Argentinien',
+                        'denonym': 'Argentinisch'
+                    },
+                    'tr': {
+                        'name': 'Arjantin',
+                        'denonym': 'Arjantinlı'
+                    }
+                },
+                'cities': {
+                    'buenos aires': {
+                        'name': 'Buenos Aires',
+                        'denonym': 'Buenos Airesean',
+                        'translations': {
+                            'de': {
+                                'name': 'Büenos Äires',
+                                'denonym': 'Büenos Äiresisch'
+                            },
+                            'tr': {
+                                'name': 'Büenos Aires',
+                                'denonym': 'Büenos Aireslı'
+                            }
+                        }
+                    },
+                    'tucuman': {
+                        'name': 'Tucuman',
+                        'denonym': 'Tucumanian',
+                        'translations': {
+                            'de': {
+                                'name': 'Tucumán',
+                                'denonym': 'Tucumánisch'
+                            },
+                            'tr': {
+                                'name': 'Tucüman',
+                                'denonym': 'Tucümanlı'
+                            }
+                        }
+                    },
+                },
             },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Güney Amerikalı",
-            },
-        ],
+        },
     },
-    {
-        "code": "AU",
-        "name": "Australia",
-        "denonym": "Australian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Australien",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Australisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Avustralya",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Avustralyalı",
-            },
-        ],
-    },
-]
-
-COUNTRIES = [
-    # Europe
-    {
-        "code": "DE",
-        "name": "Germany",
-        "denonym": "German",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Deutschland",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Deutsche",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Almanya",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Almanca",
-            },
-        ],
-    },
-    {
-        "code": "TR",
-        "name": "Turkey",
-        "denonym": "Turk",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Türkei",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Türke",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Türkiye",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Türk",
-            },
-        ],
-    },
-    # Asia
-    {
-        "code": "KR",
-        "name": "South Korea",
-        "denonym": "South Korean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Südkorea",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Südkoreanisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Güney Kore",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Güney Korelı",
-            },
-        ],
-    },
-    {
-        "code": "IN",
-        "name": "India",
-        "denonym": "Indian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Indien",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Indisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Hindistan",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Hintlı",
-            },
-        ],
-    },
-    # Africa
-    {
-        "code": "EG",
-        "name": "Egypt",
-        "denonym": "Egyptian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Ägypten",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Ägyptisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Mısır",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Mısırlı",
-            },
-        ],
-    },
-    {
-        "code": "ZA",
-        "name": "South Africa",
-        "denonym": "South African",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Südafrika",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Südafrikanisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Güney Afrika",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Güney Afrikalı",
-            },
-        ],
-    },
-    # North America
-    {
-        "code": "US",
-        "name": "United States of America",
-        "denonym": "American",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Vereinigte Staaten von Amerika",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Amerikanisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Amerika Birleşik Devletleri",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Amerikalı",
-            },
-        ],
-    },
-    {
-        "code": "MX",
-        "name": "Mexico",
-        "denonym": "Mexican",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Mexiko",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Mexikaner",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Meksika",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Meksikalı",
-            },
-        ],
-    },
-    # South America
-    {
-        "code": "BR",
-        "name": "Brazil",
-        "denonym": "Brazilian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Brasilien",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Brasilianisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Brezilya",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Brezilyalı",
-            },
-        ],
-    },
-    {
-        "code": "AR",
-        "name": "Argentina",
-        "denonym": "Argentinian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Argentinien",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Argentinisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Arjantin",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Arjantinlı",
-            },
-        ],
-    },
-    # Australia
-    {
-        "code": "ID",
-        "name": "Indonesia",
-        "denonym": "Indonesian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Indonesien",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Indonesier",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Endonezya",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Endonezyalı",
-            },
-        ],
-    },
-    {
-        "code": "NZ",
-        "name": "New Zealand",
-        "denonym": "New Zealandian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Neuseeland",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Neuseeländisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Yeni Zelanda",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Yeni Zelandalı",
-            },
-        ],
-    },
-]
-
-CITIES = [
-    # Germany
-    {
-        "name": "Cologne",
-        "denonym": "Cologner",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Köln",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Kölner",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Koln",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Kolnlı",
-            },
-        ],
-    },
-    {
-        "name": "Munich",
-        "denonym": "Munichian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "München",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Münchner",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Münih",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Münihlı",
-            },
-        ],
-    },
-    # Turkey
-    {
-        "name": "Istanbul",
-        "denonym": "Istanbulian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Ïstanbul",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Ïstanbulisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "İstanbul",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "İstanbullı",
-            },
-        ],
-    },
-    {
-        "name": "Izmir",
-        "denonym": "Izmirian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Ïzmir",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Ïzmirisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "İzmir",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "İzmirlı",
-            },
-        ],
-    },
-    # South Korea
-    {
-        "name": "Seoul",
-        "denonym": "Seouler",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Seül",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Seülisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Seul",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Seullı",
-            },
-        ],
-    },
-    {
-        "name": "Ulsan",
-        "denonym": "Ulsanian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Ulsän",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Ulsänisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Ülsan",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Ülsanlı",
-            },
-        ],
-    },
-    # India
-    {
-        "name": "Mumbai",
-        "denonym": "Mumbaian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Mumbaï",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Mumbäisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Bombay",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Bombaylı",
-            },
-        ],
-    },
-    {
-        "name": "New Delhi",
-        "denonym": "New Delhian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Neu-Delhi",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Neu-Delhisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Yeni Delhi",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Yeni Delhilı",
-            },
-        ],
-    },
-    # Egypt
-    {
-        "name": "Cairo",
-        "denonym": "Cairoian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Kairo",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Kairoisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Kahire",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Kahirelı",
-            },
-        ],
-    },
-    {
-        "name": "Giza",
-        "denonym": "Gizean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Gizeh",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Gizisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Çizeh",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Çizehlı",
-            },
-        ],
-    },
-    # South Africa
-    {
-        "name": "Cape Town",
-        "denonym": "Cape Towner",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Kapstadt",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Kapstadtisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Kap Şehri",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Kap Şehrilı",
-            },
-        ],
-    },
-    {
-        "name": "Johannesburg",
-        "denonym": "Johannesburgian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Johannesbürg",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Johannesbürgisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Yohannesburg",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Yohannesburglı",
-            },
-        ],
-    },
-    # United States of America
-    {
-        "name": "New York",
-        "denonym": "New Yorker",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Neu York",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Neu Yorkisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Yeni York",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Yeni Yorklı",
-            },
-        ],
-    },
-    {
-        "name": "New Jersey",
-        "denonym": "New Jersean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Neu Jersey",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Neu Jersisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Yeni Jersey",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Yeni Jerseylı",
-            },
-        ],
-    },
-    # Mexico
-    {
-        "name": "Mexico City",
-        "denonym": "Mexico Citian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Mexiko Stadt",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Mexiko Stadtisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Meksika şehri",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Meksika şehrilı",
-            },
-        ],
-    },
-    {
-        "name": "Cancun",
-        "denonym": "Cancunian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Cancún",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Cancúnisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Cancün",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Cancünlı",
-            },
-        ],
-    },
-    # Brazil
-    {
-        "name": "Sao Paulo",
-        "denonym": "Sao Paulean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "São Paulo",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "São Paulisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Sao Paülo",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Sao Paülolı",
-            },
-        ],
-    },
-    {
-        "name": "Rio de Janeiro",
-        "denonym": "Rio de Janeirean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Rio von Janeiro",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Rio von Janeirisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Rio de Janeirü",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Rio de Janeirülı",
-            },
-        ],
-    },
-    # Argentina
-    {
-        "name": "Buenos Aires",
-        "denonym": "Buenos Airesean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Büenos Äires",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Büenos Äiresisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Büenos Aires",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Büenos Aireslı",
-            },
-        ],
-    },
-    {
-        "name": "Tucuman",
-        "denonym": "Tucumanian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Tucumán",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Tucumánisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Tucüman",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Tucümanlı",
-            },
-        ],
-    },
-    # Indonesia
-    {
-        "name": "Jakarta",
-        "denonym": "Jakartean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Jäkarta",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Jäkartaisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Jákarta",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Jákartalı",
-            },
-        ],
-    },
-    {
-        "name": "Surabaya",
-        "denonym": "Surabayean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Suräbaya",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Suräbayisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Suràbaya",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Suràbayalı",
-            },
-        ],
-    },
-    # New Zealand
-    {
-        "name": "Auckland",
-        "denonym": "Aucklandean",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Äuckland",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Äucklandisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Akland",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Aklandlı",
-            },
-        ],
-    },
-    {
-        "name": "Wellington",
-        "denonym": "Wellingtonian",
-        "translations": [
-            # de
-            {
-                "field": "name",
-                "language": "de",
-                "text": "Wellingtön",
-            },
-            {
-                "field": "denonym",
-                "language": "de",
-                "text": "Wellingtönisch",
-            },
-            # tr
-            {
-                "field": "name",
-                "language": "tr",
-                "text": "Velington",
-            },
-            {
-                "field": "denonym",
-                "language": "tr",
-                "text": "Velingtonlı",
-            },
-        ],
-    },
-]
+    'australia': {
+        'code': 'AU',
+        'name': 'Australia',
+        'denonym': 'Australian',
+        'translations': {
+            'de': {
+                'name': 'Australien',
+                'denonym': 'Australisch'
+            },
+            'tr': {
+                'name': 'Avustralya',
+                'denonym': 'Avustralyalı'
+            }
+        },
+        'countries': {
+            'indonesia': {
+                'code': 'ID',
+                'name': 'Indonesia',
+                'denonym': 'Indonesian',
+                'translations': {
+                    'de': {
+                        'name': 'Indonesien',
+                        'denonym': 'Indonesier'
+                    },
+                    'tr': {
+                        'name': 'Endonezya',
+                        'denonym': 'Endonezyalı'
+                    }
+                },
+                'cities': {
+                    'jakarta': {
+                        'name': 'Jakarta',
+                        'denonym': 'Jakartean',
+                        'translations': {
+                            'de': {
+                                'name': 'Jäkarta',
+                                'denonym': 'Jäkartaisch'
+                            },
+                            'tr': {
+                                'name': 'Jákarta',
+                                'denonym': 'Jákartalı'
+                            }
+                        }
+                    },
+                    'surabaya': {
+                        'name': 'Surabaya',
+                        'denonym': 'Surabayean',
+                        'translations': {
+                            'de': {
+                                'name': 'Suräbaya',
+                                'denonym': 'Suräbayisch'
+                            },
+                            'tr': {
+                                'name': 'Suràbaya',
+                                'denonym': 'Suràbayalı'
+                            }
+                        }
+                    },
+                },
+            },
+            'new zealand': {
+                'code': 'NZ',
+                'name': 'New Zealand',
+                'denonym': 'New Zealandian',
+                'translations': {
+                    'de': {
+                        'name': 'Neuseeland',
+                        'denonym': 'Neuseeländisch'
+                    },
+                    'tr': {
+                        'name': 'Yeni Zelanda',
+                        'denonym': 'Yeni Zelandalı'
+                    }
+                },
+                'cities': {
+                    'auckland': {
+                        'name': 'Auckland',
+                        'denonym': 'Aucklandean',
+                        'translations': {
+                            'de': {
+                                'name': 'Äuckland',
+                                'denonym': 'Äucklandisch'
+                            },
+                            'tr': {
+                                'name': 'Akland',
+                                'denonym': 'Aklandlı'
+                            }
+                        }
+                    },
+                    'wellington': {
+                        'name': 'Wellington',
+                        'denonym': 'Wellingtonian',
+                        'translations': {
+                            'de': {
+                                'name': 'Wellingtön',
+                                'denonym': 'Wellingtönisch'
+                            },
+                            'tr': {
+                                'name': 'Velington',
+                                'denonym': 'Velingtonlı'
+                            }
+                        }
+                    }
+                },
+            }
+        },
+    }
+}
 
 
-def create_continent(name, fields=None, langs=None):
-    fields = fields if fields is not None else []
-    langs = langs if langs is not None else []
-    for continent in CONTINENTS:
-        if name.lower() == continent["name"].lower():
-            translations = continent["translations"]
-            continent = Continent.objects.create(
-                code=continent["code"],
-                name=continent["name"],
-                denonym=continent["denonym"],
+# --------------------------------------------------------------- sample lists
+
+
+CONTINENTS = []
+COUNTRIES = []
+CITIES = []
+
+CONTINENT_FIELDS = []
+COUNTRY_FIELDS = []
+CITY_FIELDS = []
+
+LANGS = []
+
+
+def handle_fields_consistency(fields, excluded, consistent):
+    # extract fields
+    extracted_fields = []
+    for field in fields:
+        if field not in excluded:
+            extracted_fields.append(field)
+
+    # throw an error if `consistent` fields are not present in extracted ones
+    for field in consistent:
+        if field not in extracted_fields:
+            raise Exception(
+                "Field {} does not exist in {}".format(
+                    field,
+                    consistent
+                )
             )
-            break
-    else:
-        raise ValueError("No continent named `{}`.".format(name))
 
-    for translation in translations:
-        if translation["field"] in fields and translation["language"] in langs:
-            continent.translations.create(**translation)
+    # add the fields that are not present in the consistent
+    for field in extracted_fields:
+        if field not in consistent:
+            consistent.append(field)
+
+
+def handle_langs_consistency(translations, lang_consistent, field_consistent):
+    # extract langs
+    extracted_langs = []
+    for translation_lang, translation_fields in translations.items():
+        extracted_langs.append(translation_lang)
+        for field in translation_fields.keys():
+            if field not in field_consistent:
+                raise Exception(
+                    "Field {} in translations is not in {}".format(
+                        field,
+                        field_consistent
+                    )
+                )
+
+    # throw an error if `consistent` langs are not present in extracted ones
+    for lang in lang_consistent:
+        if lang not in extracted_langs:
+            raise Exception(
+                "Language {} does not exist in {}".format(
+                    lang,
+                    lang_consistent
+                )
+            )
+
+    # add the langs that are not present in the consistent
+    for lang in extracted_langs:
+        if lang not in lang_consistent:
+            lang_consistent.append(lang)
+
+
+# fill them in using SAMPLES
+for continent_k, continent_v in SAMPLES.items():
+    CONTINENTS.append(continent_k)
+    handle_fields_consistency(
+        continent_v.keys(),
+        ['countries', 'translations'],
+        CONTINENT_FIELDS
+    )
+    handle_langs_consistency(
+        continent_v['translations'],
+        LANGS,
+        CONTINENT_FIELDS
+    )
+    for country_k, country_v in continent_v['countries'].items():
+        COUNTRIES.append(country_k)
+        handle_fields_consistency(
+            country_v.keys(),
+            ['cities', 'translations'],
+            COUNTRY_FIELDS
+        )
+        handle_langs_consistency(
+            country_v['translations'],
+            LANGS,
+            COUNTRY_FIELDS
+        )
+        for city_k, city_v in country_v['cities'].items():
+            CITIES.append(city_k)
+            handle_fields_consistency(
+                city_v.keys(),
+                ['translations'],
+                CITY_FIELDS
+            )
+            handle_langs_consistency(
+                city_v['translations'],
+                LANGS,
+                CITY_FIELDS
+            )
+
+
+# ------------------------------------------------------------------ functions
+
+
+def create_sample(
+        continents,
+        countries=None, cities=None,
+        continent_fields=None, country_fields=None, city_fields=None,
+        langs=None):
+
+    # initialize areas
+    countries = countries if countries is not None else []
+    cities = cities if cities is not None else []
+
+    # initialize fields
+    continent_fields = continent_fields if continent_fields is not None else []
+    country_fields = country_fields if country_fields is not None else []
+    city_fields = city_fields if city_fields is not None else []
+
+    # initialize langs
+    langs = langs if langs is not None else []
+
+    # validate continent existence
+    for continent in continents:
+        if continent not in CONTINENTS:
+            raise Exception("Continent {} is not specified.".format(continent))
+
+    # validate country existence
+    for country in countries:
+        if country not in COUNTRIES:
+            raise Exception("Country {} is not specified.".format(country))
+
+    # validate city existence
+    for city in cities:
+        if city not in CITIES:
+            raise Exception("City {} is not specified.".format(city))
+
+    # validate continent field existence
+    for field in continent_fields:
+        if field not in CONTINENT_FIELDS:
+            raise Exception("Field {} is not specified.".format(field))
+
+    # validate country field existence
+    for field in country_fields:
+        if field not in COUNTRY_FIELDS:
+            raise Exception("Field {} is not specified.".format(field))
+
+    # validate continent field existence
+    for field in city_fields:
+        if field not in CITY_FIELDS:
+            raise Exception("Field {} is not specified.".format(field))
+
+    # validate lang existence
+    for lang in langs:
+        if lang not in LANGS:
+            raise Exception("Language {} is not speified.".format(lang))
 
     return continent
-
-
-def create_country(continent, name, fields=None, langs=None):
-    fields = fields if fields is not None else []
-    langs = langs if langs is not None else []
-    for country in COUNTRIES:
-        if name.lower() == country["name"].lower():
-            translations = country["translations"]
-            country = Country.objects.create(
-                continent=continent,
-                code=country["code"],
-                name=country["name"],
-                denonym=country["denonym"],
-            )
-            break
-    else:
-        raise ValueError("No country named `{}`.".format(name))
-
-    for translation in translations:
-        if translation["field"] in fields and translation["language"] in langs:
-            country.translations.create(**translation)
-
-    return country
-
-
-def create_city(country, name, fields=None, langs=None):
-    fields = fields if fields is not None else []
-    langs = langs if langs is not None else []
-    for city in CITIES:
-        if name.lower() == city["name"].lower():
-            translations = city["translations"]
-            city = City.objects.create(
-                country=country,
-                name=city["name"],
-                denonym=city["denonym"],
-            )
-            break
-    else:
-        raise ValueError("No country named `{}`.".format(name))
-
-    for translation in translations:
-        if translation["field"] in fields and translation["language"] in langs:
-            city.translations.create(**translation)
-
-    return city
