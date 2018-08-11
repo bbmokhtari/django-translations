@@ -12,8 +12,9 @@ sys.path.insert(0, os.path.dirname(BASE_DIR))
 
 # Install translations app, and sample app to test it
 INSTALLED_APPS += [
-    'sample.apps.SampleConfig',
     'translations.apps.TranslationsConfig',
+    'sample.apps.SampleConfig',
+    'tests.apps.TestsConfig',
 ]
 
 
