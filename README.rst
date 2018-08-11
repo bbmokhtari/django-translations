@@ -4,13 +4,8 @@ Translations
 .. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
     :target: https://travis-ci.com/perplexionist/django-translations
 
-Translations is a Django app which provides support for model translation.
-
-Goal
-----
-
-The goal is to have an **easy** and **efficient** way of translating model
-content.
+Translations provides an **easy** and **efficient** way of translating model
+contents.
 
 Requirements
 ------------
