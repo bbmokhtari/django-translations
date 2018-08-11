@@ -41,7 +41,7 @@ setuptools.setup(
         exclude=[
             'sample',
             'sample.migrations',
-            'sample.tests',
+            'tests',
         ]
     ),
     python_requires=">=3.5, <4",
