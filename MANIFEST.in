@@ -1,6 +1,7 @@
 prune docs
 prune project
 prune sample
+prune tests
 
 graft translations
 
