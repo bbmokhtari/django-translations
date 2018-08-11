@@ -10,10 +10,8 @@ contents.
 Requirements
 ------------
 
-* Python (>=3.5)
-* Django (1.11, 2.0)
-
-.. warning:: Django 2.1 is **NOT** supported (yet).
+* Python (>=3.5) - Python 2.7 is **not** supported.
+* Django (1.11, 2.0) - Django 2.1 is **not** supported (yet).
 
 Installation
 ------------
