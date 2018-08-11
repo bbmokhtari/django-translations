@@ -25,6 +25,13 @@ jobs:
       install: pip install django==2.0
       before_script: python create.py && python project/manage.py migrate
       script: python project/manage.py test
+    - name: "Python 3.6, Django 1.11, SQLite - Unit Test"
+      python: 3.6
+      env: EXAMPLE_ENGINE=sqlite3
+      before_install: skip
+      install: pip install django==1.11
+      before_script: python create.py && python project/manage.py migrate
+      script: python project/manage.py test
     - stage: deploy
       name: "Generate Doc & Upload to GitHub Pages"
       python: 3.6
