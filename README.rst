@@ -10,15 +10,14 @@ contents.
 Requirements
 ------------
 
-* Python (>=3.5) - Python 2.7 is **not** supported.
-* Django (1.11, 2.0) - Django 2.1 is **not** supported (yet).
+* Python (>=3.5) - Python 2.7 is **NOT** supported.
+* Django (1.11, 2.0) - Django 2.1 is **NOT** supported (yet).
 
 Installation
 ------------
 
-1. Install Translations using PIP::
+1. Install Translations using PIP (use ``--pre``, still in development)::
 
-   # Use the ``--pre`` options, since it's still in development.
    $ pip install --pre django-translations
 
 2. Add ``'translations'`` to ``INSTALLED_APPS`` in the settings of your Django
@@ -37,9 +36,12 @@ Installation
 Usage
 -----
 
+Model
+~~~~~
+
 Inherit ``Translatable`` in any model you want translated.
 
-.. note:: **No migrations** needed afterwards! That's it!
+**No migrations** needed afterwards! That's it!
 
 ::
 
@@ -51,7 +53,10 @@ Inherit ``Translatable`` in any model you want translated.
     class Choice(Translatable):
         ...
 
-Now that you've made your models translatable. you can use the ORM::
+Query
+~~~~~
+
+You can use the extended ORM querysets::
 
     >>> q = Question.objects.create_translated(
     ...     question_text="What's up?",
@@ -69,7 +74,10 @@ Now that you've made your models translatable. you can use the ORM::
     >>> q.get_translated(lang='fr')
     <Question: Quoi de neuf?>
 
-Or use the admin extensions::
+Admin
+~~~~~
+
+You can also use the admin extensions::
 
     from django.contrib import admin
     from translations.admin import TranslatableAdmin, TranslationInline
