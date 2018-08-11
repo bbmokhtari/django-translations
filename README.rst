@@ -4,53 +4,29 @@ Translations
 .. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
     :target: https://travis-ci.com/perplexionist/django-translations
 
-Translations is a Django application which provides support for model
-translation.
+Translations is a Django app which provides support for model translation.
 
-Goal of the Project
--------------------
+Goal
+----
 
-There are two types of translation:
-
-Static Content Translation
-    The content created by the *programmer* in the python modules or templates.
-
-    examples:
-
-    * Please enter the username.
-    * The email must be in the format some@email.
-    * Navigation menu
-
-    Django provides builtin support for this out of the box. For more info see
-    `Django i18n Translation Topic`_
-
-    .. _Django i18n Translation Topic: https://docs.djangoproject.com/en/2.0/
-       topics/i18n/translation/
-
-Dynamic Content Translation
-    The content created by the *admin* or the *user* using forms or APIs.
-
-    exaxmples:
-
-    * Well, we (programmers) don't know what the content is, since it is
-      entered dynamically.
-
-    Django does **NOT** provide builtin support for this.
-
-Translations application provides support for *Dynamic Content Translation*.
+The goal is to have an **easy** and **efficient** way of translating model
+content.
 
 Requirements
 ------------
 
-* Python (2.7, >=3.4)
+* Python (>=3.5)
 * Django (1.11, 2.0)
+
+.. warning:: Django 2.1 is **NOT** supported (yet).
 
 Installation
 ------------
 
 1. Install Translations using PIP::
 
-   $ pip install django-translations
+   # Use the ``--pre`` options, since it's still in development.
+   $ pip install --pre django-translations
 
 2. Add ``'translations'`` to ``INSTALLED_APPS`` in the settings of your Django
    project::
@@ -68,28 +44,9 @@ Installation
 Usage
 -----
 
-Assume you've created this ``models.py``::
+Inherit ``Translatable`` in any model you want translated.
 
-    from django.db import models
-
-
-    class Question(models.Model):
-        question_text = models.CharField(max_length=200)
-        category = models.CharField(max_length=200)
-
-        def __str__(self):
-            return self.question_text
-
-    class Choice(models.Model):
-        question = models.ForeignKey(Question, on_delete=models.CASCADE)
-        choice_text = models.CharField(max_length=200)
-        votes = models.IntegerField(default=0)
-
-        def __str__(self):
-            return self.choice_text
-
-All you have to do is inherit ``Translatable`` in any model you want
-translated. **No migrations** needed afterwards! That's it!
+.. note:: **No migrations** needed afterwards! That's it!
 
 ::
 
@@ -134,8 +91,6 @@ Or use the admin extensions::
 Documentation
 -------------
 
-For more information `Read the Docs`_.
+For more interesting capabilities browse through the `documentation`_.
 
-.. _Read the Docs: https://readthedocs.org
-
-
+.. _documentation: http://perplexionist.github.io/django-translations
