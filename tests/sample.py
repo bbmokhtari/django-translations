@@ -761,13 +761,13 @@ for continent_k, continent_v in SAMPLES.items():
 # ------------------------------------------------------------------ functions
 
 
-def create_sample(
-        continent_names,
-        country_names=None, city_names=None,
+def create_samples(
+        continent_names=None, country_names=None, city_names=None,
         continent_fields=None, country_fields=None, city_fields=None,
         langs=None):
 
     # initialize areas
+    continent_names = continent_names if continent_names is not None else []
     country_names = country_names if country_names is not None else []
     city_names = city_names if city_names is not None else []
 
