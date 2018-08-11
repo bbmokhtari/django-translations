@@ -762,14 +762,14 @@ for continent_k, continent_v in SAMPLES.items():
 
 
 def create_sample(
-        continents,
-        countries=None, cities=None,
+        continent_names,
+        country_names=None, city_names=None,
         continent_fields=None, country_fields=None, city_fields=None,
         langs=None):
 
     # initialize areas
-    countries = countries if countries is not None else []
-    cities = cities if cities is not None else []
+    country_names = country_names if country_names is not None else []
+    city_names = city_names if city_names is not None else []
 
     # initialize fields
     continent_fields = continent_fields if continent_fields is not None else []
@@ -779,39 +779,92 @@ def create_sample(
     # initialize langs
     langs = langs if langs is not None else []
 
-    # validate continent existence
-    for continent in continents:
-        if continent not in CONTINENTS:
-            raise Exception("Continent {} is not specified.".format(continent))
+    for continent_name in continent_names[:]:
+        continent_info = SAMPLES.get(continent_name)
 
-    # validate country existence
-    for country in countries:
-        if country not in COUNTRIES:
-            raise Exception("Country {} is not specified.".format(country))
+        if continent_info:
+            continent_names.remove(continent_name)
+        else:
+            continue
 
-    # validate city existence
-    for city in cities:
-        if city not in CITIES:
-            raise Exception("City {} is not specified.".format(city))
+        continent_info = continent_info.copy()
 
-    # validate continent field existence
-    for field in continent_fields:
-        if field not in CONTINENT_FIELDS:
-            raise Exception("Field {} is not specified.".format(field))
+        continent_countries = continent_info.pop('countries')
+        continent_translations = continent_info.pop('translations')
 
-    # validate country field existence
-    for field in country_fields:
-        if field not in COUNTRY_FIELDS:
-            raise Exception("Field {} is not specified.".format(field))
+        continent = Continent.objects.create(**continent_info)
 
-    # validate continent field existence
-    for field in city_fields:
-        if field not in CITY_FIELDS:
-            raise Exception("Field {} is not specified.".format(field))
+        for lang, dictionary in continent_translations.items():
+            if lang in langs:
+                for field, text in dictionary.items():
+                    if field in continent_fields:
+                        continent.translations.create(
+                            language=lang,
+                            field=field,
+                            text=text,
+                        )
 
-    # validate lang existence
-    for lang in langs:
-        if lang not in LANGS:
-            raise Exception("Language {} is not speified.".format(lang))
+        for country_name in country_names[:]:
+            country_info = continent_countries.get(country_name)
 
-    return continent
+            if country_info:
+                country_names.remove(country_name)
+            else:
+                continue
+
+            country_info = country_info.copy()
+
+            country_cities = country_info.pop('cities')
+            country_translations = country_info.pop('translations')
+
+            country = continent.countries.create(**country_info)
+
+            for lang, dictionary in country_translations.items():
+                if lang in langs:
+                    for field, text in dictionary.items():
+                        if field in country_fields:
+                            country.translations.create(
+                                language=lang,
+                                field=field,
+                                text=text,
+                            )
+
+            for city_name in city_names[:]:
+                city_info = country_cities.get(city_name)
+
+                if city_info:
+                    city_names.remove(city_name)
+                else:
+                    continue
+
+                city_info = city_info.copy()
+
+                city_translations = city_info.pop('translations')
+
+                city = country.cities.create(**city_info)
+
+                for lang, dictionary in city_translations.items():
+                    if lang in langs:
+                        for field, text in dictionary.items():
+                            if field in city_fields:
+                                city.translations.create(
+                                    language=lang,
+                                    field=field,
+                                    text=text,
+                                )
+
+    error_items = []
+
+    if continent_names:
+        error_items.append("Continents {}".format(continent_names))
+
+    if country_names:
+        error_items.append("Countries {}".format(country_names))
+
+    if city_names:
+        error_items.append("Cities {}".format(city_names))
+
+    if error_items:
+        items = ", ".join(error_items)
+        generated_error = "{} could not be created!".format(items)
+        raise Exception(generated_error)
