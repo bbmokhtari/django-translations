@@ -79,7 +79,7 @@ def get_translation_language(lang=None):
 
        The language code is: en
 
-    Or to use a custom language code other than what the client might have
+    Or to get a custom language code other than what the client might have
     requested:
 
     .. testcode:: get_translation_language
