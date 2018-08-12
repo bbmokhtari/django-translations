@@ -47,21 +47,29 @@ def get_translation_language(lang=None):
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` settings
 
+    .. testsetup:: get_translation_language
+
+       from django.utils.translation import activate
+
+       activate('en')
+
+    .. testcode:: get_translation_language
+
+       from translations.utils import get_translation_language
+
+       # current active language in Django
+       default = get_translation_language()
+       print("default: {}".format(default))
+
+       # don't use the current active language
+       custom = get_translation_language('de')
+       print("custom: {}".format(custom))
+
+    .. testoutput:: get_translation_language
+
+       default: en
+       custom: de
     """
-    # >>> from django.utils.translation import activate
-    # >>> from translations.utils import get_translation_language
-    # >>> # An already active language
-    # >>> activate('en')
-    # >>> get_translation_language()
-    # 'en'
-    # >>> # A custom language
-    # >>> get_translation_language('de')
-    # 'de'
-    # >>> # A language that doesn't exist in `LANGUAGES`
-    # >>> get_translation_language('xx')
-    # Traceback (most recent call last):
-    #   File "<stdin>", line 1, in <module>
-    # ValueError: The language code `xx` is not supported.
     lang = lang if lang else get_language()
 
     if lang not in [language[0] for language in settings.LANGUAGES]:
