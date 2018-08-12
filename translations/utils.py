@@ -171,17 +171,17 @@ def get_reverse_relation(model, relation):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
-    .. testsetup::
+    .. testsetup:: get_reverse_relation
 
        from tests.sample import create_samples
 
        create_samples(
            continent_names=["europe"],
            country_names=["germany", "turkey"],
-           city_names=["cologne", "munich", "istanbul", "izmir"]
+           city_names=["cologne", "munich"]
        )
 
-    .. testcode::
+    .. testcode:: get_reverse_relation
 
        from sample.models import Continent, City
        from translations.utils import get_reverse_relation
@@ -191,12 +191,14 @@ def get_reverse_relation(model, relation):
        reverse_field = get_reverse_relation(Continent, 'countries__cities')
        print("City can be queried with '{}'".format(reverse_field))
        cities = City.objects.filter(**{reverse_field: europe})
-       print("cities in europe: {}".format([city.name for city in cities]))
+       print("cities in europe:")
+       print([city.name for city in cities])
 
-    .. testoutput::
+    .. testoutput:: get_reverse_relation
 
        City can be queried with 'country__continent'
-       cities in europe: ['Cologne', 'Munich', 'Istanbul', 'Izmir']
+       cities in europe:
+       ['Cologne', 'Munich']
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
@@ -241,36 +243,48 @@ def get_translations_reverse_relation(model, relation=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
+    .. testsetup:: get_translations_reverse_relation
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe"],
+           country_names=["germany", "turkey"],
+           city_names=["cologne", "munich"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    .. testcode:: get_translations_reverse_relation
+
+       from sample.models import Continent
+       from translations.models import Translation
+       from translations.utils import get_translations_reverse_relation
+
+       # Let's suppose we want translations of all the cities in Europe
+       europe = Continent.objects.get(code="EU")
+       reverse_field = get_translations_reverse_relation(
+           Continent,
+           'countries__cities'
+       )
+       print("Translation can be queried with '{}'".format(reverse_field))
+       translations = Translation.objects.filter(**{reverse_field: europe})
+       print("Translations of cities in europe:")
+       print([translation.text for translation in translations])
+
+       # Or not use a relation
+       reverse_field = get_translations_reverse_relation(Continent)
+       print("Without a relation: {}".format(reverse_field))
+
+    .. testoutput:: get_translations_reverse_relation
+
+       Translation can be queried with 'sample_city__country__continent'
+       Translations of cities in europe:
+       ['Köln', 'Kölner', 'München', 'Münchner']
+       Without a relation: sample_continent
     """
-    # >>> # Let's suppose we want a list of all the cities translations
-    # >>> from sample.models import Continent, Country, City
-    # >>> from translations.models import Translation
-    # >>> from translations.utils import get_translations_reverse_relation
-    # >>> europe = Continent.objects.create(code="EU", name="Europe")
-    # >>> germany = Country.objects.create(
-    # ...     code="DE",
-    # ...     name="Germany",
-    # ...     continent=europe
-    # ... )
-    # >>> cologne = City.objects.create(name="Cologne", country=germany)
-    # >>> cologne.translations.create(field="name", language="de", text="Köln")
-    # <Translation: Cologne: Köln>
-    # >>> # To get the city translations:
-    # >>> get_translations_reverse_relation(Continent, 'countries__cities')
-    # 'sample_city__country__continent'
-    # >>> # Using this translations reverse relation we can query the
-    # >>> # `Translation` for the `City` with a `Continent`
-    # >>> Translation.objects.filter(sample_city__country__continent=europe)
-    # <QuerySet [<Translation: Cologne: Köln>]>
-    # >>> # Done! Cities translations fetched.
-    # >>> # Translations reverse relation of a model
-    # >>> get_translations_reverse_relation(Continent)
-    # 'sample_continent'
-    # >>> # An invalid relation of the model
-    # >>> get_translations_reverse_relation(Continent, 'countries__wrong')
-    # Traceback (most recent call last):
-    #   File "<stdin>", line 1, in <module>
-    # django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     if relation is None:
         translations_relation = 'translations'
     else:
