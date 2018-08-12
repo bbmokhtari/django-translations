@@ -13,7 +13,7 @@ from translations.models import Translation
 
 from sample.models import Continent, Country, City
 
-from .samples import create_continent, create_country, create_city
+from .sample import create_samples
 
 
 class GetValidatedLanguageTest(TestCase):
@@ -57,7 +57,10 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
-        europe = create_continent("europe")
+        create_samples(continent_names=["europe"])
+
+        europe = Continent.objects.get(code="EU")
+
         self.assertEqual(
             get_context_details(europe),
             (Continent, False)
@@ -65,8 +68,8 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_model_queryset(self):
         """Make sure it works with a model queryset."""
-        create_continent("europe")
-        create_continent("asia")
+        create_samples(continent_names=["europe", "asia"])
+
         continents = Continent.objects.all()
         self.assertEqual(
             get_context_details(continents),
@@ -75,9 +78,9 @@ class GetValidatedContextInfoTest(TestCase):
 
     def test_model_iterable(self):
         """Make sure it works with a model iterable."""
-        continents = []
-        continents.append(create_continent("europe"))
-        continents.append(create_continent("asia"))
+        create_samples(continent_names=["europe", "asia"])
+
+        continents = list(Continent.objects.all())
         self.assertEqual(
             get_context_details(continents),
             (Continent, True)
@@ -290,11 +293,13 @@ class GetTranslationsTest(TestCase):
     # ---- arguments testing -------------------------------------------------
 
     def test_instance_with_no_relation_and_with_no_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
 
         activate("de")
         self.assertQuerysetEqual(
@@ -308,17 +313,15 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_simple_relation_and_with_no_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de"]
         )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         activate("de")
         self.assertQuerysetEqual(
@@ -335,23 +338,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_nested_relation_and_with_no_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         activate("de")
         self.assertQuerysetEqual(
@@ -370,11 +367,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_no_relation_and_with_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -388,17 +387,15 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_simple_relation_and_with_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de"]
         )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -415,23 +412,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_nested_relation_and_with_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -450,16 +441,10 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_no_relation_and_with_no_lang(self):
-        create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
-        )
-
-        create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
         )
 
         continents = Continent.objects.all()
@@ -478,27 +463,11 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_simple_relation_and_with_no_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de"]
         )
 
@@ -523,39 +492,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_nested_relation_and_with_no_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
 
@@ -584,16 +527,10 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_no_relation_and_with_lang(self):
-        create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
-        )
-
-        create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
         )
 
         continents = Continent.objects.all()
@@ -612,27 +549,11 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_simple_relation_and_with_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de"]
         )
 
@@ -657,39 +578,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_nested_relation_and_with_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
 
@@ -720,11 +615,13 @@ class GetTranslationsTest(TestCase):
     # ---- specific filtering testing ----------------------------------------
 
     def test_instance_with_no_relation_lang_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"],
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de", "tr"]
         )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -748,17 +645,15 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_simple_relation_lang_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -788,23 +683,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_nested_relation_lang_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -838,23 +727,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_no_relation_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -868,23 +751,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_simple_relation_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -901,23 +778,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_nested_relation_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -936,16 +807,14 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_no_relation_context_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
-        )
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            continent_fields=["name", "denonym"],
             langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -969,29 +838,16 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_simple_relation_context_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de"]
         )
 
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -1021,41 +877,18 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_nested_relation_context_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
 
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -1089,16 +922,10 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_no_relation_lang_filtering(self):
-        create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"],
-        )
-
-        create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            continent_fields=["name", "denonym"],
+            langs=["de", "tr"]
         )
 
         continents = Continent.objects.all()
@@ -1129,27 +956,11 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_simple_relation_lang_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
@@ -1191,39 +1002,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_nested_relation_lang_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
@@ -1273,39 +1058,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_no_relation_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
@@ -1325,39 +1084,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_simple_relation_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
@@ -1382,39 +1115,13 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_nested_relation_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
@@ -1443,32 +1150,17 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_no_relation_context_filtering(self):
-        create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"],
-        )
-        create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_continent(
-            "africa",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_continent(
-            "north america",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia", "africa", "north america"],
+            continent_fields=["name", "denonym"],
             langs=["de"]
         )
 
         eurasia = Continent.objects.filter(
-            models.Q(name="Asia") | models.Q(name="Europe")
+            models.Q(code="AS") | models.Q(code="EU")
         )
         afromerica = Continent.objects.filter(
-            models.Q(name="Africa") | models.Q(name="North America")
+            models.Q(code="AF") | models.Q(code="NA")
         )
 
         self.assertQuerysetEqual(
@@ -1497,59 +1189,19 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_simple_relation_context_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        africa = create_continent(
-            "africa",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            africa,
-            "egypt",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        north_america = create_continent(
-            "north america",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_country(
-            north_america,
-            "mexico",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia", "africa", "north america"],
+            country_names=["germany", "india", "egypt", "mexico"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
             langs=["de"]
         )
 
         eurasia = Continent.objects.filter(
-            models.Q(name="Asia") | models.Q(name="Europe")
+            models.Q(code="AS") | models.Q(code="EU")
         )
         afromerica = Continent.objects.filter(
-            models.Q(name="Africa") | models.Q(name="North America")
+            models.Q(code="AF") | models.Q(code="NA")
         )
 
         self.assertQuerysetEqual(
@@ -1588,83 +1240,21 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_nested_relation_context_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        africa = create_continent(
-            "africa",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        egypt = create_country(
-            africa,
-            "egypt",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            egypt,
-            "cairo",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        north_america = create_continent(
-            "north america",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        mexico = create_country(
-            north_america,
-            "mexico",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        create_city(
-            mexico,
-            "mexico city",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia", "africa", "north america"],
+            country_names=["germany", "india", "egypt", "mexico"],
+            city_names=["cologne", "mumbai", "cairo", "mexico city"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
 
         eurasia = Continent.objects.filter(
-            models.Q(name="Asia") | models.Q(name="Europe")
+            models.Q(code="AS") | models.Q(code="EU")
         )
         afromerica = Continent.objects.filter(
-            models.Q(name="Africa") | models.Q(name="North America")
+            models.Q(code="AF") | models.Q(code="NA")
         )
 
         self.assertQuerysetEqual(
@@ -1713,41 +1303,18 @@ class GetTranslationsTest(TestCase):
     # ---- global filtering testing ------------------------------------------
 
     def test_instance_with_no_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -1791,41 +1358,18 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_simple_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -1881,41 +1425,18 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_instance_with_nested_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "india"],
+            city_names=["cologne", "mumbai"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
             get_translations(
@@ -1979,83 +1500,21 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_no_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        africa = create_continent(
-            "africa",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        egypt = create_country(
-            africa,
-            "egypt",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            egypt,
-            "cairo",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        north_america = create_continent(
-            "north america",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        mexico = create_country(
-            north_america,
-            "mexico",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            mexico,
-            "mexico city",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia", "africa", "north america"],
+            country_names=["germany", "india", "egypt", "mexico"],
+            city_names=["cologne", "mumbai", "cairo", "mexico city"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
         eurasia = Continent.objects.filter(
-            models.Q(name="Asia") | models.Q(name="Europe")
+            models.Q(code="AS") | models.Q(code="EU")
         )
         afromerica = Continent.objects.filter(
-            models.Q(name="Africa") | models.Q(name="North America")
+            models.Q(code="AF") | models.Q(code="NA")
         )
 
         self.assertQuerysetEqual(
@@ -2108,83 +1567,21 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_simple_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        africa = create_continent(
-            "africa",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        egypt = create_country(
-            africa,
-            "egypt",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            egypt,
-            "cairo",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        north_america = create_continent(
-            "north america",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        mexico = create_country(
-            north_america,
-            "mexico",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            mexico,
-            "mexico city",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia", "africa", "north america"],
+            country_names=["germany", "india", "egypt", "mexico"],
+            city_names=["cologne", "mumbai", "cairo", "mexico city"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
         eurasia = Continent.objects.filter(
-            models.Q(name="Asia") | models.Q(name="Europe")
+            models.Q(code="AS") | models.Q(code="EU")
         )
         afromerica = Continent.objects.filter(
-            models.Q(name="Africa") | models.Q(name="North America")
+            models.Q(code="AF") | models.Q(code="NA")
         )
 
         self.assertQuerysetEqual(
@@ -2257,83 +1654,21 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_queryset_with_nested_relation_filtering(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        africa = create_continent(
-            "africa",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        egypt = create_country(
-            africa,
-            "egypt",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            egypt,
-            "cairo",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        north_america = create_continent(
-            "north america",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        mexico = create_country(
-            north_america,
-            "mexico",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-        create_city(
-            mexico,
-            "mexico city",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia", "africa", "north america"],
+            country_names=["germany", "india", "egypt", "mexico"],
+            city_names=["cologne", "mumbai", "cairo", "mexico city"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
         eurasia = Continent.objects.filter(
-            models.Q(name="Asia") | models.Q(name="Europe")
+            models.Q(code="AS") | models.Q(code="EU")
         )
         afromerica = Continent.objects.filter(
-            models.Q(name="Africa") | models.Q(name="North America")
+            models.Q(code="AF") | models.Q(code="NA")
         )
 
         self.assertQuerysetEqual(
@@ -2424,11 +1759,14 @@ class GetTranslationsTest(TestCase):
     # ---- error testing -----------------------------------------------------
 
     def test_invalid_lang(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
+
         with self.assertRaises(ValueError) as error:
             get_translations(
                 europe,
@@ -2440,11 +1778,14 @@ class GetTranslationsTest(TestCase):
         )
 
     def test_invalid_relation(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
-            langs=["de", "tr"]
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
+
         with self.assertRaises(FieldDoesNotExist) as error:
             get_translations(
                 europe,
@@ -2482,18 +1823,23 @@ class GetTranslationsTest(TestCase):
 class GetDictionaryTest(TestCase):
 
     def test_translations_none(self):
-        europe = create_continent("europe")
+        create_samples(continent_names=["europe"])
+
+        europe = Continent.objects.get(code="EU")
+
         self.assertDictEqual(
             get_dictionary(europe.translations.all()),
             {}
         )
 
     def test_one_conent_type_one_object_id_one_field(self):
-        europe = create_continent(
-            "europe",
-            fields=["name"],
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name"],
             langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
 
         continent_ct_id = ContentType.objects.get_for_model(Continent).id
         europe_id = str(europe.id)
@@ -2510,23 +1856,19 @@ class GetDictionaryTest(TestCase):
         )
 
     def test_multiple_conent_type_one_object_id_one_field(self):
-        europe = create_continent(
-            "europe",
-            fields=["name"],
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name"],
+            country_fields=["name"],
+            city_fields=["name"],
             langs=["de"]
         )
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name"],
-            langs=["de"]
-        )
-        cologne = create_city(
-            germany,
-            "cologne",
-            fields=["name"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
+        germany = Country.objects.get(code="DE")
+        cologne = City.objects.get(name="Cologne")
 
         continent_ct_id = ContentType.objects.get_for_model(Continent).id
         country_ct_id = ContentType.objects.get_for_model(Country).id
@@ -2558,16 +1900,14 @@ class GetDictionaryTest(TestCase):
         )
 
     def test_one_conent_type_multiple_object_id_one_field(self):
-        europe = create_continent(
-            "europe",
-            fields=["name"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            continent_fields=["name"],
             langs=["de"]
         )
-        asia = create_continent(
-            "asia",
-            fields=["name"],
-            langs=["de"]
-        )
+
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
         continent_ct_id = ContentType.objects.get_for_model(Continent).id
         europe_id = str(europe.id)
@@ -2588,11 +1928,13 @@ class GetDictionaryTest(TestCase):
         )
 
     def test_one_conent_type_one_object_id_multiple_field(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
             langs=["de"]
         )
+
+        europe = Continent.objects.get(code="EU")
 
         continent_ct_id = ContentType.objects.get_for_model(Continent).id
         europe_id = str(europe.id)
@@ -2610,93 +1952,35 @@ class GetDictionaryTest(TestCase):
         )
 
     def test_multiple_conent_type_multiple_object_id_multiple_field(self):
-        europe = create_continent(
-            "europe",
-            fields=["name", "denonym"],
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "turkey", "india", "south korea"],
+            city_names=[
+                "cologne", "munich", "istanbul", "izmir",
+                "mumbai", "new delhi", "seoul", "ulsan",
+            ],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
             langs=["de"]
         )
 
-        germany = create_country(
-            europe,
-            "germany",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        cologne = create_city(
-            germany,
-            "cologne",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        munich = create_city(
-            germany,
-            "munich",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+        europe = Continent.objects.get(code="EU")
+        asia = Continent.objects.get(code="AS")
 
-        turkey = create_country(
-            europe,
-            "turkey",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        istanbul = create_city(
-            turkey,
-            "istanbul",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        izmir = create_city(
-            turkey,
-            "izmir",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+        germany = Country.objects.get(code="DE")
+        turkey = Country.objects.get(code="TR")
+        india = Country.objects.get(code="IN")
+        south_korea = Country.objects.get(code="KR")
 
-        asia = create_continent(
-            "asia",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        india = create_country(
-            asia,
-            "india",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        mumbai = create_city(
-            india,
-            "mumbai",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        new_delhi = create_city(
-            india,
-            "new delhi",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        south_korea = create_country(
-            asia,
-            "south korea",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        seoul = create_city(
-            south_korea,
-            "seoul",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
-        ulsan = create_city(
-            south_korea,
-            "ulsan",
-            fields=["name", "denonym"],
-            langs=["de"]
-        )
+        cologne = City.objects.get(name="Cologne")
+        munich = City.objects.get(name="Munich")
+        istanbul = City.objects.get(name="Istanbul")
+        izmir = City.objects.get(name="Izmir")
+        mumbai = City.objects.get(name="Mumbai")
+        new_delhi = City.objects.get(name="New Delhi")
+        seoul = City.objects.get(name="Seoul")
+        ulsan = City.objects.get(name="Ulsan")
 
         continent_ct_id = ContentType.objects.get_for_model(Continent).id
         country_ct_id = ContentType.objects.get_for_model(Country).id

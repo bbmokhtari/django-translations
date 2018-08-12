@@ -1,5 +1,5 @@
-Translations
-============
+Translations (In Development)
+=============================
 
 .. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
     :target: https://travis-ci.com/perplexionist/django-translations
