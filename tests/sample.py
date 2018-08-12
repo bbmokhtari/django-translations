@@ -784,18 +784,21 @@ def create_samples(
         'model': Continent,
         'names': continent_names,
         'fields': continent_fields,
+        'fields_desc': True,  # name translations is created before denonym
         'langs': langs,
         'descendant': {
             'countries': {
                 'model': Country,
                 'names': country_names,
                 'fields': country_fields,
+                'fields_desc': True,  # same reason as above
                 'langs': langs,
                 'descendant': {
                     'cities': {
                         'model': City,
                         'names': city_names,
                         'fields': city_fields,
+                        'fields_desc': True, # same reason as above
                         'langs': langs,
                     }
                 }
@@ -835,17 +838,25 @@ def create_all():
 
 
 def creator(**kwargs):
+    # these two are handled automatically - but needed in recursive calls
     samples = kwargs.get('samples', SAMPLES)
     parent = kwargs.get('parent', {})
+
+    # these are the standard info to pass in
     model = kwargs.get('model', None)
     names = kwargs.get('names', [])
     fields = kwargs.get('fields', [])
     langs = kwargs.get('langs', [])
     descendant = kwargs.get('descendant', {})
 
-    print("-" * 79)
-    print("KWARGS:")
-    print(kwargs)
+    # order of creation for testing
+    fields_desc = kwargs.get('fields_desc', False)
+    langs_desc = kwargs.get('langs_desc', False)
+    descendant_desc = kwargs.get('descendant_desc', False)
+
+    # dict sorter function
+    def sorter(x):
+        return x[0]
 
     for name in names[:]:
         info = samples.get(name)
@@ -867,9 +878,19 @@ def creator(**kwargs):
 
         obj = model.objects.create(**info)
 
-        for lang, dictionary in translations.items():
+        translations_iterable = sorted(
+            translations.items(),
+            key=sorter,
+            reverse=langs_desc
+        )
+        for lang, dictionary in translations_iterable:
             if lang in langs:
-                for field, text in dictionary.items():
+                dictionary_iterable = sorted(
+                    dictionary.items(),
+                    key=sorter,
+                    reverse=fields_desc
+                )
+                for field, text in dictionary_iterable:
                     if field in fields:
                         obj.translations.create(
                             language=lang,
@@ -877,7 +898,12 @@ def creator(**kwargs):
                             text=text,
                         )
 
-        for descendant_key, descendant_kwargs in descendant.items():
+        descendant_iterable = sorted(
+            descendant.items(),
+            key=sorter,
+            reverse=descendant_desc
+        )
+        for descendant_key, descendant_kwargs in descendant_iterable:
             parent_key = get_reverse_relation(model, descendant_key)
             descendant_kwargs['parent'] = {
                 parent_key: obj
