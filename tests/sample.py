@@ -1,4 +1,5 @@
 from sample.models import Continent, Country, City
+from translations.utils import get_reverse_relation
 
 
 # -------------------------------------------------------------------- samples
@@ -779,79 +780,30 @@ def create_samples(
     # initialize langs
     langs = langs if langs is not None else []
 
-    for continent_name in continent_names[:]:
-        continent_info = SAMPLES.get(continent_name)
+    info = {
+        'model': Continent,
+        'names': continent_names,
+        'fields': continent_fields,
+        'langs': langs,
+        'descendant': {
+            'countries': {
+                'model': Country,
+                'names': country_names,
+                'fields': country_fields,
+                'langs': langs,
+                'descendant': {
+                    'cities': {
+                        'model': City,
+                        'names': city_names,
+                        'fields': city_fields,
+                        'langs': langs,
+                    }
+                }
+            }
+        }
+    }
 
-        if continent_info:
-            continent_names.remove(continent_name)
-        else:
-            continue
-
-        continent_info = continent_info.copy()
-
-        continent_countries = continent_info.pop('countries')
-        continent_translations = continent_info.pop('translations')
-
-        continent = Continent.objects.create(**continent_info)
-
-        for lang, dictionary in continent_translations.items():
-            if lang in langs:
-                for field, text in dictionary.items():
-                    if field in continent_fields:
-                        continent.translations.create(
-                            language=lang,
-                            field=field,
-                            text=text,
-                        )
-
-        for country_name in country_names[:]:
-            country_info = continent_countries.get(country_name)
-
-            if country_info:
-                country_names.remove(country_name)
-            else:
-                continue
-
-            country_info = country_info.copy()
-
-            country_cities = country_info.pop('cities')
-            country_translations = country_info.pop('translations')
-
-            country = continent.countries.create(**country_info)
-
-            for lang, dictionary in country_translations.items():
-                if lang in langs:
-                    for field, text in dictionary.items():
-                        if field in country_fields:
-                            country.translations.create(
-                                language=lang,
-                                field=field,
-                                text=text,
-                            )
-
-            for city_name in city_names[:]:
-                city_info = country_cities.get(city_name)
-
-                if city_info:
-                    city_names.remove(city_name)
-                else:
-                    continue
-
-                city_info = city_info.copy()
-
-                city_translations = city_info.pop('translations')
-
-                city = country.cities.create(**city_info)
-
-                for lang, dictionary in city_translations.items():
-                    if lang in langs:
-                        for field, text in dictionary.items():
-                            if field in city_fields:
-                                city.translations.create(
-                                    language=lang,
-                                    field=field,
-                                    text=text,
-                                )
+    creator(**info)
 
     error_items = []
 
@@ -880,3 +832,54 @@ def create_all():
         city_fields=CITY_FIELDS,
         langs=LANGS
     )
+
+
+def creator(**kwargs):
+    samples = kwargs.get('samples', SAMPLES)
+    parent = kwargs.get('parent', {})
+    model = kwargs.get('model', None)
+    names = kwargs.get('names', [])
+    fields = kwargs.get('fields', [])
+    langs = kwargs.get('langs', [])
+    descendant = kwargs.get('descendant', {})
+
+    print("-" * 79)
+    print("KWARGS:")
+    print(kwargs)
+
+    for name in names[:]:
+        info = samples.get(name)
+
+        if info:
+            names.remove(name)
+        else:
+            continue
+
+        info = info.copy()
+
+        for descendant_key, descendant_kwargs in descendant.items():
+            descendant_kwargs['samples'] = info.pop(descendant_key)
+
+        translations = info.pop('translations')
+
+        for parent_key, parent_value in parent.items():
+            info[parent_key] = parent_value
+
+        obj = model.objects.create(**info)
+
+        for lang, dictionary in translations.items():
+            if lang in langs:
+                for field, text in dictionary.items():
+                    if field in fields:
+                        obj.translations.create(
+                            language=lang,
+                            field=field,
+                            text=text,
+                        )
+
+        for descendant_key, descendant_kwargs in descendant.items():
+            parent_key = get_reverse_relation(model, descendant_key)
+            descendant_kwargs['parent'] = {
+                parent_key: obj
+            }
+            creator(**descendant_kwargs)
