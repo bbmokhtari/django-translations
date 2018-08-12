@@ -283,27 +283,58 @@ def get_translations(context, *relations, lang=None):
 
     .. testsetup:: get_translations
 
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe"],
+           country_names=["germany"],
+           city_names=["cologne"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    .. testcode:: get_translations
+
        from sample.models import Continent, Country, City
        from translations.utils import get_translations
-       europe = Continent.objects.create(code="EU", name="Europe")
-       europe.translations.create(field="name", language="de", text="Europa")
-       germany = Country.objects.create(
-           code="DE",
-           name="Germany",
-           continent=europe
-       )
-       germany.translations.create(
-           field="name",
-           language="de",
-           text="Deutschland"
-       )
-       cologne = City.objects.create(name="Cologne", country=germany)
-       cologne.translations.create(field="name", language="de", text="Köln")
 
-    .. doctest:: get_translations
+       # objects: continent: europe, country: germany and city: cologne
+       europe = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+        ).get(name="Europe")
 
-       >>> get_translations(europe, "countries", "countries__cities", lang="de")
-       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: Deutschland>, <Translation: Cologne: Köln>]>
+       # The translations for europe and all its relations in German
+       translations = get_translations(
+           europe,
+           "countries", "countries__cities",
+           lang="de"
+       )
+
+       # print translations
+       for translation in translations:
+           print(
+               "{object}.{field} ({origin}) in '{lang}' is '{text}'".format(
+                   object=translation.content_object,
+                   field=translation.field,
+                   origin=getattr(
+                       translation.content_object,
+                       translation.field
+                   ),
+                   lang=translation.language,
+                   text=translation.text
+               )
+           )
+
+    .. testoutput:: get_translations
+
+       Europe.name (Europe) in 'de' is 'Europa'
+       Europe.denonym (European) in 'de' is 'Europäisch'
+       Germany.name (Germany) in 'de' is 'Deutschland'
+       Germany.denonym (German) in 'de' is 'Deutsche'
+       Cologne.name (Cologne) in 'de' is 'Köln'
+       Cologne.denonym (Cologner) in 'de' is 'Kölner'
     """
     lang = get_translation_language(lang)
     model, iterable = get_context_details(context)
@@ -506,82 +537,82 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
        :func:`~django.db.models.prefetch_related_objects` for fetching the
        relations of the context before using :func:`translate`.
 
-    .. testsetup:: translate
-
-       from sample.models import Continent, Country, City
-       from translations.utils import translate
-       europe = Continent.objects.create(
-           code="EU",
-           name="Europe",
-           denonym="European",
-       )
-       europe.translations.create(
-           field="name",
-           language="de",
-           text="Europa"
-       )
-       europe.translations.create(
-           field="denonym",
-           language="de",
-           text="Europäisch"
-       )
-       germany = Country.objects.create(
-           code="DE",
-           name="Germany",
-           denonym="German",
-           continent=europe
-       )
-       germany.translations.create(
-           field="name",
-           language="de",
-           text="Deutschland"
-       )
-       germany.translations.create(
-           field="denonym",
-           language="de",
-           text="Deutsche"
-       )
-       cologne = City.objects.create(
-           name="Cologne",
-           denonym="Cologner",
-           country=germany
-       )
-       cologne.translations.create(
-           field="name",
-           language="de",
-           text="Köln"
-       )
-       cologne.translations.create(
-           field="denonym",
-           language="de",
-           text="Kölner"
-       )
-
-    .. doctest:: translate
-
-       >>> # MAKE SURE: `select_related` and `prefetch_related`
-       >>> europe = Continent.objects.prefetch_related(
-       ...     'countries',
-       ...     'countries__cities',
-       ... ).get(code="EU")
-       >>> # Translate:
-       >>> translate(europe, "countries", "countries__cities", lang="de")
-       >>> # Done!
-       >>> germany = europe.countries.all()[0]
-       >>> cologne = germany.cities.all()[0]
-       >>> europe.name
-       Europa
-       >>> europe.denonym
-       Europäisch
-       >>> germany.name
-       Deutschland
-       >>> germany.denonym
-       Deutsche
-       >>> cologne.name
-       Köln
-       >>> cologne.denonym
-       Kölner
     """
+    # .. testsetup:: translate
+
+    #    from sample.models import Continent, Country, City
+    #    from translations.utils import translate
+    #    europe = Continent.objects.create(
+    #        code="EU",
+    #        name="Europe",
+    #        denonym="European",
+    #    )
+    #    europe.translations.create(
+    #        field="name",
+    #        language="de",
+    #        text="Europa"
+    #    )
+    #    europe.translations.create(
+    #        field="denonym",
+    #        language="de",
+    #        text="Europäisch"
+    #    )
+    #    germany = Country.objects.create(
+    #        code="DE",
+    #        name="Germany",
+    #        denonym="German",
+    #        continent=europe
+    #    )
+    #    germany.translations.create(
+    #        field="name",
+    #        language="de",
+    #        text="Deutschland"
+    #    )
+    #    germany.translations.create(
+    #        field="denonym",
+    #        language="de",
+    #        text="Deutsche"
+    #    )
+    #    cologne = City.objects.create(
+    #        name="Cologne",
+    #        denonym="Cologner",
+    #        country=germany
+    #    )
+    #    cologne.translations.create(
+    #        field="name",
+    #        language="de",
+    #        text="Köln"
+    #    )
+    #    cologne.translations.create(
+    #        field="denonym",
+    #        language="de",
+    #        text="Kölner"
+    #    )
+
+    # .. doctest:: translate
+
+    #    >>> # MAKE SURE: `select_related` and `prefetch_related`
+    #    >>> europe = Continent.objects.prefetch_related(
+    #    ...     'countries',
+    #    ...     'countries__cities',
+    #    ... ).get(code="EU")
+    #    >>> # Translate:
+    #    >>> translate(europe, "countries", "countries__cities", lang="de")
+    #    >>> # Done!
+    #    >>> germany = europe.countries.all()[0]
+    #    >>> cologne = germany.cities.all()[0]
+    #    >>> europe.name
+    #    Europa
+    #    >>> europe.denonym
+    #    Europäisch
+    #    >>> germany.name
+    #    Deutschland
+    #    >>> germany.denonym
+    #    Deutsche
+    #    >>> cologne.name
+    #    Köln
+    #    >>> cologne.denonym
+    #    Kölner
     lang = get_translation_language(lang)
     model, iterable = get_context_details(context)
 

@@ -868,3 +868,15 @@ def create_samples(
         items = ", ".join(error_items)
         generated_error = "{} could not be created!".format(items)
         raise Exception(generated_error)
+
+
+def create_all():
+    create_samples(
+        continent_names=CONTINENTS,
+        country_names=COUNTRIES,
+        city_names=CITIES,
+        continent_fields=CONTINENT_FIELDS,
+        country_fields=COUNTRY_FIELDS,
+        city_fields=CITY_FIELDS,
+        langs=LANGS
+    )
