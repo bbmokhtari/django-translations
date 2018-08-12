@@ -4,7 +4,7 @@ This module contains the utilities for the Translations app.
 .. rubric:: Functions:
 
 :func:`get_translation_language`
-    Return the given language code or the current active language code.
+    Return the language code for the translation process.
 :func:`get_context_details`
     Return the model and iteration details of the context.
 :func:`get_reverse_relation`
@@ -37,15 +37,28 @@ __docformat__ = 'restructuredtext'
 
 def get_translation_language(lang=None):
     """
-    Return the given language code or the current active language code.
+    Return the language code for the translation process.
 
-    :param lang: The language code to validate, ``None`` means the current
-        active language
+    If the ``lang`` parameter is not passed in, it will return the active
+    language code determined by Django. Otherwise it will return the custom
+    language code indicated by the ``lang`` parameter.
+
+    :param lang: A custom language code, ``None`` means use the active
+        language code determined by Django.
     :type lang: str or None
-    :return: The validated language code
+    :return: The language code for the translation process.
     :rtype: str
-    :raise ValueError: If the language code is not included in
-        the :data:`~django.conf.settings.LANGUAGES` settings
+    :raise ValueError: If the language code is not specified in
+        the :data:`~django.conf.settings.LANGUAGES` setting.
+
+    .. note::
+
+       The active language code is a language code determined automatically
+       by Django. It is not a global system-wide setting, but it is rather a
+       per-request setting, usually determined by the ``Accept-Language``
+       header received in each HTTP request (by the browser or another
+       client). You can access it using
+       :func:`~django.utils.translation.get_language` in each view.
 
     .. testsetup:: get_translation_language
 
@@ -53,22 +66,32 @@ def get_translation_language(lang=None):
 
        activate('en')
 
+    To get the active language code requested by the client.
+
     .. testcode:: get_translation_language
 
        from translations.utils import get_translation_language
 
-       # Current active language in Django
-       default = get_translation_language()
-       print("default: {}".format(default))
-
-       # Don't use the current active language
-       custom = get_translation_language('de')
-       print("custom: {}".format(custom))
+       active = get_translation_language()
+       print("The language code is: " + active)
 
     .. testoutput:: get_translation_language
 
-       default: en
-       custom: de
+       The language code is: en
+
+    Or to use a custom language code other than what the client might have
+    requested:
+
+    .. testcode:: get_translation_language
+
+       from translations.utils import get_translation_language
+
+       custom = get_translation_language('de')
+       print("The language code is: " + custom)
+
+    .. testoutput:: get_translation_language
+
+       The language code is: de
     """
     lang = lang if lang else get_language()
 
