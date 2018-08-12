@@ -171,29 +171,33 @@ def get_reverse_relation(model, relation):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
 
+    .. testsetup::
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe"],
+           country_names=["germany", "turkey"],
+           city_names=["cologne", "munich", "istanbul", "izmir"]
+       )
+
+    .. testcode::
+
+       from sample.models import Continent, City
+       from translations.utils import get_reverse_relation
+
+       # Let's suppose we want a list of all the cities in Europe
+       europe = Continent.objects.get(code="EU")
+       reverse_field = get_reverse_relation(Continent, 'countries__cities')
+       print("City can be queried with '{}'".format(reverse_field))
+       cities = City.objects.filter(**{reverse_field: europe})
+       print("cities in europe: {}".format([city.name for city in cities]))
+
+    .. testoutput::
+
+       City can be queried with 'country__continent'
+       cities in europe: ['Cologne', 'Munich', 'Istanbul', 'Izmir']
     """
-    # >>> # Let's suppose we want a list of all the cities in Europe
-    # >>> from sample.models import Continent, Country, City
-    # >>> from translations.utils import get_reverse_relation
-    # >>> europe = Continent.objects.create(code="EU", name="Europe")
-    # >>> germany = Country.objects.create(
-    # ...     code="DE",
-    # ...     name="Germany",
-    # ...     continent=europe
-    # ... )
-    # >>> cologne = City.objects.create(name="Cologne", country=germany)
-    # >>> # To get the cities:
-    # >>> get_reverse_relation(Continent, 'countries__cities')
-    # 'country__continent'
-    # >>> # Using this reverse relation we can query `City` with a `Continent`
-    # >>> City.objects.filter(country__continent=europe)
-    # <TranslatableQuerySet [<City: Cologne>]>
-    # >>> # Done! Cities fetched.
-    # >>> # An invalid relation of the model
-    # >>> get_reverse_relation(Continent, 'countries__wrong')
-    # Traceback (most recent call last):
-    #   File "<stdin>", line 1, in <module>
-    # django.core.exceptions.FieldDoesNotExist: Country has no field named 'wrong'
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
     branch = parts[1:]
