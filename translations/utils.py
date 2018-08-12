@@ -57,11 +57,11 @@ def get_translation_language(lang=None):
 
        from translations.utils import get_translation_language
 
-       # current active language in Django
+       # Current active language in Django
        default = get_translation_language()
        print("default: {}".format(default))
 
-       # don't use the current active language
+       # Don't use the current active language
        custom = get_translation_language('de')
        print("custom: {}".format(custom))
 
@@ -92,30 +92,44 @@ def get_context_details(context):
     :raise TypeError: If the context is neither a model instance nor
         an iterable of model instances
 
+    .. testsetup:: get_context_details
+
+       from tests.sample import create_samples
+
+       create_samples(continent_names=["europe"])
+
+    .. testcode:: get_context_details
+
+       from sample.models import Continent
+       from translations.utils import get_context_details
+
+       # Let's check a single object
+       europe = Continent.objects.get(code="EU")
+       details = get_context_details(europe)
+       print("europe model is: {}".format(details[0]))
+       print("is europe iterable? {}".format(details[1]))
+
+       # Now an iterable object
+       continents = Continent.objects.all()
+       details = get_context_details(continents)
+       print("continents model is: {}".format(details[0]))
+       print("is continents iterable? {}".format(details[1]))
+
+       # Now an empty iterable object
+       empty = []
+       details = get_context_details(empty)
+       print("empty model is: {}".format(details[0]))
+       print("is empty iterable? {}".format(details[1]))
+
+    .. testoutput:: get_context_details
+
+       europe model is: <class 'sample.models.Continent'>
+       is europe iterable? False
+       continents model is: <class 'sample.models.Continent'>
+       is continents iterable? True
+       empty model is: None
+       is empty iterable? True
     """
-    # >>> from sample.models import Continent
-    # >>> from translations.utils import get_context_details
-    # >>> # A model instance
-    # >>> europe = Continent.objects.create(code="EU", name="Europe")
-    # >>> get_context_details(europe)
-    # (<class 'sample.models.Continent'>, False)
-    # >>> # A model iterable
-    # >>> continents = Continent.objects.all()
-    # >>> get_context_details(continents)
-    # (<class 'sample.models.Continent'>, True)
-    # >>> # An empty queryset
-    # >>> continents.delete()
-    # (1, {'translations.Translation': 0, 'sample.Continent': 1})
-    # >>> get_context_details(continents)
-    # (None, True)
-    # >>> # An empty list
-    # >>> get_context_details([])
-    # (None, True)
-    # >>> # An invalid type
-    # >>> get_context_details(123)
-    # Traceback (most recent call last):
-    #   File "<stdin>", line 1, in <module>
-    # TypeError: `123` is neither a model instance nor an iterable of model instances.
     error_message = '`{}` is neither {} nor {}.'.format(
         context,
         'a model instance',
