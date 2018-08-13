@@ -259,8 +259,8 @@ def get_reverse_relation(model, relation):
        City: Cologne
        City: Munich
 
-    Which does a *minimum* of three queries to the database (one for the
-    continent, one for the countries and one for the cities) even if the
+    Which does a *minimum* of two queries to the database (one for the
+    countries and one for the cities) even if the
     :meth:`~django.db.models.query.QuerySet.prefetch_related` is used, the
     same can be achieved with:
 
@@ -273,6 +273,7 @@ def get_reverse_relation(model, relation):
 
        reverse_relation = get_reverse_relation(Continent, 'countries__cities')
        print("City can be queried with '{}'".format(reverse_relation))
+
        cities = City.objects.filter(**{reverse_relation: europe})
        for city in cities:
            print("City: {}".format(city.name))
@@ -376,9 +377,8 @@ def get_translations_reverse_relation(model, relation=None):
        City: Köln
        City: München
 
-    Which does a *minimum* of four queries to the database (one for the
-    continent, one for the countries, one for the cities and one for the
-    translations) even if the
+    Which does a *minimum* of three queries to the database (one for the
+    countries, one for the cities and one for the translations) even if the
     :meth:`~django.db.models.query.QuerySet.prefetch_related` is used, the
     same can be achieved with:
 
@@ -396,6 +396,7 @@ def get_translations_reverse_relation(model, relation=None):
            Continent, 'countries__cities')
        print("Translation can be queried with '{}'".format(reverse_relation))
        filters[reverse_relation] = europe
+
        translations = Translation.objects.filter(**filters)
        for translation in translations:
            print("City: {}".format(translation.text))
@@ -423,6 +424,7 @@ def get_translations_reverse_relation(model, relation=None):
        reverse_relation = get_translations_reverse_relation(Continent)
        print("Translation can be queried with '{}'".format(reverse_relation))
        filters[reverse_relation] = europe
+
        translations = Translation.objects.filter(**filters)
        for translation in translations:
            print("Continent: {}".format(translation.text))
