@@ -8,7 +8,7 @@ This module contains the utilities for the Translations app.
 :func:`get_entity_details`
     Return the details of an entity.
 :func:`get_reverse_relation`
-    Return the reverse of a relation for a model.
+    Return the reverse of a relation.
 :func:`get_translations_reverse_relation`
     Return the reverse of the translations relation for a model, or
     translations relation *of a relation* for the model.
@@ -211,20 +211,24 @@ def get_entity_details(entity):
 
 def get_reverse_relation(model, relation):
     """
-    Return the reverse of a relation for a model.
+    Return the reverse of a relation.
 
-    :param model: The model which contains the relation and which the reverse
-        relation will point to
+    Checks a relation of a model which points to a target model and returns
+    the relation which the target model can use to access the initial model
+    in reverse.
+
+    :param model: The model which contains the relation and the reverse
+        relation will point to.
     :type model: type(~django.db.models.Model)
-    :param relation: The relation of the model to get the reverse of -
-        can include
+    :param relation: The relation of the model to get the reverse of. -
+        may be composed of many ``related_query_name`` separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
-        represent a deeply nested relation
+        represent a deeply nested relation.
     :type relation: str
-    :return: The reverse of the relation
+    :return: The reverse of the relation.
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
-        pointing to the fields that don't exist
+        pointing to the fields that don't exist.
 
     .. testsetup:: get_reverse_relation
 
@@ -232,28 +236,55 @@ def get_reverse_relation(model, relation):
 
        create_samples(
            continent_names=["europe"],
-           country_names=["germany", "turkey"],
+           country_names=["germany"],
            city_names=["cologne", "munich"]
        )
+
+    Let's suppose in some part of a program a list of all the cities in a
+    continent must be outputted.
+
+    Instead of doing:
+
+    .. testcode:: get_reverse_relation
+
+       from sample.models import Continent
+
+       europe = Continent.objects.get(code="EU")
+
+       for country in europe.countries.all():
+           for city in country.cities.all():
+               print("City: " + city.name)
+
+    .. testoutput:: get_reverse_relation
+
+       City: Cologne
+       City: Munich
+
+    Which does a *minimum* of three queries to the database (one for the
+    continent, one for the countries and one for the cities) even if the
+    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used, the
+    same can be achieved with:
 
     .. testcode:: get_reverse_relation
 
        from sample.models import Continent, City
        from translations.utils import get_reverse_relation
 
-       # Let's suppose we want a list of all the cities in Europe
        europe = Continent.objects.get(code="EU")
-       reverse_field = get_reverse_relation(Continent, 'countries__cities')
-       print("City can be queried with '{}'".format(reverse_field))
-       cities = City.objects.filter(**{reverse_field: europe})
-       print("cities in europe:")
-       print([city.name for city in cities])
+
+       reverse_relation = get_reverse_relation(Continent, 'countries__cities')
+       print("City can be queried with '{}'".format(reverse_relation))
+       cities = City.objects.filter(**{reverse_relation: europe})
+       for city in cities:
+           print("City: " + city.name)
 
     .. testoutput:: get_reverse_relation
 
        City can be queried with 'country__continent'
-       cities in europe:
-       ['Cologne', 'Munich']
+       City: Cologne
+       City: Munich
+
+    Which does only *one* query to the database.
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
