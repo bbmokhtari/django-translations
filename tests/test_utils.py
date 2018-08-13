@@ -5,7 +5,7 @@ from django.utils.translation import activate, deactivate
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import get_translation_language, \
-    get_context_details, get_reverse_relation, \
+    get_entity_details, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
     get_dictionary, get_relations_details
 
@@ -52,8 +52,8 @@ class GetValidatedLanguageTest(TestCase):
         )
 
 
-class GetValidatedContextInfoTest(TestCase):
-    """Tests for `get_context_details`."""
+class GetEntityDetailsTest(TestCase):
+    """Tests for `get_entity_details`."""
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
@@ -62,7 +62,7 @@ class GetValidatedContextInfoTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertEqual(
-            get_context_details(europe),
+            get_entity_details(europe),
             (Continent, False)
         )
 
@@ -72,7 +72,7 @@ class GetValidatedContextInfoTest(TestCase):
 
         continents = Continent.objects.all()
         self.assertEqual(
-            get_context_details(continents),
+            get_entity_details(continents),
             (Continent, True)
         )
 
@@ -82,14 +82,14 @@ class GetValidatedContextInfoTest(TestCase):
 
         continents = list(Continent.objects.all())
         self.assertEqual(
-            get_context_details(continents),
+            get_entity_details(continents),
             (Continent, True)
         )
 
     def test_empty_list(self):
         """Make sure it works with an empty list."""
         self.assertEqual(
-            get_context_details([]),
+            get_entity_details([]),
             (None, True)
         )
 
@@ -97,7 +97,7 @@ class GetValidatedContextInfoTest(TestCase):
         """Make sure it works with an empty queryset."""
         continents = Continent.objects.none()
         self.assertEqual(
-            get_context_details(continents),
+            get_entity_details(continents),
             (None, True)
         )
 
@@ -115,7 +115,7 @@ class GetValidatedContextInfoTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            get_context_details(behzad)
+            get_entity_details(behzad)
         self.assertEqual(
             error.exception.args[0],
             "`Behzad` is neither a model instance nor an iterable of model instances."
@@ -137,7 +137,7 @@ class GetValidatedContextInfoTest(TestCase):
         people.append(Person('Behzad'))
         people.append(Person('Max'))
         with self.assertRaises(TypeError) as error:
-            get_context_details(people)
+            get_entity_details(people)
         self.assertEqual(
             error.exception.args[0],
             "`[Behzad, Max]` is neither a model instance nor an iterable of model instances."
@@ -806,7 +806,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_no_relation_context_filtering(self):
+    def test_instance_with_no_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia"],
             continent_fields=["name", "denonym"],
@@ -837,7 +837,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_simple_relation_context_filtering(self):
+    def test_instance_with_simple_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "india"],
@@ -876,7 +876,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_nested_relation_context_filtering(self):
+    def test_instance_with_nested_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "india"],
@@ -1149,7 +1149,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_queryset_with_no_relation_context_filtering(self):
+    def test_queryset_with_no_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia", "africa", "north america"],
             continent_fields=["name", "denonym"],
@@ -1188,7 +1188,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_queryset_with_simple_relation_context_filtering(self):
+    def test_queryset_with_simple_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia", "africa", "north america"],
             country_names=["germany", "india", "egypt", "mexico"],
@@ -1239,7 +1239,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_queryset_with_nested_relation_context_filtering(self):
+    def test_queryset_with_nested_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia", "africa", "north america"],
             country_names=["germany", "india", "egypt", "mexico"],
@@ -1797,7 +1797,7 @@ class GetTranslationsTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_invalid_context(self):
+    def test_invalid_entity(self):
         class Person:
             def __init__(self, name):
                 self.name = name
