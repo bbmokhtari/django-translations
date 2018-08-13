@@ -12,8 +12,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations_reverse_relation`
     Return the reverse of the translations relation of a relation.
 :func:`get_translations`
-    Return the translations of a entity and the relations of it in a
-    language.
+    Return the translations of an entity and the relations of it.
 :func:`get_dictionary`
     Return a dictionary which contains the translations.
 :func:`get_relations_details`
@@ -39,19 +38,18 @@ def get_translation_language(lang=None):
     Return the language code for the translation process.
 
     If the ``lang`` parameter is not passed in, it returns the active language
-    code determined by Django, otherwise it returns the custom language code
+    code [#active_language]_, otherwise it returns the custom language code
     indicated by the ``lang`` parameter.
 
     :param lang: A custom language code.
-        ``None`` means use the active language code determined by Django.
+        ``None`` means use the active language code.
     :type lang: str or None
     :return: The language code for the translation process.
     :rtype: str
     :raise ValueError: If the language code is not specified in
         the :data:`~django.conf.settings.LANGUAGES` setting.
 
-    .. note::
-
+    .. [#active_language]
        The active language code is a language code determined automatically
        by Django. It is not a global system-wide setting, but it is rather a
        per-request setting, usually determined by the ``Accept-Language``
@@ -212,9 +210,9 @@ def get_reverse_relation(model, relation):
     """
     Return the reverse of a relation.
 
-    Checks a relation of a model, which points to a target model and returns
-    a relation which the target model can use to access the initial model
-    in reverse.
+    Checks a relation of a model (which points to a target model) and returns
+    a relation which the target model can use to fetch the target model
+    instances using an initial model instance.
 
     :param model: The model which contains the relation and the reverse
         relation points to.
@@ -313,14 +311,15 @@ def get_translations_reverse_relation(model, relation=None):
     Return the reverse of the translations relation of a relation.
 
     If the ``relation`` parameter is not passed in, it checks the
-    ``translations`` relation of the model, which points to the
-    :class:`~translations.models.Translation` model and returns
-    a relation which the :class:`~translations.models.Translation` model can
-    use to access the initial model in reverse, otherwise it checks the
-    ``translations`` relation of the ``relation`` of the model, which again
-    points to the :class:`~translations.models.Translation` model and returns
-    a relation which the :class:`~translations.models.Translation` model can
-    use to access the initial model in reverse.
+    ``translations`` relation of the model (which points to the
+    :class:`~translations.models.Translation` model) and returns a relation
+    which the :class:`~translations.models.Translation` model can use to fetch
+    the translations for the model using a model instance, otherwise
+    it checks the ``translations`` relation of the ``relation`` of the model,
+    which points to the :class:`~translations.models.Translation` model and
+    returns a relation which the :class:`~translations.models.Translation`
+    model can use to fetch the translations for the relation of the model
+    using a model instance.
 
     :param model: The model which contains the ``translations`` relation
         directly or indirectly (either it contains the ``translations``
@@ -444,31 +443,29 @@ def get_translations_reverse_relation(model, relation=None):
 
 def get_translations(entity, *relations, lang=None):
     """
-    Return the translations of a entity and the relations of it in a
-    language.
+    Return the translations of an entity and the relations of it.
 
-    This function collects all the reverse relations of the entity and its
-    relations to :class:`~translations.models.Translation` and uses them to
-    query the database with the minimum amount of queries needed (usually
-    one).
+    Collects all the translations of the entity and the specified relations
+    of it in a language and return them as a
+    :class:`~translations.models.Translation` queryset.
 
-    :param entity: The entity to fetch the translations for
+    :param entity: The entity to fetch the translations for.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to fetch the
-        translations for
+        translations for.
     :type relations: list(str)
-    :param lang: The language to fetch the translations for.
-        ``None`` means the current active language.
+    :param lang: The language to fetch the translations in.
+        ``None`` means use the active language code. [#active_language]_
     :type lang: str or None
-    :return: The translations
+    :return: The :class:`translations.models.Translation` queryset.
     :rtype: ~django.db.models.query.QuerySet
     :raise ValueError: If the language code is not included in
-        the :data:`~django.conf.settings.LANGUAGES` settings
+        the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances
-    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
-        pointing to the fields that don't exist
+        an iterable of model instances.
+    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+        pointing to the fields that don't exist.
 
     .. testsetup:: get_translations
 
