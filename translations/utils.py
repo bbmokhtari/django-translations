@@ -345,7 +345,7 @@ def get_translations_reverse_relation(model, relation=None):
 
        create_samples(
            continent_names=["europe"],
-           country_names=["germany", "turkey"],
+           country_names=["germany"],
            city_names=["cologne", "munich"],
            continent_fields=["name", "denonym"],
            country_fields=["name", "denonym"],
@@ -353,33 +353,84 @@ def get_translations_reverse_relation(model, relation=None):
            langs=["de"]
        )
 
+    Let's suppose in some part of a program the translations of all the cities
+    in a continent must be outputted.
+
+    Instead of doing:
+
+    .. testcode:: get_translations_reverse_relation
+
+       from sample.models import Continent
+
+       europe = Continent.objects.get(code="EU")
+
+       filters = {"field": "name", "language": "de"}
+
+       for country in europe.countries.all():
+           for city in country.cities.all():
+               translation = city.translations.get(**filters)
+               print("City: {}".format(translation.text))
+
+    .. testoutput:: get_translations_reverse_relation
+
+       City: Köln
+       City: München
+
+    Which does a *minimum* of four queries to the database (one for the
+    continent, one for the countries, one for the cities and one for the
+    translations) even if the
+    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used, the
+    same can be achieved with:
+
     .. testcode:: get_translations_reverse_relation
 
        from sample.models import Continent
        from translations.models import Translation
        from translations.utils import get_translations_reverse_relation
 
-       # Let's suppose we want translations of all the cities in Europe
        europe = Continent.objects.get(code="EU")
-       reverse_field = get_translations_reverse_relation(
-           Continent,
-           'countries__cities'
-       )
-       print("Translation can be queried with '{}'".format(reverse_field))
-       translations = Translation.objects.filter(**{reverse_field: europe})
-       print("Translations of cities in europe:")
-       print([translation.text for translation in translations])
 
-       # Or not use a relation
-       reverse_field = get_translations_reverse_relation(Continent)
-       print("Without a relation: {}".format(reverse_field))
+       filters = {"field": "name", "language": "de"}
+
+       reverse_relation = get_translations_reverse_relation(
+           Continent, 'countries__cities')
+       print("Translation can be queried with '{}'".format(reverse_relation))
+       filters[reverse_relation] = europe
+       translations = Translation.objects.filter(**filters)
+       for translation in translations:
+           print("City: {}".format(translation.text))
 
     .. testoutput:: get_translations_reverse_relation
 
        Translation can be queried with 'sample_city__country__continent'
-       Translations of cities in europe:
-       ['Köln', 'Kölner', 'München', 'Münchner']
-       Without a relation: sample_continent
+       City: Köln
+       City: München
+
+    Which on the contrary does only *one* query to the database.
+
+    Also if the translations of the continent must be outputted.
+
+    .. testcode:: get_translations_reverse_relation
+
+       from sample.models import Continent
+       from translations.models import Translation
+       from translations.utils import get_translations_reverse_relation
+
+       europe = Continent.objects.get(code="EU")
+
+       filters = {"field": "name", "language": "de"}
+
+       reverse_relation = get_translations_reverse_relation(Continent)
+       print("Translation can be queried with '{}'".format(reverse_relation))
+       filters[reverse_relation] = europe
+       translations = Translation.objects.filter(**filters)
+       for translation in translations:
+           print("Continent: {}".format(translation.text))
+
+    .. testoutput:: get_translations_reverse_relation
+
+       Translation can be queried with 'sample_continent'
+       Continent: Europa
     """
     if relation is None:
         translations_relation = 'translations'
