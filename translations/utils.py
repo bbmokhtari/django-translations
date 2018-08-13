@@ -6,7 +6,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translation_language`
     Return the language code for the translation process.
 :func:`get_entity_details`
-    Return the model and iteration details of the entity.
+    Return the details of an entity.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
 :func:`get_translations_reverse_relation`
@@ -135,13 +135,13 @@ def get_entity_details(entity):
 
        europe = Continent.objects.get(code="EU")
        details = get_entity_details(europe)
-       print("model: {}".format(details[0]))
-       print("iterable: {}".format(details[1]))
+       print("Model: {}".format(details[0]))
+       print("Iterable: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       model: <class 'sample.models.Continent'>
-       iterable: False
+       Model: <class 'sample.models.Continent'>
+       Iterable: False
 
     Or to get the details of a queryset.
 
@@ -152,13 +152,13 @@ def get_entity_details(entity):
 
        continents = Continent.objects.all()
        details = get_entity_details(continents)
-       print("model: {}".format(details[0]))
-       print("iterable: {}".format(details[1]))
+       print("Model: {}".format(details[0]))
+       print("Iterable: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       model: <class 'sample.models.Continent'>
-       iterable: True
+       Model: <class 'sample.models.Continent'>
+       Iterable: True
 
     An empty iterable returns the model as ``None``.
 
@@ -177,13 +177,13 @@ def get_entity_details(entity):
 
        empty = []
        details = get_entity_details(empty)
-       print("model: {}".format(details[0]))
-       print("iterable: {}".format(details[1]))
+       print("Model: {}".format(details[0]))
+       print("Iterable: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       model: None
-       iterable: True
+       Model: None
+       Iterable: True
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
