@@ -65,7 +65,7 @@ def get_translation_language(lang=None):
 
        activate('en')
 
-    To get the active language code requested by the client.
+    To get the active language code requested by the client:
 
     .. testcode:: get_translation_language
 
@@ -125,7 +125,7 @@ def get_entity_details(entity):
 
        create_samples(continent_names=["europe"])
 
-    To get the details of a model instance.
+    To get the details of a model instance:
 
     .. testcode:: get_entity_details
 
@@ -142,7 +142,7 @@ def get_entity_details(entity):
        Model: <class 'sample.models.Continent'>
        Iterable: False
 
-    Or to get the details of a queryset.
+    Or to get the details of a queryset:
 
     .. testcode:: get_entity_details
 
@@ -159,15 +159,7 @@ def get_entity_details(entity):
        Model: <class 'sample.models.Continent'>
        Iterable: True
 
-    An empty iterable returns the model as ``None``.
-
-    .. note::
-
-       Even if the iterable is an empty queryset ``None`` is returned though
-       the model for it can be retrieved, because other parts of the code
-       first check to see if details model is ``None``, in that case they skip
-       the translation process all together, because there's nothing to
-       translate.
+    An empty iterable returns the model as ``None``:
 
     .. testcode:: get_entity_details
 
@@ -183,6 +175,14 @@ def get_entity_details(entity):
 
        Model: None
        Iterable: True
+
+    .. note::
+
+       Even if the iterable is an empty queryset ``None`` is returned though
+       the model for it can be retrieved, because other parts of the code
+       first check to see if details model is ``None``, in that case they skip
+       the translation process all together, because there's nothing to
+       translate.
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
@@ -409,7 +409,7 @@ def get_translations_reverse_relation(model, relation=None):
 
     Which on the contrary does only *one* query to the database.
 
-    Also if the translations of the continent must be outputted.
+    Also if the translations of the continent must be outputted:
 
     .. testcode:: get_translations_reverse_relation
 
