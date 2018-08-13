@@ -806,7 +806,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_no_relation_context_filtering(self):
+    def test_instance_with_no_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia"],
             continent_fields=["name", "denonym"],
@@ -837,7 +837,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_simple_relation_context_filtering(self):
+    def test_instance_with_simple_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "india"],
@@ -876,7 +876,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_instance_with_nested_relation_context_filtering(self):
+    def test_instance_with_nested_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "india"],
@@ -1149,7 +1149,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_queryset_with_no_relation_context_filtering(self):
+    def test_queryset_with_no_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia", "africa", "north america"],
             continent_fields=["name", "denonym"],
@@ -1188,7 +1188,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_queryset_with_simple_relation_context_filtering(self):
+    def test_queryset_with_simple_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia", "africa", "north america"],
             country_names=["germany", "india", "egypt", "mexico"],
@@ -1239,7 +1239,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_queryset_with_nested_relation_context_filtering(self):
+    def test_queryset_with_nested_relation_entity_filtering(self):
         create_samples(
             continent_names=["europe", "asia", "africa", "north america"],
             country_names=["germany", "india", "egypt", "mexico"],
@@ -1797,7 +1797,7 @@ class GetTranslationsTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_invalid_context(self):
+    def test_invalid_entity(self):
         class Person:
             def __init__(self, name):
                 self.name = name

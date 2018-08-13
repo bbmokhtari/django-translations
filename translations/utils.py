@@ -6,21 +6,21 @@ This module contains the utilities for the Translations app.
 :func:`get_translation_language`
     Return the language code for the translation process.
 :func:`get_entity_details`
-    Return the model and iteration details of the context.
+    Return the model and iteration details of the entity.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
 :func:`get_translations_reverse_relation`
     Return the reverse of the translations relation for a model, or
     translations relation *of a relation* for the model.
 :func:`get_translations`
-    Return the translations of a context and the relations of it in a
+    Return the translations of a entity and the relations of it in a
     language.
 :func:`get_dictionary`
     Return a dictionary which contains the translations.
 :func:`get_relations_details`
     Return the details of the relations.
 :func:`translate`
-    Translate the context.
+    Translate the entity.
 """
 
 from django.db import models, transaction
@@ -103,16 +103,16 @@ def get_translation_language(lang=None):
     return lang
 
 
-def get_entity_details(context):
+def get_entity_details(entity):
     """
-    Return the model and iteration details of the context.
+    Return the model and iteration details of the entity.
 
-    :param context: The context to validate
-    :type context: ~django.db.models.Model or
+    :param entity: The entity to validate
+    :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :return: A tuple representing the context information as (model, iterable)
+    :return: A tuple representing the entity information as (model, iterable)
     :rtype: tuple(type(~django.db.models.Model), bool)
-    :raise TypeError: If the context is neither a model instance nor
+    :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances
 
     .. testsetup:: get_entity_details
@@ -154,18 +154,18 @@ def get_entity_details(context):
        is empty iterable? True
     """
     error_message = '`{}` is neither {} nor {}.'.format(
-        context,
+        entity,
         'a model instance',
         'an iterable of model instances'
     )
 
-    if isinstance(context, models.Model):
-        model = type(context)
+    if isinstance(entity, models.Model):
+        model = type(entity)
         iterable = False
-    elif hasattr(context, '__iter__'):
-        if len(context) > 0:
-            if isinstance(context[0], models.Model):
-                model = type(context[0])
+    elif hasattr(entity, '__iter__'):
+        if len(entity) > 0:
+            if isinstance(entity[0], models.Model):
+                model = type(entity[0])
             else:
                 raise TypeError(error_message)
         else:
@@ -316,20 +316,20 @@ def get_translations_reverse_relation(model, relation=None):
     return get_reverse_relation(model, translations_relation)
 
 
-def get_translations(context, *relations, lang=None):
+def get_translations(entity, *relations, lang=None):
     """
-    Return the translations of a context and the relations of it in a
+    Return the translations of a entity and the relations of it in a
     language.
 
-    This function collects all the reverse relations of the context and its
+    This function collects all the reverse relations of the entity and its
     relations to :class:`~translations.models.Translation` and uses them to
     query the database with the minimum amount of queries needed (usually
     one).
 
-    :param context: The context to fetch the translations for
-    :type context: ~django.db.models.Model or
+    :param entity: The entity to fetch the translations for
+    :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the context to fetch the
+    :param relations: The relations of the entity to fetch the
         translations for
     :type relations: list(str)
     :param lang: The language to fetch the translations for, ``None`` means
@@ -339,7 +339,7 @@ def get_translations(context, *relations, lang=None):
     :rtype: ~django.db.models.query.QuerySet
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` settings
-    :raise TypeError: If the context is neither a model instance nor
+    :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
@@ -400,17 +400,17 @@ def get_translations(context, *relations, lang=None):
        Cologne.denonym (Cologner) in 'de' is 'Kölner'
     """
     lang = get_translation_language(lang)
-    model, iterable = get_entity_details(context)
+    model, iterable = get_entity_details(entity)
 
     if model is None:
         return translations.models.Translation.objects.none()
 
     if iterable:
         condition = 'pk__in'
-        value = [instance.pk for instance in context]
+        value = [instance.pk for instance in entity]
     else:
         condition = 'pk'
-        value = context.pk
+        value = entity.pk
 
     queries = []
 
@@ -563,33 +563,33 @@ def get_relations_details(*relations):
     return details
 
 
-def translate(context, *relations, lang=None, dictionary=None, included=True):
+def translate(entity, *relations, lang=None, dictionary=None, included=True):
     """
-    Translate the context.
+    Translate the entity.
 
-    This function translates the context and its relations using a dictionary.
+    This function translates the entity and its relations using a dictionary.
     If the dictionary isn't provided it will fetch all the translations for
-    the context and its relations in a language using :func:`get_translations`
+    the entity and its relations in a language using :func:`get_translations`
     and convert them to a dictionary using :func:`get_dictionary` and use that
     for translation.
 
-    :param context: The context to translate
-    :type context: ~django.db.models.Model or
+    :param entity: The entity to translate
+    :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the context to translate
+    :param relations: The relations of the entity to translate
     :type relations: list(str)
-    :param lang: The language to translate the context and its relations in,
+    :param lang: The language to translate the entity and its relations in,
         ``None`` means the current active language
     :type lang: str or None
     :param dictionary: The dictionary to use for translation, ``None`` means
         create the dictionary automatically
     :type dictionary: dict(int, dict(str, dict(str, str))) or None
-    :param included: Whether the context should be translated itself along
+    :param included: Whether the entity should be translated itself along
         with the relations or not, the default is ``True``
     :type included: bool
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` settings
-    :raise TypeError: If the context is neither a model instance nor
+    :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist
@@ -598,7 +598,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
        Always use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects` for fetching the
-       relations of the context before using :func:`translate`.
+       relations of the entity before using :func:`translate`.
 
     """
     # .. testsetup:: translate
@@ -677,7 +677,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
     #    >>> cologne.denonym
     #    Kölner
     lang = get_translation_language(lang)
-    model, iterable = get_entity_details(context)
+    model, iterable = get_entity_details(entity)
 
     if model is None:
         return
@@ -685,7 +685,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
     if dictionary is None:
         dictionary = get_dictionary(
             get_translations(
-                context,
+                entity,
                 *relations,
                 lang=lang
             )
@@ -705,10 +705,10 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
                         setattr(obj, field, text)
 
             if iterable:
-                for obj in context:
+                for obj in entity:
                     translate_obj(obj)
             else:
-                translate_obj(context)
+                translate_obj(entity)
 
     details = get_relations_details(*relations)
     if details:
@@ -727,15 +727,15 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
                     )
 
         if iterable:
-            for obj in context:
+            for obj in entity:
                 translate_rel(obj)
         else:
-            translate_rel(context)
+            translate_rel(entity)
 
 
-def update_translations(context, lang=None):
+def update_translations(entity, lang=None):
     lang = get_translation_language(lang)
-    model, iterable = get_entity_details(context)
+    model, iterable = get_entity_details(entity)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):
@@ -744,7 +744,7 @@ def update_translations(context, lang=None):
             with transaction.atomic():
                 # ------------ delete old translations
                 translations_queryset = get_translations(
-                    context,
+                    entity,
                     lang=lang
                 )
                 translations_queryset.select_for_update().delete()
@@ -768,10 +768,10 @@ def update_translations(context, lang=None):
 
                 # translate based on plural/singular
                 if iterable:
-                    for obj in context:
+                    for obj in entity:
                         add_translations(obj)
                 else:
-                    add_translations(context)
+                    add_translations(entity)
 
                 if len(translations_objects) > 0:
                     translations.models.Translation.objects.bulk_create(translations_objects)
