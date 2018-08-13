@@ -73,7 +73,7 @@ def get_translation_language(lang=None):
        from translations.utils import get_translation_language
 
        active = get_translation_language()
-       print("The language code is: " + active)
+       print("Language code: {}".format(active))
 
     .. testoutput:: get_translation_language
 
@@ -87,7 +87,7 @@ def get_translation_language(lang=None):
        from translations.utils import get_translation_language
 
        custom = get_translation_language('de')
-       print("The language code is: " + custom)
+       print("Language code: {}".format(custom))
 
     .. testoutput:: get_translation_language
 
@@ -253,7 +253,7 @@ def get_reverse_relation(model, relation):
 
        for country in europe.countries.all():
            for city in country.cities.all():
-               print("City: " + city.name)
+               print("City: {}".format(city.name))
 
     .. testoutput:: get_reverse_relation
 
@@ -276,7 +276,7 @@ def get_reverse_relation(model, relation):
        print("City can be queried with '{}'".format(reverse_relation))
        cities = City.objects.filter(**{reverse_relation: europe})
        for city in cities:
-           print("City: " + city.name)
+           print("City: {}".format(city.name))
 
     .. testoutput:: get_reverse_relation
 
