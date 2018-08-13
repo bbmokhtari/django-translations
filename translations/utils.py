@@ -5,7 +5,7 @@ This module contains the utilities for the Translations app.
 
 :func:`get_translation_language`
     Return the language code for the translation process.
-:func:`get_context_details`
+:func:`get_entity_details`
     Return the model and iteration details of the context.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
@@ -103,7 +103,7 @@ def get_translation_language(lang=None):
     return lang
 
 
-def get_context_details(context):
+def get_entity_details(context):
     """
     Return the model and iteration details of the context.
 
@@ -115,36 +115,36 @@ def get_context_details(context):
     :raise TypeError: If the context is neither a model instance nor
         an iterable of model instances
 
-    .. testsetup:: get_context_details
+    .. testsetup:: get_entity_details
 
        from tests.sample import create_samples
 
        create_samples(continent_names=["europe"])
 
-    .. testcode:: get_context_details
+    .. testcode:: get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_context_details
+       from translations.utils import get_entity_details
 
        # Let's check a single object
        europe = Continent.objects.get(code="EU")
-       details = get_context_details(europe)
+       details = get_entity_details(europe)
        print("europe model is: {}".format(details[0]))
        print("is europe iterable? {}".format(details[1]))
 
        # Now an iterable object
        continents = Continent.objects.all()
-       details = get_context_details(continents)
+       details = get_entity_details(continents)
        print("continents model is: {}".format(details[0]))
        print("is continents iterable? {}".format(details[1]))
 
        # Now an empty iterable object
        empty = []
-       details = get_context_details(empty)
+       details = get_entity_details(empty)
        print("empty model is: {}".format(details[0]))
        print("is empty iterable? {}".format(details[1]))
 
-    .. testoutput:: get_context_details
+    .. testoutput:: get_entity_details
 
        europe model is: <class 'sample.models.Continent'>
        is europe iterable? False
@@ -400,7 +400,7 @@ def get_translations(context, *relations, lang=None):
        Cologne.denonym (Cologner) in 'de' is 'Kölner'
     """
     lang = get_translation_language(lang)
-    model, iterable = get_context_details(context)
+    model, iterable = get_entity_details(context)
 
     if model is None:
         return translations.models.Translation.objects.none()
@@ -677,7 +677,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
     #    >>> cologne.denonym
     #    Kölner
     lang = get_translation_language(lang)
-    model, iterable = get_context_details(context)
+    model, iterable = get_entity_details(context)
 
     if model is None:
         return
@@ -735,7 +735,7 @@ def translate(context, *relations, lang=None, dictionary=None, included=True):
 
 def update_translations(context, lang=None):
     lang = get_translation_language(lang)
-    model, iterable = get_context_details(context)
+    model, iterable = get_entity_details(context)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):
