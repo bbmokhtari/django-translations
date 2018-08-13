@@ -39,9 +39,9 @@ def get_translation_language(lang=None):
     """
     Return the language code for the translation process.
 
-    If the ``lang`` parameter is not passed in, it will return the active
-    language code determined by Django. Otherwise it will return the custom
-    language code indicated by the ``lang`` parameter.
+    If the ``lang`` parameter is not passed in, it returns the active language
+    code determined by Django, otherwise it returns the custom language code
+    indicated by the ``lang`` parameter.
 
     :param lang: A custom language code, ``None`` means use the active
         language code determined by Django.
@@ -105,15 +105,20 @@ def get_translation_language(lang=None):
 
 def get_entity_details(entity):
     """
-    Return the model and iteration details of the entity.
+    Return the details of an entity.
 
-    :param entity: The entity to validate
+    Determines if an entity is iterable or not, if so it returns the type of
+    the first object in the iteration (since it assumes all the objects in the
+    iteration are of the same type), otherwise it returns the type of the
+    entity itself.
+
+    :param entity: The entity to get the details of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :return: A tuple representing the entity information as (model, iterable)
+    :return: The entity details as (model, iterable).
     :rtype: tuple(type(~django.db.models.Model), bool)
     :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances
+        an iterable of model instances.
 
     .. testsetup:: get_entity_details
 
@@ -121,37 +126,64 @@ def get_entity_details(entity):
 
        create_samples(continent_names=["europe"])
 
+    To get the details of a model instance.
+
     .. testcode:: get_entity_details
 
        from sample.models import Continent
        from translations.utils import get_entity_details
 
-       # Let's check a single object
        europe = Continent.objects.get(code="EU")
        details = get_entity_details(europe)
-       print("europe model is: {}".format(details[0]))
-       print("is europe iterable? {}".format(details[1]))
-
-       # Now an iterable object
-       continents = Continent.objects.all()
-       details = get_entity_details(continents)
-       print("continents model is: {}".format(details[0]))
-       print("is continents iterable? {}".format(details[1]))
-
-       # Now an empty iterable object
-       empty = []
-       details = get_entity_details(empty)
-       print("empty model is: {}".format(details[0]))
-       print("is empty iterable? {}".format(details[1]))
+       print("model: {}".format(details[0]))
+       print("iterable: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       europe model is: <class 'sample.models.Continent'>
-       is europe iterable? False
-       continents model is: <class 'sample.models.Continent'>
-       is continents iterable? True
-       empty model is: None
-       is empty iterable? True
+       model: <class 'sample.models.Continent'>
+       iterable: False
+
+    Or to get the details of a queryset.
+
+    .. testcode:: get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import get_entity_details
+
+       continents = Continent.objects.all()
+       details = get_entity_details(continents)
+       print("model: {}".format(details[0]))
+       print("iterable: {}".format(details[1]))
+
+    .. testoutput:: get_entity_details
+
+       model: <class 'sample.models.Continent'>
+       iterable: True
+
+    An empty iterable returns the model as ``None``.
+
+    .. note::
+
+       Even if the iterable is an empty queryset ``None`` is returned though
+       the model for it can be retrieved, because other parts of the code
+       first check to see if details model is ``None``, in that case they skip
+       the translation process all together, because there's nothing to
+       translate.
+
+    .. testcode:: get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import get_entity_details
+
+       empty = []
+       details = get_entity_details(empty)
+       print("model: {}".format(details[0]))
+       print("iterable: {}".format(details[1]))
+
+    .. testoutput:: get_entity_details
+
+       model: None
+       iterable: True
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
