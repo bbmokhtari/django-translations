@@ -77,7 +77,7 @@ def get_translation_language(lang=None):
 
     .. testoutput:: get_translation_language
 
-       The language code is: en
+       Language code: en
 
     Or to get a custom language code other than what the client might have
     requested:
@@ -91,7 +91,7 @@ def get_translation_language(lang=None):
 
     .. testoutput:: get_translation_language
 
-       The language code is: de
+       Language code: de
     """
     lang = lang if lang else get_language()
 
