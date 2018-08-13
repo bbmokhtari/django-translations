@@ -489,7 +489,7 @@ def get_translations(entity, *relations, lang=None):
        # objects: continent: europe, country: germany and city: cologne
        europe = Continent.objects.prefetch_related(
            'countries', 'countries__cities'
-        ).get(name="Europe")
+       ).get(name="Europe")
 
        # The translations for europe and all its relations in German
        translations = get_translations(
