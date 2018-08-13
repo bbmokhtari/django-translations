@@ -284,7 +284,7 @@ def get_reverse_relation(model, relation):
        City: Cologne
        City: Munich
 
-    Which does only *one* query to the database.
+    Which on the contrary does only *one* query to the database.
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
