@@ -467,9 +467,9 @@ def get_translations(entity, *relations, lang=None):
            continent_names=["europe", "asia"],
            country_names=["germany", "south korea"],
            city_names=["cologne", "seoul"],
-           continent_fields=["name", "denonym"],
-           country_fields=["name", "denonym"],
-           city_fields=["name", "denonym"],
+           continent_fields=["name"],
+           country_fields=["name"],
+           city_fields=["name"],
            langs=["de"]
        )
 
@@ -501,7 +501,7 @@ def get_translations(entity, *relations, lang=None):
 
     .. testoutput:: get_translations
 
-       <QuerySet [<Translation: Europe: Europa>, <Translation: European: Europäisch>, <Translation: Germany: Deutschland>, <Translation: German: Deutsche>, <Translation: Cologne: Köln>, <Translation: Cologner: Kölner>]>
+       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: ...
 
     To get the translations of a queryset:
 
@@ -525,7 +525,7 @@ def get_translations(entity, *relations, lang=None):
 
     .. testoutput:: get_translations
 
-       <QuerySet [<Translation: Europe: Europa>, <Translation: European: Europäisch>, <Translation: Germany: Deutschland>, <Translation: German: Deutsche>, <Translation: Cologne: Köln>, <Translation: Cologner: Kölner>, <Translation: Asia: Asien>, <Translation: Asian: Asiatisch>, <Translation: South Korea: Südkorea>, <Translation: South Korean: Südkoreanisch>, <Translation: Seoul: Seül>, <Translation: Seouler: Seülisch>]>
+       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: ...
 
     """
     lang = get_translation_language(lang)
