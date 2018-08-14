@@ -76,7 +76,7 @@ def get_translation_language(lang=None):
 
        Language code: en
 
-    Or to get a custom language code other than what the client might have
+    To get a custom language code other than what the client might have
     requested:
 
     .. testcode:: get_translation_language
@@ -123,6 +123,40 @@ def get_entity_details(entity):
 
        create_samples(continent_names=["europe"])
 
+    To get the details of a list of model instances:
+
+    .. testcode:: get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import get_entity_details
+
+       continents = list(Continent.objects.all())
+       details = get_entity_details(continents)
+       print("Model: {}".format(details[0]))
+       print("Iterable: {}".format(details[1]))
+
+    .. testoutput:: get_entity_details
+
+       Model: <class 'sample.models.Continent'>
+       Iterable: True
+
+    To get the details of a queryset:
+
+    .. testcode:: get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import get_entity_details
+
+       continents = Continent.objects.all()
+       details = get_entity_details(continents)
+       print("Model: {}".format(details[0]))
+       print("Iterable: {}".format(details[1]))
+
+    .. testoutput:: get_entity_details
+
+       Model: <class 'sample.models.Continent'>
+       Iterable: True
+
     To get the details of a model instance:
 
     .. testcode:: get_entity_details
@@ -140,47 +174,28 @@ def get_entity_details(entity):
        Model: <class 'sample.models.Continent'>
        Iterable: False
 
-    Or to get the details of a queryset:
-
-    .. testcode:: get_entity_details
-
-       from sample.models import Continent
-       from translations.utils import get_entity_details
-
-       continents = Continent.objects.all()
-       details = get_entity_details(continents)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
-
-    .. testoutput:: get_entity_details
-
-       Model: <class 'sample.models.Continent'>
-       Iterable: True
-
-    An empty iterable returns the model as ``None``:
-
-    .. testcode:: get_entity_details
-
-       from sample.models import Continent
-       from translations.utils import get_entity_details
-
-       empty = []
-       details = get_entity_details(empty)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
-
-    .. testoutput:: get_entity_details
-
-       Model: None
-       Iterable: True
-
     .. note::
 
-       Even if the iterable is an empty queryset ``None`` is returned though
-       the model for it can be retrieved, because other parts of the code
-       first check to see if details model is ``None``, in that case they skip
-       the translation process all together, because there's nothing to
-       translate.
+       An empty iterable returns the model as ``None``, even if the iterable
+       is an empty queryset, though the model for it can be retrieved. It's
+       because other parts of the code first check to see if details model is
+       ``None``, in that case they skip the translation process all together,
+       because there's nothing to translate.
+
+       .. testcode:: get_entity_details
+
+           from sample.models import Continent
+           from translations.utils import get_entity_details
+
+           empty = []
+           details = get_entity_details(empty)
+           print("Model: {}".format(details[0]))
+           print("Iterable: {}".format(details[1]))
+
+       .. testoutput:: get_entity_details
+
+          Model: None
+          Iterable: True
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
@@ -473,25 +488,21 @@ def get_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    .. important::
-       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects` for fetching the
-       relations of the entity before using :func:`translate`.
-
-    To get the translations of a model instance:
+    To get the translations of a list of model instances:
 
     .. testcode:: get_translations
 
        from sample.models import Continent, Country, City
        from translations.utils import get_translations
 
-       europe = Continent.objects.prefetch_related(
+       continents = Continent.objects.prefetch_related(
            'countries', 'countries__cities'
-       ).get(code="EU")
+       ).all()
+
+       continents = list(continents)
 
        translations = get_translations(
-           europe,
+           continents,
            "countries", "countries__cities",
            lang="de"
        )
@@ -516,6 +527,30 @@ def get_translations(entity, *relations, lang=None):
 
        translations = get_translations(
            continents,
+           "countries", "countries__cities",
+           lang="de"
+       )
+
+       # print translations
+       print(translations)
+
+    .. testoutput:: get_translations
+
+       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: ...
+
+    To get the translations of a model instance:
+
+    .. testcode:: get_translations
+
+       from sample.models import Continent, Country, City
+       from translations.utils import get_translations
+
+       europe = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+       ).get(code="EU")
+
+       translations = get_translations(
+           europe,
            "countries", "countries__cities",
            lang="de"
        )
