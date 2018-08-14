@@ -218,11 +218,13 @@ intersphinx_mapping = {
 doctest_global_setup = """
 from django.test import TestCase
 
+# Turn on the test database for the doctests
 TestCase.setUpClass()
 """
 
 doctest_global_cleanup = """
 from django.test import TestCase
 
+# Turn off the test database for the doctests
 TestCase.tearDownClass()
 """
