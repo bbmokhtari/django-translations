@@ -8,13 +8,13 @@ This module contains the utilities for the Translations app.
 :func:`get_entity_details`
     Return the details of an entity.
 :func:`get_reverse_relation`
-    Return the reverse of a relation.
+    Return the reverse of a relation for a model.
 :func:`get_translations_reverse_relation`
-    Return the reverse of the translations relation of a relation.
+    Return the reverse of the translations relation of a relation for a model.
 :func:`get_translations`
-    Return the translations of an entity and the relations of it.
+    Return the translations of an entity and the relations of it in a language.
 :func:`get_dictionary`
-    Return a dictionary which contains the translations.
+    Return a dictionary out of some translations.
 :func:`get_relations_details`
     Return the details of the relations.
 :func:`translate`
@@ -223,7 +223,7 @@ def get_entity_details(entity):
 
 def get_reverse_relation(model, relation):
     """
-    Return the reverse of a relation.
+    Return the reverse of a relation for a model.
 
     Checks a relation of a model (which points to a target model) and returns
     a relation which the target model can use to fetch the target model
@@ -323,7 +323,7 @@ def get_reverse_relation(model, relation):
 
 def get_translations_reverse_relation(model, relation=None):
     """
-    Return the reverse of the translations relation of a relation.
+    Return the reverse of the translations relation of a relation for a model.
 
     If the ``relation`` parameter is not passed in, it checks the
     ``translations`` relation of the model (which points to the
@@ -450,7 +450,7 @@ def get_translations_reverse_relation(model, relation=None):
 
 def get_translations(entity, *relations, lang=None):
     """
-    Return the translations of an entity and the relations of it.
+    Return the translations of an entity and the relations of it in a language.
 
     Collects all the translations of the entity and the specified relations
     of it in a language and return them as a
@@ -610,7 +610,15 @@ def get_translations(entity, *relations, lang=None):
 
 def get_dictionary(translations):
     """
-    Return a dictionary which contains the translations.
+    Return a dictionary out of some translations.
+
+    Processes the translations and returns a dictionary, a dictionary is an
+    easy to search object made out of the translations.
+
+    :param translations: The translations to process.
+    :type translations: ~django.db.models.query.QuerySet
+    :return: The dictionary.
+    :rtype: dict(int, dict(str, dict(str, str)))
 
     The end result is something like this::
 
@@ -629,12 +637,6 @@ def get_dictionary(translations):
     :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
     represents the ID of the object in that content type, ``field``
     represents the name of the field for that object.
-
-    :param translations: The translations to process
-    :type translations: ~django.db.models.query.QuerySet
-    :return: The dictionary of translations
-    :rtype: dict(int, dict(str, dict(str, str)))
-
     """
     # >>> from sample.models import Continent, Country, City
     # >>> from translations.models import Translation
