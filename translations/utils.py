@@ -458,7 +458,7 @@ def get_translations(entity, *relations, lang=None):
     :param lang: The language to fetch the translations in.
         ``None`` means use the active language code. [#active_language]_
     :type lang: str or None
-    :return: The :class:`translations.models.Translation` queryset.
+    :return: The :class:`~translations.models.Translation` queryset.
     :rtype: ~django.db.models.query.QuerySet
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
@@ -472,26 +472,32 @@ def get_translations(entity, *relations, lang=None):
        from tests.sample import create_samples
 
        create_samples(
-           continent_names=["europe"],
-           country_names=["germany"],
-           city_names=["cologne"],
+           continent_names=["europe", "asia"],
+           country_names=["germany", "south korea"],
+           city_names=["cologne", "seoul"],
            continent_fields=["name", "denonym"],
            country_fields=["name", "denonym"],
            city_fields=["name", "denonym"],
            langs=["de"]
        )
 
+    .. important::
+       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects` for fetching the
+       relations of the entity before using :func:`translate`.
+
+    To get the translations of a model instance:
+
     .. testcode:: get_translations
 
        from sample.models import Continent, Country, City
        from translations.utils import get_translations
 
-       # objects: continent: europe, country: germany and city: cologne
        europe = Continent.objects.prefetch_related(
            'countries', 'countries__cities'
-       ).get(name="Europe")
+       ).get(code="EU")
 
-       # The translations for europe and all its relations in German
        translations = get_translations(
            europe,
            "countries", "countries__cities",
@@ -499,28 +505,36 @@ def get_translations(entity, *relations, lang=None):
        )
 
        # print translations
-       for translation in translations:
-           print(
-               "{object}.{field} ({origin}) in '{lang}' is '{text}'".format(
-                   object=translation.content_object,
-                   field=translation.field,
-                   origin=getattr(
-                       translation.content_object,
-                       translation.field
-                   ),
-                   lang=translation.language,
-                   text=translation.text
-               )
-           )
+       print(translations)
 
     .. testoutput:: get_translations
 
-       Europe.name (Europe) in 'de' is 'Europa'
-       Europe.denonym (European) in 'de' is 'Europäisch'
-       Germany.name (Germany) in 'de' is 'Deutschland'
-       Germany.denonym (German) in 'de' is 'Deutsche'
-       Cologne.name (Cologne) in 'de' is 'Köln'
-       Cologne.denonym (Cologner) in 'de' is 'Kölner'
+       <QuerySet [<Translation: Europe: Europa>, <Translation: European: Europäisch>, <Translation: Germany: Deutschland>, <Translation: German: Deutsche>, <Translation: Cologne: Köln>, <Translation: Cologner: Kölner>]>
+
+    To get the translations of a queryset:
+
+    .. testcode:: get_translations
+
+       from sample.models import Continent, Country, City
+       from translations.utils import get_translations
+
+       continents = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+       ).all()
+
+       translations = get_translations(
+           continents,
+           "countries", "countries__cities",
+           lang="de"
+       )
+
+       # print translations
+       print(translations)
+
+    .. testoutput:: get_translations
+
+       <QuerySet [<Translation: Europe: Europa>, <Translation: European: Europäisch>, <Translation: Germany: Deutschland>, <Translation: German: Deutsche>, <Translation: Cologne: Köln>, <Translation: Cologner: Kölner>, <Translation: Asia: Asien>, <Translation: Asian: Asiatisch>, <Translation: South Korea: Südkorea>, <Translation: South Korean: Südkoreanisch>, <Translation: Seoul: Seül>, <Translation: Seouler: Seülisch>]>
+
     """
     lang = get_translation_language(lang)
     model, iterable = get_entity_details(entity)
