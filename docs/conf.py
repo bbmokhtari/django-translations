@@ -217,12 +217,36 @@ intersphinx_mapping = {
 
 doctest_global_setup = """
 from django.test import TestCase
+from django.db.models.query import QuerySet
+from pprint import pprint
+import builtins
 
+# Turn on the test database for the doctests
 TestCase.setUpClass()
+
+# Beautify `testoutput`
+def print(obj):
+    if type(obj) == dict:
+        pprint(obj)
+    elif type(obj) == QuerySet:
+        representation = repr(obj)
+        start_index = representation.find('[')
+        end_index = representation.rfind(']')
+        start = representation[:(start_index + 1)]
+        center = representation[(start_index + 1): end_index]
+        end = representation[end_index:]
+        items = map(lambda x: (' ' * 4) + x, center.split(', '))
+        print(start)
+        print(',\\n'.join(items))
+        print(end)
+    else:
+        builtins.print(obj)
+
 """
 
 doctest_global_cleanup = """
 from django.test import TestCase
 
+# Turn off the test database for the doctests
 TestCase.tearDownClass()
 """

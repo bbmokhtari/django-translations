@@ -10,6 +10,7 @@ Table of Contents
    :caption: Contents:
 
    reference/index
+   glossary
 
 Indices and tables
 ~~~~~~~~~~~~~~~~~~
