@@ -263,13 +263,11 @@ def get_reverse_relation(model, relation):
        europe = Continent.objects.get(code="EU")
 
        for country in europe.countries.all():
-           for city in country.cities.all():
-               print("City: {}".format(city.name))
+           print(country.cities.all())
 
     .. testoutput:: get_reverse_relation
 
-       City: Cologne
-       City: Munich
+       <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
 
     Which does a *minimum* of two queries to the database (one for the
     countries and one for the cities) even if the
@@ -287,14 +285,12 @@ def get_reverse_relation(model, relation):
        print("City can be queried with '{}'".format(reverse_relation))
 
        cities = City.objects.filter(**{reverse_relation: europe})
-       for city in cities:
-           print("City: {}".format(city.name))
+       print(cities)
 
     .. testoutput:: get_reverse_relation
 
        City can be queried with 'country__continent'
-       City: Cologne
-       City: Munich
+       <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
 
     Which on the contrary does only *one* query to the database.
     """
@@ -361,9 +357,9 @@ def get_translations_reverse_relation(model, relation=None):
            continent_names=["europe"],
            country_names=["germany"],
            city_names=["cologne", "munich"],
-           continent_fields=["name"],
-           country_fields=["name"],
-           city_fields=["name"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
            langs=["de"]
        )
 
@@ -380,13 +376,18 @@ def get_translations_reverse_relation(model, relation=None):
 
        for country in europe.countries.all():
            for city in country.cities.all():
-               for translation in city.translations.all():
-                   print("City: {}".format(translation.text))
+               print(city.translations.all())
 
     .. testoutput:: get_translations_reverse_relation
 
-       City: Köln
-       City: München
+       <QuerySet [
+           <Translation: Cologner: Kölner>,
+           <Translation: Cologne: Köln>
+       ]>
+       <QuerySet [
+           <Translation: Munichian: Münchner>,
+           <Translation: Munich: München>
+       ]>
 
     Which does a *minimum* of three queries to the database (one for the
     countries, one for the cities and one for the translations) even if the
@@ -406,14 +407,17 @@ def get_translations_reverse_relation(model, relation=None):
        print("Translation can be queried with '{}'".format(reverse_relation))
 
        translations = Translation.objects.filter(**{reverse_relation: europe})
-       for translation in translations:
-           print("City: {}".format(translation.text))
+       print(translations)
 
     .. testoutput:: get_translations_reverse_relation
 
        Translation can be queried with 'sample_city__country__continent'
-       City: Köln
-       City: München
+       <QuerySet [
+           <Translation: Cologne: Köln>,
+           <Translation: Cologner: Kölner>,
+           <Translation: Munich: München>,
+           <Translation: Munichian: Münchner>
+       ]>
 
     Which on the contrary does only *one* query to the database.
 
@@ -431,13 +435,15 @@ def get_translations_reverse_relation(model, relation=None):
        print("Translation can be queried with '{}'".format(reverse_relation))
 
        translations = Translation.objects.filter(**{reverse_relation: europe})
-       for translation in translations:
-           print("Continent: {}".format(translation.text))
+       print(translations)
 
     .. testoutput:: get_translations_reverse_relation
 
        Translation can be queried with 'sample_continent'
-       Continent: Europa
+       <QuerySet [
+           <Translation: Europe: Europa>,
+           <Translation: European: Europäisch>
+       ]>
     """
     if relation is None:
         translations_relation = 'translations'
@@ -481,9 +487,9 @@ def get_translations(entity, *relations, lang=None):
            continent_names=["europe", "asia"],
            country_names=["germany", "south korea"],
            city_names=["cologne", "seoul"],
-           continent_fields=["name"],
-           country_fields=["name"],
-           city_fields=["name"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
            langs=["de"]
        )
 
@@ -513,11 +519,17 @@ def get_translations(entity, *relations, lang=None):
 
        <QuerySet [
            <Translation: Europe: Europa>,
+           <Translation: European: Europäisch>,
            <Translation: Germany: Deutschland>,
+           <Translation: German: Deutsche>,
            <Translation: Cologne: Köln>,
+           <Translation: Cologner: Kölner>,
            <Translation: Asia: Asien>,
+           <Translation: Asian: Asiatisch>,
            <Translation: South Korea: Südkorea>,
-           <Translation: Seoul: Seül>
+           <Translation: South Korean: Südkoreanisch>,
+           <Translation: Seoul: Seül>,
+           <Translation: Seouler: Seülisch>
        ]>
 
     To get the translations of a queryset:
@@ -544,11 +556,17 @@ def get_translations(entity, *relations, lang=None):
 
        <QuerySet [
            <Translation: Europe: Europa>,
+           <Translation: European: Europäisch>,
            <Translation: Germany: Deutschland>,
+           <Translation: German: Deutsche>,
            <Translation: Cologne: Köln>,
+           <Translation: Cologner: Kölner>,
            <Translation: Asia: Asien>,
+           <Translation: Asian: Asiatisch>,
            <Translation: South Korea: Südkorea>,
-           <Translation: Seoul: Seül>
+           <Translation: South Korean: Südkoreanisch>,
+           <Translation: Seoul: Seül>,
+           <Translation: Seouler: Seülisch>
        ]>
 
     To get the translations of a model instance:
@@ -575,8 +593,11 @@ def get_translations(entity, *relations, lang=None):
 
        <QuerySet [
            <Translation: Europe: Europa>,
+           <Translation: European: Europäisch>,
            <Translation: Germany: Deutschland>,
-           <Translation: Cologne: Köln>
+           <Translation: German: Deutsche>,
+           <Translation: Cologne: Köln>,
+           <Translation: Cologner: Kölner>
        ]>
 
     """
