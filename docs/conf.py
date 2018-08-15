@@ -217,9 +217,18 @@ intersphinx_mapping = {
 
 doctest_global_setup = """
 from django.test import TestCase
+from pprint import pprint
+import builtins
 
 # Turn on the test database for the doctests
 TestCase.setUpClass()
+
+def print(obj):
+    if type(obj) == dict:
+        pprint(obj)
+    else:
+        builtins.print(obj)
+
 """
 
 doctest_global_cleanup = """
