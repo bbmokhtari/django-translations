@@ -692,23 +692,39 @@ def get_translations_dictionary(translations):
 
     .. testcode:: get_translations_dictionary
 
+       from django.contrib.contenttypes.models import ContentType
+       from sample.models import Continent, Country, City
        from translations.utils import get_translations_dictionary
        from translations.models import Translation
 
        translations = Translation.objects.filter(language="de")
-       print(get_translations_dictionary(translations))
+       dictionary = get_translations_dictionary(translations)
+
+       continent_ct = ContentType.objects.get_for_model(Continent).id
+       print("Continent translations:")
+       print(dictionary[continent_ct])
+
+       country_ct = ContentType.objects.get_for_model(Country).id
+       print("Country translations:")
+       print(dictionary[country_ct])
+
+       city_ct = ContentType.objects.get_for_model(City).id
+       print("City translations:")
+       print(dictionary[city_ct])
 
     .. testoutput:: get_translations_dictionary
 
-       {8: {'1': {'denonym': 'Kölner', 'name': 'Köln'},
-            '2': {'denonym': 'Münchner', 'name': 'München'},
-            '3': {'denonym': 'Seülisch', 'name': 'Seül'},
-            '4': {'denonym': 'Ulsänisch', 'name': 'Ulsän'}},
-        9: {'1': {'denonym': 'Europäisch', 'name': 'Europa'},
-            '2': {'denonym': 'Asiatisch', 'name': 'Asien'}},
-        10: {'1': {'denonym': 'Deutsche', 'name': 'Deutschland'},
-             '2': {'denonym': 'Südkoreanisch', 'name': 'Südkorea'}}}
-
+       Continent translations:
+       {'1': {'denonym': 'Europäisch', 'name': 'Europa'},
+        '2': {'denonym': 'Asiatisch', 'name': 'Asien'}}
+       Country translations:
+       {'1': {'denonym': 'Deutsche', 'name': 'Deutschland'},
+        '2': {'denonym': 'Südkoreanisch', 'name': 'Südkorea'}}
+       City translations:
+       {'1': {'denonym': 'Kölner', 'name': 'Köln'},
+        '2': {'denonym': 'Münchner', 'name': 'München'},
+        '3': {'denonym': 'Seülisch', 'name': 'Seül'},
+        '4': {'denonym': 'Ulsänisch', 'name': 'Ulsän'}}
     """
     dictionary = {}
 
