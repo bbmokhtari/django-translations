@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import get_translation_language, \
     get_entity_details, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
-    get_dictionary, get_relations_details
+    get_translations_dictionary, get_relations_details
 
 from translations.models import Translation
 
@@ -1820,7 +1820,7 @@ class GetTranslationsTest(TestCase):
         )
 
 
-class GetDictionaryTest(TestCase):
+class GetTranslationsDictionaryTest(TestCase):
 
     def test_translations_none(self):
         create_samples(continent_names=["europe"])
@@ -1828,7 +1828,7 @@ class GetDictionaryTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertDictEqual(
-            get_dictionary(europe.translations.all()),
+            get_translations_dictionary(europe.translations.all()),
             {}
         )
 
@@ -1845,7 +1845,7 @@ class GetDictionaryTest(TestCase):
         europe_id = str(europe.id)
 
         self.assertDictEqual(
-            get_dictionary(Translation.objects.all()),
+            get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -1879,7 +1879,7 @@ class GetDictionaryTest(TestCase):
         cologne_id = str(cologne.id)
 
         self.assertDictEqual(
-            get_dictionary(Translation.objects.all()),
+            get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -1914,7 +1914,7 @@ class GetDictionaryTest(TestCase):
         asia_id = str(asia.id)
 
         self.assertDictEqual(
-            get_dictionary(Translation.objects.all()),
+            get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -1940,7 +1940,7 @@ class GetDictionaryTest(TestCase):
         europe_id = str(europe.id)
 
         self.assertDictEqual(
-            get_dictionary(Translation.objects.all()),
+            get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -2004,7 +2004,7 @@ class GetDictionaryTest(TestCase):
         ulsan_id = str(ulsan.id)
 
         self.assertDictEqual(
-            get_dictionary(Translation.objects.all()),
+            get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {

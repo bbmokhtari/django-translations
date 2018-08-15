@@ -13,8 +13,8 @@ This module contains the utilities for the Translations app.
     Return the reverse of the translations relation of a relation for a model.
 :func:`get_translations`
     Return the translations of an entity and the relations of it in a language.
-:func:`get_dictionary`
-    Return a dictionary out of some translations.
+:func:`get_translations_dictionary`
+    Return the translations dictionary out of some translations.
 :func:`get_relations_details`
     Return the details of the relations.
 :func:`translate`
@@ -608,35 +608,17 @@ def get_translations(entity, *relations, lang=None):
     return queryset
 
 
-def get_dictionary(translations):
+def get_translations_dictionary(translations):
     """
-    Return a dictionary out of some translations.
+    Return the translations dictionary out of some translations.
 
-    Processes the translations and returns a dictionary, a dictionary is an
-    easy to search object made out of the translations.
+    Processes the translations and returns the :term:`translations dictionary`
+    to use for the translation process.
 
     :param translations: The translations to process.
     :type translations: ~django.db.models.query.QuerySet
-    :return: The dictionary.
+    :return: The :term:`translations dictionary`.
     :rtype: dict(int, dict(str, dict(str, str)))
-
-    The end result is something like this::
-
-        {
-            content_type_id_1: {
-                object_id_1: {
-                    field_1: text_1,
-                    field_2: ...
-                },
-                object_id_2: ...
-            },
-            content_type_id_2: ...
-        }
-
-    The ``content_type_id`` represents the
-    :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
-    represents the ID of the object in that content type, ``field``
-    represents the name of the field for that object.
     """
     # >>> from sample.models import Continent, Country, City
     # >>> from translations.models import Translation
@@ -671,7 +653,7 @@ def get_dictionary(translations):
     # >>> cologne = City.objects.create(name="Cologne", country=germany)
     # >>> cologne.translations.create(field="name", language="de", text="Köln")
     # <Translation: Cologne: Köln>
-    # >>> get_dictionary(Translation.objects.all())
+    # >>> get_translations_dictionary(Translation.objects.all())
     # {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
     # 3: {'1': {'name': 'Deutschland'}},
     # 1: {'1': {'name': 'Köln'}}}
@@ -736,7 +718,7 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
     This function translates the entity and its relations using a dictionary.
     If the dictionary isn't provided it will fetch all the translations for
     the entity and its relations in a language using :func:`get_translations`
-    and convert them to a dictionary using :func:`get_dictionary` and use that
+    and convert them to a dictionary using :func:`get_translations_dictionary` and use that
     for translation.
 
     :param entity: The entity to translate
@@ -849,7 +831,7 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
         return
 
     if dictionary is None:
-        dictionary = get_dictionary(
+        dictionary = get_translations_dictionary(
             get_translations(
                 entity,
                 *relations,
