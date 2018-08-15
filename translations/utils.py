@@ -727,22 +727,34 @@ def get_translations_dictionary(translations):
 
 def get_relations_details(*relations):
     """
-    Return the details of the relations.
+    Return the details of some relations.
 
-    :param relations: The relations to get the details of
+    Processes the relations and returns a dictionary containing root
+    relations, whether they are included or not and the sub relations of them.
+
+    :param relations: The relations to get the details of.
     :type relations: list(str)
-    :return: The relations details
+    :return: The relations details.
     :rtype: dict(str, dict)
 
+    To get the details of some relations:
+
+    .. testcode::
+
+       from translations.utils import get_relations_details
+
+       print(get_relations_details('countries'))
+       print(get_relations_details('countries__cities'))
+       print(get_relations_details('countries', 'countries__cities'))
+       print(get_relations_details())
+
+    .. testoutput::
+
+       {'countries': {'included': True, 'relations': []}}
+       {'countries': {'included': False, 'relations': ['cities']}}
+       {'countries': {'included': True, 'relations': ['cities']}}
+       {}
     """
-    # >>> get_relations_details()
-    # {}
-    # >>> get_relations_details('countries')
-    # {'countries': {'included': True, 'relations': []}}
-    # >>> get_relations_details('countries__cities')
-    # {'countries': {'included': False, 'relations': ['cities']}}
-    # >>> get_relations_details('countries', 'countries__cities')
-    # {'countries': {'included': True, 'relations': ['cities']}}
     details = {}
 
     for relation in relations:
