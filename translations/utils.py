@@ -16,7 +16,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations_dictionary`
     Return the translations dictionary out of some translations.
 :func:`get_relations_details`
-    Return the details of the relations.
+    Return the details of some relations.
 :func:`translate`
     Translate the entity.
 """
