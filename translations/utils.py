@@ -175,7 +175,6 @@ def get_entity_details(entity):
        Iterable: False
 
     .. note::
-
        An empty iterable returns the model as ``None``, even if the iterable
        is an empty queryset, though the model for it can be retrieved. It's
        because other parts of the code first check to see if details model is
@@ -617,46 +616,52 @@ def get_translations_dictionary(translations):
 
     :param translations: The translations to process.
     :type translations: ~django.db.models.query.QuerySet
-    :return: The :term:`translations dictionary`.
+    :return: The translations dictionary.
     :rtype: dict(int, dict(str, dict(str, str)))
+
+    .. note::
+       Always filter the ``translations`` in a language before passing it in,
+       otherwise the other language may override some fields of the initial
+       language and a translations dictionary with mixed content gets
+       outputted which is not what's desired.
+
+    .. testsetup:: get_translations_dictionary
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe", "asia"],
+           country_names=["germany", "south korea"],
+           city_names=["cologne", "seoul"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To get the translations dictionary of all the translations.
+
+    .. testcode:: get_translations_dictionary
+
+       from translations.utils import get_translations_dictionary
+       from translations.models import Translation
+
+       print(
+           get_translations_dictionary(
+               Translation.objects.filter(language="de")
+           )
+       )
+
+    .. testoutput:: get_translations_dictionary
+
+       {8: {'1': {'denonym': 'Kölner', 'name': 'Köln'},
+            '2': {'denonym': 'Seülisch', 'name': 'Seül'}},
+        9: {'1': {'denonym': 'Europäisch', 'name': 'Europa'},
+            '2': {'denonym': 'Asiatisch', 'name': 'Asien'}},
+        10: {'1': {'denonym': 'Deutsche', 'name': 'Deutschland'},
+             '2': {'denonym': 'Südkoreanisch', 'name': 'Südkorea'}}}
+
     """
-    # >>> from sample.models import Continent, Country, City
-    # >>> from translations.models import Translation
-    # >>> europe = Continent.objects.create(
-    # ...     code="EU",
-    # ...     name="Europe"
-    # ...     denonym="European",
-    # ... )
-    # >>> europe.translations.create(
-    # ...     field="name",
-    # ...     language="de",
-    # ...     text="Europa"
-    # ... )
-    # <Translation: Europe: Europa>
-    # >>> europe.translations.create(
-    # ...     field="denonym",
-    # ...     language="de",
-    # ...     text="Europäisch"
-    # ... )
-    # <Translation: European: Europäisch>
-    # >>> germany = Country.objects.create(
-    # ...     code="DE",
-    # ...     name="Germany",
-    # ...     continent=europe
-    # ... )
-    # >>> germany.translations.create(
-    # ...     field="name",
-    # ...     language="de",
-    # ...     text="Deutschland"
-    # ... )
-    # <Translation: Germany: Deutschland>
-    # >>> cologne = City.objects.create(name="Cologne", country=germany)
-    # >>> cologne.translations.create(field="name", language="de", text="Köln")
-    # <Translation: Cologne: Köln>
-    # >>> get_translations_dictionary(Translation.objects.all())
-    # {2: {'1': {'name': 'Europa', 'denonym': 'Europäisch'}},
-    # 3: {'1': {'name': 'Deutschland'}},
-    # 1: {'1': {'name': 'Köln'}}}
     dictionary = {}
 
     for translation in translations:
