@@ -223,6 +223,7 @@ import builtins
 # Turn on the test database for the doctests
 TestCase.setUpClass()
 
+# Beautify `testoutput`
 def print(obj):
     if type(obj) == dict:
         pprint(obj)

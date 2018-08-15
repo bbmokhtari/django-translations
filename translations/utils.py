@@ -646,11 +646,8 @@ def get_translations_dictionary(translations):
        from translations.utils import get_translations_dictionary
        from translations.models import Translation
 
-       print(
-           get_translations_dictionary(
-               Translation.objects.filter(language="de")
-           )
-       )
+       translations = Translation.objects.filter(language="de")
+       print(get_translations_dictionary(translations))
 
     .. testoutput:: get_translations_dictionary
 
