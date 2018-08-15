@@ -235,7 +235,7 @@ def print(obj):
         start = representation[:(start_index + 1)]
         center = representation[(start_index + 1): end_index]
         end = representation[end_index:]
-        items = map(lambda x: '\\t' + x, center.split(', '))
+        items = map(lambda x: (' ' * 4) + x, center.split(', '))
         print(start)
         print(',\\n'.join(items))
         print(end)

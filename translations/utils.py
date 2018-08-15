@@ -511,7 +511,14 @@ def get_translations(entity, *relations, lang=None):
 
     .. testoutput:: get_translations
 
-       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: ...
+       <QuerySet [
+           <Translation: Europe: Europa>,
+           <Translation: Germany: Deutschland>,
+           <Translation: Cologne: Köln>,
+           <Translation: Asia: Asien>,
+           <Translation: South Korea: Südkorea>,
+           <Translation: Seoul: Seül>
+       ]>
 
     To get the translations of a queryset:
 
@@ -535,7 +542,14 @@ def get_translations(entity, *relations, lang=None):
 
     .. testoutput:: get_translations
 
-       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: ...
+       <QuerySet [
+           <Translation: Europe: Europa>,
+           <Translation: Germany: Deutschland>,
+           <Translation: Cologne: Köln>,
+           <Translation: Asia: Asien>,
+           <Translation: South Korea: Südkorea>,
+           <Translation: Seoul: Seül>
+       ]>
 
     To get the translations of a model instance:
 
@@ -559,7 +573,11 @@ def get_translations(entity, *relations, lang=None):
 
     .. testoutput:: get_translations
 
-       <QuerySet [<Translation: Europe: Europa>, <Translation: Germany: ...
+       <QuerySet [
+           <Translation: Europe: Europa>,
+           <Translation: Germany: Deutschland>,
+           <Translation: Cologne: Köln>
+       ]>
 
     """
     lang = get_translation_language(lang)
