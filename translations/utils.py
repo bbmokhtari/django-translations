@@ -486,7 +486,7 @@ def get_translations(entity, *relations, lang=None):
        create_samples(
            continent_names=["europe", "asia"],
            country_names=["germany", "south korea"],
-           city_names=["cologne", "seoul"],
+           city_names=["cologne", "munich", "seoul", "ulsan"],
            continent_fields=["name", "denonym"],
            country_fields=["name", "denonym"],
            city_fields=["name", "denonym"],
@@ -524,12 +524,16 @@ def get_translations(entity, *relations, lang=None):
            <Translation: German: Deutsche>,
            <Translation: Cologne: Köln>,
            <Translation: Cologner: Kölner>,
+           <Translation: Munich: München>,
+           <Translation: Munichian: Münchner>,
            <Translation: Asia: Asien>,
            <Translation: Asian: Asiatisch>,
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seülisch>
+           <Translation: Seouler: Seülisch>,
+           <Translation: Ulsan: Ulsän>,
+           <Translation: Ulsanian: Ulsänisch>
        ]>
 
     To get the translations of a queryset:
@@ -561,12 +565,16 @@ def get_translations(entity, *relations, lang=None):
            <Translation: German: Deutsche>,
            <Translation: Cologne: Köln>,
            <Translation: Cologner: Kölner>,
+           <Translation: Munich: München>,
+           <Translation: Munichian: Münchner>,
            <Translation: Asia: Asien>,
            <Translation: Asian: Asiatisch>,
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seülisch>
+           <Translation: Seouler: Seülisch>,
+           <Translation: Ulsan: Ulsän>,
+           <Translation: Ulsanian: Ulsänisch>
        ]>
 
     To get the translations of a model instance:
@@ -597,7 +605,9 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Germany: Deutschland>,
            <Translation: German: Deutsche>,
            <Translation: Cologne: Köln>,
-           <Translation: Cologner: Kölner>
+           <Translation: Cologner: Kölner>,
+           <Translation: Munich: München>,
+           <Translation: Munichian: Münchner>
        ]>
 
     """
@@ -671,7 +681,7 @@ def get_translations_dictionary(translations):
        create_samples(
            continent_names=["europe", "asia"],
            country_names=["germany", "south korea"],
-           city_names=["cologne", "seoul"],
+           city_names=["cologne", "munich", "seoul", "ulsan"],
            continent_fields=["name", "denonym"],
            country_fields=["name", "denonym"],
            city_fields=["name", "denonym"],
@@ -691,7 +701,9 @@ def get_translations_dictionary(translations):
     .. testoutput:: get_translations_dictionary
 
        {8: {'1': {'denonym': 'Kölner', 'name': 'Köln'},
-            '2': {'denonym': 'Seülisch', 'name': 'Seül'}},
+            '2': {'denonym': 'Münchner', 'name': 'München'},
+            '3': {'denonym': 'Seülisch', 'name': 'Seül'},
+            '4': {'denonym': 'Ulsänisch', 'name': 'Ulsän'}},
         9: {'1': {'denonym': 'Europäisch', 'name': 'Europa'},
             '2': {'denonym': 'Asiatisch', 'name': 'Asien'}},
         10: {'1': {'denonym': 'Deutsche', 'name': 'Deutschland'},
