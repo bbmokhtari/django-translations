@@ -873,31 +873,15 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
        from sample.models import Continent, Country, City
        from translations.utils import translate
 
-       continents = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).all()
+       continents = list(Continent.objects.all())
 
-       continents = list(continents)
+       translate(continents, lang="de")
 
-       translate(continents, "countries", "countries__cities", lang="de")
-
-       for continent in continents:
-           print("Continent: {}".format(continent))
-           for country in continent.countries.all():
-               print("Country: {}".format(country))
-               for city in country.cities.all():
-                   print("City: {}".format(city))
+       print(continents)
 
     .. testoutput:: translate
 
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
-       Continent: Asien
-       Country: Südkorea
-       City: Seül
-       City: Ulsän
+       [<Continent: Europa>, <Continent: Asien>]
 
     To translate a queryset:
 
@@ -906,29 +890,15 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
        from sample.models import Continent, Country, City
        from translations.utils import translate
 
-       continents = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).all()
+       continents = Continent.objects.all()
 
-       translate(continents, "countries", "countries__cities", lang="de")
+       translate(continents, lang="de")
 
-       for continent in continents:
-           print("Continent: {}".format(continent))
-           for country in continent.countries.all():
-               print("Country: {}".format(country))
-               for city in country.cities.all():
-                   print("City: {}".format(city))
+       print(continents)
 
     .. testoutput:: translate
 
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
-       Continent: Asien
-       Country: Südkorea
-       City: Seül
-       City: Ulsän
+       <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
 
     To translate a model instance:
 
@@ -937,24 +907,15 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
        from sample.models import Continent, Country, City
        from translations.utils import translate
 
-       europe = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).get(code="EU")
+       europe = Continent.objects.get(code="EU")
 
-       translate(europe, "countries", "countries__cities", lang="de")
+       translate(europe, lang="de")
 
-       print("Continent: {}".format(europe))
-       for country in europe.countries.all():
-           print("Country: {}".format(country))
-           for city in country.cities.all():
-               print("City: {}".format(city))
+       print(europe)
 
     .. testoutput:: translate
 
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
+       Europa
 
     .. warning::
        Always use :meth:`~django.db.models.query.QuerySet.select_related`,
@@ -1023,6 +984,94 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
           Country: Südkorea # Correct
           City: Seül # Correct
           City: Ulsän # Correct
+
+    To translate a list of model instances with relations:
+
+    .. testcode:: translate
+
+       from django.db.models import prefetch_related_objects
+       from sample.models import Continent, Country, City
+       from translations.utils import translate
+
+       continents = list(Continent.objects.all())
+       prefetch_related_objects(continents, 'countries', 'countries__cities')
+
+       translate(continents, "countries", "countries__cities", lang="de")
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: translate
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To translate a queryset with relations:
+
+    .. testcode:: translate
+
+       from sample.models import Continent, Country, City
+       from translations.utils import translate
+
+       continents = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+       ).all()
+
+       translate(continents, "countries", "countries__cities", lang="de")
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: translate
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To translate a model instance with relations:
+
+    .. testcode:: translate
+
+       from django.db.models import prefetch_related_objects
+       from sample.models import Continent, Country, City
+       from translations.utils import translate
+
+       europe = Continent.objects.get(code="EU")
+       prefetch_related_objects([europe], 'countries', 'countries__cities')
+
+       translate(europe, "countries", "countries__cities", lang="de")
+
+       print("Continent: {}".format(europe))
+       for country in europe.countries.all():
+           print("Country: {}".format(country))
+           for city in country.cities.all():
+               print("City: {}".format(city))
+
+    .. testoutput:: translate
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
 
     .. warning::
        If the relations of an entity must be filtered along the way, do it
