@@ -19,7 +19,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, \
     GenericRelation
 from django.utils.translation import ugettext_lazy as _
 
-from translations.utils import get_translations, translate, update_translations
+from translations.utils import get_translations, read_translations, update_translations
 from translations.managers import TranslatableManager
 
 
@@ -240,7 +240,7 @@ class Translatable(models.Model):
         """
         return get_translations(self, *relations, lang=lang)
 
-    def translate(self, *relations, lang=None, translations=None):
+    def read_translations(self, *relations, lang=None, translations=None):
         r"""
         Translate the object and its relations (in place) in a language.
 
@@ -263,7 +263,7 @@ class Translatable(models.Model):
             is given the current active language will be used.
         :type lang: str or None
         """
-        translate(
+        read_translations(
             self, *relations,
             lang=lang,
             dictionary=translations

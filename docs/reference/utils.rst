@@ -13,4 +13,4 @@ Utilities
    .. autofunction:: get_translations
    .. autofunction:: get_translations_dictionary
    .. autofunction:: get_relations_details
-   .. autofunction:: translate
+   .. autofunction:: read_translations
