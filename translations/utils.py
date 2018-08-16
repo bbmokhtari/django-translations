@@ -16,7 +16,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations_dictionary`
     Return the translations dictionary out of some translations.
 :func:`get_relations_details`
-    Return the details of the relations.
+    Return the details of some relations.
 :func:`translate`
     Translate the entity.
 """
@@ -745,7 +745,7 @@ def get_relations_details(*relations):
     """
     Return the details of some relations.
 
-    Processes the relations and returns a dictionary containing root
+    Processes the relations and returns a dictionary containing first-level
     relations, whether they are included or not and the sub relations of them.
 
     :param relations: The relations to get the details of.
@@ -753,22 +753,53 @@ def get_relations_details(*relations):
     :return: The relations details.
     :rtype: dict(str, dict)
 
-    To get the details of some relations:
+    Getting the details of a first-level relation will result in:
 
     .. testcode::
 
        from translations.utils import get_relations_details
 
        print(get_relations_details('countries'))
-       print(get_relations_details('countries__cities'))
-       print(get_relations_details('countries', 'countries__cities'))
-       print(get_relations_details())
 
     .. testoutput::
 
        {'countries': {'included': True, 'relations': []}}
+
+    Getting the details of a nested relation will result in:
+
+    .. testcode::
+
+       from translations.utils import get_relations_details
+
+       print(get_relations_details('countries__cities'))
+
+    .. testoutput::
+
        {'countries': {'included': False, 'relations': ['cities']}}
+
+    Getting the details of both a simple relation and a nested relation will
+    result in:
+
+    .. testcode::
+
+       from translations.utils import get_relations_details
+
+       print(get_relations_details('countries', 'countries__cities'))
+
+    .. testoutput::
+
        {'countries': {'included': True, 'relations': ['cities']}}
+
+    Getting the details of no relations will result in:
+
+    .. testcode::
+
+       from translations.utils import get_relations_details
+
+       print(get_relations_details())
+
+    .. testoutput::
+
        {}
     """
     details = {}
