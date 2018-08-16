@@ -609,7 +609,6 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Munich: München>,
            <Translation: Munichian: Münchner>
        ]>
-
     """
     lang = get_translation_language(lang)
     model, iterable = get_entity_details(entity)
@@ -862,82 +861,110 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
        :func:`~django.db.models.prefetch_related_objects` for fetching the
        relations of the entity before using :func:`translate` on them.
 
+    .. testsetup:: translate
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe", "asia"],
+           country_names=["germany", "south korea"],
+           city_names=["cologne", "munich", "seoul", "ulsan"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To translate a list of model instances:
+
+    .. testcode:: translate
+
+       from sample.models import Continent, Country, City
+       from translations.utils import translate
+
+       continents = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+       ).all()
+
+       continents = list(continents)
+
+       translate(continents, "countries", "countries__cities", lang="de")
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: translate
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To translate a queryset:
+
+    .. testcode:: translate
+
+       from sample.models import Continent, Country, City
+       from translations.utils import translate
+
+       continents = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+       ).all()
+
+       translate(continents, "countries", "countries__cities", lang="de")
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: translate
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To translate a model instance:
+
+    .. testcode:: translate
+
+       from sample.models import Continent, Country, City
+       from translations.utils import translate
+
+       europe = Continent.objects.prefetch_related(
+           'countries', 'countries__cities'
+       ).get(code="EU")
+
+       translate(europe, "countries", "countries__cities", lang="de")
+
+       print("Continent: {}".format(europe))
+       for country in europe.countries.all():
+           print("Country: {}".format(country))
+           for city in country.cities.all():
+               print("City: {}".format(city))
+
+    .. testoutput:: translate
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
     """
-    # .. testsetup:: translate
-
-    #    from sample.models import Continent, Country, City
-    #    from translations.utils import translate
-    #    europe = Continent.objects.create(
-    #        code="EU",
-    #        name="Europe",
-    #        denonym="European",
-    #    )
-    #    europe.translations.create(
-    #        field="name",
-    #        language="de",
-    #        text="Europa"
-    #    )
-    #    europe.translations.create(
-    #        field="denonym",
-    #        language="de",
-    #        text="Europäisch"
-    #    )
-    #    germany = Country.objects.create(
-    #        code="DE",
-    #        name="Germany",
-    #        denonym="German",
-    #        continent=europe
-    #    )
-    #    germany.translations.create(
-    #        field="name",
-    #        language="de",
-    #        text="Deutschland"
-    #    )
-    #    germany.translations.create(
-    #        field="denonym",
-    #        language="de",
-    #        text="Deutsche"
-    #    )
-    #    cologne = City.objects.create(
-    #        name="Cologne",
-    #        denonym="Cologner",
-    #        country=germany
-    #    )
-    #    cologne.translations.create(
-    #        field="name",
-    #        language="de",
-    #        text="Köln"
-    #    )
-    #    cologne.translations.create(
-    #        field="denonym",
-    #        language="de",
-    #        text="Kölner"
-    #    )
-
-    # .. doctest:: translate
-
-    #    >>> # MAKE SURE: `select_related` and `prefetch_related`
-    #    >>> europe = Continent.objects.prefetch_related(
-    #    ...     'countries',
-    #    ...     'countries__cities',
-    #    ... ).get(code="EU")
-    #    >>> # Translate:
-    #    >>> translate(europe, "countries", "countries__cities", lang="de")
-    #    >>> # Done!
-    #    >>> germany = europe.countries.all()[0]
-    #    >>> cologne = germany.cities.all()[0]
-    #    >>> europe.name
-    #    Europa
-    #    >>> europe.denonym
-    #    Europäisch
-    #    >>> germany.name
-    #    Deutschland
-    #    >>> germany.denonym
-    #    Deutsche
-    #    >>> cologne.name
-    #    Köln
-    #    >>> cologne.denonym
-    #    Kölner
     lang = get_translation_language(lang)
     model, iterable = get_entity_details(entity)
 
@@ -975,17 +1002,17 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
     details = get_relations_details(*relations)
     if details:
         def translate_rel(obj):
-            for (relation, details) in details.items():
+            for (relation, detail) in details.items():
                 value = getattr(obj, relation, None)
                 if value is not None:
                     if isinstance(value, models.Manager):
                         value = value.all()
                     translate(
                         value,
-                        *details['relations'],
+                        *detail['relations'],
                         lang=lang,
                         dictionary=dictionary,
-                        included=details['included'],
+                        included=detail['included'],
                     )
 
         if iterable:
