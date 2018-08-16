@@ -839,14 +839,15 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to translate.
     :type relations: list(str)
-    :param lang: The language to translate the entity and its relations in.
+    :param lang: The language to translate in.
         ``None`` means use the active language code. [#active_language]_
     :type lang: str or None
-    :param dictionary: The translations dictionary to use for translation.
+    :param dictionary: The translations dictionary to use for the translation
+        process.
         ``None`` means create the translations dictionary automatically.
     :type dictionary: dict(int, dict(str, dict(str, str))) or None
     :param included: Whether the entity itself should be translated along
-        with the relations or not, the default is ``True``.
+        with the relations of it or not, the default is ``True``.
     :type included: bool
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
