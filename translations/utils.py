@@ -852,12 +852,6 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. warning::
-       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects` for fetching the
-       relations of the entity before using :func:`translate` on them.
-
     .. testsetup:: translate
 
        from tests.sample import create_samples
@@ -961,6 +955,72 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
        Country: Deutschland
        City: Köln
        City: München
+
+    .. warning::
+       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects` for fetching the
+       relations of the entity before using :func:`translate` on them.
+
+       Instead of:
+
+       .. testcode:: translate
+
+          from sample.models import Continent, Country, City
+          from translations.utils import translate
+
+          continents = Continent.objects.all()
+
+          translate(continents, "countries", "countries__cities", lang="de")
+
+          for continent in continents:
+              print("Continent: {}".format(continent))
+              for country in continent.countries.all():
+                  print("Country: {} # Wrong".format(country))
+                  for city in country.cities.all():
+                      print("City: {} # Wrong".format(city))
+
+       .. testoutput:: translate
+
+          Continent: Europa
+          Country: Germany # Wrong
+          City: Cologne # Wrong
+          City: Munich # Wrong
+          Continent: Asien
+          Country: South Korea # Wrong
+          City: Seoul # Wrong
+          City: Ulsan # Wrong
+
+       This must be done:
+
+       .. testcode:: translate
+
+          from sample.models import Continent, Country, City
+          from translations.utils import translate
+
+          continents = Continent.objects.prefetch_related(
+              'countries', 'countries__cities',
+          ).all()
+
+          translate(continents, "countries", "countries__cities", lang="de")
+
+          for continent in continents:
+              print("Continent: {}".format(continent))
+              for country in continent.countries.all():
+                  print("Country: {} # Correct".format(country))
+                  for city in country.cities.all():
+                      print("City: {} # Correct".format(city))
+
+       .. testoutput:: translate
+
+          Continent: Europa
+          Country: Deutschland # Correct
+          City: Köln # Correct
+          City: München # Correct
+          Continent: Asien
+          Country: Südkorea # Correct
+          City: Seül # Correct
+          City: Ulsän # Correct
     """
     lang = get_translation_language(lang)
     model, iterable = get_entity_details(entity)
