@@ -15,6 +15,8 @@ This module contains the utilities for the Translations app.
     Return the translations of an entity and the relations of it in a language.
 :func:`get_translations_dictionary`
     Return the translations dictionary out of some translations.
+:func:`fill_hierarchy`
+    Fills a hierarchy with some ordered nodes.
 :func:`get_relations_hierarchy`
     Return the relations hierarchy of some relations.
 :func:`read_translations`
