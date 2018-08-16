@@ -512,7 +512,6 @@ def get_translations(entity, *relations, lang=None):
            lang="de"
        )
 
-       # print translations
        print(translations)
 
     .. testoutput:: get_translations
@@ -553,7 +552,6 @@ def get_translations(entity, *relations, lang=None):
            lang="de"
        )
 
-       # print translations
        print(translations)
 
     .. testoutput:: get_translations
@@ -594,7 +592,6 @@ def get_translations(entity, *relations, lang=None):
            lang="de"
        )
 
-       # print translations
        print(translations)
 
     .. testoutput:: get_translations
