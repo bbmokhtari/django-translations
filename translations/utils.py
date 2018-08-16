@@ -15,8 +15,8 @@ This module contains the utilities for the Translations app.
     Return the translations of an entity and the relations of it in a language.
 :func:`get_translations_dictionary`
     Return the translations dictionary out of some translations.
-:func:`get_relations_details`
-    Return the details of some relations.
+:func:`get_relations_hierarchy`
+    Return the relations hierarchy of some relations.
 :func:`read_translations`
     Translate an entity and the relations of it in a language.
 """
@@ -743,7 +743,9 @@ def fill_hierarchy(hierarchy, *nodes):
 
     Processes the nodes and fills the hierarchy based on the order of the
     nodes. The later nodes will be considered as the children of the earlier
-    ones.
+    ones. Only the nodes that have filled the hierarchy as the last node at
+    least once will be considered included and all the other nodes will be
+    considered excluded.
 
     :param hierarchy: The hierarchy to fill.
     :type hierarchy: dict(str, dict)
@@ -764,7 +766,7 @@ def fill_hierarchy(hierarchy, *nodes):
 
     .. testoutput:: fill_hierarchy
 
-       {"countries": {"included": True, "relations": {}}}
+       {'countries': {'included': True, 'relations': {}}}
 
     To fill in a hierarchy with two level of nodes, not including the first
     one:
@@ -781,7 +783,9 @@ def fill_hierarchy(hierarchy, *nodes):
 
     .. testoutput:: fill_hierarchy
 
-       {"countries": {"included": False, "relations": {"cities": {"included": True, "relations": {}}}}}
+       {'countries': {'included': False,
+                      'relations': {'cities': {'included': True,
+                                               'relations': {}}}}}
 
     To fill in a hierarchy with two level of nodes, including the first one:
 
@@ -798,7 +802,9 @@ def fill_hierarchy(hierarchy, *nodes):
 
     .. testoutput:: fill_hierarchy
 
-       {"countries": {"included": True, "relations": {"cities": {"included": True, "relations": {}}}}}
+       {'countries': {'included': True,
+                      'relations': {'cities': {'included': True,
+                                               'relations': {}}}}}
     """
     root = nodes[0]
     nest = nodes[1:]
@@ -809,80 +815,86 @@ def fill_hierarchy(hierarchy, *nodes):
     })
 
     if nest:
-        fill_hierarchy(nest, hierarchy[root]["relations"])
+        fill_hierarchy(hierarchy[root]["relations"], *nest)
     else:
         hierarchy[root]["included"] = True
 
 
-def get_relations_details(*relations):
+def get_relations_hierarchy(*relations):
     """
-    Return the details of some relations.
+    Return the relations hierarchy of some relations.
 
-    Processes the relations and returns a dictionary containing first-level
-    relations, whether they are included or not and the sub relations of them.
+    Processes the relations and returns a :term:`relations hierarchy`,
+    containing each level of relation and information about whether they are
+    included or not.
 
-    :param relations: The relations to get the details of.
+    :param relations: The relations to get the hierarchy of.
     :type relations: list(str)
-    :return: The relations details.
+    :return: The relations hierarchy.
     :rtype: dict(str, dict)
 
-    Getting the details of a first-level relation will result in:
+    To get the hierarchy of a first-level relation:
 
     .. testcode::
 
-       from translations.utils import get_relations_details
+       from translations.utils import get_relations_hierarchy
 
-       print(get_relations_details('countries'))
+       print(get_relations_hierarchy('countries'))
 
     .. testoutput::
 
-       {'countries': {'included': True, 'relations': []}}
+       {'countries': {'included': True, 'relations': {}}}
 
-    Getting the details of a nested relation will result in:
+    To get the hierarchy of a nested relation, without including the first-level
+    relation:
 
     .. testcode::
 
-       from translations.utils import get_relations_details
+       from translations.utils import get_relations_hierarchy
 
-       print(get_relations_details('countries__cities'))
+       print(get_relations_hierarchy('countries__cities'))
 
     .. testoutput::
 
-       {'countries': {'included': False, 'relations': ['cities']}}
+       {'countries': {'included': False,
+                      'relations': {'cities': {'included': True,
+                                               'relations': {}}}}}
 
-    Getting the details of both a simple relation and a nested relation will
-    result in:
+    To get the hierarchy of a nested relation, including the first-level
+    relation:
 
     .. testcode::
 
-       from translations.utils import get_relations_details
+       from translations.utils import get_relations_hierarchy
 
-       print(get_relations_details('countries', 'countries__cities'))
+       print(get_relations_hierarchy('countries', 'countries__cities'))
 
     .. testoutput::
 
-       {'countries': {'included': True, 'relations': ['cities']}}
+       {'countries': {'included': True,
+                      'relations': {'cities': {'included': True,
+                                               'relations': {}}}}}
 
-    Getting the details of no relations will result in:
+    To get the hierarchy of no relations:
 
     .. testcode::
 
-       from translations.utils import get_relations_details
+       from translations.utils import get_relations_hierarchy
 
-       print(get_relations_details())
+       print(get_relations_hierarchy())
 
     .. testoutput::
 
        {}
     """
-    details = {}
+    hierarchy = {}
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
-        fill_hierarchy(details, *parts)
-    return details
+        fill_hierarchy(hierarchy, *parts)
+    return hierarchy
 
 
-def translate(entity, details, dictionary, included=True):
+def translate(entity, hierarchy, dictionary, included=True):
     model, iterable = get_entity_details(entity)
 
     if model is None:
@@ -893,12 +905,12 @@ def translate(entity, details, dictionary, included=True):
 
     if iterable:
         for obj in entity:
-            translate_obj(obj, details, ct_dictionary, dictionary, included)
+            translate_obj(obj, hierarchy, ct_dictionary, dictionary, included)
     else:
-        translate_obj(entity, details, ct_dictionary, dictionary, included)
+        translate_obj(entity, hierarchy, ct_dictionary, dictionary, included)
 
 
-def translate_obj(obj, details, ct_dictionary, dictionary, included=True):
+def translate_obj(obj, hierarchy, ct_dictionary, dictionary, included=True):
     if included and ct_dictionary:
         try:
             fields = ct_dictionary[str(obj.id)]
@@ -908,15 +920,15 @@ def translate_obj(obj, details, ct_dictionary, dictionary, included=True):
             for (field, text) in fields.items():
                 setattr(obj, field, text)
 
-    if details:
-        for (relation, detail) in details.items():
+    if hierarchy:
+        for (relation, detail) in hierarchy.items():
             value = getattr(obj, relation, None)
             if value is not None:
                 if isinstance(value, models.Manager):
                     value = value.all()
                 translate(
                     value,
-                    get_relations_details(*detail['relations']),
+                    detail['relations'],
                     dictionary,
                     included=detail['included']
                 )
@@ -1249,7 +1261,7 @@ def read_translations(entity, *relations, lang=None):
           City: Seül # Correct
           City: Ulsän # Correct
     """
-    details = get_relations_details(*relations)
+    hierarchy = get_relations_hierarchy(*relations)
 
     dictionary = get_translations_dictionary(
         get_translations(
@@ -1259,7 +1271,7 @@ def read_translations(entity, *relations, lang=None):
         )
     )
 
-    translate(entity, details, dictionary, included=True)
+    translate(entity, hierarchy, dictionary, included=True)
 
 
 def update_translations(entity, lang=None):
