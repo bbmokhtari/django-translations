@@ -826,19 +826,19 @@ def translate(entity, details, dictionary, included=True):
         return
 
     content_type = ContentType.objects.get_for_model(model)
-    objects = dictionary[content_type.id]
+    ct_dictionary = dictionary[content_type.id]
 
     if iterable:
         for obj in entity:
-            translate_obj(obj, dictionary, objects, details, included)
+            translate_obj(obj, details, ct_dictionary, dictionary, included)
     else:
-        translate_obj(entity, dictionary, objects, details, included)
+        translate_obj(entity, details, ct_dictionary, dictionary, included)
 
 
-def translate_obj(obj, dictionary, objects, details, included=True):
-    if included and objects:
+def translate_obj(obj, details, ct_dictionary, dictionary, included=True):
+    if included and ct_dictionary:
         try:
-            fields = objects[str(obj.id)]
+            fields = ct_dictionary[str(obj.id)]
         except KeyError:
             pass
         else:
