@@ -1084,6 +1084,7 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
           from sample.models import Continent, Country, City
           from translations.utils import translate
 
+          # Not using `Prefetch`
           continents = Continent.objects.prefetch_related(
               'countries', 'countries__cities'
           ).all()
@@ -1092,8 +1093,7 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
 
           for continent in continents:
               print("Continent: {}".format(continent))
-              countries = continent.countries.filter(code__isnull=False) # Note
-              for country in countries:
+              for country in continent.countries.filter(code__isnull=False):
                   print("Country: {} # Wrong".format(country))
                   for city in country.cities.all():
                       print("City: {} # Wrong".format(city))
@@ -1117,10 +1117,11 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
           from sample.models import Continent, Country, City
           from translations.utils import translate
 
+          # Using `Prefetch`
           continents = Continent.objects.prefetch_related(
               Prefetch(
                   'countries',
-                  queryset=Country.objects.filter(code__isnull=False) # Note
+                  queryset=Country.objects.filter(code__isnull=False)
               ),
               'countries__cities'
           ).all()
