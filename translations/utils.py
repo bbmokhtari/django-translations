@@ -799,24 +799,25 @@ def get_relations_details(*relations):
        {}
     """
     details = {}
-
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
-
-        root = parts[0]
-        nest = LOOKUP_SEP.join(parts[1:])
-
-        details.setdefault(root, {
-            "included": False,
-            "relations": []
-        })
-
-        if nest:
-            details[root]["relations"].append(nest)
-        else:
-            details[root]["included"] = True
-
+        fill_hierarchy(parts, details)
     return details
+
+
+def fill_hierarchy(relation_parts, hierarchy):
+    root = relation_parts[0]
+    nest = relation_parts[1:]
+
+    hierarchy.setdefault(root, {
+        "included": False,
+        "relations": {}
+    })
+
+    if nest:
+        fill_hierarchy(nest, hierarchy[root]["relations"])
+    else:
+        hierarchy[root]["included"] = True
 
 
 def translate(entity, details, dictionary, included=True):
