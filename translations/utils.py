@@ -819,7 +819,7 @@ def get_relations_details(*relations):
     return details
 
 
-def translate(entity, *relations, included=True, dictionary=None):
+def translate(entity, details, dictionary, included=True):
     model, iterable = get_entity_details(entity)
 
     if model is None:
@@ -827,7 +827,6 @@ def translate(entity, *relations, included=True, dictionary=None):
 
     content_type = ContentType.objects.get_for_model(model)
     objects = dictionary[content_type.id]
-    details = get_relations_details(*relations)
 
     if iterable:
         for obj in entity:
@@ -854,9 +853,9 @@ def translate_obj(obj, dictionary, objects, details, included=True):
                     value = value.all()
                 translate(
                     value,
-                    *detail['relations'],
-                    included=detail['included'],
-                    dictionary=dictionary
+                    get_relations_details(*detail['relations']),
+                    dictionary,
+                    included=detail['included']
                 )
 
 
@@ -1187,6 +1186,8 @@ def read_translations(entity, *relations, lang=None):
           City: Seül # Correct
           City: Ulsän # Correct
     """
+    details = get_relations_details(*relations)
+
     dictionary = get_translations_dictionary(
         get_translations(
             entity,
@@ -1195,7 +1196,7 @@ def read_translations(entity, *relations, lang=None):
         )
     )
 
-    translate(entity, *relations, included=True, dictionary=dictionary)
+    translate(entity, details, dictionary, included=True)
 
 
 def update_translations(entity, lang=None):
