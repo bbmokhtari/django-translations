@@ -819,7 +819,7 @@ def get_relations_details(*relations):
     return details
 
 
-def translate_entity(dictionary, entity, *relations, included=True):
+def translate(entity, *relations, included=True, dictionary=None):
     model, iterable = get_entity_details(entity)
 
     if model is None:
@@ -852,11 +852,11 @@ def translate_obj(obj, dictionary, objects, details, included=True):
             if value is not None:
                 if isinstance(value, models.Manager):
                     value = value.all()
-                translate_entity(
-                    dictionary,
+                translate(
                     value,
                     *detail['relations'],
                     included=detail['included'],
+                    dictionary=dictionary
                 )
 
 
@@ -1195,7 +1195,7 @@ def read_translations(entity, *relations, lang=None):
         )
     )
 
-    translate_entity(dictionary, entity, *relations)
+    translate(entity, *relations, included=True, dictionary=dictionary)
 
 
 def update_translations(entity, lang=None):
