@@ -743,16 +743,16 @@ def fill_hierarchy(hierarchy, *nodes):
     """
     Fills a hierarchy with some ordered nodes.
 
-    Processes the nodes and fills the hierarchy based on the order of the
+    Processes the nodes and fills in the hierarchy based on the order of the
     nodes. The later nodes will be considered as the children of the earlier
     ones. Only the nodes that have filled the hierarchy as the last node at
-    least once will be considered included and all the other nodes will be
+    least once will be considered included and all the other ones will be
     considered excluded.
 
     :param hierarchy: The hierarchy to fill.
     :type hierarchy: dict(str, dict)
-    :param nodes: The nodes sorted by order to fill the hierarchy with.
-    :type hierarchy: list(str)
+    :param nodes: The nodes sorted by the order to fill in the hierarchy.
+    :type nodes: list(str)
 
     To fill a hierarchy with only one level of nodes:
 
