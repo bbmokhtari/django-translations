@@ -664,7 +664,7 @@ def get_translations_dictionary(translations):
     :return: The translations dictionary.
     :rtype: dict(int, dict(str, dict(str, str)))
 
-    .. note::
+    .. warning::
        Always filter the ``translations`` in a language before passing it in,
        otherwise the other language may override some fields of the initial
        language and a translations dictionary with mixed content gets
@@ -852,7 +852,7 @@ def translate(entity, *relations, lang=None, dictionary=None, included=True):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. note::
+    .. warning::
        Always use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects` for fetching the
