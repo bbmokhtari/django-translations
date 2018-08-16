@@ -18,7 +18,7 @@ This module contains the utilities for the Translations app.
 :func:`get_relations_details`
     Return the details of some relations.
 :func:`translate`
-    Translate the entity.
+    Translate an entity and the relations of it in a language.
 """
 
 from django.db import models, transaction
