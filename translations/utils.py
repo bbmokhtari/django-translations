@@ -819,6 +819,47 @@ def get_relations_details(*relations):
     return details
 
 
+def translate_entity(dictionary, entity, *relations, included=True):
+    model, iterable = get_entity_details(entity)
+
+    if model is None:
+        return
+
+    content_type = ContentType.objects.get_for_model(model)
+    objects = dictionary[content_type.id]
+    details = get_relations_details(*relations)
+
+    if iterable:
+        for obj in entity:
+            translate_obj(obj, dictionary, objects, details, included)
+    else:
+        translate_obj(entity, dictionary, objects, details, included)
+
+
+def translate_obj(obj, dictionary, objects, details, included=True):
+    if included and objects:
+        try:
+            fields = objects[str(obj.id)]
+        except KeyError:
+            pass
+        else:
+            for (field, text) in fields.items():
+                setattr(obj, field, text)
+
+    if details:
+        for (relation, detail) in details.items():
+            value = getattr(obj, relation, None)
+            if value is not None:
+                if isinstance(value, models.Manager):
+                    value = value.all()
+                translate_entity(
+                    dictionary,
+                    value,
+                    *detail['relations'],
+                    included=detail['included'],
+                )
+
+
 def read_translations(entity, *relations, lang=None):
     """
     Translate an entity and the relations of it in a language.
@@ -1155,47 +1196,6 @@ def read_translations(entity, *relations, lang=None):
     )
 
     translate_entity(dictionary, entity, *relations)
-
-
-def translate_entity(dictionary, entity, *relations, included=True):
-    model, iterable = get_entity_details(entity)
-
-    if model is None:
-        return
-
-    content_type = ContentType.objects.get_for_model(model)
-    objects = dictionary[content_type.id]
-    details = get_relations_details(*relations)
-
-    if iterable:
-        for obj in entity:
-            translate_obj(obj, dictionary, objects, details, included)
-    else:
-        translate_obj(entity, dictionary, objects, details, included)
-
-
-def translate_obj(obj, dictionary, objects, details, included=True):
-    if included and objects:
-        try:
-            fields = objects[str(obj.id)]
-        except KeyError:
-            pass
-        else:
-            for (field, text) in fields.items():
-                setattr(obj, field, text)
-
-    if details:
-        for (relation, detail) in details.items():
-            value = getattr(obj, relation, None)
-            if value is not None:
-                if isinstance(value, models.Manager):
-                    value = value.all()
-                translate_entity(
-                    dictionary,
-                    value,
-                    *detail['relations'],
-                    included=detail['included'],
-                )
 
 
 def update_translations(entity, lang=None):
