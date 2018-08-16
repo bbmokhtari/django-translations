@@ -825,40 +825,41 @@ def get_relations_details(*relations):
 
 def translate(entity, *relations, lang=None, dictionary=None, included=True):
     """
-    Translate the entity.
+    Translate an entity and the relations of it in a language.
 
-    This function translates the entity and its relations using a dictionary.
-    If the dictionary isn't provided it will fetch all the translations for
-    the entity and its relations in a language using :func:`get_translations`
-    and convert them to a dictionary using :func:`get_translations_dictionary` and use that
-    for translation.
+    Translates the entity and the relations of it in a language or using a
+    :term:`translations dictionary`. If the translations dictionary isn't
+    provided it makes a translations dictionary automatically out of the
+    translations of the entity and the relations of it in a language then
+    apply that for the translation process, otherwise it just uses the
+    provided translations dictionary.
 
-    :param entity: The entity to translate
+    :param entity: The entity to translate.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the entity to translate
+    :param relations: The relations of the entity to translate.
     :type relations: list(str)
-    :param lang: The language to translate the entity and its relations in,
-        ``None`` means the current active language
+    :param lang: The language to translate the entity and its relations in.
+        ``None`` means use the active language code. [#active_language]_
     :type lang: str or None
-    :param dictionary: The dictionary to use for translation, ``None`` means
-        create the dictionary automatically
+    :param dictionary: The translations dictionary to use for translation.
+        ``None`` means create the translations dictionary automatically.
     :type dictionary: dict(int, dict(str, dict(str, str))) or None
-    :param included: Whether the entity should be translated itself along
-        with the relations or not, the default is ``True``
+    :param included: Whether the entity itself should be translated along
+        with the relations or not, the default is ``True``.
     :type included: bool
     :raise ValueError: If the language code is not included in
-        the :data:`~django.conf.settings.LANGUAGES` settings
+        the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances
-    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
-        pointing to the fields that don't exist
+        an iterable of model instances.
+    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+        pointing to the fields that don't exist.
 
     .. note::
        Always use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects` for fetching the
-       relations of the entity before using :func:`translate`.
+       relations of the entity before using :func:`translate` on them.
 
     """
     # .. testsetup:: translate
