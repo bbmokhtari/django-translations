@@ -737,6 +737,83 @@ def get_translations_dictionary(translations):
     return dictionary
 
 
+def fill_hierarchy(hierarchy, *nodes):
+    """
+    Fills a hierarchy with some ordered nodes.
+
+    Processes the nodes and fills the hierarchy based on the order of the
+    nodes. The later nodes will be considered as the children of the earlier
+    ones.
+
+    :param hierarchy: The hierarchy to fill.
+    :type hierarchy: dict(str, dict)
+    :param nodes: The nodes sorted by order to fill the hierarchy with.
+    :type hierarchy: list(str)
+
+    To fill a hierarchy with only one level of nodes:
+
+    .. testcode:: fill_hierarchy
+
+       from translations.utils import fill_hierarchy
+
+       hierarchy = {}
+
+       fill_hierarchy(hierarchy, 'countries')
+
+       print(hierarchy)
+
+    .. testoutput:: fill_hierarchy
+
+       {"countries": {"included": True, "relations": {}}}
+
+    To fill in a hierarchy with two level of nodes, not including the first
+    one:
+
+    .. testcode:: fill_hierarchy
+
+       from translations.utils import fill_hierarchy
+
+       hierarchy = {}
+
+       fill_hierarchy(hierarchy, 'countries', 'cities')
+
+       print(hierarchy)
+
+    .. testoutput:: fill_hierarchy
+
+       {"countries": {"included": False, "relations": {"cities": {"included": True, "relations": {}}}}}
+
+    To fill in a hierarchy with two level of nodes, including the first one:
+
+    .. testcode:: fill_hierarchy
+
+       from translations.utils import fill_hierarchy
+
+       hierarchy = {}
+
+       fill_hierarchy(hierarchy, 'countries')
+       fill_hierarchy(hierarchy, 'countries', 'cities')
+
+       print(hierarchy)
+
+    .. testoutput:: fill_hierarchy
+
+       {"countries": {"included": True, "relations": {"cities": {"included": True, "relations": {}}}}}
+    """
+    root = nodes[0]
+    nest = nodes[1:]
+
+    hierarchy.setdefault(root, {
+        "included": False,
+        "relations": {}
+    })
+
+    if nest:
+        fill_hierarchy(nest, hierarchy[root]["relations"])
+    else:
+        hierarchy[root]["included"] = True
+
+
 def get_relations_details(*relations):
     """
     Return the details of some relations.
@@ -801,23 +878,8 @@ def get_relations_details(*relations):
     details = {}
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
-        fill_hierarchy(parts, details)
+        fill_hierarchy(details, *parts)
     return details
-
-
-def fill_hierarchy(relation_parts, hierarchy):
-    root = relation_parts[0]
-    nest = relation_parts[1:]
-
-    hierarchy.setdefault(root, {
-        "included": False,
-        "relations": {}
-    })
-
-    if nest:
-        fill_hierarchy(nest, hierarchy[root]["relations"])
-    else:
-        hierarchy[root]["included"] = True
 
 
 def translate(entity, details, dictionary, included=True):
