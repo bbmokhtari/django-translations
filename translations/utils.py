@@ -970,7 +970,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
     """
     Apply a translations dictionary on a relations hierarchy of an object.
 
-    Loops through the :term:`relations hierarchy` of an object, Searches
+    Loops through the :term:`relations hierarchy` of an object, searches
     the :term:`translations dictionary` for the translations of the relation
     and applies them on the relation, field by field and in place.
 
