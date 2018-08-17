@@ -7,10 +7,10 @@ The terms you might see in the documentation:
 .. glossary::
 
    translations dictionary
-     a translation dictionary is an easy to search object made out of some
+     A translation dictionary is an easy to search object made out of some
      translations.
 
-     The end result is something like this::
+     example::
 
         {
             content_type_id_1: {
@@ -27,3 +27,26 @@ The terms you might see in the documentation:
     :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
     represents the ID of the object in that content type, ``field``
     represents the name of the field for that object.
+
+   relations hierarchy
+     A relations hierarchy is a hierarchy containing each level of relation
+     and information about whether they are included or not.
+
+     example::
+
+        {
+            root_relation_1: {
+                'included': root_relation_1_inclusion_state,
+                'relations': {
+                    nested_relation_1: {
+                        'included': nested_relation_1_inclusion_state,
+                        'relations': ...
+                    },
+                    nested_relation_2: {
+                        'included': nested_relation_2_inclusion_state,
+                        'relations': ...
+                    },
+                }
+            },
+            root_relation_2: ...
+        }
