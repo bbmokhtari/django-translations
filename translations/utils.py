@@ -909,12 +909,12 @@ def translate(entity, hierarchy, dictionary, included=True):
 
     if iterable:
         for obj in entity:
-            translate_obj(obj, hierarchy, ct_dictionary, dictionary, included)
+            apply_translations(obj, hierarchy, ct_dictionary, dictionary, included)
     else:
-        translate_obj(entity, hierarchy, ct_dictionary, dictionary, included)
+        apply_translations(entity, hierarchy, ct_dictionary, dictionary, included)
 
 
-def translate_obj(obj, hierarchy, ct_dictionary, dictionary, included=True):
+def apply_translations(obj, hierarchy, ct_dictionary, dictionary, included=True):
     if included and ct_dictionary:
         try:
             fields = ct_dictionary[str(obj.id)]
