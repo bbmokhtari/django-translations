@@ -21,6 +21,8 @@ This module contains the utilities for the Translations app.
     Return the relations hierarchy of some relations.
 :func:`apply_obj_translations`
     Apply translations dictionary on an object.
+:func:`apply_rel_translations`
+    Apply translations dictionary on a relations hierarchy of an object.
 :func:`read_translations`
     Translate an entity and the relations of it in a language.
 """
@@ -905,8 +907,8 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
     Apply translations dictionary on an object.
 
     Searches the content type of the :term:`translations dictionary` for the
-    object translations and applies them on the object field by field in
-    place.
+    translations of the object and applies them on the object, field by field
+    and in place.
 
     :param obj: The object to apply the translations dictionary on.
     :type obj: ~django.db.models.Model
@@ -960,6 +962,61 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
 
 
 def apply_rel_translations(obj, hierarchy, dictionary):
+    """
+    Apply translations dictionary on a relations hierarchy of an object.
+
+    Loops through the :term:`relations hierarchy` of an object, Searches
+    the :term:`translations dictionary` for the translations of the relation
+    and applies them on the relation, field by field and in place.
+
+    :param obj: The object to apply the translations dictionary on the
+        relations hierarchy of it.
+    :type obj: ~django.db.models.Model
+    :param hierarchy: The relations hierarchy to apply the translations
+        dictionary on.
+    :type hierarchy: dict(str, dict)
+    :param dictionary: The translations dictionary to use for the translation
+        process.
+    :type dictionary: dict(int, dict(str, dict(str, str)))
+
+    .. testsetup:: apply_rel_translations
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe"],
+           country_names=["germany"]
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To apply the translations dictionary on a relations hierarchy of an
+    object:
+
+    .. testcode:: apply_rel_translations
+
+       from sample.models import Continent
+       from translations.utils import get_translations
+       from translations.utils import get_translations_dictionary
+       from translations.utils import get_relations_hierarchy
+       from translations.utils import apply_rel_translations
+
+       europe = Continent.objects.prefetch_related(
+           'countries'
+       ).get(code="EU")
+       translations = get_translations(europe, 'countries', lang="de")
+       dictionary = get_translations_dictionary(translations)
+       hierarchy = get_relations_hierarchy('countries')
+
+       apply_rel_translations(europe, hierarchy, dictionary)
+
+       print(europe.countries.all())
+
+    .. testoutput:: apply_rel_translations
+
+       Europa
+    """
     if hierarchy:
         for (relation, detail) in hierarchy.items():
             value = getattr(obj, relation, None)
