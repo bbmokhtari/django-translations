@@ -898,24 +898,6 @@ def get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def translate(entity, hierarchy, dictionary, included=True):
-    model, iterable = get_entity_details(entity)
-
-    if model is None:
-        return
-
-    content_type = ContentType.objects.get_for_model(model)
-    ct_dictionary = dictionary[content_type.id]
-
-    if iterable:
-        for obj in entity:
-            apply_obj_translations(obj, ct_dictionary, included=included)
-            apply_rel_translations(obj, hierarchy, dictionary)
-    else:
-        apply_obj_translations(entity, ct_dictionary, included=included)
-        apply_rel_translations(entity, hierarchy, dictionary)
-
-
 def apply_obj_translations(obj, ct_dictionary, included=True):
     if included and ct_dictionary:
         try:
@@ -940,6 +922,24 @@ def apply_rel_translations(obj, hierarchy, dictionary):
                     dictionary,
                     included=detail['included']
                 )
+
+
+def translate(entity, hierarchy, dictionary, included=True):
+    model, iterable = get_entity_details(entity)
+
+    if model is None:
+        return
+
+    content_type = ContentType.objects.get_for_model(model)
+    ct_dictionary = dictionary[content_type.id]
+
+    if iterable:
+        for obj in entity:
+            apply_obj_translations(obj, ct_dictionary, included=included)
+            apply_rel_translations(obj, hierarchy, dictionary)
+    else:
+        apply_obj_translations(entity, ct_dictionary, included=included)
+        apply_rel_translations(entity, hierarchy, dictionary)
 
 
 def read_translations(entity, *relations, lang=None):
