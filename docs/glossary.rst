@@ -23,10 +23,10 @@ The terms you might see in the documentation:
             content_type_id_2: ...
         }
 
-    The ``content_type_id`` represents the
-    :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
-    represents the ID of the object in that content type, ``field``
-    represents the name of the field for that object.
+     The ``content_type_id`` represents the
+     :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
+     represents the ID of the object in that content type, ``field``
+     represents the name of the field for that object.
 
    relations hierarchy
      A relations hierarchy is a hierarchy containing each level of relation
@@ -50,3 +50,9 @@ The terms you might see in the documentation:
             },
             root_relation_2: ...
         }
+
+     The ``root_relation`` represents the first-level relation of the model,
+     ``included`` represents whether the relation is included or not,
+     ``relations`` represents the nested relations inside the relation and
+     the ``nested_relation`` represents the second-level relation of the
+     model and so on.
