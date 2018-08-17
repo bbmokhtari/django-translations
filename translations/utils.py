@@ -19,6 +19,8 @@ This module contains the utilities for the Translations app.
     Fills a relations hierarchy with parts of a relation.
 :func:`get_relations_hierarchy`
     Return the relations hierarchy of some relations.
+:func:`apply_obj_translations`
+    Apply translations dictionary on an object.
 :func:`read_translations`
     Translate an entity and the relations of it in a language.
 """
@@ -899,6 +901,54 @@ def get_relations_hierarchy(*relations):
 
 
 def apply_obj_translations(obj, ct_dictionary, included=True):
+    """
+    Apply translations dictionary on an object.
+
+    Searches the content type of the :term:`translations dictionary` for the
+    object translations and applies them on the object field by field in
+    place.
+
+    :param obj: The object to apply the translations dictionary on.
+    :type obj: ~django.db.models.Model
+    :param ct_dictionary: The content type of translations dictionary.
+    :type ct_dictionary: dict(str, dict(str, str))
+    :param included: Whether to apply the translations dictionary or not.
+    :type included: bool
+
+    .. testsetup:: apply_obj_translations
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe"],
+           continent_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To apply the translations dictionary on an object:
+
+    .. testcode:: apply_obj_translations
+
+       from django.contrib.contenttypes.models import ContentType
+       from sample.models import Continent
+       from translations.utils import get_translations
+       from translations.utils import get_translations_dictionary
+       from translations.utils import apply_obj_translations
+
+       europe = Continent.objects.get(code="EU")
+       translations = get_translations(europe, lang="de")
+       dictionary = get_translations_dictionary(translations)
+       europe_ct = ContentType.objects.get_for_model(europe)
+       ct_dictionary = dictionary[europe_ct.id]
+
+       apply_obj_translations(europe, ct_dictionary, included=True)
+
+       print(europe)
+
+    .. testoutput:: apply_obj_translations
+
+       Europa
+    """
     if included and ct_dictionary:
         try:
             fields = ct_dictionary[str(obj.id)]
