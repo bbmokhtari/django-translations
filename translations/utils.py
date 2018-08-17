@@ -387,12 +387,12 @@ def get_translations_reverse_relation(model, relation=None):
     .. testoutput:: get_translations_reverse_relation
 
        <QuerySet [
-           <Translation: Cologner: Kölner>,
-           <Translation: Cologne: Köln>
+           <Translation: Cologne: Köln>,
+           <Translation: Cologner: Kölner>
        ]>
        <QuerySet [
-           <Translation: Munichian: Münchner>,
-           <Translation: Munich: München>
+           <Translation: Munich: München>,
+           <Translation: Munichian: Münchner>
        ]>
 
     Which does a *minimum* of three queries to the database (one for the
@@ -413,7 +413,6 @@ def get_translations_reverse_relation(model, relation=None):
        print("Translation can be queried with '{}'".format(reverse_relation))
 
        translations = Translation.objects.filter(**{reverse_relation: europe})
-       translations = translations.order_by('id')
 
        print(translations)
 
@@ -443,7 +442,6 @@ def get_translations_reverse_relation(model, relation=None):
        print("Translation can be queried with '{}'".format(reverse_relation))
 
        translations = Translation.objects.filter(**{reverse_relation: europe})
-       translations = translations.order_by('id')
 
        print(translations)
 
