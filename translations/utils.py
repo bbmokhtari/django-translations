@@ -20,7 +20,7 @@ This module contains the utilities for the Translations app.
 :func:`get_relations_hierarchy`
     Return the relations hierarchy of some relations.
 :func:`apply_obj_translations`
-    Apply translations dictionary on an object.
+    Apply a translations dictionary on an object.
 :func:`apply_rel_translations`
     Apply translations dictionary on a relations hierarchy of an object.
 :func:`read_translations`
@@ -911,7 +911,7 @@ def get_relations_hierarchy(*relations):
 
 def apply_obj_translations(obj, ct_dictionary, included=True):
     """
-    Apply translations dictionary on an object.
+    Apply a translations dictionary on an object.
 
     Searches the content type of the :term:`translations dictionary` for the
     translations of the object and applies them on the object, field by field
@@ -970,14 +970,14 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
 
 def apply_rel_translations(obj, hierarchy, dictionary):
     """
-    Apply translations dictionary on a relations hierarchy of an object.
+    Apply a translations dictionary on a relations hierarchy of an object.
 
     Loops through the :term:`relations hierarchy` of an object, Searches
     the :term:`translations dictionary` for the translations of the relation
     and applies them on the relation, field by field and in place.
 
     :param obj: The object to apply the translations dictionary on the
-        relations hierarchy of it.
+        relations hierarchy of.
     :type obj: ~django.db.models.Model
     :param hierarchy: The relations hierarchy to apply the translations
         dictionary on.
