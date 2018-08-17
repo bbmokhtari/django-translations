@@ -23,6 +23,9 @@ This module contains the utilities for the Translations app.
     Apply a translations dictionary on an object.
 :func:`apply_rel_translations`
     Apply translations dictionary on a relations hierarchy of an object.
+:func:`translate`
+    Translate an entity and the relations hierarchy of it using a
+    translations dictionary.
 :func:`read_translations`
     Translate an entity and the relations of it in a language.
 """
@@ -1037,6 +1040,10 @@ def apply_rel_translations(obj, hierarchy, dictionary):
 
 
 def translate(entity, hierarchy, dictionary, included=True):
+    """
+    Translate an entity and the relations hierarchy of it using a
+    translations dictionary.
+    """
     model, iterable = get_entity_details(entity)
 
     if model is None:
