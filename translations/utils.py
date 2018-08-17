@@ -744,7 +744,7 @@ def fill_hierarchy(hierarchy, *relation_parts):
     Fills a relations hierarchy with parts of a relation.
 
     Fills the :term:`relations hierarchy` based on the order of the parts of
-    the relation. The later parts will be considered as the children of the
+    the relation. The later parts are considered as the children of the
     earlier ones. Only the parts that have filled the hierarchy as the last
     part are considered included and all the other ones are considered
     excluded.
