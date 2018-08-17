@@ -909,12 +909,14 @@ def translate(entity, hierarchy, dictionary, included=True):
 
     if iterable:
         for obj in entity:
-            apply_translations(obj, hierarchy, ct_dictionary, dictionary, included)
+            apply_obj_translations(obj, ct_dictionary, included=included)
+            apply_rel_translations(obj, hierarchy, dictionary)
     else:
-        apply_translations(entity, hierarchy, ct_dictionary, dictionary, included)
+        apply_obj_translations(entity, ct_dictionary, included=included)
+        apply_rel_translations(entity, hierarchy, dictionary)
 
 
-def apply_translations(obj, hierarchy, ct_dictionary, dictionary, included=True):
+def apply_obj_translations(obj, ct_dictionary, included=True):
     if included and ct_dictionary:
         try:
             fields = ct_dictionary[str(obj.id)]
@@ -924,6 +926,8 @@ def apply_translations(obj, hierarchy, ct_dictionary, dictionary, included=True)
             for (field, text) in fields.items():
                 setattr(obj, field, text)
 
+
+def apply_rel_translations(obj, hierarchy, dictionary):
     if hierarchy:
         for (relation, detail) in hierarchy.items():
             value = getattr(obj, relation, None)
