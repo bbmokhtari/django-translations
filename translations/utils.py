@@ -985,7 +985,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
 
        create_samples(
            continent_names=["europe"],
-           country_names=["germany"]
+           country_names=["germany"],
            continent_fields=["name", "denonym"],
            country_fields=["name", "denonym"],
            langs=["de"]
