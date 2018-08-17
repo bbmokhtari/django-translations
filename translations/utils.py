@@ -413,6 +413,8 @@ def get_translations_reverse_relation(model, relation=None):
        print("Translation can be queried with '{}'".format(reverse_relation))
 
        translations = Translation.objects.filter(**{reverse_relation: europe})
+       translations = translations.order_by('id')
+
        print(translations)
 
     .. testoutput:: get_translations_reverse_relation
@@ -441,6 +443,8 @@ def get_translations_reverse_relation(model, relation=None):
        print("Translation can be queried with '{}'".format(reverse_relation))
 
        translations = Translation.objects.filter(**{reverse_relation: europe})
+       translations = translations.order_by('id')
+
        print(translations)
 
     .. testoutput:: get_translations_reverse_relation
@@ -704,29 +708,32 @@ def get_translations_dictionary(translations):
 
        continent_ct = ContentType.objects.get_for_model(Continent).id
        print("Continent translations:")
-       print(dictionary[continent_ct])
+       for id, translation in dictionary[continent_ct].items():
+           print(translation)
 
        country_ct = ContentType.objects.get_for_model(Country).id
        print("Country translations:")
-       print(dictionary[country_ct])
+       for id, translation in dictionary[country_ct].items():
+           print(translation)
 
        city_ct = ContentType.objects.get_for_model(City).id
        print("City translations:")
-       print(dictionary[city_ct])
+       for id, translation in dictionary[city_ct].items():
+           print(translation)
 
     .. testoutput:: get_translations_dictionary
 
        Continent translations:
-       {'1': {'denonym': 'Europäisch', 'name': 'Europa'},
-        '2': {'denonym': 'Asiatisch', 'name': 'Asien'}}
+       {'denonym': 'Europäisch', 'name': 'Europa'}
+       {'denonym': 'Asiatisch', 'name': 'Asien'}
        Country translations:
-       {'1': {'denonym': 'Deutsche', 'name': 'Deutschland'},
-        '2': {'denonym': 'Südkoreanisch', 'name': 'Südkorea'}}
+       {'denonym': 'Deutsche', 'name': 'Deutschland'}
+       {'denonym': 'Südkoreanisch', 'name': 'Südkorea'}
        City translations:
-       {'1': {'denonym': 'Kölner', 'name': 'Köln'},
-        '2': {'denonym': 'Münchner', 'name': 'München'},
-        '3': {'denonym': 'Seülisch', 'name': 'Seül'},
-        '4': {'denonym': 'Ulsänisch', 'name': 'Ulsän'}}
+       {'denonym': 'Kölner', 'name': 'Köln'}
+       {'denonym': 'Münchner', 'name': 'München'}
+       {'denonym': 'Seülisch', 'name': 'Seül'}
+       {'denonym': 'Ulsänisch', 'name': 'Ulsän'}
     """
     dictionary = {}
 
@@ -1015,7 +1022,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
 
     .. testoutput:: apply_rel_translations
 
-       Europa
+       <TranslatableQuerySet [<Country: Deutschland>]>
     """
     if hierarchy:
         for (relation, detail) in hierarchy.items():
