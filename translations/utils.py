@@ -16,7 +16,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations_dictionary`
     Return the translations dictionary out of some translations.
 :func:`fill_hierarchy`
-    Fills a hierarchy with some ordered nodes.
+    Fills a relations hierarchy with parts of a relation.
 :func:`get_relations_hierarchy`
     Return the relations hierarchy of some relations.
 :func:`read_translations`
@@ -739,22 +739,23 @@ def get_translations_dictionary(translations):
     return dictionary
 
 
-def fill_hierarchy(hierarchy, *nodes):
+def fill_hierarchy(hierarchy, *relation_parts):
     """
-    Fills a hierarchy with some ordered nodes.
+    Fills a relations hierarchy with parts of a relation.
 
-    Processes the nodes and fills in the hierarchy based on the order of the
-    nodes. The later nodes will be considered as the children of the earlier
-    ones. Only the nodes that have filled the hierarchy as the last node at
-    least once will be considered included and all the other ones will be
-    considered excluded.
+    Fills the :term:`relations hierarchy` based on the order of the parts of
+    the relation. The later parts will be considered as the children of the
+    earlier ones. Only the parts that have filled the hierarchy as the last
+    part are considered included and all the other ones are considered
+    excluded.
 
-    :param hierarchy: The hierarchy to fill.
+    :param hierarchy: The relations hierarchy to fill.
     :type hierarchy: dict(str, dict)
-    :param nodes: The nodes sorted by the order to fill in the hierarchy.
-    :type nodes: list(str)
+    :param relation_parts: The relation parts sorted by the order to fill the
+        relations hierarchy with.
+    :type relation_parts: list(str)
 
-    To fill a hierarchy with only one level of nodes:
+    To fill the hierarchy with only one level of relation parts:
 
     .. testcode:: fill_hierarchy
 
@@ -770,8 +771,8 @@ def fill_hierarchy(hierarchy, *nodes):
 
        {'countries': {'included': True, 'relations': {}}}
 
-    To fill in a hierarchy with two level of nodes, not including the first
-    one:
+    To fill the hierarchy with two level of relation parts, not including the
+    first one:
 
     .. testcode:: fill_hierarchy
 
@@ -789,7 +790,8 @@ def fill_hierarchy(hierarchy, *nodes):
                       'relations': {'cities': {'included': True,
                                                'relations': {}}}}}
 
-    To fill in a hierarchy with two level of nodes, including the first one:
+    To fill the hierarchy with two level of relation parts, including the
+    first one:
 
     .. testcode:: fill_hierarchy
 
@@ -808,8 +810,8 @@ def fill_hierarchy(hierarchy, *nodes):
                       'relations': {'cities': {'included': True,
                                                'relations': {}}}}}
     """
-    root = nodes[0]
-    nest = nodes[1:]
+    root = relation_parts[0]
+    nest = relation_parts[1:]
 
     hierarchy.setdefault(root, {
         "included": False,
