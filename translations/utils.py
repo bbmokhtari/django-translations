@@ -849,8 +849,8 @@ def get_relations_hierarchy(*relations):
 
        {'countries': {'included': True, 'relations': {}}}
 
-    To get the hierarchy of a nested relation, without including the first-level
-    relation:
+    To get the hierarchy of a second-level relation, not including
+    the first-level relation:
 
     .. testcode::
 
@@ -864,7 +864,7 @@ def get_relations_hierarchy(*relations):
                       'relations': {'cities': {'included': True,
                                                'relations': {}}}}}
 
-    To get the hierarchy of a nested relation, including the first-level
+    To get the hierarchy of a second-level relation, including the first-level
     relation:
 
     .. testcode::
