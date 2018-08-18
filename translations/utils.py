@@ -4,7 +4,7 @@ This module contains the utilities for the Translations app.
 .. rubric:: Functions:
 
 :func:`get_translation_language`
-    Return the language code for the translation process.
+    Return a language code for the translation process.
 :func:`get_entity_details`
     Return the type and iteration details of an entity.
 :func:`get_reverse_relation`
@@ -44,7 +44,7 @@ __docformat__ = 'restructuredtext'
 
 def get_translation_language(lang=None):
     """
-    Return the language code for the translation process.
+    Return a language code for the translation process.
 
     If the ``lang`` parameter is not passed in, it returns the active language
     code [#active_language]_, otherwise it returns the custom language code
