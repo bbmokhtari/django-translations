@@ -189,6 +189,8 @@ def get_entity_details(entity):
        Model: <class 'sample.models.Continent'>
        Iterable: False
 
+    To get the details of an empty list:
+
     .. testcode:: get_entity_details
 
        from sample.models import Continent
