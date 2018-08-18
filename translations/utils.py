@@ -1043,6 +1043,23 @@ def translate(entity, hierarchy, dictionary, included=True):
     """
     Translate an entity and the relations hierarchy of it using a
     translations dictionary.
+
+    Searches the :term:`translations dictionary` for the translations of the
+    entity and the :term:`relations hierarchy` of it and applies them in
+    place.
+
+    :param entity: The entity to translate.
+    :type entity: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :param hierarchy: The relations hierarchy of the entity to translate.
+    :type hierarchy: dict(str, dict)
+    :param dictionary: The translations dictionary to use for the translation
+        process.
+    :type dictionary: dict(int, dict(str, dict(str, str)))
+    :param included: Whether to translate the entity or not.
+    :type included: bool
+    :raise TypeError: If the entity is neither a model instance nor
+        an iterable of model instances.
     """
     model, iterable = get_entity_details(entity)
 
@@ -1050,7 +1067,7 @@ def translate(entity, hierarchy, dictionary, included=True):
         return
 
     content_type = ContentType.objects.get_for_model(model)
-    ct_dictionary = dictionary[content_type.id]
+    ct_dictionary = dictionary.get(content_type.id, {})
 
     if iterable:
         for obj in entity:
