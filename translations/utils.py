@@ -704,7 +704,7 @@ def get_translations_dictionary(translations):
        from translations.utils import get_translations_dictionary
        from translations.models import Translation
 
-       translations = Translation.objects.filter(language="de")
+       translations = Translation.objects.filter(language="de").order_by('id')
        dictionary = get_translations_dictionary(translations)
 
        continent_ct = ContentType.objects.get_for_model(Continent).id
