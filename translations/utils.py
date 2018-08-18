@@ -6,7 +6,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translation_language`
     Return the language code for the translation process.
 :func:`get_entity_details`
-    Return the details of an entity.
+    Return the type and iteration details of an entity.
 :func:`get_reverse_relation`
     Return the reverse of a relation for a model.
 :func:`get_translations_reverse_relation`
@@ -22,7 +22,7 @@ This module contains the utilities for the Translations app.
 :func:`apply_obj_translations`
     Apply a translations dictionary on an object.
 :func:`apply_rel_translations`
-    Apply translations dictionary on a relations hierarchy of an object.
+    Apply a translations dictionary on a relations hierarchy of an object.
 :func:`translate`
     Translate an entity and the relations hierarchy of it using a
     translations dictionary.
@@ -111,7 +111,7 @@ def get_translation_language(lang=None):
 
 def get_entity_details(entity):
     """
-    Return the details of an entity.
+    Return the type and iteration details of an entity.
 
     Determines if an entity is iterable or not, if so it returns the type of
     the first object in the iteration (since it assumes all the objects in the
