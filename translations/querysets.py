@@ -1,6 +1,6 @@
 from django.db import models, transaction
 
-from translations.utils import get_translations, translate, update_translations
+from translations.utils import get_translations, read_translations, update_translations
 
 
 class TranslatableQuerySet(models.QuerySet):
@@ -9,7 +9,7 @@ class TranslatableQuerySet(models.QuerySet):
         return get_translations(self, *relations, lang=lang)
 
     def get_translated(self, *relations, lang=None, dictionary=None):
-        translate(
+        read_translations(
             self, *relations,
             lang=lang,
             dictionary=dictionary

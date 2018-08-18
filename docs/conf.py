@@ -227,8 +227,9 @@ TestCase.setUpClass()
 # Beautify `testoutput`
 def print(obj):
     if type(obj) == dict:
-        pprint(obj)
+        pprint(obj, width=72)
     elif type(obj) == QuerySet:
+        obj = obj.order_by('id')
         representation = repr(obj)
         start_index = representation.find('[')
         end_index = representation.rfind(']')
