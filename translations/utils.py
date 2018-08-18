@@ -1106,6 +1106,119 @@ def translate(entity, hierarchy, dictionary, included=True):
 
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
+
+    To translate a list of model instances and a relations hierarchy of it:
+
+    .. testcode:: read_translations
+
+       from django.db.models import prefetch_related_objects
+       from sample.models import Continent
+       from translations.utils import get_translations
+       from translations.utils import get_translations_dictionary
+       from translations.utils import get_relations_hierarchy
+       from translations.utils import translate
+
+       relations = ('countries', 'countries__cities',)
+
+       continents = list(Continent.objects.all())
+       prefetch_related_objects(continents, *relations)
+
+       translations = get_translations(continents, *relations, lang="de")
+       dictionary = get_translations_dictionary(translations)
+       hierarchy = get_relations_hierarchy(*relations)
+
+       translate(continents, hierarchy, dictionary)
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: read_translations
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To translate a queryset and a relations hierarchy of it:
+
+    .. testcode:: read_translations
+
+       from sample.models import Continent
+       from translations.utils import get_translations
+       from translations.utils import get_translations_dictionary
+       from translations.utils import get_relations_hierarchy
+       from translations.utils import translate
+
+       relations = ('countries', 'countries__cities',)
+
+       continents = Continent.objects.prefetch_related(*relations).all()
+
+       translations = get_translations(continents, *relations, lang="de")
+       dictionary = get_translations_dictionary(translations)
+       hierarchy = get_relations_hierarchy(*relations)
+
+       translate(continents, hierarchy, dictionary)
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: read_translations
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To translate a model instance and a relations hierarchy of it:
+
+    .. testcode:: read_translations
+
+       from django.db.models import prefetch_related_objects
+       from sample.models import Continent
+       from translations.utils import get_translations
+       from translations.utils import get_translations_dictionary
+       from translations.utils import get_relations_hierarchy
+       from translations.utils import translate
+
+       relations = ('countries', 'countries__cities',)
+
+       europe = Continent.objects.get(code="EU")
+       prefetch_related_objects([europe], *relations)
+
+       translations = get_translations(europe, *relations, lang="de")
+       dictionary = get_translations_dictionary(translations)
+       hierarchy = get_relations_hierarchy(*relations)
+
+       translate(europe, hierarchy, dictionary)
+
+       print("Continent: {}".format(europe))
+       for country in europe.countries.all():
+           print("Country: {}".format(country))
+           for city in country.cities.all():
+               print("City: {}".format(city))
+
+    .. testoutput:: read_translations
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
     """
     model, iterable = get_entity_details(entity)
 
