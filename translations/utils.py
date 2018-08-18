@@ -126,6 +126,13 @@ def get_entity_details(entity):
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
 
+    .. note::
+       An empty iterable returns the model as ``None``, even if the iterable
+       is an empty queryset, though the model for it can be retrieved. It's
+       because other parts of the code first check to see if details model is
+       ``None``, in that case they skip the translation process all together,
+       because there's nothing to translate.
+
     .. testsetup:: get_entity_details
 
        from tests.sample import create_samples
@@ -183,27 +190,20 @@ def get_entity_details(entity):
        Model: <class 'sample.models.Continent'>
        Iterable: False
 
-    .. note::
-       An empty iterable returns the model as ``None``, even if the iterable
-       is an empty queryset, though the model for it can be retrieved. It's
-       because other parts of the code first check to see if details model is
-       ``None``, in that case they skip the translation process all together,
-       because there's nothing to translate.
+    .. testcode:: get_entity_details
 
-       .. testcode:: get_entity_details
+       from sample.models import Continent
+       from translations.utils import get_entity_details
 
-           from sample.models import Continent
-           from translations.utils import get_entity_details
+       empty = []
+       details = get_entity_details(empty)
+       print("Model: {}".format(details[0]))
+       print("Iterable: {}".format(details[1]))
 
-           empty = []
-           details = get_entity_details(empty)
-           print("Model: {}".format(details[0]))
-           print("Iterable: {}".format(details[1]))
+    .. testoutput:: get_entity_details
 
-       .. testoutput:: get_entity_details
-
-          Model: None
-          Iterable: True
+       Model: None
+       Iterable: True
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
