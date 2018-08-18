@@ -121,17 +121,17 @@ def get_entity_details(entity):
     :param entity: The entity to get the details of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :return: The entity details as (model, iterable).
+    :return: The details of the entity as (model, iterable).
     :rtype: tuple(type(~django.db.models.Model), bool)
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
 
     .. note::
-       An empty iterable returns the model as ``None``, even if the iterable
-       is an empty queryset, though the model for it can be retrieved. It's
-       because other parts of the code first check to see if details model is
-       ``None``, in that case they skip the translation process all together,
-       because there's nothing to translate.
+       If the entity is an empty iterable it returns the model as ``None``,
+       even if the iterable is an empty queryset which the model for it can be
+       retrieved. It's because other parts of the code first check to see if
+       the model of the details is ``None``, in that case they skip the
+       translation process all together, because there's nothing to translate.
 
     .. testsetup:: get_entity_details
 
