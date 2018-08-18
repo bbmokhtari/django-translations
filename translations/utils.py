@@ -1011,7 +1011,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
        before performing the translation process on it.
 
        To filter a relation while fetching it use
-       :func:`~django.db.models.Prefetch`.
+       :class:`~django.db.models.Prefetch`.
 
     .. testsetup:: apply_rel_translations
 
