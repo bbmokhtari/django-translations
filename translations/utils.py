@@ -138,7 +138,7 @@ def get_entity_details(entity):
 
        create_samples(continent_names=["europe"])
 
-    To get the details of a list of model instances:
+    To get the details of a list:
 
     .. testcode:: get_entity_details
 
@@ -172,7 +172,7 @@ def get_entity_details(entity):
        Model: <class 'sample.models.Continent'>
        Iterable: True
 
-    To get the details of a model instance:
+    To get the details of an instance:
 
     .. testcode:: get_entity_details
 
@@ -232,7 +232,7 @@ def get_entity_details(entity):
 
 def get_reverse_relation(model, relation):
     """
-    Return the reverse of a relation for a model.
+    Return the reverse of a relation of a model.
 
     Checks a relation of a model (which points to a target model) and returns
     a relation which the target model can use to fetch the target model
