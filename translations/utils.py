@@ -704,22 +704,28 @@ def get_translations_dictionary(translations):
        from translations.utils import get_translations_dictionary
        from translations.models import Translation
 
-       translations = Translation.objects.filter(language="de").order_by('id')
+       translations = Translation.objects.filter(language="de")
        dictionary = get_translations_dictionary(translations)
 
        continent_ct = ContentType.objects.get_for_model(Continent).id
+       continent_translations = list(dictionary[continent_ct].items())
+       continent_translations.sort(key=lambda x: x[0])
        print("Continent translations:")
-       for id, translation in dictionary[continent_ct].items():
+       for id, translation in continent_translations:
            print(translation)
 
        country_ct = ContentType.objects.get_for_model(Country).id
+       country_translations = list(dictionary[country_ct].items())
+       country_translations.sort(key=lambda x: x[0])
        print("Country translations:")
-       for id, translation in dictionary[country_ct].items():
+       for id, translation in country_translations:
            print(translation)
 
        city_ct = ContentType.objects.get_for_model(City).id
+       city_translations = list(dictionary[city_ct].items())
+       city_translations.sort(key=lambda x: x[0])
        print("City translations:")
-       for id, translation in dictionary[city_ct].items():
+       for id, translation in city_translations:
            print(translation)
 
     .. testoutput:: get_translations_dictionary
