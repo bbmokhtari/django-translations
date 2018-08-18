@@ -1086,6 +1086,26 @@ def translate(entity, hierarchy, dictionary, included=True):
     :type included: bool
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
+
+    .. warning::
+       The relations of an object or a queryset **must** be fetched
+       before performing the translation process.
+
+       To fetch the relations of an object or a queryset use
+       :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
+
+    .. warning::
+       If a relation of an object or a queryset is filtered
+       after performing the translation process,
+       the translations for that relation are lost.
+
+       Only when all the filterings are done on an object or a queryset and
+       the relations of it, it should go through the translation process.
+
+       To filter a relation when fetching it use
+       :class:`~django.db.models.Prefetch`.
     """
     model, iterable = get_entity_details(entity)
 
