@@ -993,6 +993,26 @@ def apply_rel_translations(obj, hierarchy, dictionary):
         process.
     :type dictionary: dict(int, dict(str, dict(str, str)))
 
+    .. warning::
+       The relations of an object or a queryset **must** be fetched
+       before performing the translation process on it.
+
+       To fetch the relations of an object or a queryset use
+       :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
+
+    .. warning::
+       If the relations of an object or a queryset get filtered in any ways
+       after performing the translation process on it,
+       the translations for it are lost.
+
+       To prevent this, filter the relation
+       before performing the translation process on it.
+
+       To filter a relation while fetching it use
+       :func:`~django.db.models.Prefetch`.
+
     .. testsetup:: apply_rel_translations
 
        from tests.sample import create_samples
