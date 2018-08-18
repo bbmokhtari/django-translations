@@ -1003,14 +1003,14 @@ def apply_rel_translations(obj, hierarchy, dictionary):
        :func:`~django.db.models.prefetch_related_objects`.
 
     .. warning::
-       If the relations of an object or a queryset get filtered in any ways
+       If a relation of an object or a queryset is filtered
        after performing the translation process on it,
-       the translations for it are lost.
+       the translations for that relation are lost.
 
-       To prevent this, filter the relation
-       before performing the translation process on it.
+       Only when all the filterings are done on a relation, it should go
+       through the translation process.
 
-       To filter a relation while fetching it use
+       To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
 
     .. testsetup:: apply_rel_translations
