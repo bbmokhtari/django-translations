@@ -72,7 +72,7 @@ def get_translation_language(lang=None):
 
        activate('en')
 
-    To get the active language code requested by the client:
+    To get the active language code:
 
     .. testcode:: get_translation_language
 
@@ -85,8 +85,7 @@ def get_translation_language(lang=None):
 
        Language code: en
 
-    To get a custom language code other than what the client might have
-    requested:
+    To get a custom language code:
 
     .. testcode:: get_translation_language
 
