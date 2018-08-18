@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import get_translation_language, \
     get_entity_details, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
-    get_translations_dictionary, get_relations_details
+    get_translations_dictionary, get_relations_hierarchy
 
 from translations.models import Translation
 
@@ -2072,162 +2072,204 @@ class GetTranslationsDictionaryTest(TestCase):
         )
 
 
-class GetRelationsDetailsTest(TestCase):
+class GetRelationsHierarchyTest(TestCase):
 
     def test_no_relations(self):
         self.assertDictEqual(
-            get_relations_details(),
+            get_relations_hierarchy(),
             {}
         )
 
     def test_one_included_no_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries'
             ),
             {
                 'countries': {
                     'included': True,
-                    'relations': []
+                    'relations': {}
                 }
             }
         )
 
     def test_many_included_no_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries',
                 'unions'
             ),
             {
                 'countries': {
                     'included': True,
-                    'relations': []
+                    'relations': {}
                 },
                 'unions': {
                     'included': True,
-                    'relations': []
+                    'relations': {}
                 },
             }
         )
 
     def test_one_unincluded_one_nested_relation(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries__cities'
             ),
             {
                 'countries': {
                     'included': False,
-                    'relations': ['cities']
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 }
             }
         )
 
     def test_many_unincluded_one_nested_relation(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries__cities',
-                'unions__countries',
+                'unions__projects',
             ),
             {
                 'countries': {
                     'included': False,
-                    'relations': ['cities']
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 },
                 'unions': {
                     'included': False,
-                    'relations': ['countries']
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 }
             }
         )
 
     def test_one_uincluded_many_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries__cities',
                 'countries__currency'
             ),
             {
                 'countries': {
                     'included': False,
-                    'relations': [
-                        'cities',
-                        'currency'
-                    ]
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 }
             }
         )
 
     def test_many_uincluded_many_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries__cities',
                 'countries__currency',
-                'unions__countries',
+                'unions__projects',
                 'unions__currency'
             ),
             {
                 'countries': {
                     'included': False,
-                    'relations': [
-                        'cities',
-                        'currency'
-                    ]
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 },
                 'unions': {
                     'included': False,
-                    'relations': [
-                        'countries',
-                        'currency'
-                    ]
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 }
             }
         )
 
     def test_one_included_one_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries',
                 'countries__cities'
             ),
             {
                 'countries': {
                     'included': True,
-                    'relations': [
-                        'cities'
-                    ]
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 }
             }
         )
 
     def test_many_included_one_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries',
                 'countries__cities',
                 'unions',
-                'unions__countries'
+                'unions__projects'
             ),
             {
                 'countries': {
                     'included': True,
-                    'relations': [
-                        'cities'
-                    ]
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 },
                 'unions': {
                     'included': True,
-                    'relations': [
-                        'countries'
-                    ]
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 },
             }
         )
 
     def test_one_included_many_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries',
                 'countries__cities',
                 'countries__currency'
@@ -2235,38 +2277,56 @@ class GetRelationsDetailsTest(TestCase):
             {
                 'countries': {
                     'included': True,
-                    'relations': [
-                        'cities',
-                        'currency'
-                    ]
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 }
             }
         )
 
     def test_many_included_many_nested_relations(self):
         self.assertEqual(
-            get_relations_details(
+            get_relations_hierarchy(
                 'countries',
                 'countries__cities',
                 'countries__currency',
                 'unions',
-                'unions__countries',
+                'unions__projects',
                 'unions__currency'
             ),
             {
                 'countries': {
                     'included': True,
-                    'relations': [
-                        'cities',
-                        'currency'
-                    ]
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 },
                 'unions': {
                     'included': True,
-                    'relations': [
-                        'countries',
-                        'currency'
-                    ]
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
                 },
             }
         )
