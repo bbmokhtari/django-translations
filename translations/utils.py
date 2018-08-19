@@ -10,7 +10,8 @@ This module contains the utilities for the Translations app.
 :func:`get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`get_translations_reverse_relation`
-    Return the reverse of the translations relation of a relation for a model.
+    Return the reverse of the translations relation of a model or a model's
+    relation.
 :func:`get_translations`
     Return the translations of an entity and the relations of it in a language.
 :func:`get_translations_dictionary`
@@ -328,7 +329,8 @@ def get_reverse_relation(model, relation):
 
 def get_translations_reverse_relation(model, relation=None):
     """
-    Return the reverse of the translations relation of a relation for a model.
+    Return the reverse of the translations relation of a model or a model's
+    relation.
 
     If the ``relation`` parameter is not passed in, it checks the
     ``translations`` relation of the model (which points to the
