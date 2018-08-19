@@ -347,8 +347,8 @@ def get_translations_reverse_relation(model, relation=None):
         relation itself, or the specified relation contains it) and which the
         reverse relation points to.
     :type model: type(~django.db.models.Model)
-    :param relation: The relation of the model which contains the
-        ``translations`` relation, to get the reverse of.
+    :param relation: The relation of the model to get the ``translations``
+        relation's reverse of.
         It may be composed of many ``related_query_name`` separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
