@@ -279,7 +279,7 @@ def get_reverse_relation(model, relation):
 
        <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
 
-    The same can be achieved with:
+    The same can be achieved more efficiently with:
 
     .. testcode:: get_reverse_relation
 
@@ -353,7 +353,7 @@ def get_translations_reverse_relation(model, relation=None):
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
         ``None`` means the reverse relation of the ``translations`` relation
-        should be returned for the model itself.
+         of the model should be returned.
     :type relation: str or None
     :return: The reverse of the translations relation.
     :rtype: str
@@ -374,8 +374,7 @@ def get_translations_reverse_relation(model, relation=None):
            langs=["de"]
        )
 
-    Let's suppose in some part of a program the translations of all the cities
-    in a continent must be outputted.
+    To get the translations of all the cities in a continent.
 
     Instead of doing:
 
@@ -400,10 +399,7 @@ def get_translations_reverse_relation(model, relation=None):
            <Translation: Munichian: Münchner>
        ]>
 
-    Which does a *minimum* of three queries to the database (one for the
-    countries, one for the cities and one for the translations) even if the
-    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used, the
-    same can be achieved with:
+    The same can be achieved more efficiently with:
 
     .. testcode:: get_translations_reverse_relation
 
@@ -431,9 +427,14 @@ def get_translations_reverse_relation(model, relation=None):
            <Translation: Munichian: Münchner>
        ]>
 
-    Which on the contrary does only *one* query to the database.
+    The first example does a *minimum* of four queries to the database (one
+    for the continent, one for the countries, one for the cities and one for
+    the translations) even if
+    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used. On the
+    contrary the second example does only *two* queries to the database (one
+    for the continent and one for the translations).
 
-    Also if the translations of the continent must be outputted:
+    To get the translations of a continent:
 
     .. testcode:: get_translations_reverse_relation
 
