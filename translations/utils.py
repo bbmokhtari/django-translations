@@ -139,7 +139,7 @@ def get_entity_details(entity):
 
        create_samples(continent_names=["europe"])
 
-    To get the details of a list:
+    To get the details of a list of instances:
 
     .. testcode:: get_entity_details
 
@@ -507,7 +507,8 @@ def get_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To get the translations of a list of model instances:
+    To get the translations of a list of instances and the relations of each
+    instance:
 
     .. testcode:: get_translations
 
@@ -549,7 +550,8 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Ulsanian: Ulsänisch>
        ]>
 
-    To get the translations of a queryset:
+    To get the translations of a queryset and the relations of each
+    instance:
 
     .. testcode:: get_translations
 
@@ -589,7 +591,7 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Ulsanian: Ulsänisch>
        ]>
 
-    To get the translations of a model instance:
+    To get the translations of an instance and the relations of it:
 
     .. testcode:: get_translations
 
