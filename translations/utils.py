@@ -47,9 +47,9 @@ def get_translation_language(lang=None):
     """
     Return a language code for the translation process.
 
-    If the ``lang`` parameter is not passed in, it returns the active language
-    code [#active_language]_, otherwise it returns the custom language code
-    indicated by the ``lang`` parameter.
+    If the language is not passed in, it returns the active language code
+    [#active_language]_, otherwise it returns the custom language code
+    indicated by the language.
 
     :param lang: A custom language code.
         ``None`` means use the active language code.
@@ -332,16 +332,15 @@ def get_translations_reverse_relation(model, relation=None):
     Return the reverse of the translations relation of a model or a model's
     relation.
 
-    If the ``relation`` parameter is not passed in, it checks the
-    ``translations`` relation of the model (which points to the
-    :class:`~translations.models.Translation` model) and returns a relation
-    which the :class:`~translations.models.Translation` model can use to fetch
-    the translations for the model using a model instance, otherwise
-    it checks the ``translations`` relation of the ``relation`` of the model,
-    which points to the :class:`~translations.models.Translation` model and
-    returns a relation which the :class:`~translations.models.Translation`
-    model can use to fetch the translations for the relation of the model
-    using a model instance.
+    If the relation is not passed in, it checks the translations relation of
+    the model (which points to the :class:`~translations.models.Translation`
+    model) and returns the reverse relation which the
+    :class:`~translations.models.Translation` model can use to query the
+    database using an instance of the model, otherwise
+    it checks the translations relation of the model's relation (which points
+    to the :class:`~translations.models.Translation` model) and returns the
+    reverse relation which the :class:`~translations.models.Translation`
+    model can use to query the database using an instance of the model.
 
     :param model: The model which contains the ``translations`` relation
         directly or indirectly (either it contains the ``translations``
