@@ -232,11 +232,11 @@ def get_entity_details(entity):
 
 def get_reverse_relation(model, relation):
     """
-    Return the reverse of a relation of a model.
+    Return the reverse of a model's relation.
 
-    Checks a relation of a model (which points to a target model) and returns
-    a relation which the target model can use to fetch the target model
-    instances using an initial model instance.
+    Checks the relation of the model (which points to a target model) and
+    returns the reverse relation which the target model can use to query the
+    database using an instance of the model.
 
     :param model: The model which contains the relation and the reverse
         relation points to.
@@ -261,8 +261,7 @@ def get_reverse_relation(model, relation):
            city_names=["cologne", "munich"]
        )
 
-    Let's suppose in some part of a program a list of all the cities in a
-    continent must be outputted.
+    To get all the cities in a continent.
 
     Instead of doing:
 
@@ -279,10 +278,7 @@ def get_reverse_relation(model, relation):
 
        <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
 
-    Which does a *minimum* of two queries to the database (one for the
-    countries and one for the cities) even if the
-    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used, the
-    same can be achieved with:
+    The same can be achieved with:
 
     .. testcode:: get_reverse_relation
 
@@ -302,7 +298,11 @@ def get_reverse_relation(model, relation):
        City can be queried with 'country__continent'
        <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
 
-    Which on the contrary does only *one* query to the database.
+    The first example does a *minimum* of three queries to the database (one
+    for the continent, one for the countries and one for the cities) even if
+    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used. On the
+    contrary the second example does only *two* queries to the database (one
+    for the continent and one for the cities).
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
