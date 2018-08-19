@@ -353,7 +353,7 @@ def get_translations_reverse_relation(model, relation=None):
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
         ``None`` means the reverse relation of the ``translations`` relation
-         of the model should be returned.
+        of the model should be returned.
     :type relation: str or None
     :return: The reverse of the translations relation.
     :rtype: str
