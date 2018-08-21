@@ -252,16 +252,6 @@ def get_reverse_relation(model, relation):
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist.
 
-    .. testsetup:: get_reverse_relation
-
-       from tests.sample import create_samples
-
-       create_samples(
-           continent_names=["europe"],
-           country_names=["germany"],
-           city_names=["cologne", "munich"]
-       )
-
     To get the reverse relation of a model's relation:
 
     .. testcode:: get_reverse_relation
@@ -300,135 +290,68 @@ def get_reverse_relation(model, relation):
 
 def get_translations_reverse_relation(model, relation=None):
     """
-    Return the reverse of the translations relation of a model or a model's
-    relation.
+    Return the reverse of a model's translations relation or the translations
+    relation of a model's relation.
 
-    If the relation is not passed in, it checks the translations relation of
-    the model (which points to the :class:`~translations.models.Translation`
-    model) and returns the reverse relation which the
-    :class:`~translations.models.Translation` model can use to query the
-    database using an instance of the model, otherwise
-    it checks the translations relation of the model's relation (which points
-    to the :class:`~translations.models.Translation` model) and returns the
-    reverse relation which the :class:`~translations.models.Translation`
-    model can use to query the database using an instance of the model.
+    If the relation is not passed in, it processes the model's translations
+    relation which points from the model to the
+    :class:`~translations.models.Translation` model directly and returns the
+    reverse relation which points from the
+    :class:`~translations.models.Translation` model to the model directly,
+    otherwise it processes the translations relation of the model's relation
+    which points from the model to the
+    :class:`~translations.models.Translation` model indirectly (through the
+    relation) and returns the reverse relation which points from the
+    :class:`~translations.models.Translation` model to the model indirectly
+    (through the reverse relation).
 
     :param model: The model which contains the ``translations`` relation
-        directly or indirectly (either it contains the ``translations``
-        relation itself, or the specified relation contains it) and which the
-        reverse relation points to.
+        directly or indirectly and which the reverse relation points to
+        (either it contains the ``translations`` relation itself, or the
+        specified relation contains it).
     :type model: type(~django.db.models.Model)
     :param relation: The relation of the model to get the ``translations``
         relation's reverse of.
         It may be composed of many ``related_query_name`` separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
-        ``None`` means the reverse relation of the ``translations`` relation
-        of the model should be returned.
+        ``None`` means the reverse relation of the model's ``translations``
+        relation should be returned.
     :type relation: str or None
     :return: The reverse of the translations relation.
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist.
 
-    .. testsetup:: get_translations_reverse_relation
-
-       from tests.sample import create_samples
-
-       create_samples(
-           continent_names=["europe"],
-           country_names=["germany"],
-           city_names=["cologne", "munich"],
-           continent_fields=["name", "denonym"],
-           country_fields=["name", "denonym"],
-           city_fields=["name", "denonym"],
-           langs=["de"]
-       )
-
-    To get the translations of all the cities in a continent.
-
-    Instead of doing:
+    To get the reverse relation of the translations relation of a model's
+    relation:
 
     .. testcode:: get_translations_reverse_relation
 
        from sample.models import Continent
-
-       europe = Continent.objects.get(code="EU")
-
-       for country in europe.countries.all():
-           for city in country.cities.all():
-               print(city.translations.all())
-
-    .. testoutput:: get_translations_reverse_relation
-
-       <QuerySet [
-           <Translation: Cologne: Köln>,
-           <Translation: Cologner: Kölner>
-       ]>
-       <QuerySet [
-           <Translation: Munich: München>,
-           <Translation: Munichian: Münchner>
-       ]>
-
-    The same can be achieved more efficiently with:
-
-    .. testcode:: get_translations_reverse_relation
-
-       from sample.models import Continent
-       from translations.models import Translation
        from translations.utils import get_translations_reverse_relation
-
-       europe = Continent.objects.get(code="EU")
 
        reverse_relation = get_translations_reverse_relation(
            Continent, 'countries__cities')
        print("Translation can be queried with '{}'".format(reverse_relation))
 
-       translations = Translation.objects.filter(**{reverse_relation: europe})
-
-       print(translations)
-
     .. testoutput:: get_translations_reverse_relation
 
        Translation can be queried with 'sample_city__country__continent'
-       <QuerySet [
-           <Translation: Cologne: Köln>,
-           <Translation: Cologner: Kölner>,
-           <Translation: Munich: München>,
-           <Translation: Munichian: Münchner>
-       ]>
 
-    The first example does a *minimum* of four queries to the database (one
-    for the continent, one for the countries, one for the cities and one for
-    the translations) even if
-    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used. On the
-    contrary the second example does only *two* queries to the database (one
-    for the continent and one for the translations).
-
-    To get the translations of a continent:
+    To get the reverse relation of a model's translations relation:
 
     .. testcode:: get_translations_reverse_relation
 
        from sample.models import Continent
-       from translations.models import Translation
        from translations.utils import get_translations_reverse_relation
-
-       europe = Continent.objects.get(code="EU")
 
        reverse_relation = get_translations_reverse_relation(Continent)
        print("Translation can be queried with '{}'".format(reverse_relation))
 
-       translations = Translation.objects.filter(**{reverse_relation: europe})
-
-       print(translations)
-
     .. testoutput:: get_translations_reverse_relation
 
        Translation can be queried with 'sample_continent'
-       <QuerySet [
-           <Translation: Europe: Europa>,
-           <Translation: European: Europäisch>
-       ]>
     """
     if relation is None:
         translations_relation = 'translations'
