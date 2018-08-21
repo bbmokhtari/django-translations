@@ -963,20 +963,22 @@ def apply_rel_translations(obj, hierarchy, dictionary):
 
 def apply_translations(entity, hierarchy, dictionary, included=True):
     """
-    Translate an entity and the relations hierarchy of it using a
-    translations dictionary.
+    Apply a :term:`translations dictionary` on an entity and a
+    :term:`relations hierarchy` of it.
 
     Searches the :term:`translations dictionary` for the translations of the
-    entity and the :term:`relations hierarchy` of it and applies them in
-    place.
+    entity and the :term:`relations hierarchy` of it and applies them, field
+    by field and in place.
 
-    :param entity: The entity to translate.
+    :param entity: The entity to apply the :term:`translations dictionary` on
+        it and the :term:`relations hierarchy` of it.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param hierarchy: The relations hierarchy of the entity to translate.
+    :param hierarchy: The :term:`relations hierarchy` of the entity to apply
+        the :term:`translations dictionary` on.
     :type hierarchy: dict(str, dict)
-    :param dictionary: The translations dictionary to use for the translation
-        process.
+    :param dictionary: The :term:`translations dictionary` to apply on the
+        entity and the :term:`relations hierarchy` of it.
     :type dictionary: dict(int, dict(str, dict(str, str)))
     :param included: Whether to translate the entity or not.
     :type included: bool
@@ -1003,7 +1005,22 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
 
-    To translate a list of model instances and a relations hierarchy of it:
+    .. testsetup:: apply_translations
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe", "asia"],
+           country_names=["germany", "south korea"],
+           city_names=["cologne", "munich", "seoul", "ulsan"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To apply a :term:`translations dictionary` on a list of model instances
+    and a :term:`relations hierarchy` of them:
 
     .. testcode:: apply_translations
 
@@ -1043,7 +1060,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Seül
        City: Ulsän
 
-    To translate a queryset and a relations hierarchy of it:
+    To apply a :term:`translations dictionary` on a queryset
+    and a :term:`relations hierarchy` of it:
 
     .. testcode:: apply_translations
 
@@ -1081,7 +1099,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Seül
        City: Ulsän
 
-    To translate a model instance and a relations hierarchy of it:
+    To apply a :term:`translations dictionary` on an instance
+    and a :term:`relations hierarchy` of it:
 
     .. testcode:: apply_translations
 
