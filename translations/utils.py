@@ -19,7 +19,7 @@ This module contains the utilities for the Translations app.
 :func:`fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`get_relations_hierarchy`
-    Return the relations hierarchy of some relations.
+    Return the :term:`relations hierarchy` of some relations.
 :func:`apply_obj_translations`
     Apply a translations dictionary on an object.
 :func:`apply_rel_translations`
