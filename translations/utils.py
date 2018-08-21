@@ -23,7 +23,8 @@ This module contains the utilities for the Translations app.
 :func:`apply_obj_translations`
     Apply the content type of a :term:`translations dictionary` on an object.
 :func:`apply_rel_translations`
-    Apply a translations dictionary on a relations hierarchy of an object.
+    Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
+    of an object.
 :func:`translate`
     Translate an entity and the relations hierarchy of it using a
     translations dictionary.
@@ -871,20 +872,21 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
 
 def apply_rel_translations(obj, hierarchy, dictionary):
     """
-    Apply a translations dictionary on a relations hierarchy of an object.
+    Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
+    of an object.
 
-    Loops through the :term:`relations hierarchy` of an object, searches
+    Loops through the :term:`relations hierarchy` of the object, searches
     the :term:`translations dictionary` for the translations of the relation
     and applies them on the relation, field by field and in place.
 
-    :param obj: The object to apply the translations dictionary on the
-        relations hierarchy of.
+    :param obj: The object to apply the :term:`translations dictionary` on the
+        :term:`relations hierarchy` of.
     :type obj: ~django.db.models.Model
-    :param hierarchy: The relations hierarchy to apply the translations
-        dictionary on.
+    :param hierarchy: The :term:`relations hierarchy` of the object to apply
+        the :term:`translations dictionary` on.
     :type hierarchy: dict(str, dict)
-    :param dictionary: The translations dictionary to use for the translation
-        process.
+    :param dictionary: The :term:`translations dictionary` to apply on the
+        :term:`relations hierarchy` of the object.
     :type dictionary: dict(int, dict(str, dict(str, str)))
 
     .. warning::
@@ -919,8 +921,8 @@ def apply_rel_translations(obj, hierarchy, dictionary):
            langs=["de"]
        )
 
-    To apply the translations dictionary on a relations hierarchy of an
-    object:
+    To apply a :term:`translations dictionary` on a
+    :term:`relations hierarchy` of an object:
 
     .. testcode:: apply_rel_translations
 
