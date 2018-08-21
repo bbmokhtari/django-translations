@@ -114,8 +114,8 @@ def get_entity_details(entity):
     Return the type and iteration details of an entity.
 
     Determines if an entity is iterable or not, if so it returns the type of
-    the first object in the iteration (since it assumes all the objects in the
-    iteration are of the same type) and the entity as iterable, otherwise
+    the first object in the iteration and the entity as iterable (since it
+    assumes all the objects in the iteration are of the same type), otherwise
     it returns the type of the entity itself and the entity as not iterable.
 
     :param entity: The entity to get the details of.
