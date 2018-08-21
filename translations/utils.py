@@ -63,7 +63,7 @@ def get_translation_language(lang=None):
        The active language code is a language code determined automatically
        by Django. It is not a global system-wide setting, but it is rather a
        per-request setting, usually determined by the ``Accept-Language``
-       header received in each HTTP request (by the browser or another
+       header received in each HTTP request (from the browser or another
        client). You can access it using
        :func:`~django.utils.translation.get_language` in each view.
 
