@@ -235,9 +235,9 @@ def get_reverse_relation(model, relation):
     """
     Return the reverse of a model's relation.
 
-    Checks the relation of the model (which points to a target model) and
-    returns the reverse relation which the target model can use to query the
-    database using an instance of the model.
+    Processes the model's relation which points from the model to the target
+    model and returns the reverse relation which points from the target model
+    to the model.
 
     :param model: The model which contains the relation and the reverse
         relation points to.
@@ -262,48 +262,19 @@ def get_reverse_relation(model, relation):
            city_names=["cologne", "munich"]
        )
 
-    To get all the cities in a continent.
-
-    Instead of doing:
+    To get the reverse relation of a model's relation:
 
     .. testcode:: get_reverse_relation
 
        from sample.models import Continent
-
-       europe = Continent.objects.get(code="EU")
-
-       for country in europe.countries.all():
-           print(country.cities.all())
-
-    .. testoutput:: get_reverse_relation
-
-       <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
-
-    The same can be achieved more efficiently with:
-
-    .. testcode:: get_reverse_relation
-
-       from sample.models import Continent, City
        from translations.utils import get_reverse_relation
-
-       europe = Continent.objects.get(code="EU")
 
        reverse_relation = get_reverse_relation(Continent, 'countries__cities')
        print("City can be queried with '{}'".format(reverse_relation))
 
-       cities = City.objects.filter(**{reverse_relation: europe})
-       print(cities)
-
     .. testoutput:: get_reverse_relation
 
        City can be queried with 'country__continent'
-       <TranslatableQuerySet [<City: Cologne>, <City: Munich>]>
-
-    The first example does a *minimum* of three queries to the database (one
-    for the continent, one for the countries and one for the cities) even if
-    :meth:`~django.db.models.query.QuerySet.prefetch_related` is used. On the
-    contrary the second example does only *two* queries to the database (one
-    for the continent and one for the cities).
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
