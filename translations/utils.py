@@ -585,7 +585,7 @@ def get_translations_dictionary(translations):
            langs=["de"]
        )
 
-    To get the translations dictionary of all the translations.
+    To get the translations dictionary of the german translations.
 
     .. testcode:: get_translations_dictionary
 
