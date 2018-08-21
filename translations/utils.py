@@ -980,7 +980,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     :param dictionary: The :term:`translations dictionary` to apply on the
         entity and the :term:`relations hierarchy` of it.
     :type dictionary: dict(int, dict(str, dict(str, str)))
-    :param included: Whether to translate the entity or not.
+    :param included: Whether to apply the :term:`translations dictionary` on
+        the entity or not.
     :type included: bool
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
@@ -1029,7 +1030,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from translations.utils import get_translations
        from translations.utils import get_translations_dictionary
        from translations.utils import get_relations_hierarchy
-       from translations.utils import translate
+       from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1069,7 +1070,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from translations.utils import get_translations
        from translations.utils import get_translations_dictionary
        from translations.utils import get_relations_hierarchy
-       from translations.utils import translate
+       from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1109,7 +1110,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from translations.utils import get_translations
        from translations.utils import get_translations_dictionary
        from translations.utils import get_relations_hierarchy
-       from translations.utils import translate
+       from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
 
