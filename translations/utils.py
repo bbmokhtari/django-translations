@@ -15,7 +15,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations`
     Return the translations of an entity and the relations of it in a language.
 :func:`get_translations_dictionary`
-    Return the translations dictionary out of some translations.
+    Return the :term:`translations dictionary` out of some translations.
 :func:`fill_hierarchy`
     Fills a relations hierarchy with parts of a relation.
 :func:`get_relations_hierarchy`
@@ -555,21 +555,21 @@ def get_translations(entity, *relations, lang=None):
 
 def get_translations_dictionary(translations):
     """
-    Return the translations dictionary out of some translations.
+    Return the :term:`translations dictionary` out of some translations.
 
     Processes the translations and returns the :term:`translations dictionary`
     to use for the translation process.
 
     :param translations: The translations to process.
-    :type translations: ~django.db.models.query.QuerySet
-    :return: The translations dictionary.
+    :type translations: ~django.db.models.query.QuerySet(\\
+        ~translations.models.Translation)
+    :return: The :term:`translations dictionary`.
     :rtype: dict(int, dict(str, dict(str, str)))
 
     .. warning::
-       Always filter the ``translations`` in a language before passing it in,
-       otherwise the other language may override some fields of the initial
-       language and a translations dictionary with mixed content gets
-       outputted which is not what's desired.
+       The translations **must** be filtered in a language before being passed
+       in, otherwise the instances which come later in it may override the
+       earlier ones.
 
     .. testsetup:: get_translations_dictionary
 
