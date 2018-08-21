@@ -21,7 +21,7 @@ This module contains the utilities for the Translations app.
 :func:`get_relations_hierarchy`
     Return the :term:`relations hierarchy` of some relations.
 :func:`apply_obj_translations`
-    Apply a translations dictionary on an object.
+    Apply the content type of a :term:`translations dictionary` on an object.
 :func:`apply_rel_translations`
     Apply a translations dictionary on a relations hierarchy of an object.
 :func:`translate`
@@ -808,17 +808,20 @@ def get_relations_hierarchy(*relations):
 
 def apply_obj_translations(obj, ct_dictionary, included=True):
     """
-    Apply a translations dictionary on an object.
+    Apply the content type of a :term:`translations dictionary` on an object.
 
     Searches the content type of the :term:`translations dictionary` for the
     translations of the object and applies them on the object, field by field
     and in place.
 
-    :param obj: The object to apply the translations dictionary on.
+    :param obj: The object to apply the content type of the
+        :term:`translations dictionary` on.
     :type obj: ~django.db.models.Model
-    :param ct_dictionary: The content type of translations dictionary.
+    :param ct_dictionary: The content type of the
+        :term:`translations dictionary`.
     :type ct_dictionary: dict(str, dict(str, str))
-    :param included: Whether to apply the translations dictionary or not.
+    :param included: Whether to apply the content type of the
+        :term:`translations dictionary` or not.
     :type included: bool
 
     .. testsetup:: apply_obj_translations
@@ -831,7 +834,8 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
            langs=["de"]
        )
 
-    To apply the translations dictionary on an object:
+    To apply the content type of the :term:`translations dictionary` on an
+    object:
 
     .. testcode:: apply_obj_translations
 
