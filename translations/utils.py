@@ -366,20 +366,20 @@ def get_translations(entity, *relations, lang=None):
     Return the translations of an entity and the relations of it in a language.
 
     Collects all the translations of the entity and the specified relations
-    of it in a language and return them as a
+    of it in a language and returns them as a
     :class:`~translations.models.Translation` queryset.
 
-    :param entity: The entity to fetch the translations for.
+    :param entity: The entity to fetch the translations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to fetch the
-        translations for.
+        translations of.
     :type relations: list(str)
     :param lang: The language to fetch the translations in.
         ``None`` means use the active language code. [#active_language]_
     :type lang: str or None
-    :return: The :class:`~translations.models.Translation` queryset.
-    :rtype: ~django.db.models.query.QuerySet
+    :return: The translations.
+    :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError: If the entity is neither a model instance nor
@@ -406,14 +406,10 @@ def get_translations(entity, *relations, lang=None):
 
     .. testcode:: get_translations
 
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import get_translations
 
-       continents = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).all()
-
-       continents = list(continents)
+       continents = list(Continent.objects.all())
 
        translations = get_translations(
            continents,
@@ -444,17 +440,14 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Ulsanian: Ulsänisch>
        ]>
 
-    To get the translations of a queryset and the relations of each
-    instance:
+    To get the translations of a queryset and the relations of each instance:
 
     .. testcode:: get_translations
 
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import get_translations
 
-       continents = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).all()
+       continents = Continent.objects.all()
 
        translations = get_translations(
            continents,
@@ -489,12 +482,10 @@ def get_translations(entity, *relations, lang=None):
 
     .. testcode:: get_translations
 
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import get_translations
 
-       europe = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).get(code="EU")
+       europe = Continent.objects.get(code="EU")
 
        translations = get_translations(
            europe,
