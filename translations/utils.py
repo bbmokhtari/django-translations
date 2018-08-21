@@ -17,7 +17,7 @@ This module contains the utilities for the Translations app.
 :func:`get_translations_dictionary`
     Return the :term:`translations dictionary` out of some translations.
 :func:`fill_hierarchy`
-    Fills a relations hierarchy with parts of a relation.
+    Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`get_relations_hierarchy`
     Return the relations hierarchy of some relations.
 :func:`apply_obj_translations`
@@ -568,8 +568,8 @@ def get_translations_dictionary(translations):
 
     .. warning::
        The translations **must** be filtered in a language before being passed
-       in, otherwise the instances which come later in it may override the
-       earlier ones.
+       in, otherwise the instances which come later in the translations may
+       override the earlier ones.
 
     .. testsetup:: get_translations_dictionary
 
@@ -649,7 +649,7 @@ def get_translations_dictionary(translations):
 
 def fill_hierarchy(hierarchy, *relation_parts):
     """
-    Fills a relations hierarchy with parts of a relation.
+    Fills a :term:`relations hierarchy` with parts of a relation.
 
     Fills the :term:`relations hierarchy` based on the order of the parts of
     the relation. The later parts are considered as the children of the
@@ -657,13 +657,13 @@ def fill_hierarchy(hierarchy, *relation_parts):
     part are considered included and all the other ones are considered
     excluded.
 
-    :param hierarchy: The relations hierarchy to fill.
+    :param hierarchy: The :term:`relations hierarchy` to fill.
     :type hierarchy: dict(str, dict)
-    :param relation_parts: The relation parts sorted by the order to fill the
-        relations hierarchy with.
+    :param relation_parts: The parts of the relation to fill the
+        :term:`relations hierarchy` with.
     :type relation_parts: list(str)
 
-    To fill the hierarchy with only one level of relation parts:
+    To fill the :term:`relations hierarchy` with one level of relation parts:
 
     .. testcode:: fill_hierarchy
 
@@ -679,8 +679,8 @@ def fill_hierarchy(hierarchy, *relation_parts):
 
        {'countries': {'included': True, 'relations': {}}}
 
-    To fill the hierarchy with two level of relation parts, not including the
-    first one:
+    To fill the :term:`relations hierarchy` with two level of relation parts,
+    not including the first one:
 
     .. testcode:: fill_hierarchy
 
@@ -698,8 +698,8 @@ def fill_hierarchy(hierarchy, *relation_parts):
                       'relations': {'cities': {'included': True,
                                                'relations': {}}}}}
 
-    To fill the hierarchy with two level of relation parts, including the
-    first one:
+    To fill the :term:`relations hierarchy` with two level of relation parts,
+    including the first one:
 
     .. testcode:: fill_hierarchy
 
@@ -734,7 +734,7 @@ def fill_hierarchy(hierarchy, *relation_parts):
 
 def get_relations_hierarchy(*relations):
     """
-    Return the relations hierarchy of some relations.
+    Return the :term:`relations hierarchy` of some relations.
 
     Processes the relations and returns a :term:`relations hierarchy`,
     containing each level of relation and information about whether they are
@@ -742,10 +742,10 @@ def get_relations_hierarchy(*relations):
 
     :param relations: The relations to get the hierarchy of.
     :type relations: list(str)
-    :return: The relations hierarchy.
+    :return: The :term:`relations hierarchy`.
     :rtype: dict(str, dict)
 
-    To get the hierarchy of a first-level relation:
+    To get the :term:`relations hierarchy` of a first-level relation:
 
     .. testcode::
 
@@ -757,8 +757,8 @@ def get_relations_hierarchy(*relations):
 
        {'countries': {'included': True, 'relations': {}}}
 
-    To get the hierarchy of a second-level relation, not including
-    the first-level relation:
+    To get the :term:`relations hierarchy` of a second-level relation,
+    not including the first-level relation:
 
     .. testcode::
 
@@ -772,8 +772,8 @@ def get_relations_hierarchy(*relations):
                       'relations': {'cities': {'included': True,
                                                'relations': {}}}}}
 
-    To get the hierarchy of a second-level relation, including the first-level
-    relation:
+    To get the :term:`relations hierarchy` of a second-level relation,
+    including the first-level relation:
 
     .. testcode::
 
@@ -787,7 +787,7 @@ def get_relations_hierarchy(*relations):
                       'relations': {'cities': {'included': True,
                                                'relations': {}}}}}
 
-    To get the hierarchy of no relations:
+    To get the :term:`relations hierarchy` of no relations:
 
     .. testcode::
 
