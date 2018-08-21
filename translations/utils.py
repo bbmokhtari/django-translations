@@ -736,7 +736,7 @@ def get_relations_hierarchy(*relations):
     """
     Return the :term:`relations hierarchy` of some relations.
 
-    Processes the relations and returns a :term:`relations hierarchy`,
+    Processes the relations and returns the :term:`relations hierarchy`,
     containing each level of relation and information about whether they are
     included or not.
 
