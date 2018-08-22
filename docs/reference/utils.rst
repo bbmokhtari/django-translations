@@ -6,7 +6,7 @@ Utilities
 
    -----
 
-   .. autofunction:: get_translation_language
+   .. autofunction:: _get_translation_language
    .. autofunction:: get_entity_details
    .. autofunction:: get_reverse_relation
    .. autofunction:: get_translations_reverse_relation

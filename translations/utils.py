@@ -3,7 +3,7 @@ This module contains the utilities for the Translations app.
 
 .. rubric:: Functions:
 
-:func:`get_translation_language`
+:func:`_get_translation_language`
     Return a language code to use in the translation process.
 :func:`get_entity_details`
     Return the type and iteration details of an entity.
@@ -44,7 +44,7 @@ import translations.models
 __docformat__ = 'restructuredtext'
 
 
-def get_translation_language(lang=None):
+def _get_translation_language(lang=None):
     """
     Return a language code to use in the translation process.
 
@@ -59,7 +59,7 @@ def get_translation_language(lang=None):
     :raise ValueError: If the language code is not specified in
         the :data:`~django.conf.settings.LANGUAGES` setting.
 
-    .. testsetup:: get_translation_language
+    .. testsetup:: _get_translation_language
 
        from django.utils.translation import activate
 
@@ -67,27 +67,27 @@ def get_translation_language(lang=None):
 
     To get the :term:`active language` code:
 
-    .. testcode:: get_translation_language
+    .. testcode:: _get_translation_language
 
-       from translations.utils import get_translation_language
+       from translations.utils import _get_translation_language
 
-       active = get_translation_language()
+       active = _get_translation_language()
        print("Language code: {}".format(active))
 
-    .. testoutput:: get_translation_language
+    .. testoutput:: _get_translation_language
 
        Language code: en
 
     To get a custom language code:
 
-    .. testcode:: get_translation_language
+    .. testcode:: _get_translation_language
 
-       from translations.utils import get_translation_language
+       from translations.utils import _get_translation_language
 
-       custom = get_translation_language('de')
+       custom = _get_translation_language('de')
        print("Language code: {}".format(custom))
 
-    .. testoutput:: get_translation_language
+    .. testoutput:: _get_translation_language
 
        Language code: de
     """
@@ -500,7 +500,7 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Munichian: Münchner>
        ]>
     """
-    lang = get_translation_language(lang)
+    lang = _get_translation_language(lang)
     model, iterable = get_entity_details(entity)
 
     if model is None:
@@ -1485,7 +1485,7 @@ def read_translations(entity, *relations, lang=None):
 
 
 def update_translations(entity, lang=None):
-    lang = get_translation_language(lang)
+    lang = _get_translation_language(lang)
     model, iterable = get_entity_details(entity)
 
     # ------------ renew transaction
