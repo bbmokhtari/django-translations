@@ -4,7 +4,7 @@ This module contains the utilities for the Translations app.
 .. rubric:: Functions:
 
 :func:`get_translation_language`
-    Return a language code for the translation process.
+    Return a language code to use in the translation process.
 :func:`get_entity_details`
     Return the type and iteration details of an entity.
 :func:`get_reverse_relation`
@@ -46,27 +46,18 @@ __docformat__ = 'restructuredtext'
 
 def get_translation_language(lang=None):
     """
-    Return a language code for the translation process.
+    Return a language code to use in the translation process.
 
-    If the language is not passed in, it returns the active language code
-    [#active_language]_, otherwise it returns the custom language code
-    indicated by the language.
+    If the custom language code is passed in, validate and return it,
+    otherwise validate and return the :term:`active language` code.
 
-    :param lang: A custom language code.
-        ``None`` means use the active language code.
+    :param lang: The custom language code to use in the translation process.
+        ``None`` defaults to the :term:`active language` code.
     :type lang: str or None
-    :return: The language code for the translation process.
+    :return: The language code to use in the translation process.
     :rtype: str
     :raise ValueError: If the language code is not specified in
         the :data:`~django.conf.settings.LANGUAGES` setting.
-
-    .. [#active_language]
-       The active language code is a language code determined automatically
-       by Django. It is not a global system-wide setting, but it is rather a
-       per-request setting, usually determined by the ``Accept-Language``
-       header received in each HTTP request (from the browser or another
-       client). You can access it using
-       :func:`~django.utils.translation.get_language` in each view.
 
     .. testsetup:: get_translation_language
 
@@ -74,7 +65,7 @@ def get_translation_language(lang=None):
 
        activate('en')
 
-    To get the active language code:
+    To get the :term:`active language` code:
 
     .. testcode:: get_translation_language
 
@@ -377,7 +368,7 @@ def get_translations(entity, *relations, lang=None):
         translations of.
     :type relations: list(str)
     :param lang: The language to fetch the translations in.
-        ``None`` means use the active language code. [#active_language]_
+        ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :return: The translations.
     :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
@@ -1170,7 +1161,7 @@ def read_translations(entity, *relations, lang=None):
     :param relations: The relations of the entity to translate.
     :type relations: list(str)
     :param lang: The language to translate in.
-        ``None`` means use the active language code. [#active_language]_
+        ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :param dictionary: The translations dictionary to use for the translation
         process.
