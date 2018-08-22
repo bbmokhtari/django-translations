@@ -48,8 +48,8 @@ def _get_translation_language(lang=None):
     """
     Return a language code to use in the translation process.
 
-    If the custom language code is passed in, validate and return it,
-    otherwise validate and return the :term:`active language` code.
+    If the custom language code is passed in, validates and returns it,
+    otherwise validates and returns the :term:`active language` code.
 
     :param lang: The custom language code to use in the translation process.
         ``None`` defaults to the :term:`active language` code.
