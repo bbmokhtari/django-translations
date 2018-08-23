@@ -105,10 +105,10 @@ def _get_entity_details(entity):
     """
     Return the iteration and type details of an entity.
 
-    If the entity is iterable it returns the entity as iterable and the type
-    of the first object in the iteration (since it assumes all the objects in
-    the iteration are of the same type), otherwise it returns the entity as
-    not iterable and the type of the entity.
+    If the entity is an iterable it returns the entity as iterable and the
+    type of the first object in the iteration (since it assumes all the
+    objects in the iteration are of the same type), otherwise it returns the
+    entity as not iterable and the type of the entity.
 
     :param entity: The entity to get the details of.
     :type entity: ~django.db.models.Model or
