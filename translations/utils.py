@@ -236,16 +236,16 @@ def get_reverse_relation(model, relation):
         relation points to.
     :type model: type(~django.db.models.Model)
     :param relation: The relation of the model to get the reverse of.
-        It may be composed of many ``related_query_name`` separated by
+        It may be composed of many ``related_query_name``\\ s separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
     :type relation: str
-    :return: The reverse of the relation.
+    :return: The reverse of the model's relation.
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist.
 
-    To get the reverse relation of a model's relation:
+    To get the reverse of a model's relation:
 
     .. testcode:: get_reverse_relation
 
