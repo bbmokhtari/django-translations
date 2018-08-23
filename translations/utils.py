@@ -48,8 +48,8 @@ def _get_translation_language(lang=None):
     """
     Return a language code to use in the translation process.
 
-    If the custom language code is passed in, validates and returns it,
-    otherwise validates and returns the :term:`active language` code.
+    If the custom language code is passed in it returns the custom language
+    code, otherwise it returns the :term:`active language` code.
 
     :param lang: The custom language code to use in the translation process.
         ``None`` defaults to the :term:`active language` code.
@@ -103,27 +103,28 @@ def _get_translation_language(lang=None):
 
 def get_entity_details(entity):
     """
-    Return the type and iteration details of an entity.
+    Return the iteration and type details of an entity.
 
-    Determines if an entity is iterable or not, if so it returns the type of
-    the first object in the iteration and the entity as iterable (since it
-    assumes all the objects in the iteration are of the same type), otherwise
-    it returns the type of the entity itself and the entity as not iterable.
+    If the entity is iterable it returns the entity as iterable and the type
+    of the first object in the iteration (since it assumes all the objects in
+    the iteration are of the same type), otherwise it returns the entity as
+    not iterable and the type of the entity.
 
     :param entity: The entity to get the details of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :return: The details of the entity as (model, iterable).
-    :rtype: tuple(type(~django.db.models.Model), bool)
+    :return: The details of the entity as (iterable, model).
+    :rtype: tuple(bool, type(~django.db.models.Model))
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
 
     .. note::
        If the entity is an empty iterable it returns the model as ``None``,
-       even if the iterable is an empty queryset which the model for it can be
-       retrieved. It's because other parts of the code first check to see if
-       the model of the details is ``None``, in that case they skip the
-       translation process all together, because there's nothing to translate.
+       even if the iterable is an empty queryset (which its model can be
+       retrieved). It's because the other parts of the code first check to see
+       if the model in the details is ``None``, in that case they skip the
+       translation process all together (because there's nothing to
+       translate).
 
     .. testsetup:: get_entity_details
 
@@ -140,13 +141,13 @@ def get_entity_details(entity):
 
        continents = list(Continent.objects.all())
        details = get_entity_details(continents)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       Model: <class 'sample.models.Continent'>
        Iterable: True
+       Model: <class 'sample.models.Continent'>
 
     To get the details of a queryset:
 
@@ -157,13 +158,13 @@ def get_entity_details(entity):
 
        continents = Continent.objects.all()
        details = get_entity_details(continents)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       Model: <class 'sample.models.Continent'>
        Iterable: True
+       Model: <class 'sample.models.Continent'>
 
     To get the details of an instance:
 
@@ -174,13 +175,13 @@ def get_entity_details(entity):
 
        europe = Continent.objects.get(code="EU")
        details = get_entity_details(europe)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       Model: <class 'sample.models.Continent'>
        Iterable: False
+       Model: <class 'sample.models.Continent'>
 
     To get the details of an empty list:
 
@@ -191,13 +192,13 @@ def get_entity_details(entity):
 
        empty = []
        details = get_entity_details(empty)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
     .. testoutput:: get_entity_details
 
-       Model: None
        Iterable: True
+       Model: None
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
@@ -220,7 +221,7 @@ def get_entity_details(entity):
     else:
         raise TypeError(error_message)
 
-    return model, iterable
+    return (iterable, model)
 
 
 def get_reverse_relation(model, relation):
@@ -501,7 +502,7 @@ def get_translations(entity, *relations, lang=None):
        ]>
     """
     lang = _get_translation_language(lang)
-    model, iterable = get_entity_details(entity)
+    iterable, model = get_entity_details(entity)
 
     if model is None:
         return translations.models.Translation.objects.none()
@@ -1127,7 +1128,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Köln
        City: München
     """
-    model, iterable = get_entity_details(entity)
+    iterable, model = get_entity_details(entity)
 
     if model is None:
         return
@@ -1486,7 +1487,7 @@ def read_translations(entity, *relations, lang=None):
 
 def update_translations(entity, lang=None):
     lang = _get_translation_language(lang)
-    model, iterable = get_entity_details(entity)
+    iterable, model = get_entity_details(entity)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):
