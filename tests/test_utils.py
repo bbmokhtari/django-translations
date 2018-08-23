@@ -16,7 +16,7 @@ from sample.models import Continent, Country, City
 from .sample import create_samples
 
 
-class GetValidatedLanguageTest(TestCase):
+class GetTranslationLanguageTest(TestCase):
     """Tests for `_get_translation_language`."""
 
     def test_active_lang(self):
@@ -27,15 +27,7 @@ class GetValidatedLanguageTest(TestCase):
             'en'
         )
 
-    def test_new_active_lang(self):
-        """Make sure it works with a new active language."""
-        activate('de')
-        self.assertEqual(
-            _get_translation_language(),
-            'de'
-        )
-
-    def test_valid_lang(self):
+    def test_custom_lang(self):
         """Make sure it works with a valid language code."""
         self.assertEqual(
             _get_translation_language('de'),
@@ -55,7 +47,27 @@ class GetValidatedLanguageTest(TestCase):
 class GetEntityDetailsTest(TestCase):
     """Tests for `_get_entity_details`."""
 
-    def test_model_instance(self):
+    def test_iterable(self):
+        """Make sure it works with a model iterable."""
+        create_samples(continent_names=["europe", "asia"])
+
+        continents = list(Continent.objects.all())
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, Continent)
+        )
+
+    def test_queryset(self):
+        """Make sure it works with a model queryset."""
+        create_samples(continent_names=["europe", "asia"])
+
+        continents = Continent.objects.all()
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, Continent)
+        )
+
+    def test_instance(self):
         """Make sure it works with a model instance."""
         create_samples(continent_names=["europe"])
 
@@ -63,34 +75,14 @@ class GetEntityDetailsTest(TestCase):
 
         self.assertEqual(
             _get_entity_details(europe),
-            (Continent, False)
+            (False, Continent)
         )
 
-    def test_model_queryset(self):
-        """Make sure it works with a model queryset."""
-        create_samples(continent_names=["europe", "asia"])
-
-        continents = Continent.objects.all()
-        self.assertEqual(
-            _get_entity_details(continents),
-            (Continent, True)
-        )
-
-    def test_model_iterable(self):
-        """Make sure it works with a model iterable."""
-        create_samples(continent_names=["europe", "asia"])
-
-        continents = list(Continent.objects.all())
-        self.assertEqual(
-            _get_entity_details(continents),
-            (Continent, True)
-        )
-
-    def test_empty_list(self):
+    def test_empty_iterable(self):
         """Make sure it works with an empty list."""
         self.assertEqual(
             _get_entity_details([]),
-            (None, True)
+            (True, None)
         )
 
     def test_empty_queryset(self):
@@ -98,27 +90,7 @@ class GetEntityDetailsTest(TestCase):
         continents = Continent.objects.none()
         self.assertEqual(
             _get_entity_details(continents),
-            (None, True)
-        )
-
-    def test_invalid_instance(self):
-        """Make sure it raises on invalid instance."""
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-        with self.assertRaises(TypeError) as error:
-            _get_entity_details(behzad)
-        self.assertEqual(
-            error.exception.args[0],
-            "`Behzad` is neither a model instance nor an iterable of model instances."
+            (True, None)
         )
 
     def test_invalid_iterable(self):
@@ -141,6 +113,26 @@ class GetEntityDetailsTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             "`[Behzad, Max]` is neither a model instance nor an iterable of model instances."
+        )
+
+    def test_invalid_instance(self):
+        """Make sure it raises on invalid instance."""
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+        with self.assertRaises(TypeError) as error:
+            _get_entity_details(behzad)
+        self.assertEqual(
+            error.exception.args[0],
+            "`Behzad` is neither a model instance nor an iterable of model instances."
         )
 
 
