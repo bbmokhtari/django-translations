@@ -1,5 +1,5 @@
 from sample.models import Continent, Country, City
-from translations.utils import get_reverse_relation
+from translations.utils import _get_reverse_relation
 
 
 # -------------------------------------------------------------------- samples
@@ -904,7 +904,7 @@ def creator(**kwargs):
             reverse=descendant_desc
         )
         for descendant_key, descendant_kwargs in descendant_iterable:
-            parent_key = get_reverse_relation(model, descendant_key)
+            parent_key = _get_reverse_relation(model, descendant_key)
             descendant_kwargs['parent'] = {
                 parent_key: obj
             }

@@ -7,7 +7,7 @@ This module contains the utilities for the Translations app.
     Return a language code to use in the translation process.
 :func:`_get_entity_details`
     Return the type and iteration details of an entity.
-:func:`get_reverse_relation`
+:func:`_get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`get_translations_reverse_relation`
     Return the reverse of a model's translations relation or the translations
@@ -224,7 +224,7 @@ def _get_entity_details(entity):
     return (iterable, model)
 
 
-def get_reverse_relation(model, relation):
+def _get_reverse_relation(model, relation):
     """
     Return the reverse of a model's relation.
 
@@ -247,15 +247,15 @@ def get_reverse_relation(model, relation):
 
     To get the reverse of a model's relation:
 
-    .. testcode:: get_reverse_relation
+    .. testcode:: _get_reverse_relation
 
        from sample.models import Continent
-       from translations.utils import get_reverse_relation
+       from translations.utils import _get_reverse_relation
 
-       reverse_relation = get_reverse_relation(Continent, 'countries__cities')
+       reverse_relation = _get_reverse_relation(Continent, 'countries__cities')
        print("City can be queried with '{}'".format(reverse_relation))
 
-    .. testoutput:: get_reverse_relation
+    .. testoutput:: _get_reverse_relation
 
        City can be queried with 'country__continent'
     """
@@ -269,7 +269,7 @@ def get_reverse_relation(model, relation):
     if branch:
         branch_model = field.related_model
         branch_relation = LOOKUP_SEP.join(branch)
-        branch_reverse_relation = get_reverse_relation(
+        branch_reverse_relation = _get_reverse_relation(
             branch_model,
             branch_relation
         )
@@ -351,7 +351,7 @@ def get_translations_reverse_relation(model, relation=None):
     else:
         translations_relation = '{}__{}'.format(relation, 'translations')
 
-    return get_reverse_relation(model, translations_relation)
+    return _get_reverse_relation(model, translations_relation)
 
 
 def get_translations(entity, *relations, lang=None):

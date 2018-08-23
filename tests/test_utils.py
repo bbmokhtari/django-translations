@@ -5,7 +5,7 @@ from django.utils.translation import activate, deactivate
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_translation_language, \
-    _get_entity_details, get_reverse_relation, \
+    _get_entity_details, _get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
     get_translations_dictionary, get_relations_hierarchy
 
@@ -137,40 +137,40 @@ class GetEntityDetailsTest(TestCase):
 
 
 class GetReverseRelationTest(TestCase):
-    """Tests for `get_reverse_relation`."""
+    """Tests for `_get_reverse_relation`."""
 
     def test_simple_relation(self):
         """Make sure it works with a simple relation."""
         self.assertEqual(
-            get_reverse_relation(Continent, 'countries'),
+            _get_reverse_relation(Continent, 'countries'),
             'continent'
         )
 
     def test_simple_reverse_relation(self):
         """Make sure it works with a simple relation in reverse."""
         self.assertEqual(
-            get_reverse_relation(Country, 'continent'),
+            _get_reverse_relation(Country, 'continent'),
             'countries'
         )
 
     def test_nested_relation(self):
         """Make sure it works with a nested relation."""
         self.assertEqual(
-            get_reverse_relation(Continent, 'countries__cities'),
+            _get_reverse_relation(Continent, 'countries__cities'),
             'country__continent'
         )
 
     def test_nested_reverse_relation(self):
         """Make sure it works with a nested relation in reverse."""
         self.assertEqual(
-            get_reverse_relation(City, 'country__continent'),
+            _get_reverse_relation(City, 'country__continent'),
             'countries__cities'
         )
 
     def test_empty_relation(self):
         """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_reverse_relation(
+            _get_reverse_relation(
                 Continent,
                 ''
             )
@@ -182,7 +182,7 @@ class GetReverseRelationTest(TestCase):
     def test_invalid_simple_relation(self):
         """Make sure it raises on an invalid simple relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_reverse_relation(
+            _get_reverse_relation(
                 Continent,
                 'wrong'
             )
@@ -194,7 +194,7 @@ class GetReverseRelationTest(TestCase):
     def test_invalid_nested_relation(self):
         """Make sure it raises on an invalid nested relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_reverse_relation(
+            _get_reverse_relation(
                 Continent,
                 'countries__wrong'
             )
