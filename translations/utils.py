@@ -5,7 +5,7 @@ This module contains the utilities for the Translations app.
 
 :func:`_get_translation_language`
     Return a language code to use in the translation process.
-:func:`get_entity_details`
+:func:`_get_entity_details`
     Return the type and iteration details of an entity.
 :func:`get_reverse_relation`
     Return the reverse of a model's relation.
@@ -101,7 +101,7 @@ def _get_translation_language(lang=None):
     return lang
 
 
-def get_entity_details(entity):
+def _get_entity_details(entity):
     """
     Return the iteration and type details of an entity.
 
@@ -126,7 +126,7 @@ def get_entity_details(entity):
        translation process all together (because there's nothing to
        translate).
 
-    .. testsetup:: get_entity_details
+    .. testsetup:: _get_entity_details
 
        from tests.sample import create_samples
 
@@ -134,68 +134,68 @@ def get_entity_details(entity):
 
     To get the details of a list of instances:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        continents = list(Continent.objects.all())
-       details = get_entity_details(continents)
+       details = _get_entity_details(continents)
        print("Iterable: {}".format(details[0]))
        print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
        Iterable: True
        Model: <class 'sample.models.Continent'>
 
     To get the details of a queryset:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        continents = Continent.objects.all()
-       details = get_entity_details(continents)
+       details = _get_entity_details(continents)
        print("Iterable: {}".format(details[0]))
        print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
        Iterable: True
        Model: <class 'sample.models.Continent'>
 
     To get the details of an instance:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        europe = Continent.objects.get(code="EU")
-       details = get_entity_details(europe)
+       details = _get_entity_details(europe)
        print("Iterable: {}".format(details[0]))
        print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
        Iterable: False
        Model: <class 'sample.models.Continent'>
 
     To get the details of an empty list:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        empty = []
-       details = get_entity_details(empty)
+       details = _get_entity_details(empty)
        print("Iterable: {}".format(details[0]))
        print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
        Iterable: True
        Model: None
@@ -502,7 +502,7 @@ def get_translations(entity, *relations, lang=None):
        ]>
     """
     lang = _get_translation_language(lang)
-    iterable, model = get_entity_details(entity)
+    iterable, model = _get_entity_details(entity)
 
     if model is None:
         return translations.models.Translation.objects.none()
@@ -1128,7 +1128,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Köln
        City: München
     """
-    iterable, model = get_entity_details(entity)
+    iterable, model = _get_entity_details(entity)
 
     if model is None:
         return
@@ -1487,7 +1487,7 @@ def read_translations(entity, *relations, lang=None):
 
 def update_translations(entity, lang=None):
     lang = _get_translation_language(lang)
-    iterable, model = get_entity_details(entity)
+    iterable, model = _get_entity_details(entity)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):

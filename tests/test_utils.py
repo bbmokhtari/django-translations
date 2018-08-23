@@ -5,7 +5,7 @@ from django.utils.translation import activate, deactivate
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_translation_language, \
-    get_entity_details, get_reverse_relation, \
+    _get_entity_details, get_reverse_relation, \
     get_translations_reverse_relation, get_translations, \
     get_translations_dictionary, get_relations_hierarchy
 
@@ -53,7 +53,7 @@ class GetValidatedLanguageTest(TestCase):
 
 
 class GetEntityDetailsTest(TestCase):
-    """Tests for `get_entity_details`."""
+    """Tests for `_get_entity_details`."""
 
     def test_model_instance(self):
         """Make sure it works with a model instance."""
@@ -62,7 +62,7 @@ class GetEntityDetailsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertEqual(
-            get_entity_details(europe),
+            _get_entity_details(europe),
             (Continent, False)
         )
 
@@ -72,7 +72,7 @@ class GetEntityDetailsTest(TestCase):
 
         continents = Continent.objects.all()
         self.assertEqual(
-            get_entity_details(continents),
+            _get_entity_details(continents),
             (Continent, True)
         )
 
@@ -82,14 +82,14 @@ class GetEntityDetailsTest(TestCase):
 
         continents = list(Continent.objects.all())
         self.assertEqual(
-            get_entity_details(continents),
+            _get_entity_details(continents),
             (Continent, True)
         )
 
     def test_empty_list(self):
         """Make sure it works with an empty list."""
         self.assertEqual(
-            get_entity_details([]),
+            _get_entity_details([]),
             (None, True)
         )
 
@@ -97,7 +97,7 @@ class GetEntityDetailsTest(TestCase):
         """Make sure it works with an empty queryset."""
         continents = Continent.objects.none()
         self.assertEqual(
-            get_entity_details(continents),
+            _get_entity_details(continents),
             (None, True)
         )
 
@@ -115,7 +115,7 @@ class GetEntityDetailsTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            get_entity_details(behzad)
+            _get_entity_details(behzad)
         self.assertEqual(
             error.exception.args[0],
             "`Behzad` is neither a model instance nor an iterable of model instances."
@@ -137,7 +137,7 @@ class GetEntityDetailsTest(TestCase):
         people.append(Person('Behzad'))
         people.append(Person('Max'))
         with self.assertRaises(TypeError) as error:
-            get_entity_details(people)
+            _get_entity_details(people)
         self.assertEqual(
             error.exception.args[0],
             "`[Behzad, Max]` is neither a model instance nor an iterable of model instances."
