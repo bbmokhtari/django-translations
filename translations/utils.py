@@ -52,7 +52,7 @@ def _get_translation_language(lang=None):
     code, otherwise it returns the :term:`active language` code.
 
     :param lang: The custom language code to use in the translation process.
-        ``None`` defaults to the :term:`active language` code.
+        ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :return: The language code to use in the translation process.
     :rtype: str
