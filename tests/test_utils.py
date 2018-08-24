@@ -8,7 +8,7 @@ from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, \
     _get_translations_reverse_relation, _get_translations, \
     _get_translations_dictionary, _fill_hierarchy, _get_relations_hierarchy, \
-    apply_obj_translations
+    _apply_obj_translations
 
 from translations.models import Translation
 
@@ -2579,7 +2579,7 @@ class GetRelationsHierarchyTest(TestCase):
 
 
 class ApplyObjTranslations(TestCase):
-    """Tests for `apply_obj_translations`."""
+    """Tests for `_apply_obj_translations`."""
 
     def test_empty_ct_dictionary(self):
         create_samples(continent_names=["europe"])
@@ -2590,7 +2590,7 @@ class ApplyObjTranslations(TestCase):
         europe_ct = ContentType.objects.get_for_model(europe)
         ct_dictionary = dictionary.get(europe_ct.id, {})
 
-        apply_obj_translations(europe, ct_dictionary, included=True)
+        _apply_obj_translations(europe, ct_dictionary, included=True)
 
         self.assertEqual(
             europe.name,
@@ -2614,7 +2614,7 @@ class ApplyObjTranslations(TestCase):
         europe_ct = ContentType.objects.get_for_model(europe)
         ct_dictionary = dictionary[europe_ct.id]
 
-        apply_obj_translations(europe, ct_dictionary, included=True)
+        _apply_obj_translations(europe, ct_dictionary, included=True)
 
         self.assertEqual(
             europe.name,
@@ -2638,7 +2638,7 @@ class ApplyObjTranslations(TestCase):
         europe_ct = ContentType.objects.get_for_model(europe)
         ct_dictionary = dictionary[europe_ct.id]
 
-        apply_obj_translations(europe, ct_dictionary, included=False)
+        _apply_obj_translations(europe, ct_dictionary, included=False)
 
         self.assertEqual(
             europe.name,

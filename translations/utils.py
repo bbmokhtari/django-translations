@@ -20,7 +20,7 @@ This module contains the utilities for the Translations app.
     Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` of some relations.
-:func:`apply_obj_translations`
+:func:`_apply_obj_translations`
     Apply the content type of a :term:`translations dictionary` on an object.
 :func:`apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
@@ -797,7 +797,7 @@ def _get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def apply_obj_translations(obj, ct_dictionary, included=True):
+def _apply_obj_translations(obj, ct_dictionary, included=True):
     """
     Apply the content type of a :term:`translations dictionary` on an object.
 
@@ -815,7 +815,7 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
         :term:`translations dictionary` on the object or not.
     :type included: bool
 
-    .. testsetup:: apply_obj_translations
+    .. testsetup:: _apply_obj_translations
 
        from tests.sample import create_samples
 
@@ -828,13 +828,13 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
     To apply the content type of the :term:`translations dictionary` on an
     object:
 
-    .. testcode:: apply_obj_translations
+    .. testcode:: _apply_obj_translations
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import apply_obj_translations
+       from translations.utils import _apply_obj_translations
 
        europe = Continent.objects.get(code="EU")
        translations = _get_translations(europe, lang="de")
@@ -842,11 +842,11 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
        europe_ct = ContentType.objects.get_for_model(europe)
        ct_dictionary = dictionary[europe_ct.id]
 
-       apply_obj_translations(europe, ct_dictionary, included=True)
+       _apply_obj_translations(europe, ct_dictionary, included=True)
 
        print(europe)
 
-    .. testoutput:: apply_obj_translations
+    .. testoutput:: _apply_obj_translations
 
        Europa
     """
@@ -1136,10 +1136,10 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
     if iterable:
         for obj in entity:
-            apply_obj_translations(obj, ct_dictionary, included=included)
+            _apply_obj_translations(obj, ct_dictionary, included=included)
             apply_rel_translations(obj, hierarchy, dictionary)
     else:
-        apply_obj_translations(entity, ct_dictionary, included=included)
+        _apply_obj_translations(entity, ct_dictionary, included=included)
         apply_rel_translations(entity, hierarchy, dictionary)
 
 
