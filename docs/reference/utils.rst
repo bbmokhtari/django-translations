@@ -10,7 +10,7 @@ Utilities
    .. autofunction:: _get_entity_details
    .. autofunction:: _get_reverse_relation
    .. autofunction:: _get_translations_reverse_relation
-   .. autofunction:: get_translations
+   .. autofunction:: _get_translations
    .. autofunction:: get_translations_dictionary
    .. autofunction:: fill_hierarchy
    .. autofunction:: get_relations_hierarchy
