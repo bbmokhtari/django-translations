@@ -725,15 +725,15 @@ def _fill_hierarchy(hierarchy, *relation_parts):
 
 def get_relations_hierarchy(*relations):
     """
-    Return the :term:`relations hierarchy` of some relations.
+    Return the :term:`relations hierarchy` made out of some relations.
 
-    Processes the relations and returns the :term:`relations hierarchy`,
-    containing each level of relation and information about whether they are
-    included or not.
+    Processes the relations and returns the :term:`relations hierarchy` to
+    use in the translation process.
 
-    :param relations: The relations to get the hierarchy of.
+    :param relations: The relations to make the :term:`relations hierarchy`
+        out of.
     :type relations: list(str)
-    :return: The :term:`relations hierarchy`.
+    :return: The :term:`relations hierarchy` made out of relations.
     :rtype: dict(str, dict)
 
     To get the :term:`relations hierarchy` of a first-level relation:
