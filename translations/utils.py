@@ -9,7 +9,7 @@ This module contains the utilities for the Translations app.
     Return the type and iteration details of an entity.
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
-:func:`get_translations_reverse_relation`
+:func:`_get_translations_reverse_relation`
     Return the reverse of a model's translations relation or the translations
     relation of a model's relation.
 :func:`get_translations`
@@ -281,7 +281,7 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
-def get_translations_reverse_relation(model, relation=None):
+def _get_translations_reverse_relation(model, relation=None):
     """
     Return the reverse of a model's translations relation or the translations
     relation of a model's relation.
@@ -319,30 +319,30 @@ def get_translations_reverse_relation(model, relation=None):
 
     To get the reverse of the translations relation of a model's relation:
 
-    .. testcode:: get_translations_reverse_relation
+    .. testcode:: _get_translations_reverse_relation
 
        from sample.models import Continent
-       from translations.utils import get_translations_reverse_relation
+       from translations.utils import _get_translations_reverse_relation
 
-       reverse_relation = get_translations_reverse_relation(
+       reverse_relation = _get_translations_reverse_relation(
            Continent, 'countries__cities')
        print("Translation can be queried with '{}'".format(reverse_relation))
 
-    .. testoutput:: get_translations_reverse_relation
+    .. testoutput:: _get_translations_reverse_relation
 
        Translation can be queried with 'sample_city__country__continent'
 
     To get the reverse of a model's translations relation:
 
-    .. testcode:: get_translations_reverse_relation
+    .. testcode:: _get_translations_reverse_relation
 
        from sample.models import Continent
-       from translations.utils import get_translations_reverse_relation
+       from translations.utils import _get_translations_reverse_relation
 
-       reverse_relation = get_translations_reverse_relation(Continent)
+       reverse_relation = _get_translations_reverse_relation(Continent)
        print("Translation can be queried with '{}'".format(reverse_relation))
 
-    .. testoutput:: get_translations_reverse_relation
+    .. testoutput:: _get_translations_reverse_relation
 
        Translation can be queried with 'sample_continent'
     """
@@ -517,14 +517,14 @@ def get_translations(entity, *relations, lang=None):
     queries = []
 
     if issubclass(model, translations.models.Translatable):
-        trans = get_translations_reverse_relation(model)
+        trans = _get_translations_reverse_relation(model)
         prop = '{}__{}'.format(trans, condition)
         queries.append(
             models.Q(**{prop: value})
         )
 
     for relation in relations:
-        trans = get_translations_reverse_relation(model, relation)
+        trans = _get_translations_reverse_relation(model, relation)
         prop = '{}__{}'.format(trans, condition)
         queries.append(
             models.Q(**{prop: value})
