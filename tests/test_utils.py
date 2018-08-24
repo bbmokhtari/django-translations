@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, \
     _get_translations_reverse_relation, _get_translations, \
-    _get_translations_dictionary, get_relations_hierarchy
+    _get_translations_dictionary, _fill_hierarchy, get_relations_hierarchy
 
 from translations.models import Translation
 
@@ -2061,7 +2061,263 @@ class GetTranslationsDictionaryTest(TestCase):
         )
 
 
+class FillHierarchyTest(TestCase):
+    """Tests for `_fill_hierarchy`."""
+
+    def test_one_included_no_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': True,
+                    'relations': {}
+                }
+            }
+        )
+
+    def test_many_included_no_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries')
+        _fill_hierarchy(hierarchy, 'unions')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': True,
+                    'relations': {}
+                },
+                'unions': {
+                    'included': True,
+                    'relations': {}
+                },
+            }
+        )
+
+    def test_one_unincluded_one_nested_relation(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': False,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                }
+            }
+        )
+
+    def test_many_unincluded_one_nested_relation(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        _fill_hierarchy(hierarchy, 'unions', 'projects')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': False,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                },
+                'unions': {
+                    'included': False,
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                }
+            }
+        )
+
+    def test_one_uincluded_many_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        _fill_hierarchy(hierarchy, 'countries', 'currency')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': False,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                }
+            }
+        )
+
+    def test_many_uincluded_many_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        _fill_hierarchy(hierarchy, 'countries', 'currency')
+        _fill_hierarchy(hierarchy, 'unions', 'projects')
+        _fill_hierarchy(hierarchy, 'unions', 'currency')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': False,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                },
+                'unions': {
+                    'included': False,
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                }
+            }
+        )
+
+    def test_one_included_one_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries')
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': True,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                }
+            }
+        )
+
+    def test_many_included_one_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries')
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        _fill_hierarchy(hierarchy, 'unions')
+        _fill_hierarchy(hierarchy, 'unions', 'projects')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': True,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                },
+                'unions': {
+                    'included': True,
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                },
+            }
+        )
+
+    def test_one_included_many_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries')
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        _fill_hierarchy(hierarchy, 'countries', 'currency')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': True,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                }
+            }
+        )
+
+    def test_many_included_many_nested_relations(self):
+        hierarchy = {}
+        _fill_hierarchy(hierarchy, 'countries')
+        _fill_hierarchy(hierarchy, 'countries', 'cities')
+        _fill_hierarchy(hierarchy, 'countries', 'currency')
+        _fill_hierarchy(hierarchy, 'unions')
+        _fill_hierarchy(hierarchy, 'unions', 'projects')
+        _fill_hierarchy(hierarchy, 'unions', 'currency')
+        self.assertEqual(
+            hierarchy,
+            {
+                'countries': {
+                    'included': True,
+                    'relations': {
+                        'cities': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                },
+                'unions': {
+                    'included': True,
+                    'relations': {
+                        'projects': {
+                            'included': True,
+                            'relations': {}
+                        },
+                        'currency': {
+                            'included': True,
+                            'relations': {}
+                        }
+                    }
+                },
+            }
+        )
+
+
 class GetRelationsHierarchyTest(TestCase):
+    """Tests for `get_relations_hierarchy`."""
 
     def test_no_relations(self):
         self.assertDictEqual(
