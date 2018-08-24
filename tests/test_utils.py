@@ -7,7 +7,8 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, \
     _get_translations_reverse_relation, _get_translations, \
-    _get_translations_dictionary, _fill_hierarchy, _get_relations_hierarchy
+    _get_translations_dictionary, _fill_hierarchy, _get_relations_hierarchy, \
+    apply_obj_translations
 
 from translations.models import Translation
 
@@ -2574,4 +2575,76 @@ class GetRelationsHierarchyTest(TestCase):
                     }
                 },
             }
+        )
+
+
+class ApplyObjTranslations(TestCase):
+    """Tests for `apply_obj_translations`."""
+
+    def test_empty_ct_dictionary(self):
+        create_samples(continent_names=["europe"])
+
+        europe = Continent.objects.get(code="EU")
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
+        europe_ct = ContentType.objects.get_for_model(europe)
+        ct_dictionary = dictionary.get(europe_ct.id, {})
+
+        apply_obj_translations(europe, ct_dictionary, included=True)
+
+        self.assertEqual(
+            europe.name,
+            "Europe"
+        )
+        self.assertEqual(
+            europe.denonym,
+            "European"
+        )
+
+    def test_ct_dictionary(self):
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
+        europe_ct = ContentType.objects.get_for_model(europe)
+        ct_dictionary = dictionary[europe_ct.id]
+
+        apply_obj_translations(europe, ct_dictionary, included=True)
+
+        self.assertEqual(
+            europe.name,
+            "Europa"
+        )
+        self.assertEqual(
+            europe.denonym,
+            "Europäisch"
+        )
+
+    def test_included(self):
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
+        europe_ct = ContentType.objects.get_for_model(europe)
+        ct_dictionary = dictionary[europe_ct.id]
+
+        apply_obj_translations(europe, ct_dictionary, included=False)
+
+        self.assertEqual(
+            europe.name,
+            "Europe"
+        )
+        self.assertEqual(
+            europe.denonym,
+            "European"
         )
