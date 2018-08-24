@@ -18,7 +18,7 @@ This module contains the utilities for the Translations app.
     Return the :term:`translations dictionary` out of some translations.
 :func:`_fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
-:func:`get_relations_hierarchy`
+:func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` of some relations.
 :func:`apply_obj_translations`
     Apply the content type of a :term:`translations dictionary` on an object.
@@ -723,7 +723,7 @@ def _fill_hierarchy(hierarchy, *relation_parts):
         hierarchy[root]["included"] = True
 
 
-def get_relations_hierarchy(*relations):
+def _get_relations_hierarchy(*relations):
     """
     Return the :term:`relations hierarchy` made out of some relations.
 
@@ -740,9 +740,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy('countries'))
+       print(_get_relations_hierarchy('countries'))
 
     .. testoutput::
 
@@ -753,9 +753,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy('countries__cities'))
+       print(_get_relations_hierarchy('countries__cities'))
 
     .. testoutput::
 
@@ -768,9 +768,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy('countries', 'countries__cities'))
+       print(_get_relations_hierarchy('countries', 'countries__cities'))
 
     .. testoutput::
 
@@ -782,9 +782,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy())
+       print(_get_relations_hierarchy())
 
     .. testoutput::
 
@@ -919,7 +919,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_rel_translations
 
        europe = Continent.objects.prefetch_related(
@@ -927,7 +927,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
        ).get(code="EU")
        translations = _get_translations(europe, 'countries', lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy('countries')
+       hierarchy = _get_relations_hierarchy('countries')
 
        apply_rel_translations(europe, hierarchy, dictionary)
 
@@ -1019,7 +1019,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1029,7 +1029,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        translations = _get_translations(continents, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy(*relations)
+       hierarchy = _get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
 
@@ -1059,7 +1059,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1068,7 +1068,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        translations = _get_translations(continents, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy(*relations)
+       hierarchy = _get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
 
@@ -1099,7 +1099,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1109,7 +1109,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        translations = _get_translations(europe, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy(*relations)
+       hierarchy = _get_relations_hierarchy(*relations)
 
        apply_translations(europe, hierarchy, dictionary)
 
@@ -1470,7 +1470,7 @@ def read_translations(entity, *relations, lang=None):
           City: Seül # Correct
           City: Ulsän # Correct
     """
-    hierarchy = get_relations_hierarchy(*relations)
+    hierarchy = _get_relations_hierarchy(*relations)
 
     dictionary = _get_translations_dictionary(
         _get_translations(

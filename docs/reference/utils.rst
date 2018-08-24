@@ -13,7 +13,7 @@ Utilities
    .. autofunction:: _get_translations
    .. autofunction:: _get_translations_dictionary
    .. autofunction:: _fill_hierarchy
-   .. autofunction:: get_relations_hierarchy
+   .. autofunction:: _get_relations_hierarchy
    .. autofunction:: apply_obj_translations
    .. autofunction:: apply_rel_translations
    .. autofunction:: apply_translations

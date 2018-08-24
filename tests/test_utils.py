@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, \
     _get_translations_reverse_relation, _get_translations, \
-    _get_translations_dictionary, _fill_hierarchy, get_relations_hierarchy
+    _get_translations_dictionary, _fill_hierarchy, _get_relations_hierarchy
 
 from translations.models import Translation
 
@@ -2317,17 +2317,17 @@ class FillHierarchyTest(TestCase):
 
 
 class GetRelationsHierarchyTest(TestCase):
-    """Tests for `get_relations_hierarchy`."""
+    """Tests for `_get_relations_hierarchy`."""
 
     def test_no_relations(self):
         self.assertDictEqual(
-            get_relations_hierarchy(),
+            _get_relations_hierarchy(),
             {}
         )
 
     def test_one_included_no_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries'
             ),
             {
@@ -2340,7 +2340,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_many_included_no_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries',
                 'unions'
             ),
@@ -2358,7 +2358,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_one_unincluded_one_nested_relation(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries__cities'
             ),
             {
@@ -2376,7 +2376,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_many_unincluded_one_nested_relation(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries__cities',
                 'unions__projects',
             ),
@@ -2404,7 +2404,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_one_uincluded_many_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries__cities',
                 'countries__currency'
             ),
@@ -2427,7 +2427,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_many_uincluded_many_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries__cities',
                 'countries__currency',
                 'unions__projects',
@@ -2465,7 +2465,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_one_included_one_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries',
                 'countries__cities'
             ),
@@ -2484,7 +2484,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_many_included_one_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries',
                 'countries__cities',
                 'unions',
@@ -2514,7 +2514,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_one_included_many_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries',
                 'countries__cities',
                 'countries__currency'
@@ -2538,7 +2538,7 @@ class GetRelationsHierarchyTest(TestCase):
 
     def test_many_included_many_nested_relations(self):
         self.assertEqual(
-            get_relations_hierarchy(
+            _get_relations_hierarchy(
                 'countries',
                 'countries__cities',
                 'countries__currency',
