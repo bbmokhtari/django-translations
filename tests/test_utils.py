@@ -1813,14 +1813,11 @@ class GetTranslationsTest(TestCase):
 
 
 class GetTranslationsDictionaryTest(TestCase):
+    """Tests for `get_translations_dictionary`."""
 
-    def test_translations_none(self):
-        create_samples(continent_names=["europe"])
-
-        europe = Continent.objects.get(code="EU")
-
+    def test_none(self):
         self.assertDictEqual(
-            get_translations_dictionary(europe.translations.all()),
+            get_translations_dictionary(Translation.objects.none()),
             {}
         )
 
