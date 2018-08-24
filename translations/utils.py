@@ -298,26 +298,26 @@ def get_translations_reverse_relation(model, relation=None):
     :class:`~translations.models.Translation` model to the model indirectly
     (through the reverse relation).
 
-    :param model: The model which contains the ``translations`` relation
-        directly or indirectly and which the reverse relation points to
-        (either it contains the ``translations`` relation itself, or the
-        specified relation contains it).
+    :param model: The model which contains the translations relation directly
+        or indirectly (either it contains the translations relation itself, or
+        the specified relation contains it) and which the reverse relation
+        points to.
     :type model: type(~django.db.models.Model)
-    :param relation: The relation of the model to get the ``translations``
+    :param relation: The relation of the model to get the translations
         relation's reverse of.
-        It may be composed of many ``related_query_name`` separated by
+        It may be composed of many ``related_query_name``\\ s separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
-        ``None`` means the reverse relation of the model's ``translations``
+        ``None`` means the reverse relation of the model's translations
         relation should be returned.
     :type relation: str or None
-    :return: The reverse of the translations relation.
+    :return: The reverse of the model’s translations relation or the
+        translations relation of the model’s relation.
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist.
 
-    To get the reverse relation of the translations relation of a model's
-    relation:
+    To get the reverse of the translations relation of a model's relation:
 
     .. testcode:: get_translations_reverse_relation
 
@@ -332,7 +332,7 @@ def get_translations_reverse_relation(model, relation=None):
 
        Translation can be queried with 'sample_city__country__continent'
 
-    To get the reverse relation of a model's translations relation:
+    To get the reverse of a model's translations relation:
 
     .. testcode:: get_translations_reverse_relation
 
