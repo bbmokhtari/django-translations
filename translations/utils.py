@@ -809,10 +809,10 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
         :term:`translations dictionary` on.
     :type obj: ~django.db.models.Model
     :param ct_dictionary: The content type of the
-        :term:`translations dictionary`.
+        :term:`translations dictionary` to be applied on the object.
     :type ct_dictionary: dict(str, dict(str, str))
     :param included: Whether to apply the content type of the
-        :term:`translations dictionary` or not.
+        :term:`translations dictionary` on the object or not.
     :type included: bool
 
     .. testsetup:: apply_obj_translations
