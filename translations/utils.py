@@ -3,18 +3,18 @@ This module contains the utilities for the Translations app.
 
 .. rubric:: Functions:
 
-:func:`get_translation_language`
-    Return a language code for the translation process.
-:func:`get_entity_details`
+:func:`_get_translation_language`
+    Return a language code to use in the translation process.
+:func:`_get_entity_details`
     Return the type and iteration details of an entity.
-:func:`get_reverse_relation`
+:func:`_get_reverse_relation`
     Return the reverse of a model's relation.
-:func:`get_translations_reverse_relation`
+:func:`_get_translations_reverse_relation`
     Return the reverse of a model's translations relation or the translations
     relation of a model's relation.
-:func:`get_translations`
+:func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
-:func:`get_translations_dictionary`
+:func:`_get_translations_dictionary`
     Return the :term:`translations dictionary` out of some translations.
 :func:`fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
@@ -44,59 +44,50 @@ import translations.models
 __docformat__ = 'restructuredtext'
 
 
-def get_translation_language(lang=None):
+def _get_translation_language(lang=None):
     """
-    Return a language code for the translation process.
+    Return a language code to use in the translation process.
 
-    If the language is not passed in, it returns the active language code
-    [#active_language]_, otherwise it returns the custom language code
-    indicated by the language.
+    If the custom language code is passed in it returns the custom language
+    code, otherwise it returns the :term:`active language` code.
 
-    :param lang: A custom language code.
-        ``None`` means use the active language code.
+    :param lang: The custom language code to use in the translation process.
+        ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :return: The language code for the translation process.
+    :return: The language code to use in the translation process.
     :rtype: str
     :raise ValueError: If the language code is not specified in
         the :data:`~django.conf.settings.LANGUAGES` setting.
 
-    .. [#active_language]
-       The active language code is a language code determined automatically
-       by Django. It is not a global system-wide setting, but it is rather a
-       per-request setting, usually determined by the ``Accept-Language``
-       header received in each HTTP request (from the browser or another
-       client). You can access it using
-       :func:`~django.utils.translation.get_language` in each view.
-
-    .. testsetup:: get_translation_language
+    .. testsetup:: _get_translation_language
 
        from django.utils.translation import activate
 
        activate('en')
 
-    To get the active language code:
+    To get the :term:`active language` code:
 
-    .. testcode:: get_translation_language
+    .. testcode:: _get_translation_language
 
-       from translations.utils import get_translation_language
+       from translations.utils import _get_translation_language
 
-       active = get_translation_language()
+       active = _get_translation_language()
        print("Language code: {}".format(active))
 
-    .. testoutput:: get_translation_language
+    .. testoutput:: _get_translation_language
 
        Language code: en
 
     To get a custom language code:
 
-    .. testcode:: get_translation_language
+    .. testcode:: _get_translation_language
 
-       from translations.utils import get_translation_language
+       from translations.utils import _get_translation_language
 
-       custom = get_translation_language('de')
+       custom = _get_translation_language('de')
        print("Language code: {}".format(custom))
 
-    .. testoutput:: get_translation_language
+    .. testoutput:: _get_translation_language
 
        Language code: de
     """
@@ -110,31 +101,32 @@ def get_translation_language(lang=None):
     return lang
 
 
-def get_entity_details(entity):
+def _get_entity_details(entity):
     """
-    Return the type and iteration details of an entity.
+    Return the iteration and type details of an entity.
 
-    Determines if an entity is iterable or not, if so it returns the type of
-    the first object in the iteration and the entity as iterable (since it
-    assumes all the objects in the iteration are of the same type), otherwise
-    it returns the type of the entity itself and the entity as not iterable.
+    If the entity is an iterable it returns the entity as iterable and the
+    type of the first object in the iteration (since it assumes all the
+    objects in the iteration are of the same type), otherwise it returns the
+    entity as not iterable and the type of the entity.
 
     :param entity: The entity to get the details of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :return: The details of the entity as (model, iterable).
-    :rtype: tuple(type(~django.db.models.Model), bool)
+    :return: The details of the entity as (iterable, model).
+    :rtype: tuple(bool, type(~django.db.models.Model))
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
 
     .. note::
        If the entity is an empty iterable it returns the model as ``None``,
-       even if the iterable is an empty queryset which the model for it can be
-       retrieved. It's because other parts of the code first check to see if
-       the model of the details is ``None``, in that case they skip the
-       translation process all together, because there's nothing to translate.
+       even if the iterable is an empty queryset (which its model can be
+       retrieved). It's because the other parts of the code first check to see
+       if the model in the details is ``None``, in that case they skip the
+       translation process all together (because there's nothing to
+       translate).
 
-    .. testsetup:: get_entity_details
+    .. testsetup:: _get_entity_details
 
        from tests.sample import create_samples
 
@@ -142,71 +134,71 @@ def get_entity_details(entity):
 
     To get the details of a list of instances:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        continents = list(Continent.objects.all())
-       details = get_entity_details(continents)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       details = _get_entity_details(continents)
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
-       Model: <class 'sample.models.Continent'>
        Iterable: True
+       Model: <class 'sample.models.Continent'>
 
     To get the details of a queryset:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        continents = Continent.objects.all()
-       details = get_entity_details(continents)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       details = _get_entity_details(continents)
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
-       Model: <class 'sample.models.Continent'>
        Iterable: True
+       Model: <class 'sample.models.Continent'>
 
     To get the details of an instance:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        europe = Continent.objects.get(code="EU")
-       details = get_entity_details(europe)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       details = _get_entity_details(europe)
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
-       Model: <class 'sample.models.Continent'>
        Iterable: False
+       Model: <class 'sample.models.Continent'>
 
     To get the details of an empty list:
 
-    .. testcode:: get_entity_details
+    .. testcode:: _get_entity_details
 
        from sample.models import Continent
-       from translations.utils import get_entity_details
+       from translations.utils import _get_entity_details
 
        empty = []
-       details = get_entity_details(empty)
-       print("Model: {}".format(details[0]))
-       print("Iterable: {}".format(details[1]))
+       details = _get_entity_details(empty)
+       print("Iterable: {}".format(details[0]))
+       print("Model: {}".format(details[1]))
 
-    .. testoutput:: get_entity_details
+    .. testoutput:: _get_entity_details
 
-       Model: None
        Iterable: True
+       Model: None
     """
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
@@ -229,10 +221,10 @@ def get_entity_details(entity):
     else:
         raise TypeError(error_message)
 
-    return model, iterable
+    return (iterable, model)
 
 
-def get_reverse_relation(model, relation):
+def _get_reverse_relation(model, relation):
     """
     Return the reverse of a model's relation.
 
@@ -244,26 +236,26 @@ def get_reverse_relation(model, relation):
         relation points to.
     :type model: type(~django.db.models.Model)
     :param relation: The relation of the model to get the reverse of.
-        It may be composed of many ``related_query_name`` separated by
+        It may be composed of many ``related_query_name``\\ s separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
     :type relation: str
-    :return: The reverse of the relation.
+    :return: The reverse of the model's relation.
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist.
 
-    To get the reverse relation of a model's relation:
+    To get the reverse of a model's relation:
 
-    .. testcode:: get_reverse_relation
+    .. testcode:: _get_reverse_relation
 
        from sample.models import Continent
-       from translations.utils import get_reverse_relation
+       from translations.utils import _get_reverse_relation
 
-       reverse_relation = get_reverse_relation(Continent, 'countries__cities')
+       reverse_relation = _get_reverse_relation(Continent, 'countries__cities')
        print("City can be queried with '{}'".format(reverse_relation))
 
-    .. testoutput:: get_reverse_relation
+    .. testoutput:: _get_reverse_relation
 
        City can be queried with 'country__continent'
     """
@@ -277,7 +269,7 @@ def get_reverse_relation(model, relation):
     if branch:
         branch_model = field.related_model
         branch_relation = LOOKUP_SEP.join(branch)
-        branch_reverse_relation = get_reverse_relation(
+        branch_reverse_relation = _get_reverse_relation(
             branch_model,
             branch_relation
         )
@@ -289,7 +281,7 @@ def get_reverse_relation(model, relation):
         return reverse_relation
 
 
-def get_translations_reverse_relation(model, relation=None):
+def _get_translations_reverse_relation(model, relation=None):
     """
     Return the reverse of a model's translations relation or the translations
     relation of a model's relation.
@@ -306,51 +298,51 @@ def get_translations_reverse_relation(model, relation=None):
     :class:`~translations.models.Translation` model to the model indirectly
     (through the reverse relation).
 
-    :param model: The model which contains the ``translations`` relation
-        directly or indirectly and which the reverse relation points to
-        (either it contains the ``translations`` relation itself, or the
-        specified relation contains it).
+    :param model: The model which contains the translations relation directly
+        or indirectly (either it contains the translations relation itself, or
+        the specified relation contains it) and which the reverse relation
+        points to.
     :type model: type(~django.db.models.Model)
-    :param relation: The relation of the model to get the ``translations``
+    :param relation: The relation of the model to get the translations
         relation's reverse of.
-        It may be composed of many ``related_query_name`` separated by
+        It may be composed of many ``related_query_name``\\ s separated by
         :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
         represent a deeply nested relation.
-        ``None`` means the reverse relation of the model's ``translations``
+        ``None`` means the reverse relation of the model's translations
         relation should be returned.
     :type relation: str or None
-    :return: The reverse of the translations relation.
+    :return: The reverse of the model’s translations relation or the
+        translations relation of the model’s relation.
     :rtype: str
     :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
         pointing to the fields that don't exist.
 
-    To get the reverse relation of the translations relation of a model's
-    relation:
+    To get the reverse of the translations relation of a model's relation:
 
-    .. testcode:: get_translations_reverse_relation
+    .. testcode:: _get_translations_reverse_relation
 
        from sample.models import Continent
-       from translations.utils import get_translations_reverse_relation
+       from translations.utils import _get_translations_reverse_relation
 
-       reverse_relation = get_translations_reverse_relation(
+       reverse_relation = _get_translations_reverse_relation(
            Continent, 'countries__cities')
        print("Translation can be queried with '{}'".format(reverse_relation))
 
-    .. testoutput:: get_translations_reverse_relation
+    .. testoutput:: _get_translations_reverse_relation
 
        Translation can be queried with 'sample_city__country__continent'
 
-    To get the reverse relation of a model's translations relation:
+    To get the reverse of a model's translations relation:
 
-    .. testcode:: get_translations_reverse_relation
+    .. testcode:: _get_translations_reverse_relation
 
        from sample.models import Continent
-       from translations.utils import get_translations_reverse_relation
+       from translations.utils import _get_translations_reverse_relation
 
-       reverse_relation = get_translations_reverse_relation(Continent)
+       reverse_relation = _get_translations_reverse_relation(Continent)
        print("Translation can be queried with '{}'".format(reverse_relation))
 
-    .. testoutput:: get_translations_reverse_relation
+    .. testoutput:: _get_translations_reverse_relation
 
        Translation can be queried with 'sample_continent'
     """
@@ -359,10 +351,10 @@ def get_translations_reverse_relation(model, relation=None):
     else:
         translations_relation = '{}__{}'.format(relation, 'translations')
 
-    return get_reverse_relation(model, translations_relation)
+    return _get_reverse_relation(model, translations_relation)
 
 
-def get_translations(entity, *relations, lang=None):
+def _get_translations(entity, *relations, lang=None):
     """
     Return the translations of an entity and the relations of it in a language.
 
@@ -377,7 +369,7 @@ def get_translations(entity, *relations, lang=None):
         translations of.
     :type relations: list(str)
     :param lang: The language to fetch the translations in.
-        ``None`` means use the active language code. [#active_language]_
+        ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :return: The translations.
     :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
@@ -388,7 +380,7 @@ def get_translations(entity, *relations, lang=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. testsetup:: get_translations
+    .. testsetup:: _get_translations
 
        from tests.sample import create_samples
 
@@ -402,17 +394,16 @@ def get_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To get the translations of a list of instances and the relations of each
-    instance:
+    To get the translations of a list of instances and the relations of them:
 
-    .. testcode:: get_translations
+    .. testcode:: _get_translations
 
        from sample.models import Continent
-       from translations.utils import get_translations
+       from translations.utils import _get_translations
 
        continents = list(Continent.objects.all())
 
-       translations = get_translations(
+       translations = _get_translations(
            continents,
            "countries", "countries__cities",
            lang="de"
@@ -420,7 +411,7 @@ def get_translations(entity, *relations, lang=None):
 
        print(translations)
 
-    .. testoutput:: get_translations
+    .. testoutput:: _get_translations
 
        <QuerySet [
            <Translation: Europe: Europa>,
@@ -441,16 +432,16 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Ulsanian: Ulsänisch>
        ]>
 
-    To get the translations of a queryset and the relations of each instance:
+    To get the translations of a queryset and the relations of it:
 
-    .. testcode:: get_translations
+    .. testcode:: _get_translations
 
        from sample.models import Continent
-       from translations.utils import get_translations
+       from translations.utils import _get_translations
 
        continents = Continent.objects.all()
 
-       translations = get_translations(
+       translations = _get_translations(
            continents,
            "countries", "countries__cities",
            lang="de"
@@ -458,7 +449,7 @@ def get_translations(entity, *relations, lang=None):
 
        print(translations)
 
-    .. testoutput:: get_translations
+    .. testoutput:: _get_translations
 
        <QuerySet [
            <Translation: Europe: Europa>,
@@ -481,14 +472,14 @@ def get_translations(entity, *relations, lang=None):
 
     To get the translations of an instance and the relations of it:
 
-    .. testcode:: get_translations
+    .. testcode:: _get_translations
 
        from sample.models import Continent
-       from translations.utils import get_translations
+       from translations.utils import _get_translations
 
        europe = Continent.objects.get(code="EU")
 
-       translations = get_translations(
+       translations = _get_translations(
            europe,
            "countries", "countries__cities",
            lang="de"
@@ -496,7 +487,7 @@ def get_translations(entity, *relations, lang=None):
 
        print(translations)
 
-    .. testoutput:: get_translations
+    .. testoutput:: _get_translations
 
        <QuerySet [
            <Translation: Europe: Europa>,
@@ -509,8 +500,8 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Munichian: Münchner>
        ]>
     """
-    lang = get_translation_language(lang)
-    model, iterable = get_entity_details(entity)
+    lang = _get_translation_language(lang)
+    iterable, model = _get_entity_details(entity)
 
     if model is None:
         return translations.models.Translation.objects.none()
@@ -525,14 +516,14 @@ def get_translations(entity, *relations, lang=None):
     queries = []
 
     if issubclass(model, translations.models.Translatable):
-        trans = get_translations_reverse_relation(model)
+        trans = _get_translations_reverse_relation(model)
         prop = '{}__{}'.format(trans, condition)
         queries.append(
             models.Q(**{prop: value})
         )
 
     for relation in relations:
-        trans = get_translations_reverse_relation(model, relation)
+        trans = _get_translations_reverse_relation(model, relation)
         prop = '{}__{}'.format(trans, condition)
         queries.append(
             models.Q(**{prop: value})
@@ -554,25 +545,26 @@ def get_translations(entity, *relations, lang=None):
     return queryset
 
 
-def get_translations_dictionary(translations):
+def _get_translations_dictionary(translations):
     """
-    Return the :term:`translations dictionary` out of some translations.
+    Return the :term:`translations dictionary` made out of some translations.
 
     Processes the translations and returns the :term:`translations dictionary`
-    to use for the translation process.
+    to use in the translation process.
 
-    :param translations: The translations to process.
+    :param translations: The translations to make
+        the :term:`translations dictionary` out of.
     :type translations: ~django.db.models.query.QuerySet(\\
         ~translations.models.Translation)
-    :return: The :term:`translations dictionary`.
+    :return: The :term:`translations dictionary` made out of translations.
     :rtype: dict(int, dict(str, dict(str, str)))
 
     .. warning::
        The translations **must** be filtered in a language before being passed
-       in, otherwise the instances which come later in the translations may
-       override the earlier ones.
+       in, otherwise the :term:`translations dictionary` may end up being a
+       mix of several languages.
 
-    .. testsetup:: get_translations_dictionary
+    .. testsetup:: _get_translations_dictionary
 
        from tests.sample import create_samples
 
@@ -586,17 +578,17 @@ def get_translations_dictionary(translations):
            langs=["de"]
        )
 
-    To get the translations dictionary of the german translations.
+    To get the :term:`translations dictionary` of the german translations.
 
-    .. testcode:: get_translations_dictionary
+    .. testcode:: _get_translations_dictionary
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent, Country, City
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.models import Translation
 
        translations = Translation.objects.filter(language="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
 
        continent_ct = ContentType.objects.get_for_model(Continent).id
        continent_translations = list(dictionary[continent_ct].items())
@@ -619,7 +611,7 @@ def get_translations_dictionary(translations):
        for id, translation in city_translations:
            print(translation)
 
-    .. testoutput:: get_translations_dictionary
+    .. testoutput:: _get_translations_dictionary
 
        Continent translations:
        {'denonym': 'Europäisch', 'name': 'Europa'}
@@ -842,13 +834,13 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent
-       from translations.utils import get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations
+       from translations.utils import _get_translations_dictionary
        from translations.utils import apply_obj_translations
 
        europe = Continent.objects.get(code="EU")
-       translations = get_translations(europe, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       translations = _get_translations(europe, lang="de")
+       dictionary = _get_translations_dictionary(translations)
        europe_ct = ContentType.objects.get_for_model(europe)
        ct_dictionary = dictionary[europe_ct.id]
 
@@ -927,16 +919,16 @@ def apply_rel_translations(obj, hierarchy, dictionary):
     .. testcode:: apply_rel_translations
 
        from sample.models import Continent
-       from translations.utils import get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_rel_translations
 
        europe = Continent.objects.prefetch_related(
            'countries'
        ).get(code="EU")
-       translations = get_translations(europe, 'countries', lang="de")
-       dictionary = get_translations_dictionary(translations)
+       translations = _get_translations(europe, 'countries', lang="de")
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy('countries')
 
        apply_rel_translations(europe, hierarchy, dictionary)
@@ -1027,8 +1019,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
-       from translations.utils import get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_translations
 
@@ -1037,8 +1029,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        continents = list(Continent.objects.all())
        prefetch_related_objects(continents, *relations)
 
-       translations = get_translations(continents, *relations, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       translations = _get_translations(continents, *relations, lang="de")
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
@@ -1067,8 +1059,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     .. testcode:: apply_translations
 
        from sample.models import Continent
-       from translations.utils import get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_translations
 
@@ -1076,8 +1068,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        continents = Continent.objects.prefetch_related(*relations).all()
 
-       translations = get_translations(continents, *relations, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       translations = _get_translations(continents, *relations, lang="de")
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
@@ -1107,8 +1099,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
-       from translations.utils import get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_translations
 
@@ -1117,8 +1109,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        europe = Continent.objects.get(code="EU")
        prefetch_related_objects([europe], *relations)
 
-       translations = get_translations(europe, *relations, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       translations = _get_translations(europe, *relations, lang="de")
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy(*relations)
 
        apply_translations(europe, hierarchy, dictionary)
@@ -1136,7 +1128,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Köln
        City: München
     """
-    model, iterable = get_entity_details(entity)
+    iterable, model = _get_entity_details(entity)
 
     if model is None:
         return
@@ -1170,7 +1162,7 @@ def read_translations(entity, *relations, lang=None):
     :param relations: The relations of the entity to translate.
     :type relations: list(str)
     :param lang: The language to translate in.
-        ``None`` means use the active language code. [#active_language]_
+        ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :param dictionary: The translations dictionary to use for the translation
         process.
@@ -1482,8 +1474,8 @@ def read_translations(entity, *relations, lang=None):
     """
     hierarchy = get_relations_hierarchy(*relations)
 
-    dictionary = get_translations_dictionary(
-        get_translations(
+    dictionary = _get_translations_dictionary(
+        _get_translations(
             entity,
             *relations,
             lang=lang
@@ -1494,8 +1486,8 @@ def read_translations(entity, *relations, lang=None):
 
 
 def update_translations(entity, lang=None):
-    lang = get_translation_language(lang)
-    model, iterable = get_entity_details(entity)
+    lang = _get_translation_language(lang)
+    iterable, model = _get_entity_details(entity)
 
     # ------------ renew transaction
     if issubclass(model, translations.models.Translatable):
@@ -1503,7 +1495,7 @@ def update_translations(entity, lang=None):
         try:
             with transaction.atomic():
                 # ------------ delete old translations
-                translations_queryset = get_translations(
+                translations_queryset = _get_translations(
                     entity,
                     lang=lang
                 )

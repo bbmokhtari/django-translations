@@ -8,20 +8,12 @@ class TranslatableManager(models.Manager):
     def get_queryset(self):
         return TranslatableQuerySet(self.model, using=self._db)
 
-    def get_translations(self, *relations, lang=None):
-        return self.get_queryset().get_translations(
-            *relations,
-            lang=lang
-        )
-
     def get_translated(self,
                        *relations,
-                       lang=None,
-                       dictionary=None):
+                       lang=None):
         return self.get_queryset().get_translated(
             *relations,
-            lang=lang,
-            dictionary=dictionary
+            lang=lang
         )
 
     def create_translated(self, lang=None, **kwargs):

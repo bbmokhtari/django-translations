@@ -1,18 +1,14 @@
 from django.db import models, transaction
 
-from translations.utils import get_translations, read_translations, update_translations
+from translations.utils import read_translations, update_translations
 
 
 class TranslatableQuerySet(models.QuerySet):
 
-    def get_translations(self, *relations, lang=None):
-        return get_translations(self, *relations, lang=lang)
-
-    def get_translated(self, *relations, lang=None, dictionary=None):
+    def get_translated(self, *relations, lang=None):
         read_translations(
             self, *relations,
-            lang=lang,
-            dictionary=dictionary
+            lang=lang
         )
         return self
 

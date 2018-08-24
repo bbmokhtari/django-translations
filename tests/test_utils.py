@@ -4,10 +4,10 @@ from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate, deactivate
 from django.contrib.contenttypes.models import ContentType
 
-from translations.utils import get_translation_language, \
-    get_entity_details, get_reverse_relation, \
-    get_translations_reverse_relation, get_translations, \
-    get_translations_dictionary, get_relations_hierarchy
+from translations.utils import _get_translation_language, \
+    _get_entity_details, _get_reverse_relation, \
+    _get_translations_reverse_relation, _get_translations, \
+    _get_translations_dictionary, get_relations_hierarchy
 
 from translations.models import Translation
 
@@ -16,36 +16,28 @@ from sample.models import Continent, Country, City
 from .sample import create_samples
 
 
-class GetValidatedLanguageTest(TestCase):
-    """Tests for `get_translation_language`."""
+class GetTranslationLanguageTest(TestCase):
+    """Tests for `_get_translation_language`."""
 
     def test_active_lang(self):
         """Make sure it works with an active language."""
         activate('en')
         self.assertEqual(
-            get_translation_language(),
+            _get_translation_language(),
             'en'
         )
 
-    def test_new_active_lang(self):
-        """Make sure it works with a new active language."""
-        activate('de')
-        self.assertEqual(
-            get_translation_language(),
-            'de'
-        )
-
-    def test_valid_lang(self):
+    def test_custom_lang(self):
         """Make sure it works with a valid language code."""
         self.assertEqual(
-            get_translation_language('de'),
+            _get_translation_language('de'),
             'de'
         )
 
     def test_invalid_lang(self):
         """Make sure it raises on an invalid language code."""
         with self.assertRaises(ValueError) as error:
-            get_translation_language('xx')
+            _get_translation_language('xx')
         self.assertEqual(
             error.exception.args[0],
             "The language code `xx` is not supported."
@@ -53,72 +45,52 @@ class GetValidatedLanguageTest(TestCase):
 
 
 class GetEntityDetailsTest(TestCase):
-    """Tests for `get_entity_details`."""
+    """Tests for `_get_entity_details`."""
 
-    def test_model_instance(self):
+    def test_iterable(self):
+        """Make sure it works with a model iterable."""
+        create_samples(continent_names=["europe", "asia"])
+
+        continents = list(Continent.objects.all())
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, Continent)
+        )
+
+    def test_queryset(self):
+        """Make sure it works with a model queryset."""
+        create_samples(continent_names=["europe", "asia"])
+
+        continents = Continent.objects.all()
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, Continent)
+        )
+
+    def test_instance(self):
         """Make sure it works with a model instance."""
         create_samples(continent_names=["europe"])
 
         europe = Continent.objects.get(code="EU")
 
         self.assertEqual(
-            get_entity_details(europe),
-            (Continent, False)
+            _get_entity_details(europe),
+            (False, Continent)
         )
 
-    def test_model_queryset(self):
-        """Make sure it works with a model queryset."""
-        create_samples(continent_names=["europe", "asia"])
-
-        continents = Continent.objects.all()
-        self.assertEqual(
-            get_entity_details(continents),
-            (Continent, True)
-        )
-
-    def test_model_iterable(self):
-        """Make sure it works with a model iterable."""
-        create_samples(continent_names=["europe", "asia"])
-
-        continents = list(Continent.objects.all())
-        self.assertEqual(
-            get_entity_details(continents),
-            (Continent, True)
-        )
-
-    def test_empty_list(self):
+    def test_empty_iterable(self):
         """Make sure it works with an empty list."""
         self.assertEqual(
-            get_entity_details([]),
-            (None, True)
+            _get_entity_details([]),
+            (True, None)
         )
 
     def test_empty_queryset(self):
         """Make sure it works with an empty queryset."""
         continents = Continent.objects.none()
         self.assertEqual(
-            get_entity_details(continents),
-            (None, True)
-        )
-
-    def test_invalid_instance(self):
-        """Make sure it raises on invalid instance."""
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-        with self.assertRaises(TypeError) as error:
-            get_entity_details(behzad)
-        self.assertEqual(
-            error.exception.args[0],
-            "`Behzad` is neither a model instance nor an iterable of model instances."
+            _get_entity_details(continents),
+            (True, None)
         )
 
     def test_invalid_iterable(self):
@@ -137,48 +109,68 @@ class GetEntityDetailsTest(TestCase):
         people.append(Person('Behzad'))
         people.append(Person('Max'))
         with self.assertRaises(TypeError) as error:
-            get_entity_details(people)
+            _get_entity_details(people)
         self.assertEqual(
             error.exception.args[0],
             "`[Behzad, Max]` is neither a model instance nor an iterable of model instances."
         )
 
+    def test_invalid_instance(self):
+        """Make sure it raises on invalid instance."""
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+        with self.assertRaises(TypeError) as error:
+            _get_entity_details(behzad)
+        self.assertEqual(
+            error.exception.args[0],
+            "`Behzad` is neither a model instance nor an iterable of model instances."
+        )
+
 
 class GetReverseRelationTest(TestCase):
-    """Tests for `get_reverse_relation`."""
+    """Tests for `_get_reverse_relation`."""
 
     def test_simple_relation(self):
         """Make sure it works with a simple relation."""
         self.assertEqual(
-            get_reverse_relation(Continent, 'countries'),
+            _get_reverse_relation(Continent, 'countries'),
             'continent'
         )
 
     def test_simple_reverse_relation(self):
         """Make sure it works with a simple relation in reverse."""
         self.assertEqual(
-            get_reverse_relation(Country, 'continent'),
+            _get_reverse_relation(Country, 'continent'),
             'countries'
         )
 
     def test_nested_relation(self):
         """Make sure it works with a nested relation."""
         self.assertEqual(
-            get_reverse_relation(Continent, 'countries__cities'),
+            _get_reverse_relation(Continent, 'countries__cities'),
             'country__continent'
         )
 
     def test_nested_reverse_relation(self):
         """Make sure it works with a nested relation in reverse."""
         self.assertEqual(
-            get_reverse_relation(City, 'country__continent'),
+            _get_reverse_relation(City, 'country__continent'),
             'countries__cities'
         )
 
     def test_empty_relation(self):
         """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_reverse_relation(
+            _get_reverse_relation(
                 Continent,
                 ''
             )
@@ -190,7 +182,7 @@ class GetReverseRelationTest(TestCase):
     def test_invalid_simple_relation(self):
         """Make sure it raises on an invalid simple relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_reverse_relation(
+            _get_reverse_relation(
                 Continent,
                 'wrong'
             )
@@ -202,7 +194,7 @@ class GetReverseRelationTest(TestCase):
     def test_invalid_nested_relation(self):
         """Make sure it raises on an invalid nested relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_reverse_relation(
+            _get_reverse_relation(
                 Continent,
                 'countries__wrong'
             )
@@ -213,47 +205,47 @@ class GetReverseRelationTest(TestCase):
 
 
 class GetTranslationsReverseRelationTest(TestCase):
-    """Tests for `get_translations_reverse_relation`."""
+    """Tests for `_get_translations_reverse_relation`."""
 
     def test_simple_relation(self):
         """Make sure it works with a simple relation."""
         self.assertEqual(
-            get_translations_reverse_relation(Continent, 'countries'),
+            _get_translations_reverse_relation(Continent, 'countries'),
             'sample_country__continent'
         )
 
     def test_simple_reverse_relation(self):
         """Make sure it works with a simple relation in reverse."""
         self.assertEqual(
-            get_translations_reverse_relation(Country, 'continent'),
+            _get_translations_reverse_relation(Country, 'continent'),
             'sample_continent__countries'
         )
 
     def test_nested_relation(self):
         """Make sure it works with a nested relation."""
         self.assertEqual(
-            get_translations_reverse_relation(Continent, 'countries__cities'),
+            _get_translations_reverse_relation(Continent, 'countries__cities'),
             'sample_city__country__continent'
         )
 
     def test_nested_reverse_relation(self):
         """Make sure it works with a nested relation in reverse."""
         self.assertEqual(
-            get_translations_reverse_relation(City, 'country__continent'),
+            _get_translations_reverse_relation(City, 'country__continent'),
             'sample_continent__countries__cities'
         )
 
     def test_none_relation(self):
         """Make sure it works with None relation."""
         self.assertEqual(
-            get_translations_reverse_relation(Continent),
+            _get_translations_reverse_relation(Continent),
             'sample_continent'
         )
 
     def test_empty_relation(self):
         """Make sure it raises on an empty relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_translations_reverse_relation(
+            _get_translations_reverse_relation(
                 Continent,
                 ''
             )
@@ -265,7 +257,7 @@ class GetTranslationsReverseRelationTest(TestCase):
     def test_invalid_simple_relation(self):
         """Make sure it raises on an invalid simple relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_translations_reverse_relation(
+            _get_translations_reverse_relation(
                 Continent,
                 'wrong'
             )
@@ -277,7 +269,7 @@ class GetTranslationsReverseRelationTest(TestCase):
     def test_invalid_nested_relation(self):
         """Make sure it raises on an invalid nested relation."""
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_translations_reverse_relation(
+            _get_translations_reverse_relation(
                 Continent,
                 'countries__wrong'
             )
@@ -288,7 +280,7 @@ class GetTranslationsReverseRelationTest(TestCase):
 
 
 class GetTranslationsTest(TestCase):
-    """Tests for `get_translations`."""
+    """Tests for `_get_translations`."""
 
     # ---- arguments testing -------------------------------------------------
 
@@ -303,7 +295,7 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe
             ).order_by("id"),
             [
@@ -325,7 +317,7 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries"
             ).order_by("id"),
@@ -352,7 +344,7 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities"
             ).order_by("id"),
@@ -376,7 +368,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="de"
             ).order_by("id"),
@@ -398,7 +390,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="de"
@@ -425,7 +417,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="de"
@@ -451,7 +443,7 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents
             ).order_by("id"),
             [
@@ -475,7 +467,7 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries"
             ).order_by("id"),
@@ -506,7 +498,7 @@ class GetTranslationsTest(TestCase):
 
         activate("de")
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries", "countries__cities"
             ).order_by("id"),
@@ -536,7 +528,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 lang="de"
             ).order_by("id"),
@@ -560,7 +552,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries",
                 lang="de"
@@ -591,7 +583,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries", "countries__cities",
                 lang="de"
@@ -624,7 +616,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="de"
             ).order_by("id"),
@@ -634,7 +626,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="tr"
             ).order_by("id"),
@@ -656,7 +648,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="de"
@@ -669,7 +661,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="tr"
@@ -696,7 +688,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="de"
@@ -711,7 +703,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="tr"
@@ -740,7 +732,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="de"
             ).order_by("id"),
@@ -764,7 +756,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="de"
@@ -791,7 +783,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="de"
@@ -817,7 +809,7 @@ class GetTranslationsTest(TestCase):
         asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="de"
             ).order_by("id"),
@@ -827,7 +819,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 lang="de"
             ).order_by("id"),
@@ -850,7 +842,7 @@ class GetTranslationsTest(TestCase):
         asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="de"
@@ -863,7 +855,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 "countries",
                 lang="de"
@@ -891,7 +883,7 @@ class GetTranslationsTest(TestCase):
         asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="de"
@@ -906,7 +898,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 "countries", "countries__cities",
                 lang="de"
@@ -931,7 +923,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 lang="de"
             ).order_by("id"),
@@ -943,7 +935,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 lang="tr"
             ).order_by("id"),
@@ -967,7 +959,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries",
                 lang="de"
@@ -984,7 +976,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries",
                 lang="tr"
@@ -1015,7 +1007,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries", "countries__cities",
                 lang="de"
@@ -1036,7 +1028,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries", "countries__cities",
                 lang="tr"
@@ -1071,7 +1063,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 lang="de"
             ).order_by("id"),
@@ -1097,7 +1089,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries",
                 lang="de"
@@ -1128,7 +1120,7 @@ class GetTranslationsTest(TestCase):
         continents = Continent.objects.all()
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 continents,
                 "countries", "countries__cities",
                 lang="de"
@@ -1164,7 +1156,7 @@ class GetTranslationsTest(TestCase):
         )
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 lang="de"
             ).order_by("id"),
@@ -1176,7 +1168,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 lang="de"
             ).order_by("id"),
@@ -1205,7 +1197,7 @@ class GetTranslationsTest(TestCase):
         )
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 "countries",
                 lang="de"
@@ -1222,7 +1214,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 "countries",
                 lang="de"
@@ -1258,7 +1250,7 @@ class GetTranslationsTest(TestCase):
         )
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 "countries", "countries__cities",
                 lang="de"
@@ -1279,7 +1271,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 "countries", "countries__cities",
                 lang="de"
@@ -1317,7 +1309,7 @@ class GetTranslationsTest(TestCase):
         asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="de"
             ).order_by("id"),
@@ -1327,7 +1319,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 lang="tr"
             ).order_by("id"),
@@ -1337,7 +1329,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 lang="de"
             ).order_by("id"),
@@ -1347,7 +1339,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 lang="tr"
             ).order_by("id"),
@@ -1372,7 +1364,7 @@ class GetTranslationsTest(TestCase):
         asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="de"
@@ -1385,7 +1377,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries",
                 lang="tr"
@@ -1398,7 +1390,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 "countries",
                 lang="de"
@@ -1411,7 +1403,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 "countries",
                 lang="tr"
@@ -1439,7 +1431,7 @@ class GetTranslationsTest(TestCase):
         asia = Continent.objects.get(code="AS")
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="de"
@@ -1454,7 +1446,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 europe,
                 "countries", "countries__cities",
                 lang="tr"
@@ -1469,7 +1461,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 "countries", "countries__cities",
                 lang="de"
@@ -1484,7 +1476,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 asia,
                 "countries", "countries__cities",
                 lang="tr"
@@ -1518,7 +1510,7 @@ class GetTranslationsTest(TestCase):
         )
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 lang="de"
             ).order_by("id"),
@@ -1530,7 +1522,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 lang="tr"
             ).order_by("id"),
@@ -1542,7 +1534,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 lang="de"
             ).order_by("id"),
@@ -1554,7 +1546,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 lang="tr"
             ).order_by("id"),
@@ -1585,7 +1577,7 @@ class GetTranslationsTest(TestCase):
         )
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 "countries",
                 lang="de"
@@ -1602,7 +1594,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 "countries",
                 lang="tr"
@@ -1619,7 +1611,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 "countries",
                 lang="de"
@@ -1636,7 +1628,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 "countries",
                 lang="tr"
@@ -1672,7 +1664,7 @@ class GetTranslationsTest(TestCase):
         )
 
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 "countries", "countries__cities",
                 lang="de"
@@ -1693,7 +1685,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 eurasia,
                 "countries", "countries__cities",
                 lang="tr"
@@ -1714,7 +1706,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 "countries", "countries__cities",
                 lang="de"
@@ -1735,7 +1727,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
         self.assertQuerysetEqual(
-            get_translations(
+            _get_translations(
                 afromerica,
                 "countries", "countries__cities",
                 lang="tr"
@@ -1768,7 +1760,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         with self.assertRaises(ValueError) as error:
-            get_translations(
+            _get_translations(
                 europe,
                 lang="xx"
             )
@@ -1787,7 +1779,7 @@ class GetTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            get_translations(
+            _get_translations(
                 europe,
                 'wrong',
                 lang="de"
@@ -1810,7 +1802,7 @@ class GetTranslationsTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            get_translations(
+            _get_translations(
                 behzad,
                 lang="de"
             )
@@ -1821,14 +1813,11 @@ class GetTranslationsTest(TestCase):
 
 
 class GetTranslationsDictionaryTest(TestCase):
+    """Tests for `_get_translations_dictionary`."""
 
-    def test_translations_none(self):
-        create_samples(continent_names=["europe"])
-
-        europe = Continent.objects.get(code="EU")
-
+    def test_none(self):
         self.assertDictEqual(
-            get_translations_dictionary(europe.translations.all()),
+            _get_translations_dictionary(Translation.objects.none()),
             {}
         )
 
@@ -1845,7 +1834,7 @@ class GetTranslationsDictionaryTest(TestCase):
         europe_id = str(europe.id)
 
         self.assertDictEqual(
-            get_translations_dictionary(Translation.objects.all()),
+            _get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -1879,7 +1868,7 @@ class GetTranslationsDictionaryTest(TestCase):
         cologne_id = str(cologne.id)
 
         self.assertDictEqual(
-            get_translations_dictionary(Translation.objects.all()),
+            _get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -1914,7 +1903,7 @@ class GetTranslationsDictionaryTest(TestCase):
         asia_id = str(asia.id)
 
         self.assertDictEqual(
-            get_translations_dictionary(Translation.objects.all()),
+            _get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -1940,7 +1929,7 @@ class GetTranslationsDictionaryTest(TestCase):
         europe_id = str(europe.id)
 
         self.assertDictEqual(
-            get_translations_dictionary(Translation.objects.all()),
+            _get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
@@ -2004,7 +1993,7 @@ class GetTranslationsDictionaryTest(TestCase):
         ulsan_id = str(ulsan.id)
 
         self.assertDictEqual(
-            get_translations_dictionary(Translation.objects.all()),
+            _get_translations_dictionary(Translation.objects.all()),
             {
                 continent_ct_id: {
                     europe_id: {
