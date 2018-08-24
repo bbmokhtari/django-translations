@@ -394,8 +394,7 @@ def get_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To get the translations of a list of instances and the relations of each
-    instance:
+    To get the translations of a list of instances and the relations of them:
 
     .. testcode:: get_translations
 
@@ -433,7 +432,7 @@ def get_translations(entity, *relations, lang=None):
            <Translation: Ulsanian: Ulsänisch>
        ]>
 
-    To get the translations of a queryset and the relations of each instance:
+    To get the translations of a queryset and the relations of it:
 
     .. testcode:: get_translations
 
