@@ -16,7 +16,7 @@ This module contains the utilities for the Translations app.
     Return the translations of an entity and the relations of it in a language.
 :func:`_get_translations_dictionary`
     Return the :term:`translations dictionary` out of some translations.
-:func:`fill_hierarchy`
+:func:`_fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`get_relations_hierarchy`
     Return the :term:`relations hierarchy` of some relations.
@@ -640,7 +640,7 @@ def _get_translations_dictionary(translations):
     return dictionary
 
 
-def fill_hierarchy(hierarchy, *relation_parts):
+def _fill_hierarchy(hierarchy, *relation_parts):
     """
     Fills a :term:`relations hierarchy` with parts of a relation.
 
@@ -658,34 +658,34 @@ def fill_hierarchy(hierarchy, *relation_parts):
 
     To fill the :term:`relations hierarchy` with one level of relation parts:
 
-    .. testcode:: fill_hierarchy
+    .. testcode:: _fill_hierarchy
 
-       from translations.utils import fill_hierarchy
+       from translations.utils import _fill_hierarchy
 
        hierarchy = {}
 
-       fill_hierarchy(hierarchy, 'countries')
+       _fill_hierarchy(hierarchy, 'countries')
 
        print(hierarchy)
 
-    .. testoutput:: fill_hierarchy
+    .. testoutput:: _fill_hierarchy
 
        {'countries': {'included': True, 'relations': {}}}
 
     To fill the :term:`relations hierarchy` with two level of relation parts,
     not including the first one:
 
-    .. testcode:: fill_hierarchy
+    .. testcode:: _fill_hierarchy
 
-       from translations.utils import fill_hierarchy
+       from translations.utils import _fill_hierarchy
 
        hierarchy = {}
 
-       fill_hierarchy(hierarchy, 'countries', 'cities')
+       _fill_hierarchy(hierarchy, 'countries', 'cities')
 
        print(hierarchy)
 
-    .. testoutput:: fill_hierarchy
+    .. testoutput:: _fill_hierarchy
 
        {'countries': {'included': False,
                       'relations': {'cities': {'included': True,
@@ -694,18 +694,18 @@ def fill_hierarchy(hierarchy, *relation_parts):
     To fill the :term:`relations hierarchy` with two level of relation parts,
     including the first one:
 
-    .. testcode:: fill_hierarchy
+    .. testcode:: _fill_hierarchy
 
-       from translations.utils import fill_hierarchy
+       from translations.utils import _fill_hierarchy
 
        hierarchy = {}
 
-       fill_hierarchy(hierarchy, 'countries')
-       fill_hierarchy(hierarchy, 'countries', 'cities')
+       _fill_hierarchy(hierarchy, 'countries')
+       _fill_hierarchy(hierarchy, 'countries', 'cities')
 
        print(hierarchy)
 
-    .. testoutput:: fill_hierarchy
+    .. testoutput:: _fill_hierarchy
 
        {'countries': {'included': True,
                       'relations': {'cities': {'included': True,
@@ -720,7 +720,7 @@ def fill_hierarchy(hierarchy, *relation_parts):
     })
 
     if nest:
-        fill_hierarchy(hierarchy[root]["relations"], *nest)
+        _fill_hierarchy(hierarchy[root]["relations"], *nest)
     else:
         hierarchy[root]["included"] = True
 
@@ -795,7 +795,7 @@ def get_relations_hierarchy(*relations):
     hierarchy = {}
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
-        fill_hierarchy(hierarchy, *parts)
+        _fill_hierarchy(hierarchy, *parts)
     return hierarchy
 
 
