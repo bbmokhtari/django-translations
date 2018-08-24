@@ -14,7 +14,7 @@ This module contains the utilities for the Translations app.
     relation of a model's relation.
 :func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
-:func:`get_translations_dictionary`
+:func:`_get_translations_dictionary`
     Return the :term:`translations dictionary` out of some translations.
 :func:`fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
@@ -545,7 +545,7 @@ def _get_translations(entity, *relations, lang=None):
     return queryset
 
 
-def get_translations_dictionary(translations):
+def _get_translations_dictionary(translations):
     """
     Return the :term:`translations dictionary` made out of some translations.
 
@@ -564,7 +564,7 @@ def get_translations_dictionary(translations):
        in, otherwise the :term:`translations dictionary` may end up being a
        mix of several languages.
 
-    .. testsetup:: get_translations_dictionary
+    .. testsetup:: _get_translations_dictionary
 
        from tests.sample import create_samples
 
@@ -580,15 +580,15 @@ def get_translations_dictionary(translations):
 
     To get the :term:`translations dictionary` of the german translations.
 
-    .. testcode:: get_translations_dictionary
+    .. testcode:: _get_translations_dictionary
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent, Country, City
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.models import Translation
 
        translations = Translation.objects.filter(language="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
 
        continent_ct = ContentType.objects.get_for_model(Continent).id
        continent_translations = list(dictionary[continent_ct].items())
@@ -611,7 +611,7 @@ def get_translations_dictionary(translations):
        for id, translation in city_translations:
            print(translation)
 
-    .. testoutput:: get_translations_dictionary
+    .. testoutput:: _get_translations_dictionary
 
        Continent translations:
        {'denonym': 'Europäisch', 'name': 'Europa'}
@@ -835,12 +835,12 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent
        from translations.utils import _get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.utils import apply_obj_translations
 
        europe = Continent.objects.get(code="EU")
        translations = _get_translations(europe, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
        europe_ct = ContentType.objects.get_for_model(europe)
        ct_dictionary = dictionary[europe_ct.id]
 
@@ -920,7 +920,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
 
        from sample.models import Continent
        from translations.utils import _get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_rel_translations
 
@@ -928,7 +928,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
            'countries'
        ).get(code="EU")
        translations = _get_translations(europe, 'countries', lang="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy('countries')
 
        apply_rel_translations(europe, hierarchy, dictionary)
@@ -1020,7 +1020,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import _get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_translations
 
@@ -1030,7 +1030,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        prefetch_related_objects(continents, *relations)
 
        translations = _get_translations(continents, *relations, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
@@ -1060,7 +1060,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        from sample.models import Continent
        from translations.utils import _get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_translations
 
@@ -1069,7 +1069,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        continents = Continent.objects.prefetch_related(*relations).all()
 
        translations = _get_translations(continents, *relations, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
@@ -1100,7 +1100,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import _get_translations
-       from translations.utils import get_translations_dictionary
+       from translations.utils import _get_translations_dictionary
        from translations.utils import get_relations_hierarchy
        from translations.utils import apply_translations
 
@@ -1110,7 +1110,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        prefetch_related_objects([europe], *relations)
 
        translations = _get_translations(europe, *relations, lang="de")
-       dictionary = get_translations_dictionary(translations)
+       dictionary = _get_translations_dictionary(translations)
        hierarchy = get_relations_hierarchy(*relations)
 
        apply_translations(europe, hierarchy, dictionary)
@@ -1474,7 +1474,7 @@ def read_translations(entity, *relations, lang=None):
     """
     hierarchy = get_relations_hierarchy(*relations)
 
-    dictionary = get_translations_dictionary(
+    dictionary = _get_translations_dictionary(
         _get_translations(
             entity,
             *relations,
