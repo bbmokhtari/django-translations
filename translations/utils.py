@@ -547,21 +547,22 @@ def _get_translations(entity, *relations, lang=None):
 
 def get_translations_dictionary(translations):
     """
-    Return the :term:`translations dictionary` out of some translations.
+    Return the :term:`translations dictionary` made out of some translations.
 
     Processes the translations and returns the :term:`translations dictionary`
-    to use for the translation process.
+    to use in the translation process.
 
-    :param translations: The translations to process.
+    :param translations: The translations to make
+        the :term:`translations dictionary` out of.
     :type translations: ~django.db.models.query.QuerySet(\\
         ~translations.models.Translation)
-    :return: The :term:`translations dictionary`.
+    :return: The :term:`translations dictionary` made out of translations.
     :rtype: dict(int, dict(str, dict(str, str)))
 
     .. warning::
        The translations **must** be filtered in a language before being passed
-       in, otherwise the instances which come later in the translations may
-       override the earlier ones.
+       in, otherwise the :term:`translations dictionary` may end up being a
+       mix of several languages.
 
     .. testsetup:: get_translations_dictionary
 
@@ -577,7 +578,7 @@ def get_translations_dictionary(translations):
            langs=["de"]
        )
 
-    To get the translations dictionary of the german translations.
+    To get the :term:`translations dictionary` of the german translations.
 
     .. testcode:: get_translations_dictionary
 
