@@ -799,7 +799,8 @@ def _get_relations_hierarchy(*relations):
 
 def _apply_obj_translations(obj, ct_dictionary, included=True):
     """
-    Apply the content type of a :term:`translations dictionary` on an object.
+    Apply the value of a content type key in a :term:`translations dictionary`
+    on an object.
 
     Searches the content type of the :term:`translations dictionary` for the
     translations of the object and applies them on the object, field by field
