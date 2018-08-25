@@ -799,21 +799,20 @@ def _get_relations_hierarchy(*relations):
 
 def _apply_obj_translations(obj, ct_dictionary, included=True):
     """
-    Apply the value of a content type key in a :term:`translations dictionary`
-    on an object.
+    Apply a :term:`content type translations dictionary` on an object.
 
-    Searches the content type of the :term:`translations dictionary` for the
+    Searches the :term:`content type translations dictionary` for the
     translations of the object and applies them on the object, field by field
     and in place.
 
-    :param obj: The object to apply the content type of the
-        :term:`translations dictionary` on.
+    :param obj: The object to apply
+        the :term:`content type translations dictionary` on.
     :type obj: ~django.db.models.Model
-    :param ct_dictionary: The content type of the
-        :term:`translations dictionary` to be applied on the object.
+    :param ct_dictionary: The :term:`content type translations dictionary` to
+        be applied on the object.
     :type ct_dictionary: dict(str, dict(str, str))
-    :param included: Whether to apply the content type of the
-        :term:`translations dictionary` on the object or not.
+    :param included: Whether to apply
+        the :term:`content type translations dictionary` on the object or not.
     :type included: bool
 
     .. testsetup:: _apply_obj_translations
@@ -826,8 +825,7 @@ def _apply_obj_translations(obj, ct_dictionary, included=True):
            langs=["de"]
        )
 
-    To apply the content type of the :term:`translations dictionary` on an
-    object:
+    To apply the :term:`content type translations dictionary` on an object:
 
     .. testcode:: _apply_obj_translations
 

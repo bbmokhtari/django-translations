@@ -35,6 +35,23 @@ The terms you might see in the documentation:
      represents the ID of the object in that content type, ``field``
      represents the name of the field for that object.
 
+   content type translations dictionary
+     A content type translations dictionary is the value of a content type key
+     in a :term:`translations dictionary`.
+
+     example::
+     
+        {
+            object_id_1: {
+                field_1: text_1,
+                field_2: ...
+            },
+            object_id_2: ...
+        }
+
+     The ``object_id`` represents the ID of the object in that content type,
+     ``field`` represents the name of the field for that object.
+
    relations hierarchy
      A relations hierarchy is a hierarchy containing each level of relation
      and information about whether they are included or not.
