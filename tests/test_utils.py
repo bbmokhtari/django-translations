@@ -8,7 +8,7 @@ from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, \
     _get_translations_reverse_relation, _get_translations, \
     _get_translations_dictionary, _fill_hierarchy, _get_relations_hierarchy, \
-    _apply_obj_translations
+    _apply_obj_translations, _apply_rel_translations
 
 from translations.models import Translation
 
@@ -2647,4 +2647,75 @@ class ApplyObjTranslations(TestCase):
         self.assertEqual(
             europe.denonym,
             "European"
+        )
+
+
+class ApplyRelTranslations(TestCase):
+    """Tests for `_apply_rel_translations`."""
+
+    def test_empty_hierarchy_empty_dictionary(self):
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        relations = ('countries', 'countries__cities')
+
+        europe = Continent.objects.prefetch_related(*relations).get(code="EU")
+
+        _apply_rel_translations(europe, {}, {})
+
+        germany = europe.countries.all()[0]
+
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+
+    def test_two_level_included_hierarchy_two_level_dictionary(self):
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        relations = ('countries', 'countries__cities')
+
+        europe = Continent.objects.prefetch_related(*relations).get(code="EU")
+
+        translations = _get_translations(europe, *relations, lang="de")
+        dictionary = _get_translations_dictionary(translations)
+        hierarchy = _get_relations_hierarchy(*relations)
+
+        _apply_rel_translations(europe, hierarchy, dictionary)
+
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
         )
