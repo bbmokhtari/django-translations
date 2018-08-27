@@ -15,6 +15,6 @@ Utilities
    .. autofunction:: _fill_hierarchy
    .. autofunction:: _get_relations_hierarchy
    .. autofunction:: _apply_obj_translations
-   .. autofunction:: apply_rel_translations
+   .. autofunction:: _apply_rel_translations
    .. autofunction:: apply_translations
    .. autofunction:: read_translations

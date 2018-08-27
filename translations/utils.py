@@ -22,7 +22,7 @@ This module contains the utilities for the Translations app.
     Return the :term:`relations hierarchy` of some relations.
 :func:`_apply_obj_translations`
     Apply a :term:`content type translations dictionary` on an object.
-:func:`apply_rel_translations`
+:func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
 :func:`apply_translations`
@@ -859,7 +859,7 @@ def _apply_obj_translations(obj, ct_dictionary, included=True):
                 setattr(obj, field, text)
 
 
-def apply_rel_translations(obj, hierarchy, dictionary):
+def _apply_rel_translations(obj, hierarchy, dictionary):
     """
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
@@ -895,7 +895,7 @@ def apply_rel_translations(obj, hierarchy, dictionary):
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
 
-    .. testsetup:: apply_rel_translations
+    .. testsetup:: _apply_rel_translations
 
        from tests.sample import create_samples
 
@@ -910,13 +910,13 @@ def apply_rel_translations(obj, hierarchy, dictionary):
     To apply a :term:`translations dictionary` on a
     :term:`relations hierarchy` of an object:
 
-    .. testcode:: apply_rel_translations
+    .. testcode:: _apply_rel_translations
 
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_rel_translations
+       from translations.utils import _apply_rel_translations
 
        relations = ('countries',)
 
@@ -926,11 +926,11 @@ def apply_rel_translations(obj, hierarchy, dictionary):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_rel_translations(europe, hierarchy, dictionary)
+       _apply_rel_translations(europe, hierarchy, dictionary)
 
        print(europe.countries.all())
 
-    .. testoutput:: apply_rel_translations
+    .. testoutput:: _apply_rel_translations
 
        <TranslatableQuerySet [<Country: Deutschland>]>
     """
@@ -1134,10 +1134,10 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     if iterable:
         for obj in entity:
             _apply_obj_translations(obj, ct_dictionary, included=included)
-            apply_rel_translations(obj, hierarchy, dictionary)
+            _apply_rel_translations(obj, hierarchy, dictionary)
     else:
         _apply_obj_translations(entity, ct_dictionary, included=included)
-        apply_rel_translations(entity, hierarchy, dictionary)
+        _apply_rel_translations(entity, hierarchy, dictionary)
 
 
 def read_translations(entity, *relations, lang=None):
