@@ -16,13 +16,13 @@ This module contains the utilities for the Translations app.
     Return the translations of an entity and the relations of it in a language.
 :func:`_get_translations_dictionary`
     Return the :term:`translations dictionary` out of some translations.
-:func:`fill_hierarchy`
+:func:`_fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
-:func:`get_relations_hierarchy`
+:func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` of some relations.
-:func:`apply_obj_translations`
-    Apply the content type of a :term:`translations dictionary` on an object.
-:func:`apply_rel_translations`
+:func:`_apply_obj_translations`
+    Apply a :term:`content type translations dictionary` on an object.
+:func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
 :func:`apply_translations`
@@ -640,15 +640,13 @@ def _get_translations_dictionary(translations):
     return dictionary
 
 
-def fill_hierarchy(hierarchy, *relation_parts):
+def _fill_hierarchy(hierarchy, *relation_parts):
     """
     Fills a :term:`relations hierarchy` with parts of a relation.
 
     Fills the :term:`relations hierarchy` based on the order of the relation
-    parts. The later parts are considered as the children of the
-    earlier ones. Only the parts that have filled the hierarchy as the last
-    part are considered included and all the other ones are considered
-    excluded.
+    parts. The later parts are considered as the children of the earlier ones.
+    The last part is considered included.
 
     :param hierarchy: The :term:`relations hierarchy` to fill.
     :type hierarchy: dict(str, dict)
@@ -658,34 +656,34 @@ def fill_hierarchy(hierarchy, *relation_parts):
 
     To fill the :term:`relations hierarchy` with one level of relation parts:
 
-    .. testcode:: fill_hierarchy
+    .. testcode:: _fill_hierarchy
 
-       from translations.utils import fill_hierarchy
+       from translations.utils import _fill_hierarchy
 
        hierarchy = {}
 
-       fill_hierarchy(hierarchy, 'countries')
+       _fill_hierarchy(hierarchy, 'countries')
 
        print(hierarchy)
 
-    .. testoutput:: fill_hierarchy
+    .. testoutput:: _fill_hierarchy
 
        {'countries': {'included': True, 'relations': {}}}
 
     To fill the :term:`relations hierarchy` with two level of relation parts,
     not including the first one:
 
-    .. testcode:: fill_hierarchy
+    .. testcode:: _fill_hierarchy
 
-       from translations.utils import fill_hierarchy
+       from translations.utils import _fill_hierarchy
 
        hierarchy = {}
 
-       fill_hierarchy(hierarchy, 'countries', 'cities')
+       _fill_hierarchy(hierarchy, 'countries', 'cities')
 
        print(hierarchy)
 
-    .. testoutput:: fill_hierarchy
+    .. testoutput:: _fill_hierarchy
 
        {'countries': {'included': False,
                       'relations': {'cities': {'included': True,
@@ -694,18 +692,18 @@ def fill_hierarchy(hierarchy, *relation_parts):
     To fill the :term:`relations hierarchy` with two level of relation parts,
     including the first one:
 
-    .. testcode:: fill_hierarchy
+    .. testcode:: _fill_hierarchy
 
-       from translations.utils import fill_hierarchy
+       from translations.utils import _fill_hierarchy
 
        hierarchy = {}
 
-       fill_hierarchy(hierarchy, 'countries')
-       fill_hierarchy(hierarchy, 'countries', 'cities')
+       _fill_hierarchy(hierarchy, 'countries')
+       _fill_hierarchy(hierarchy, 'countries', 'cities')
 
        print(hierarchy)
 
-    .. testoutput:: fill_hierarchy
+    .. testoutput:: _fill_hierarchy
 
        {'countries': {'included': True,
                       'relations': {'cities': {'included': True,
@@ -720,31 +718,31 @@ def fill_hierarchy(hierarchy, *relation_parts):
     })
 
     if nest:
-        fill_hierarchy(hierarchy[root]["relations"], *nest)
+        _fill_hierarchy(hierarchy[root]["relations"], *nest)
     else:
         hierarchy[root]["included"] = True
 
 
-def get_relations_hierarchy(*relations):
+def _get_relations_hierarchy(*relations):
     """
-    Return the :term:`relations hierarchy` of some relations.
+    Return the :term:`relations hierarchy` made out of some relations.
 
-    Processes the relations and returns the :term:`relations hierarchy`,
-    containing each level of relation and information about whether they are
-    included or not.
+    Processes the relations and returns the :term:`relations hierarchy` to
+    use in the translation process.
 
-    :param relations: The relations to get the hierarchy of.
+    :param relations: The relations to make the :term:`relations hierarchy`
+        out of.
     :type relations: list(str)
-    :return: The :term:`relations hierarchy`.
+    :return: The :term:`relations hierarchy` made out of relations.
     :rtype: dict(str, dict)
 
     To get the :term:`relations hierarchy` of a first-level relation:
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy('countries'))
+       print(_get_relations_hierarchy('countries'))
 
     .. testoutput::
 
@@ -755,9 +753,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy('countries__cities'))
+       print(_get_relations_hierarchy('countries__cities'))
 
     .. testoutput::
 
@@ -770,9 +768,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy('countries', 'countries__cities'))
+       print(_get_relations_hierarchy('countries', 'countries__cities'))
 
     .. testoutput::
 
@@ -784,9 +782,9 @@ def get_relations_hierarchy(*relations):
 
     .. testcode::
 
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
 
-       print(get_relations_hierarchy())
+       print(_get_relations_hierarchy())
 
     .. testoutput::
 
@@ -795,29 +793,29 @@ def get_relations_hierarchy(*relations):
     hierarchy = {}
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
-        fill_hierarchy(hierarchy, *parts)
+        _fill_hierarchy(hierarchy, *parts)
     return hierarchy
 
 
-def apply_obj_translations(obj, ct_dictionary, included=True):
+def _apply_obj_translations(obj, ct_dictionary, included=True):
     """
-    Apply the content type of a :term:`translations dictionary` on an object.
+    Apply a :term:`content type translations dictionary` on an object.
 
-    Searches the content type of the :term:`translations dictionary` for the
+    Searches the :term:`content type translations dictionary` for the
     translations of the object and applies them on the object, field by field
     and in place.
 
-    :param obj: The object to apply the content type of the
-        :term:`translations dictionary` on.
+    :param obj: The object to apply
+        the :term:`content type translations dictionary` on.
     :type obj: ~django.db.models.Model
-    :param ct_dictionary: The content type of the
-        :term:`translations dictionary`.
+    :param ct_dictionary: The :term:`content type translations dictionary` to
+        be applied on the object.
     :type ct_dictionary: dict(str, dict(str, str))
-    :param included: Whether to apply the content type of the
-        :term:`translations dictionary` or not.
+    :param included: Whether to apply
+        the :term:`content type translations dictionary` on the object or not.
     :type included: bool
 
-    .. testsetup:: apply_obj_translations
+    .. testsetup:: _apply_obj_translations
 
        from tests.sample import create_samples
 
@@ -827,16 +825,15 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
            langs=["de"]
        )
 
-    To apply the content type of the :term:`translations dictionary` on an
-    object:
+    To apply the :term:`content type translations dictionary` on an object:
 
-    .. testcode:: apply_obj_translations
+    .. testcode:: _apply_obj_translations
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import apply_obj_translations
+       from translations.utils import _apply_obj_translations
 
        europe = Continent.objects.get(code="EU")
        translations = _get_translations(europe, lang="de")
@@ -844,11 +841,11 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
        europe_ct = ContentType.objects.get_for_model(europe)
        ct_dictionary = dictionary[europe_ct.id]
 
-       apply_obj_translations(europe, ct_dictionary, included=True)
+       _apply_obj_translations(europe, ct_dictionary, included=True)
 
        print(europe)
 
-    .. testoutput:: apply_obj_translations
+    .. testoutput:: _apply_obj_translations
 
        Europa
     """
@@ -862,7 +859,7 @@ def apply_obj_translations(obj, ct_dictionary, included=True):
                 setattr(obj, field, text)
 
 
-def apply_rel_translations(obj, hierarchy, dictionary):
+def _apply_rel_translations(obj, hierarchy, dictionary):
     """
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
@@ -882,26 +879,23 @@ def apply_rel_translations(obj, hierarchy, dictionary):
     :type dictionary: dict(int, dict(str, dict(str, str)))
 
     .. warning::
-       The relations of an object or a queryset **must** be fetched
-       before performing the translation process.
+       The relations of an instance, a queryset or a list of instances
+       **must** be fetched before performing the translation process.
 
-       To fetch the relations of an object or a queryset use
-       :meth:`~django.db.models.query.QuerySet.select_related`,
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
     .. warning::
-       If a relation of an object or a queryset is filtered
-       after performing the translation process,
-       the translations for that relation are lost.
-
-       Only when all the filterings are done on an object or a queryset and
-       the relations of it, it should go through the translation process.
+       Only when all the filterings are executed on the relations of an
+       instance, a queryset or a list of instances, they should go through the
+       translation process, otherwise if a relation is filtered after the
+       translation process the translations of that relation are reset.
 
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
 
-    .. testsetup:: apply_rel_translations
+    .. testsetup:: _apply_rel_translations
 
        from tests.sample import create_samples
 
@@ -916,26 +910,27 @@ def apply_rel_translations(obj, hierarchy, dictionary):
     To apply a :term:`translations dictionary` on a
     :term:`relations hierarchy` of an object:
 
-    .. testcode:: apply_rel_translations
+    .. testcode:: _apply_rel_translations
 
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
-       from translations.utils import apply_rel_translations
+       from translations.utils import _get_relations_hierarchy
+       from translations.utils import _apply_rel_translations
 
-       europe = Continent.objects.prefetch_related(
-           'countries'
-       ).get(code="EU")
-       translations = _get_translations(europe, 'countries', lang="de")
+       relations = ('countries',)
+
+       europe = Continent.objects.prefetch_related(*relations).get(code="EU")
+
+       translations = _get_translations(europe, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy('countries')
+       hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_rel_translations(europe, hierarchy, dictionary)
+       _apply_rel_translations(europe, hierarchy, dictionary)
 
        print(europe.countries.all())
 
-    .. testoutput:: apply_rel_translations
+    .. testoutput:: _apply_rel_translations
 
        <TranslatableQuerySet [<Country: Deutschland>]>
     """
@@ -1021,7 +1016,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1031,7 +1026,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        translations = _get_translations(continents, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy(*relations)
+       hierarchy = _get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
 
@@ -1061,7 +1056,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1070,7 +1065,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        translations = _get_translations(continents, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy(*relations)
+       hierarchy = _get_relations_hierarchy(*relations)
 
        apply_translations(continents, hierarchy, dictionary)
 
@@ -1101,7 +1096,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
-       from translations.utils import get_relations_hierarchy
+       from translations.utils import _get_relations_hierarchy
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1111,7 +1106,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
        translations = _get_translations(europe, *relations, lang="de")
        dictionary = _get_translations_dictionary(translations)
-       hierarchy = get_relations_hierarchy(*relations)
+       hierarchy = _get_relations_hierarchy(*relations)
 
        apply_translations(europe, hierarchy, dictionary)
 
@@ -1138,11 +1133,11 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
 
     if iterable:
         for obj in entity:
-            apply_obj_translations(obj, ct_dictionary, included=included)
-            apply_rel_translations(obj, hierarchy, dictionary)
+            _apply_obj_translations(obj, ct_dictionary, included=included)
+            _apply_rel_translations(obj, hierarchy, dictionary)
     else:
-        apply_obj_translations(entity, ct_dictionary, included=included)
-        apply_rel_translations(entity, hierarchy, dictionary)
+        _apply_obj_translations(entity, ct_dictionary, included=included)
+        _apply_rel_translations(entity, hierarchy, dictionary)
 
 
 def read_translations(entity, *relations, lang=None):
@@ -1472,7 +1467,7 @@ def read_translations(entity, *relations, lang=None):
           City: Seül # Correct
           City: Ulsän # Correct
     """
-    hierarchy = get_relations_hierarchy(*relations)
+    hierarchy = _get_relations_hierarchy(*relations)
 
     dictionary = _get_translations_dictionary(
         _get_translations(
