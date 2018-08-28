@@ -25,7 +25,7 @@ This module contains the utilities for the Translations app.
 :func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
-:func:`apply_translations`
+:func:`_apply_translations`
     Translate an entity and the relations hierarchy of it using a
     translations dictionary.
 :func:`read_translations`
@@ -940,7 +940,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
             if value is not None:
                 if isinstance(value, models.Manager):
                     value = value.all()
-                apply_translations(
+                _apply_translations(
                     value,
                     detail['relations'],
                     dictionary,
@@ -948,7 +948,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
                 )
 
 
-def apply_translations(entity, hierarchy, dictionary, included=True):
+def _apply_translations(entity, hierarchy, dictionary, included=True):
     """
     Apply a :term:`translations dictionary` on an entity and a
     :term:`relations hierarchy` of it.
@@ -990,7 +990,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
 
-    .. testsetup:: apply_translations
+    .. testsetup:: _apply_translations
 
        from tests.sample import create_samples
 
@@ -1007,14 +1007,14 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     To apply a :term:`translations dictionary` on a list of instances and a
     :term:`relations hierarchy` of it:
 
-    .. testcode:: apply_translations
+    .. testcode:: _apply_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_translations
+       from translations.utils import _apply_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1025,7 +1025,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_translations(continents, hierarchy, dictionary)
+       _apply_translations(continents, hierarchy, dictionary)
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1034,7 +1034,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
                for city in country.cities.all():
                    print("City: {}".format(city))
 
-    .. testoutput:: apply_translations
+    .. testoutput:: _apply_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1048,13 +1048,13 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     To apply a :term:`translations dictionary` on a queryset and a
     :term:`relations hierarchy` of it:
 
-    .. testcode:: apply_translations
+    .. testcode:: _apply_translations
 
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_translations
+       from translations.utils import _apply_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1064,7 +1064,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_translations(continents, hierarchy, dictionary)
+       _apply_translations(continents, hierarchy, dictionary)
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1073,7 +1073,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
                for city in country.cities.all():
                    print("City: {}".format(city))
 
-    .. testoutput:: apply_translations
+    .. testoutput:: _apply_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1087,14 +1087,14 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     To apply a :term:`translations dictionary` on an instance and a
     :term:`relations hierarchy` of it:
 
-    .. testcode:: apply_translations
+    .. testcode:: _apply_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_translations
+       from translations.utils import _apply_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1105,7 +1105,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_translations(europe, hierarchy, dictionary)
+       _apply_translations(europe, hierarchy, dictionary)
 
        print("Continent: {}".format(europe))
        for country in europe.countries.all():
@@ -1113,7 +1113,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
            for city in country.cities.all():
                print("City: {}".format(city))
 
-    .. testoutput:: apply_translations
+    .. testoutput:: _apply_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1474,7 +1474,7 @@ def read_translations(entity, *relations, lang=None):
         )
     )
 
-    apply_translations(entity, hierarchy, dictionary, included=True)
+    _apply_translations(entity, hierarchy, dictionary, included=True)
 
 
 def update_translations(entity, lang=None):
