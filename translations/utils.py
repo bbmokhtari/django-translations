@@ -974,21 +974,18 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
         an iterable of model instances.
 
     .. warning::
-       The relations of an object or a queryset **must** be fetched
-       before performing the translation process.
+       The relations of an instance, a queryset or a list of instances
+       **must** be fetched before performing the translation process.
 
-       To fetch the relations of an object or a queryset use
-       :meth:`~django.db.models.query.QuerySet.select_related`,
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
     .. warning::
-       If a relation of an object or a queryset is filtered
-       after performing the translation process,
-       the translations for that relation are lost.
-
-       Only when all the filterings are done on an object or a queryset and
-       the relations of it, it should go through the translation process.
+       Only when all the filterings are executed on the relations of an
+       instance, a queryset or a list of instances, they should go through the
+       translation process, otherwise if a relation is filtered after the
+       translation process the translations of that relation are reset.
 
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
@@ -1007,8 +1004,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
            langs=["de"]
        )
 
-    To apply a :term:`translations dictionary` on a list of model instances
-    and a :term:`relations hierarchy` of them:
+    To apply a :term:`translations dictionary` on a list of instances and a
+    :term:`relations hierarchy` of it:
 
     .. testcode:: apply_translations
 
@@ -1048,8 +1045,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Seül
        City: Ulsän
 
-    To apply a :term:`translations dictionary` on a queryset
-    and a :term:`relations hierarchy` of it:
+    To apply a :term:`translations dictionary` on a queryset and a
+    :term:`relations hierarchy` of it:
 
     .. testcode:: apply_translations
 
@@ -1087,8 +1084,8 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Seül
        City: Ulsän
 
-    To apply a :term:`translations dictionary` on an instance
-    and a :term:`relations hierarchy` of it:
+    To apply a :term:`translations dictionary` on an instance and a
+    :term:`relations hierarchy` of it:
 
     .. testcode:: apply_translations
 
