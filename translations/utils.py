@@ -865,7 +865,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
     of an object.
 
     Searches the :term:`translations dictionary` for the translations of the
-    :term:`relations hierarchy` of the object and applies them, field by field
+    object's :term:`relations hierarchy` and applies them, field by field
     and in place.
 
     :param obj: The object to apply the :term:`translations dictionary` on the
