@@ -958,14 +958,14 @@ def _apply_translations(entity, hierarchy, dictionary, included=True):
     by field and in place.
 
     :param entity: The entity to apply the :term:`translations dictionary` on
-        it and the :term:`relations hierarchy` of it.
+        and on the :term:`relations hierarchy` of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param hierarchy: The :term:`relations hierarchy` of the entity to apply
         the :term:`translations dictionary` on.
     :type hierarchy: dict(str, dict)
     :param dictionary: The :term:`translations dictionary` to apply on the
-        entity and the :term:`relations hierarchy` of it.
+        entity and on the :term:`relations hierarchy` of it.
     :type dictionary: dict(int, dict(str, dict(str, str)))
     :param included: Whether to apply the :term:`translations dictionary` on
         the entity or not.
