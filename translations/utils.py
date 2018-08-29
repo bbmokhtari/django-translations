@@ -1292,6 +1292,50 @@ def apply_translations(entity, *relations, lang=None):
     _apply_entity_translations(entity, hierarchy, dictionary, included=True)
 
 
+def _update_obj_translations(obj, ct_dictionary, included=True):
+    if included and ct_dictionary:
+        try:
+            fields = ct_dictionary[str(obj.id)]
+        except KeyError:
+            pass
+        else:
+            for (field, text) in fields.items():
+                setattr(obj, field, text)
+
+
+def _update_rel_translations(obj, hierarchy, dictionary):
+    if hierarchy:
+        for (relation, detail) in hierarchy.items():
+            value = getattr(obj, relation, None)
+            if value is not None:
+                if isinstance(value, models.Manager):
+                    value = value.all()
+                _apply_entity_translations(
+                    value,
+                    detail['relations'],
+                    dictionary,
+                    included=detail['included']
+                )
+
+
+def _update_entity_translations(entity, hierarchy, dictionary, included=True):
+    iterable, model = _get_entity_details(entity)
+
+    if model is None:
+        return
+
+    content_type = ContentType.objects.get_for_model(model)
+    ct_dictionary = dictionary.setdefault(content_type.id, {})
+
+    if iterable:
+        for obj in entity:
+            _update_obj_translations(obj, ct_dictionary, included=included)
+            _update_rel_translations(obj, hierarchy, dictionary)
+    else:
+        _update_obj_translations(entity, ct_dictionary, included=included)
+        _update_rel_translations(entity, hierarchy, dictionary)
+
+
 def update_translations(entity, *relations, lang=None):
     hierarchy = _get_relations_hierarchy(*relations)
     translations = _get_translations(entity, *relations, lang=lang)
