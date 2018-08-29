@@ -6,7 +6,7 @@ This module contains the utilities for the Translations app.
 :func:`_get_translation_language`
     Return a language code to use in the translation process.
 :func:`_get_entity_details`
-    Return the type and iteration details of an entity.
+    Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`_get_translations_reverse_relation`
@@ -15,21 +15,21 @@ This module contains the utilities for the Translations app.
 :func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
 :func:`_get_translations_dictionary`
-    Return the :term:`translations dictionary` out of some translations.
+    Return the :term:`translations dictionary` made out of some translations.
 :func:`_fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`_get_relations_hierarchy`
-    Return the :term:`relations hierarchy` of some relations.
+    Return the :term:`relations hierarchy` made out of some relations.
 :func:`_apply_obj_translations`
     Apply a :term:`content type translations dictionary` on an object.
 :func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
 :func:`_apply_entity_translations`
-    Translate an entity and the relations hierarchy of it using a
-    translations dictionary.
+    Apply a :term:`translations dictionary` on an entity and a
+    :term:`relations hierarchy` of it.
 :func:`apply_translations`
-    Translate an entity and the relations of it in a language.
+    Apply the translations on an entity and the relations of it in a language.
 """
 
 from django.db import models, transaction
