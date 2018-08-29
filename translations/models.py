@@ -249,10 +249,7 @@ class Translatable(models.Model):
             is given the current active language will be used.
         :type lang: str or None
         """
-        apply_translations(
-            self, *relations,
-            lang=lang
-        )
+        apply_translations(self, *relations, lang=lang)
 
     def update_translations(self, lang=None):
         """
