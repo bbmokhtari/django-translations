@@ -1297,7 +1297,11 @@ def apply_translations(entity, *relations, lang=None):
     _apply_entity_translations(entity, hierarchy, dictionary, included=True)
 
 
-def update_translations(entity, lang=None):
+def update_translations(entity, *relations, lang=None):
+    pass
+
+
+def old_update_translations(entity, lang=None):
     lang = _get_translation_language(lang)
     iterable, model = _get_entity_details(entity)
 
