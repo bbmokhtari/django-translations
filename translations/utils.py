@@ -21,7 +21,8 @@ This module contains the utilities for the Translations app.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` made out of some relations.
 :func:`_apply_obj_translations`
-    Apply a :term:`content type translations dictionary` on an object.
+    Apply a :term:`content type translations dictionary` on some fields of an
+    object.
 :func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
