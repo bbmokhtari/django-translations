@@ -9,9 +9,6 @@ This module contains the utilities for the Translations app.
     Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
-:func:`_get_translations_reverse_relation`
-    Return the reverse of a model's translations relation or the translations
-    relation of a model's relation.
 :func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
 :func:`_get_translations_dictionary`
@@ -280,79 +277,6 @@ def _get_reverse_relation(model, relation):
         )
     else:
         return reverse_relation
-
-
-def _get_translations_reverse_relation(model, relation=None):
-    """
-    Return the reverse of a model's translations relation or the translations
-    relation of a model's relation.
-
-    If the relation is not passed in, it processes the model's translations
-    relation which points from the model to the
-    :class:`~translations.models.Translation` model directly and returns the
-    reverse relation which points from the
-    :class:`~translations.models.Translation` model to the model directly,
-    otherwise it processes the translations relation of the model's relation
-    which points from the model to the
-    :class:`~translations.models.Translation` model indirectly (through the
-    relation) and returns the reverse relation which points from the
-    :class:`~translations.models.Translation` model to the model indirectly
-    (through the reverse relation).
-
-    :param model: The model which contains the translations relation directly
-        or indirectly (either it contains the translations relation itself, or
-        the specified relation contains it) and which the reverse relation
-        points to.
-    :type model: type(~django.db.models.Model)
-    :param relation: The relation of the model to get the translations
-        relation's reverse of.
-        It may be composed of many ``related_query_name``\\ s separated by
-        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
-        represent a deeply nested relation.
-        ``None`` means the reverse relation of the model's translations
-        relation should be returned.
-    :type relation: str or None
-    :return: The reverse of the model’s translations relation or the
-        translations relation of the model’s relation.
-    :rtype: str
-    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
-        pointing to the fields that don't exist.
-
-    To get the reverse of the translations relation of a model's relation:
-
-    .. testcode:: _get_translations_reverse_relation
-
-       from sample.models import Continent
-       from translations.utils import _get_translations_reverse_relation
-
-       reverse_relation = _get_translations_reverse_relation(
-           Continent, 'countries__cities')
-       print("Translation can be queried with '{}'".format(reverse_relation))
-
-    .. testoutput:: _get_translations_reverse_relation
-
-       Translation can be queried with 'sample_city__country__continent'
-
-    To get the reverse of a model's translations relation:
-
-    .. testcode:: _get_translations_reverse_relation
-
-       from sample.models import Continent
-       from translations.utils import _get_translations_reverse_relation
-
-       reverse_relation = _get_translations_reverse_relation(Continent)
-       print("Translation can be queried with '{}'".format(reverse_relation))
-
-    .. testoutput:: _get_translations_reverse_relation
-
-       Translation can be queried with 'sample_continent'
-    """
-    if relation is None:
-        translations_relation = 'translations'
-    else:
-        translations_relation = '{}__{}'.format(relation, 'translations')
-
-    return _get_reverse_relation(model, translations_relation)
 
 
 def _get_translations(entity, *relations, lang=None):
