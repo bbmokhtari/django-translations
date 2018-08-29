@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, _get_translations, \
-    _get_relations_hierarchy,  apply_translations
+    _get_relations_hierarchy, _get_entity_groups,  apply_translations
 
 from translations.models import Translation
 
@@ -220,11 +220,13 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(europe, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                europe
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -244,12 +246,13 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries')
+        groups = _get_entity_groups(europe, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                "countries"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -271,12 +274,13 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries__cities')
+        groups = _get_entity_groups(europe, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                "countries__cities"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -298,12 +302,13 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        groups = _get_entity_groups(europe, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                "countries", "countries__cities"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -327,11 +332,12 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                lang="de"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -351,11 +357,12 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries')
+        groups = _get_entity_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                "countries",
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -378,11 +385,12 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries__cities')
+        groups = _get_entity_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                "countries__cities",
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -405,11 +413,12 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        groups = _get_entity_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                europe,
-                "countries", "countries__cities",
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -434,11 +443,13 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(continents, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                continents
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -460,12 +471,13 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries')
+        groups = _get_entity_groups(continents, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
-                "countries"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -491,12 +503,13 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
-                "countries__cities"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -522,13 +535,13 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
 
         activate("de")
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
-                "countries",
-                "countries__cities"
+                groups
             ).order_by("id"),
             [
                 "<Translation: Europe: Europa>",
@@ -558,10 +571,12 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -584,11 +599,12 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries')
+        groups = _get_entity_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
-                "countries",
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -615,11 +631,12 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
-                "countries__cities",
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -646,12 +663,12 @@ class GetTranslationsTest(TestCase):
         )
 
         continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
-                continents,
-                "countries",
-                "countries__cities",
+                groups,
                 lang="de"
             ).order_by("id"),
             [
@@ -680,57 +697,17 @@ class GetTranslationsTest(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(europe, hierarchy)
 
         with self.assertRaises(ValueError) as error:
             _get_translations(
-                europe,
+                groups,
                 lang="xx"
             )
         self.assertEqual(
             error.exception.args[0],
             "The language code `xx` is not supported."
-        )
-
-    def test_invalid_relation(self):
-        create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            _get_translations(
-                europe,
-                'wrong',
-                lang="de"
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_invalid_entity(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-        with self.assertRaises(TypeError) as error:
-            _get_translations(
-                behzad,
-                lang="de"
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            "`Behzad` is neither a model instance nor an iterable of model instances."
         )
 
 

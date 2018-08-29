@@ -283,8 +283,6 @@ def _get_translations(groups, lang=None):
     :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
-    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
-        pointing to the fields that don't exist.
 
     .. testsetup:: _get_translations
 
