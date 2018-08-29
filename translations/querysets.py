@@ -1,12 +1,12 @@
 from django.db import models, transaction
 
-from translations.utils import read_translations, update_translations
+from translations.utils import apply_translations, update_translations
 
 
 class TranslatableQuerySet(models.QuerySet):
 
     def get_translated(self, *relations, lang=None):
-        read_translations(
+        apply_translations(
             self, *relations,
             lang=lang
         )

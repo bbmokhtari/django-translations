@@ -17,4 +17,4 @@ Utilities
    .. autofunction:: _apply_obj_translations
    .. autofunction:: _apply_rel_translations
    .. autofunction:: _apply_entity_translations
-   .. autofunction:: read_translations
+   .. autofunction:: apply_translations
