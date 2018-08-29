@@ -38,7 +38,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
 from django.conf import settings
 
-import translations.models as _models
+import translations.models
 
 
 __docformat__ = 'restructuredtext'
@@ -504,7 +504,7 @@ def _get_translations(entity, *relations, lang=None):
     iterable, model = _get_entity_details(entity)
 
     if model is None:
-        return _models.Translation.objects.none()
+        return translations.models.Translation.objects.none()
 
     if iterable:
         condition = 'pk__in'
@@ -515,7 +515,7 @@ def _get_translations(entity, *relations, lang=None):
 
     queries = []
 
-    if issubclass(model, _models.Translatable):
+    if issubclass(model, translations.models.Translatable):
         trans = _get_translations_reverse_relation(model)
         prop = '{}__{}'.format(trans, condition)
         queries.append(
@@ -530,13 +530,13 @@ def _get_translations(entity, *relations, lang=None):
         )
 
     if len(queries) == 0:
-        return _models.Translation.objects.none()
+        return translations.models.Translation.objects.none()
 
     filters = queries.pop()
     for query in queries:
         filters |= query
 
-    queryset = _models.Translation.objects.filter(
+    queryset = translations.models.Translation.objects.filter(
         language=lang
     ).filter(
         filters
@@ -1141,7 +1141,7 @@ def _apply_entity_translations(entity, hierarchy, dictionary, included=True):
     ct_dictionary = dictionary.get(content_type.id, {})
 
     if included:
-        if issubclass(model, _models.Translatable):
+        if issubclass(model, translations.models.Translatable):
             fields = model.get_translatable_fields()
         else:
             raise TypeError('`{}` is not Translatable'.format(model))
@@ -1346,7 +1346,7 @@ def _update_entity_translations(entity, hierarchy, dictionary, included=True):
     ct_dictionary = dictionary.setdefault(content_type.id, {})
 
     if included:
-        if issubclass(model, _models.Translatable):
+        if issubclass(model, translations.models.Translatable):
             fields = model.get_translatable_fields()
         else:
             raise TypeError('`{}` is not Translatable'.format(model))
@@ -1364,7 +1364,7 @@ def _update_entity_translations(entity, hierarchy, dictionary, included=True):
 
 def update_translations(entity, *relations, lang=None):
     hierarchy = _get_relations_hierarchy(*relations)
-    translations = _get_translations(entity, *relations, lang=lang)
+    old_translations = _get_translations(entity, *relations, lang=lang)
 
     dictionary = {}
 
@@ -1376,7 +1376,7 @@ def update_translations(entity, *relations, lang=None):
         for (obj_id, fields) in objs.items():
             for (field, value) in fields.items():
                 new_translations.append(
-                    _models.Translation(
+                    translations.models.Translation(
                         content_type_id=ct_id,
                         object_id=obj_id,
                         field=field,
@@ -1385,5 +1385,5 @@ def update_translations(entity, *relations, lang=None):
                     )
                 )
 
-    translations.delete()
-    _models.Translation.objects.bulk_create(new_translations)
+    old_translations.delete()
+    translations.models.Translation.objects.bulk_create(new_translations)
