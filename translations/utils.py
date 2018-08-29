@@ -416,22 +416,13 @@ def _get_translations(entity, *relations, lang=None):
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
 
-    queries = []
+    filters = models.Q()
     for (ct_id, objs) in groups.items():
         for (obj_id, obj) in objs.items():
-            queries.append(
-                models.Q(
-                    content_type__id=ct_id,
-                    object_id=obj_id
-                )
+            filters |= models.Q(
+                content_type__id=ct_id,
+                object_id=obj_id
             )
-
-    if len(queries) == 0:
-        return translations.models.Translation.objects.none()
-
-    filters = queries.pop()
-    for query in queries:
-        filters |= query
 
     queryset = translations.models.Translation.objects.filter(
         language=lang
