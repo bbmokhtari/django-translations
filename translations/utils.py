@@ -797,7 +797,7 @@ def _get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def _apply_obj_translations(obj, ct_dictionary, included=True):
+def _apply_obj_translations(obj, fields, ct_dictionary, included=True):
     """
     Apply a :term:`content type translations dictionary` on an object.
 
@@ -849,14 +849,19 @@ def _apply_obj_translations(obj, ct_dictionary, included=True):
 
        Europa
     """
-    if included and ct_dictionary:
+    if fields and ct_dictionary and included:
         try:
-            fields = ct_dictionary[str(obj.id)]
+            obj_fields = ct_dictionary[str(obj.id)]
         except KeyError:
             pass
         else:
-            for (field, text) in fields.items():
-                setattr(obj, field, text)
+            for field in fields:
+                try:
+                    value = obj_fields[field.name]
+                except KeyError:
+                    pass
+                else:
+                    setattr(obj, field.name, value)
 
 
 def _apply_rel_translations(obj, hierarchy, dictionary):
