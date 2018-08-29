@@ -358,8 +358,8 @@ def _get_translations(entity, *relations, lang=None):
     """
     Return the translations of an entity and the relations of it in a language.
 
-    Collects all the translations of the entity and the specified relations
-    of it in a language and returns them as a
+    Fetches the translations of the entity and the specified relations of it
+    in a language and returns them as a
     :class:`~translations.models.Translation` queryset.
 
     :param entity: The entity to fetch the translations of.
@@ -1139,10 +1139,10 @@ def _apply_entity_translations(entity, hierarchy, dictionary, included=True):
 
 def apply_translations(entity, *relations, lang=None):
     """
-    Translate an entity and the relations of it in a language.
+    Apply the translations on an entity and the relations of it in a language.
 
-    Fetches the translations of the entity and the relations of it and applies
-    them, field by field and in place.
+    Fetches the translations of the entity and the specified relations of it
+    in a language and applies them, field by field and in place.
 
     :param entity: The entity to apply the translations on and on the
         relations of.
@@ -1192,18 +1192,20 @@ def apply_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To translate a list of instances and the relations of it:
+    To apply the translations on a list of instances and the relations of it:
 
     .. testcode:: apply_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent, Country, City
        from translations.utils import apply_translations
+
+       relations = ('countries', 'countries__cities',)
 
        continents = list(Continent.objects.all())
-       prefetch_related_objects(continents, 'countries', 'countries__cities')
+       prefetch_related_objects(continents, *relations)
 
-       apply_translations(continents, "countries", "countries__cities", lang="de")
+       apply_translations(continents, *relations, lang="de")
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1223,18 +1225,18 @@ def apply_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To translate a queryset and the relations of it:
+    To apply the translations on a queryset and the relations of it:
 
     .. testcode:: apply_translations
 
        from sample.models import Continent, Country, City
        from translations.utils import apply_translations
 
-       continents = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).all()
+       relations = ('countries', 'countries__cities',)
 
-       apply_translations(continents, "countries", "countries__cities", lang="de")
+       continents = Continent.objects.prefetch_related(*relations).all()
+
+       apply_translations(continents, *relations, lang="de")
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1254,7 +1256,7 @@ def apply_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To translate an instance and the relations of it:
+    To apply the translations on an instance and the relations of it:
 
     .. testcode:: apply_translations
 
@@ -1262,10 +1264,12 @@ def apply_translations(entity, *relations, lang=None):
        from sample.models import Continent, Country, City
        from translations.utils import apply_translations
 
-       europe = Continent.objects.get(code="EU")
-       prefetch_related_objects([europe], 'countries', 'countries__cities')
+       relations = ('countries', 'countries__cities',)
 
-       apply_translations(europe, "countries", "countries__cities", lang="de")
+       europe = Continent.objects.get(code="EU")
+       prefetch_related_objects([europe], *relations)
+
+       apply_translations(europe, *relations, lang="de")
 
        print("Continent: {}".format(europe))
        for country in europe.countries.all():
