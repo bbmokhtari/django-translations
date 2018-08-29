@@ -1292,15 +1292,13 @@ def apply_translations(entity, *relations, lang=None):
     _apply_entity_translations(entity, hierarchy, dictionary, included=True)
 
 
-def _update_obj_translations(obj, ct_dictionary, included=True):
-    if included and ct_dictionary:
-        try:
-            fields = ct_dictionary[str(obj.id)]
-        except KeyError:
-            pass
-        else:
-            for (field, text) in fields.items():
-                setattr(obj, field, text)
+def _update_obj_translations(obj, fields, ct_dictionary, included=True):
+    if fields and included:
+        ct_dictionary[str(obj.id)] = {}
+        for field in fields:
+            value = getattr(obj, field.name, None)
+            if value:
+                ct_dictionary[str(obj.id)][field] = value
 
 
 def _update_rel_translations(obj, hierarchy, dictionary):
@@ -1310,7 +1308,7 @@ def _update_rel_translations(obj, hierarchy, dictionary):
             if value is not None:
                 if isinstance(value, models.Manager):
                     value = value.all()
-                _apply_entity_translations(
+                _update_entity_translations(
                     value,
                     detail['relations'],
                     dictionary,
@@ -1327,12 +1325,17 @@ def _update_entity_translations(entity, hierarchy, dictionary, included=True):
     content_type = ContentType.objects.get_for_model(model)
     ct_dictionary = dictionary.setdefault(content_type.id, {})
 
+    if included:
+        fields = model.get_translatable_fields()
+    else:
+        fields = []
+
     if iterable:
         for obj in entity:
-            _update_obj_translations(obj, ct_dictionary, included=included)
+            _update_obj_translations(obj, fields, ct_dictionary, included)
             _update_rel_translations(obj, hierarchy, dictionary)
     else:
-        _update_obj_translations(entity, ct_dictionary, included=included)
+        _update_obj_translations(entity, fields, ct_dictionary, included)
         _update_rel_translations(entity, hierarchy, dictionary)
 
 
@@ -1344,7 +1347,8 @@ def update_translations(entity, *relations, lang=None):
 
     _update_entity_translations(entity, hierarchy, dictionary, included=True)
 
-    translations.delete()
+    print("dictionary")
+    print(dictionary)
 
 
 def old_update_translations(entity, lang=None):
