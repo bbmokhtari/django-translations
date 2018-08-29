@@ -1346,7 +1346,10 @@ def _update_entity_translations(entity, hierarchy, dictionary, included=True):
     ct_dictionary = dictionary.setdefault(content_type.id, {})
 
     if included:
-        fields = model.get_translatable_fields()
+        if issubclass(model, translations.models.Translatable):
+            fields = model.get_translatable_fields()
+        else:
+            raise TypeError('`{}` is not Translatable'.format(model))
     else:
         fields = []
 
