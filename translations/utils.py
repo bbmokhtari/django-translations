@@ -720,78 +720,26 @@ def apply_translations(entity, *relations, lang=None):
         setattr(groups[ct_id][obj_id], translation.field, translation.text)
 
 
-def _update_obj_translations(obj, fields, ct_dictionary, included=True):
-    if fields and included:
-        ct_dictionary[str(obj.id)] = {}
-        for field in fields:
-            value = getattr(obj, field.name, None)
-            if value:
-                ct_dictionary[str(obj.id)][field.name] = value
-
-
-def _update_rel_translations(obj, hierarchy, dictionary):
-    if hierarchy:
-        for (relation, detail) in hierarchy.items():
-            value = getattr(obj, relation, None)
-            if value is not None:
-                if isinstance(value, models.Manager):
-                    value = value.all()
-                _update_entity_translations(
-                    value,
-                    detail['relations'],
-                    dictionary,
-                    included=detail['included']
-                )
-
-
-def _update_entity_translations(entity, hierarchy, dictionary, included=True):
-    iterable, model = _get_entity_details(entity)
-
-    if model is None:
-        return
-
-    content_type = ContentType.objects.get_for_model(model)
-    ct_dictionary = dictionary.setdefault(content_type.id, {})
-
-    if included:
-        if issubclass(model, translations.models.Translatable):
-            fields = model.get_translatable_fields()
-        else:
-            raise TypeError('`{}` is not Translatable'.format(model))
-    else:
-        fields = []
-
-    if iterable:
-        for obj in entity:
-            _update_obj_translations(obj, fields, ct_dictionary, included)
-            _update_rel_translations(obj, hierarchy, dictionary)
-    else:
-        _update_obj_translations(entity, fields, ct_dictionary, included)
-        _update_rel_translations(entity, hierarchy, dictionary)
-
-
 def update_translations(entity, *relations, lang=None):
     hierarchy = _get_relations_hierarchy(*relations)
+    groups = _get_entity_groups(entity, hierarchy)
     old_translations = _get_translations(entity, *relations, lang=lang)
 
-    dictionary = {}
-
-    _update_entity_translations(entity, hierarchy, dictionary, included=True)
-
     new_translations = []
-
-    for (ct_id, objs) in dictionary.items():
-        for (obj_id, fields) in objs.items():
-            for (field, value) in fields.items():
-                new_translations.append(
-                    translations.models.Translation(
-                        content_type_id=ct_id,
-                        object_id=obj_id,
-                        field=field,
-                        language=lang,
-                        text=value,
+    for (ct_id, objs) in groups.items():
+        for (obj_id, obj) in objs.items():
+            for field in type(obj).get_translatable_fields():
+                text = getattr(obj, field.name, None)
+                if text:
+                    new_translations.append(
+                        translations.models.Translation(
+                            content_type_id=ct_id,
+                            object_id=obj_id,
+                            field=field.name,
+                            language=lang,
+                            text=text,
+                        )
                     )
-                )
 
     old_translations.delete()
     translations.models.Translation.objects.bulk_create(new_translations)
