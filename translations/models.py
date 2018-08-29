@@ -253,7 +253,7 @@ class Translatable(models.Model):
         """
         apply_translations(self, *relations, lang=lang)
 
-    def update_translations(self, lang=None):
+    def update_translations(self, *relations, lang=None):
         """
         Update the translations of the object based on the object properties.
 
@@ -264,4 +264,4 @@ class Translatable(models.Model):
             is given the current active language will be used.
         :type lang: str or None
         """
-        update_translations(self, lang=lang)
+        update_translations(self, *relations, lang=lang)
