@@ -721,9 +721,9 @@ def apply_translations(entity, *relations, lang=None):
     """
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
-    tranz = _get_translations(entity, *relations, lang=lang)
+    translations = _get_translations(entity, *relations, lang=lang)
 
-    for translation in tranz:
+    for translation in translations:
         ct_id = translation.content_type.id
         obj_id = translation.object_id
         setattr(groups[ct_id][obj_id], translation.field, translation.text)
