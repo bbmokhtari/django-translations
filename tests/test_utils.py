@@ -4938,7 +4938,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -4985,7 +4985,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1 = ('countries',)
@@ -5033,7 +5033,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_2 = ('countries__cities',)
@@ -5081,7 +5081,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5128,7 +5128,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5173,7 +5173,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1 = ('countries',)
@@ -5219,7 +5219,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_2 = ('countries__cities',)
@@ -5265,7 +5265,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5310,7 +5310,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5386,7 +5386,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1 = ('countries',)
@@ -5463,7 +5463,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_2 = ('countries__cities',)
@@ -5540,7 +5540,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5616,7 +5616,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5690,7 +5690,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1 = ('countries',)
@@ -5765,7 +5765,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_2 = ('countries__cities',)
@@ -5840,7 +5840,7 @@ class ApplyTranslationsTest(TestCase):
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
             city_fields=["name", "denonym"],
-            langs=["de"]
+            langs=["de", "tr"]
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -5906,1150 +5906,6 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    # ---- specific filtering testing ----------------------------------------
-
-    def test_instance_with_no_relation_lang_filtering(self):
-        create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-            ]
-        )
-
-    def test_instance_with_simple_relation_lang_filtering(self):
-        create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-            ]
-        )
-
-    def test_instance_with_nested_relation_lang_filtering(self):
-        create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries", "countries__cities",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-                "<Translation: Cologne: Koln>",
-                "<Translation: Cologner: Kolnlı>",
-            ]
-        )
-
-    def test_instance_with_no_relation_relation_filtering(self):
-        create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-            ]
-        )
-
-    def test_instance_with_simple_relation_relation_filtering(self):
-        create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-            ]
-        )
-
-    def test_instance_with_nested_relation_relation_filtering(self):
-        create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-            ]
-        )
-
-    def test_instance_with_no_relation_entity_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-        asia = Continent.objects.get(code="AS")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-            ]
-        )
-
-    def test_instance_with_simple_relation_entity_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-        asia = Continent.objects.get(code="AS")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-            ]
-        )
-
-    def test_instance_with_nested_relation_entity_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-        asia = Continent.objects.get(code="AS")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-                "<Translation: Mumbai: Mumbaï>",
-                "<Translation: Mumbaian: Mumbäisch>",
-            ]
-        )
-
-    def test_queryset_with_no_relation_lang_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            continent_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        continents = Continent.objects.all()
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-            ]
-        )
-
-    def test_queryset_with_simple_relation_lang_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        continents = Continent.objects.all()
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                "countries",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-                "<Translation: India: Hindistan>",
-                "<Translation: Indian: Hintlı>",
-            ]
-        )
-
-    def test_queryset_with_nested_relation_lang_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        continents = Continent.objects.all()
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-                "<Translation: Mumbai: Mumbaï>",
-                "<Translation: Mumbaian: Mumbäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                "countries", "countries__cities",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-                "<Translation: Cologne: Koln>",
-                "<Translation: Cologner: Kolnlı>",
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-                "<Translation: India: Hindistan>",
-                "<Translation: Indian: Hintlı>",
-                "<Translation: Mumbai: Bombay>",
-                "<Translation: Mumbaian: Bombaylı>",
-            ]
-        )
-
-    def test_queryset_with_no_relation_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        continents = Continent.objects.all()
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-            ]
-        )
-
-    def test_queryset_with_simple_relation_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        continents = Continent.objects.all()
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-            ]
-        )
-
-    def test_queryset_with_nested_relation_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        continents = Continent.objects.all()
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                continents,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-                "<Translation: Mumbai: Mumbaï>",
-                "<Translation: Mumbaian: Mumbäisch>",
-            ]
-        )
-
-    def test_queryset_with_no_relation_entity_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia", "africa", "north america"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        eurasia = Continent.objects.filter(
-            models.Q(code="AS") | models.Q(code="EU")
-        )
-        afromerica = Continent.objects.filter(
-            models.Q(code="AF") | models.Q(code="NA")
-        )
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Afrika>",
-                "<Translation: African: Afrikanisch>",
-                "<Translation: North America: Nordamerika>",
-                "<Translation: North American: Nordamerikanisch>",
-            ]
-        )
-
-    def test_queryset_with_simple_relation_entity_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia", "africa", "north america"],
-            country_names=["germany", "india", "egypt", "mexico"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        eurasia = Continent.objects.filter(
-            models.Q(code="AS") | models.Q(code="EU")
-        )
-        afromerica = Continent.objects.filter(
-            models.Q(code="AF") | models.Q(code="NA")
-        )
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Afrika>",
-                "<Translation: African: Afrikanisch>",
-                "<Translation: Egypt: Ägypten>",
-                "<Translation: Egyptian: Ägyptisch>",
-                "<Translation: North America: Nordamerika>",
-                "<Translation: North American: Nordamerikanisch>",
-                "<Translation: Mexico: Mexiko>",
-                "<Translation: Mexican: Mexikaner>",
-            ]
-        )
-
-    def test_queryset_with_nested_relation_entity_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia", "africa", "north america"],
-            country_names=["germany", "india", "egypt", "mexico"],
-            city_names=["cologne", "mumbai", "cairo", "mexico city"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de"]
-        )
-
-        eurasia = Continent.objects.filter(
-            models.Q(code="AS") | models.Q(code="EU")
-        )
-        afromerica = Continent.objects.filter(
-            models.Q(code="AF") | models.Q(code="NA")
-        )
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-                "<Translation: Mumbai: Mumbaï>",
-                "<Translation: Mumbaian: Mumbäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Afrika>",
-                "<Translation: African: Afrikanisch>",
-                "<Translation: Egypt: Ägypten>",
-                "<Translation: Egyptian: Ägyptisch>",
-                "<Translation: Cairo: Kairo>",
-                "<Translation: Cairoian: Kairoisch>",
-                "<Translation: North America: Nordamerika>",
-                "<Translation: North American: Nordamerikanisch>",
-                "<Translation: Mexico: Mexiko>",
-                "<Translation: Mexican: Mexikaner>",
-                "<Translation: Mexico City: Mexiko Stadt>",
-                "<Translation: Mexico Citian: Mexiko Stadtisch>",
-            ]
-        )
-
-    # ---- global filtering testing ------------------------------------------
-
-    def test_instance_with_no_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-        asia = Continent.objects.get(code="AS")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-            ]
-        )
-
-    def test_instance_with_simple_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-        asia = Continent.objects.get(code="AS")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                "countries",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-                "<Translation: India: Hindistan>",
-                "<Translation: Indian: Hintlı>",
-            ]
-        )
-
-    def test_instance_with_nested_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia"],
-            country_names=["germany", "india"],
-            city_names=["cologne", "mumbai"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        europe = Continent.objects.get(code="EU")
-        asia = Continent.objects.get(code="AS")
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                europe,
-                "countries", "countries__cities",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-                "<Translation: Cologne: Koln>",
-                "<Translation: Cologner: Kolnlı>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-                "<Translation: Mumbai: Mumbaï>",
-                "<Translation: Mumbaian: Mumbäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                asia,
-                "countries", "countries__cities",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-                "<Translation: India: Hindistan>",
-                "<Translation: Indian: Hintlı>",
-                "<Translation: Mumbai: Bombay>",
-                "<Translation: Mumbaian: Bombaylı>",
-            ]
-        )
-
-    def test_queryset_with_no_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia", "africa", "north america"],
-            country_names=["germany", "india", "egypt", "mexico"],
-            city_names=["cologne", "mumbai", "cairo", "mexico city"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        eurasia = Continent.objects.filter(
-            models.Q(code="AS") | models.Q(code="EU")
-        )
-        afromerica = Continent.objects.filter(
-            models.Q(code="AF") | models.Q(code="NA")
-        )
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Afrika>",
-                "<Translation: African: Afrikanisch>",
-                "<Translation: North America: Nordamerika>",
-                "<Translation: North American: Nordamerikanisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Àfrika>",
-                "<Translation: African: Àfrikalı>",
-                "<Translation: North America: Kuzey Amerika>",
-                "<Translation: North American: Kuzey Amerikalı>",
-            ]
-        )
-
-    def test_queryset_with_simple_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia", "africa", "north america"],
-            country_names=["germany", "india", "egypt", "mexico"],
-            city_names=["cologne", "mumbai", "cairo", "mexico city"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        eurasia = Continent.objects.filter(
-            models.Q(code="AS") | models.Q(code="EU")
-        )
-        afromerica = Continent.objects.filter(
-            models.Q(code="AF") | models.Q(code="NA")
-        )
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                "countries",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-                "<Translation: India: Hindistan>",
-                "<Translation: Indian: Hintlı>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                "countries",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Afrika>",
-                "<Translation: African: Afrikanisch>",
-                "<Translation: Egypt: Ägypten>",
-                "<Translation: Egyptian: Ägyptisch>",
-                "<Translation: North America: Nordamerika>",
-                "<Translation: North American: Nordamerikanisch>",
-                "<Translation: Mexico: Mexiko>",
-                "<Translation: Mexican: Mexikaner>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                "countries",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Àfrika>",
-                "<Translation: African: Àfrikalı>",
-                "<Translation: Egypt: Mısır>",
-                "<Translation: Egyptian: Mısırlı>",
-                "<Translation: North America: Kuzey Amerika>",
-                "<Translation: North American: Kuzey Amerikalı>",
-                "<Translation: Mexico: Meksika>",
-                "<Translation: Mexican: Meksikalı>",
-            ]
-        )
-
-    def test_queryset_with_nested_relation_filtering(self):
-        create_samples(
-            continent_names=["europe", "asia", "africa", "north america"],
-            country_names=["germany", "india", "egypt", "mexico"],
-            city_names=["cologne", "mumbai", "cairo", "mexico city"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
-        )
-
-        eurasia = Continent.objects.filter(
-            models.Q(code="AS") | models.Q(code="EU")
-        )
-        afromerica = Continent.objects.filter(
-            models.Q(code="AF") | models.Q(code="NA")
-        )
-
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
-                "<Translation: Germany: Deutschland>",
-                "<Translation: German: Deutsche>",
-                "<Translation: Cologne: Köln>",
-                "<Translation: Cologner: Kölner>",
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
-                "<Translation: India: Indien>",
-                "<Translation: Indian: Indisch>",
-                "<Translation: Mumbai: Mumbaï>",
-                "<Translation: Mumbaian: Mumbäisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                eurasia,
-                "countries", "countries__cities",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Europe: Avrupa>",
-                "<Translation: European: Avrupalı>",
-                "<Translation: Germany: Almanya>",
-                "<Translation: German: Almanca>",
-                "<Translation: Cologne: Koln>",
-                "<Translation: Cologner: Kolnlı>",
-                "<Translation: Asia: Asya>",
-                "<Translation: Asian: Asyalı>",
-                "<Translation: India: Hindistan>",
-                "<Translation: Indian: Hintlı>",
-                "<Translation: Mumbai: Bombay>",
-                "<Translation: Mumbaian: Bombaylı>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                "countries", "countries__cities",
-                lang="de"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Afrika>",
-                "<Translation: African: Afrikanisch>",
-                "<Translation: Egypt: Ägypten>",
-                "<Translation: Egyptian: Ägyptisch>",
-                "<Translation: Cairo: Kairo>",
-                "<Translation: Cairoian: Kairoisch>",
-                "<Translation: North America: Nordamerika>",
-                "<Translation: North American: Nordamerikanisch>",
-                "<Translation: Mexico: Mexiko>",
-                "<Translation: Mexican: Mexikaner>",
-                "<Translation: Mexico City: Mexiko Stadt>",
-                "<Translation: Mexico Citian: Mexiko Stadtisch>",
-            ]
-        )
-        self.assertQuerysetEqual(
-            _get_translations(
-                afromerica,
-                "countries", "countries__cities",
-                lang="tr"
-            ).order_by("id"),
-            [
-                "<Translation: Africa: Àfrika>",
-                "<Translation: African: Àfrikalı>",
-                "<Translation: Egypt: Mısır>",
-                "<Translation: Egyptian: Mısırlı>",
-                "<Translation: Cairo: Kahire>",
-                "<Translation: Cairoian: Kahirelı>",
-                "<Translation: North America: Kuzey Amerika>",
-                "<Translation: North American: Kuzey Amerikalı>",
-                "<Translation: Mexico: Meksika>",
-                "<Translation: Mexican: Meksikalı>",
-                "<Translation: Mexico City: Meksika şehri>",
-                "<Translation: Mexico Citian: Meksika şehrilı>",
-            ]
-        )
-
     # ---- error testing -----------------------------------------------------
 
     def test_invalid_lang(self):
@@ -7062,7 +5918,7 @@ class ApplyTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         with self.assertRaises(ValueError) as error:
-            _get_translations(
+            apply_translations(
                 europe,
                 lang="xx"
             )
@@ -7081,7 +5937,7 @@ class ApplyTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_translations(
+            apply_translations(
                 europe,
                 'wrong',
                 lang="de"
@@ -7104,7 +5960,7 @@ class ApplyTranslationsTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            _get_translations(
+            apply_translations(
                 behzad,
                 lang="de"
             )
