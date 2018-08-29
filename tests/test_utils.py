@@ -2653,7 +2653,7 @@ class ApplyObjTranslations(TestCase):
 class ApplyRelTranslations(TestCase):
     """Tests for `_apply_rel_translations`."""
 
-    def test_empty_hierarchy_empty_dictionary(self):
+    def test_level_0_hierarchy_level_0_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -2668,7 +2668,11 @@ class ApplyRelTranslations(TestCase):
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
 
-        _apply_rel_translations(europe, {}, {})
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
+        hierarchy = _get_relations_hierarchy()
+
+        _apply_rel_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -2690,7 +2694,7 @@ class ApplyRelTranslations(TestCase):
             'Cologner'
         )
 
-    def test_empty_hierarchy_level_1_dictionary(self):
+    def test_level_0_hierarchy_level_1_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -2708,6 +2712,7 @@ class ApplyRelTranslations(TestCase):
 
         translations = _get_translations(europe, *lvl_1, lang="de")
         dictionary = _get_translations_dictionary(translations)
+        hierarchy = _get_relations_hierarchy()
 
         _apply_rel_translations(europe, {}, dictionary)
 
@@ -2731,7 +2736,7 @@ class ApplyRelTranslations(TestCase):
             'Cologner'
         )
 
-    def test_empty_hierarchy_level_2_dictionary(self):
+    def test_level_0_hierarchy_level_2_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -2749,6 +2754,7 @@ class ApplyRelTranslations(TestCase):
 
         translations = _get_translations(europe, *lvl_2, lang="de")
         dictionary = _get_translations_dictionary(translations)
+        hierarchy = _get_relations_hierarchy()
 
         _apply_rel_translations(europe, {}, dictionary)
 
@@ -2772,7 +2778,7 @@ class ApplyRelTranslations(TestCase):
             'Cologner'
         )
 
-    def test_empty_hierarchy_level_1_2_dictionary(self):
+    def test_level_0_hierarchy_level_1_2_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -2789,6 +2795,7 @@ class ApplyRelTranslations(TestCase):
 
         translations = _get_translations(europe, *lvl_1_2, lang="de")
         dictionary = _get_translations_dictionary(translations)
+        hierarchy = _get_relations_hierarchy()
 
         _apply_rel_translations(europe, {}, dictionary)
 
@@ -2812,7 +2819,7 @@ class ApplyRelTranslations(TestCase):
             'Cologner'
         )
 
-    def test_level_1_hierarchy_empty_dictionary(self):
+    def test_level_1_hierarchy_level_0_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -2828,6 +2835,8 @@ class ApplyRelTranslations(TestCase):
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
 
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
         _apply_rel_translations(europe, hierarchy, {})
@@ -2979,7 +2988,7 @@ class ApplyRelTranslations(TestCase):
             'Cologner'
         )
 
-    def test_level_2_hierarchy_empty_dictionary(self):
+    def test_level_2_hierarchy_level_0_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -2995,6 +3004,8 @@ class ApplyRelTranslations(TestCase):
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
 
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
         _apply_rel_translations(europe, hierarchy, {})
@@ -3146,7 +3157,7 @@ class ApplyRelTranslations(TestCase):
             'Kölner'
         )
 
-    def test_level_1_2_hierarchy_empty_dictionary(self):
+    def test_level_1_2_hierarchy_level_0_dictionary(self):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
@@ -3161,6 +3172,8 @@ class ApplyRelTranslations(TestCase):
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
 
+        translations = _get_translations(europe, lang="de")
+        dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
         _apply_rel_translations(europe, hierarchy, {})
