@@ -1388,3 +1388,43 @@ def update_translations(entity, *relations, lang=None):
 
     old_translations.delete()
     translations.models.Translation.objects.bulk_create(new_translations)
+
+
+def _get_entity_groups(entity, hierarchy):
+    groups = {}
+
+    def _fill_entity(entity, hierarchy, groups, included=True):
+        iterable, model = _get_entity_details(entity)
+
+        if model is None:
+            return
+
+        content_type = ContentType.objects.get_for_model(model)
+        content_type_groups = groups.setdefault(content_type.id, {})
+
+        def _fill_obj(obj, hierarchy):
+            if included:
+                content_type_groups[obj.id] = obj
+
+            if hierarchy:
+                for (relation, detail) in hierarchy.items():
+                    value = getattr(obj, relation, None)
+                    if value is not None:
+                        if isinstance(value, models.Manager):
+                            value = value.all()
+                        _fill_entity(
+                            entity=value,
+                            hierarchy=detail['relations'],
+                            groups=groups,
+                            included=detail['included']
+                        )
+
+        if iterable:
+            for obj in entity:
+                _fill_obj(obj, hierarchy)
+        else:
+            _fill_obj(entity, hierarchy)
+
+    _fill_entity(entity, hierarchy, groups)
+
+    return groups
