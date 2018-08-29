@@ -1298,7 +1298,7 @@ def _update_obj_translations(obj, fields, ct_dictionary, included=True):
         for field in fields:
             value = getattr(obj, field.name, None)
             if value:
-                ct_dictionary[str(obj.id)][field] = value
+                ct_dictionary[str(obj.id)][field.name] = value
 
 
 def _update_rel_translations(obj, hierarchy, dictionary):
