@@ -427,7 +427,7 @@ def _get_translations(entity, *relations, lang=None):
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seülisch>,
+           <Translation: Seouler: Seüler>,
            <Translation: Ulsan: Ulsän>,
            <Translation: Ulsanian: Ulsänisch>
        ]>
@@ -465,7 +465,7 @@ def _get_translations(entity, *relations, lang=None):
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seülisch>,
+           <Translation: Seouler: Seüler>,
            <Translation: Ulsan: Ulsän>,
            <Translation: Ulsanian: Ulsänisch>
        ]>
@@ -622,7 +622,7 @@ def _get_translations_dictionary(translations):
        City translations:
        {'denonym': 'Kölner', 'name': 'Köln'}
        {'denonym': 'Münchner', 'name': 'München'}
-       {'denonym': 'Seülisch', 'name': 'Seül'}
+       {'denonym': 'Seüler', 'name': 'Seül'}
        {'denonym': 'Ulsänisch', 'name': 'Ulsän'}
     """
     dictionary = {}
