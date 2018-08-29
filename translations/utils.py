@@ -455,89 +455,6 @@ def _get_translations(entity, *relations, lang=None):
     return queryset
 
 
-def _fill_hierarchy(hierarchy, *relation_parts):
-    """
-    Fills a :term:`relations hierarchy` with parts of a relation.
-
-    Fills the :term:`relations hierarchy` based on the order of the relation
-    parts. The later parts are considered as the children of the earlier ones.
-    The last part is considered included.
-
-    :param hierarchy: The :term:`relations hierarchy` to fill.
-    :type hierarchy: dict(str, dict)
-    :param relation_parts: The parts of the relation to fill the
-        :term:`relations hierarchy` with.
-    :type relation_parts: list(str)
-
-    To fill the :term:`relations hierarchy` with one level of relation parts:
-
-    .. testcode:: _fill_hierarchy
-
-       from translations.utils import _fill_hierarchy
-
-       hierarchy = {}
-
-       _fill_hierarchy(hierarchy, 'countries')
-
-       print(hierarchy)
-
-    .. testoutput:: _fill_hierarchy
-
-       {'countries': {'included': True, 'relations': {}}}
-
-    To fill the :term:`relations hierarchy` with two level of relation parts,
-    not including the first one:
-
-    .. testcode:: _fill_hierarchy
-
-       from translations.utils import _fill_hierarchy
-
-       hierarchy = {}
-
-       _fill_hierarchy(hierarchy, 'countries', 'cities')
-
-       print(hierarchy)
-
-    .. testoutput:: _fill_hierarchy
-
-       {'countries': {'included': False,
-                      'relations': {'cities': {'included': True,
-                                               'relations': {}}}}}
-
-    To fill the :term:`relations hierarchy` with two level of relation parts,
-    including the first one:
-
-    .. testcode:: _fill_hierarchy
-
-       from translations.utils import _fill_hierarchy
-
-       hierarchy = {}
-
-       _fill_hierarchy(hierarchy, 'countries')
-       _fill_hierarchy(hierarchy, 'countries', 'cities')
-
-       print(hierarchy)
-
-    .. testoutput:: _fill_hierarchy
-
-       {'countries': {'included': True,
-                      'relations': {'cities': {'included': True,
-                                               'relations': {}}}}}
-    """
-    root = relation_parts[0]
-    nest = relation_parts[1:]
-
-    hierarchy.setdefault(root, {
-        "included": False,
-        "relations": {}
-    })
-
-    if nest:
-        _fill_hierarchy(hierarchy[root]["relations"], *nest)
-    else:
-        hierarchy[root]["included"] = True
-
-
 def _get_relations_hierarchy(*relations):
     """
     Return the :term:`relations hierarchy` made out of some relations.
@@ -606,6 +523,21 @@ def _get_relations_hierarchy(*relations):
        {}
     """
     hierarchy = {}
+
+    def _fill_hierarchy(hierarchy, *relation_parts):
+        root = relation_parts[0]
+        nest = relation_parts[1:]
+
+        hierarchy.setdefault(root, {
+            "included": False,
+            "relations": {}
+        })
+
+        if nest:
+            _fill_hierarchy(hierarchy[root]["relations"], *nest)
+        else:
+            hierarchy[root]["included"] = True
+
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
         _fill_hierarchy(hierarchy, *parts)
