@@ -946,7 +946,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
 
        <TranslatableQuerySet [<Country: Deutschland>]>
     """
-    if hierarchy:
+    if hierarchy and dictionary:
         for (relation, detail) in hierarchy.items():
             value = getattr(obj, relation, None)
             if value is not None:
