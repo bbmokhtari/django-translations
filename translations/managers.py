@@ -11,5 +11,5 @@ class TranslatableManager(models.Manager):
     def apply_translations(self, *relations, lang=None):
         return self.get_queryset().apply_translations(*relations, lang=lang)
 
-    def update_translations(self, lang=None):
-        return self.get_queryset().update_translations(lang=lang)
+    def update_translations(self, *relations, lang=None):
+        return self.get_queryset().update_translations(*relations, lang=lang)

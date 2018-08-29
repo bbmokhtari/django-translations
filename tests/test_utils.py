@@ -1584,12 +1584,13 @@ class ApplyObjTranslations(TestCase):
         create_samples(continent_names=["europe"])
 
         europe = Continent.objects.get(code="EU")
+        fields = Continent.get_translatable_fields()
         translations = _get_translations(europe, lang="de")
         dictionary = _get_translations_dictionary(translations)
         europe_ct = ContentType.objects.get_for_model(europe)
         ct_dictionary = dictionary.get(europe_ct.id, {})
 
-        _apply_obj_translations(europe, ct_dictionary, included=True)
+        _apply_obj_translations(europe, fields, ct_dictionary, included=True)
 
         self.assertEqual(
             europe.name,
@@ -1608,12 +1609,13 @@ class ApplyObjTranslations(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        fields = Continent.get_translatable_fields()
         translations = _get_translations(europe, lang="de")
         dictionary = _get_translations_dictionary(translations)
         europe_ct = ContentType.objects.get_for_model(europe)
         ct_dictionary = dictionary[europe_ct.id]
 
-        _apply_obj_translations(europe, ct_dictionary, included=True)
+        _apply_obj_translations(europe, fields, ct_dictionary, included=True)
 
         self.assertEqual(
             europe.name,
@@ -1632,12 +1634,13 @@ class ApplyObjTranslations(TestCase):
         )
 
         europe = Continent.objects.get(code="EU")
+        fields = Continent.get_translatable_fields()
         translations = _get_translations(europe, lang="de")
         dictionary = _get_translations_dictionary(translations)
         europe_ct = ContentType.objects.get_for_model(europe)
         ct_dictionary = dictionary[europe_ct.id]
 
-        _apply_obj_translations(europe, ct_dictionary, included=False)
+        _apply_obj_translations(europe, fields, ct_dictionary, included=False)
 
         self.assertEqual(
             europe.name,

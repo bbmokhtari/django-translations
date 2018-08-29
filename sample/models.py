@@ -31,7 +31,7 @@ class Continent(Translatable):
         verbose_name_plural = _('continents')
 
     class TranslatableMeta:
-        fields = ['name']
+        fields = ['name', 'denonym']
 
 
 class Country(Translatable):
@@ -68,7 +68,7 @@ class Country(Translatable):
         verbose_name_plural = _('countries')
 
     class TranslatableMeta:
-        fields = ['name']
+        fields = ['name', 'denonym']
 
 
 class City(Translatable):

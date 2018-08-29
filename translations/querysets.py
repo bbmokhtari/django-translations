@@ -9,6 +9,6 @@ class TranslatableQuerySet(models.QuerySet):
         apply_translations(self, *relations, lang=lang)
         return self
 
-    def update_translations(self, lang=None):
-        update_translations(self, lang=lang)
+    def update_translations(self, *relations, lang=None):
+        update_translations(self, *relations, lang=lang)
         return self

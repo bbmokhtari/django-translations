@@ -105,6 +105,8 @@ class Translation(models.Model):
        <Question: Quel âge avez-vous?>
     """
 
+    objects = models.Manager()
+
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
         help_text=_('the content type of the object to translate'),
@@ -251,7 +253,7 @@ class Translatable(models.Model):
         """
         apply_translations(self, *relations, lang=lang)
 
-    def update_translations(self, lang=None):
+    def update_translations(self, *relations, lang=None):
         """
         Update the translations of the object based on the object properties.
 
@@ -262,4 +264,4 @@ class Translatable(models.Model):
             is given the current active language will be used.
         :type lang: str or None
         """
-        update_translations(self, lang=lang)
+        update_translations(self, *relations, lang=lang)

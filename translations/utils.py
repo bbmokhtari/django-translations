@@ -21,7 +21,8 @@ This module contains the utilities for the Translations app.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` made out of some relations.
 :func:`_apply_obj_translations`
-    Apply a :term:`content type translations dictionary` on an object.
+    Apply a :term:`content type translations dictionary` on some fields of an
+    object.
 :func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
@@ -797,22 +798,27 @@ def _get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def _apply_obj_translations(obj, ct_dictionary, included=True):
+def _apply_obj_translations(obj, fields, ct_dictionary, included=True):
     """
-    Apply a :term:`content type translations dictionary` on an object.
+    Apply a :term:`content type translations dictionary` on some fields of an
+    object.
 
     Searches the :term:`content type translations dictionary` for the
-    translations of the object and applies them on the object, field by field
-    and in place.
+    translations of the object's fields and applies them, field by field and
+    in place.
 
     :param obj: The object to apply
-        the :term:`content type translations dictionary` on.
+        the :term:`content type translations dictionary` on the fields of.
     :type obj: ~django.db.models.Model
+    :param fields: the fields of the object to apply
+        the :term:`content type translations dictionary` on.
+    :type fields: list(~django.db.models.Field)
     :param ct_dictionary: The :term:`content type translations dictionary` to
-        be applied on the object.
+        apply on the fields of the object.
     :type ct_dictionary: dict(str, dict(str, str))
     :param included: Whether to apply
-        the :term:`content type translations dictionary` on the object or not.
+        the :term:`content type translations dictionary` on the fields of the
+        object or not.
     :type included: bool
 
     .. testsetup:: _apply_obj_translations
@@ -825,7 +831,8 @@ def _apply_obj_translations(obj, ct_dictionary, included=True):
            langs=["de"]
        )
 
-    To apply the :term:`content type translations dictionary` on an object:
+    To apply a :term:`content type translations dictionary` on some fields of
+    an object:
 
     .. testcode:: _apply_obj_translations
 
@@ -836,12 +843,13 @@ def _apply_obj_translations(obj, ct_dictionary, included=True):
        from translations.utils import _apply_obj_translations
 
        europe = Continent.objects.get(code="EU")
+       fields = Continent.get_translatable_fields()
        translations = _get_translations(europe, lang="de")
        dictionary = _get_translations_dictionary(translations)
        europe_ct = ContentType.objects.get_for_model(europe)
        ct_dictionary = dictionary[europe_ct.id]
 
-       _apply_obj_translations(europe, ct_dictionary, included=True)
+       _apply_obj_translations(europe, fields, ct_dictionary, included=True)
 
        print(europe)
 
@@ -849,14 +857,19 @@ def _apply_obj_translations(obj, ct_dictionary, included=True):
 
        Europa
     """
-    if included and ct_dictionary:
+    if fields and ct_dictionary and included:
         try:
-            fields = ct_dictionary[str(obj.id)]
+            obj_fields = ct_dictionary[str(obj.id)]
         except KeyError:
             pass
         else:
-            for (field, text) in fields.items():
-                setattr(obj, field, text)
+            for field in fields:
+                try:
+                    value = obj_fields[field.name]
+                except KeyError:
+                    pass
+                else:
+                    setattr(obj, field.name, value)
 
 
 def _apply_rel_translations(obj, hierarchy, dictionary):
@@ -934,7 +947,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
 
        <TranslatableQuerySet [<Country: Deutschland>]>
     """
-    if hierarchy:
+    if hierarchy and dictionary:
         for (relation, detail) in hierarchy.items():
             value = getattr(obj, relation, None)
             if value is not None:
@@ -1128,12 +1141,20 @@ def _apply_entity_translations(entity, hierarchy, dictionary, included=True):
     content_type = ContentType.objects.get_for_model(model)
     ct_dictionary = dictionary.get(content_type.id, {})
 
+    if included:
+        if issubclass(model, translations.models.Translatable):
+            fields = model.get_translatable_fields()
+        else:
+            raise TypeError('`{}` is not Translatable'.format(model))
+    else:
+        fields = []
+
     if iterable:
         for obj in entity:
-            _apply_obj_translations(obj, ct_dictionary, included=included)
+            _apply_obj_translations(obj, fields, ct_dictionary, included)
             _apply_rel_translations(obj, hierarchy, dictionary)
     else:
-        _apply_obj_translations(entity, ct_dictionary, included=included)
+        _apply_obj_translations(entity, fields, ct_dictionary, included)
         _apply_rel_translations(entity, hierarchy, dictionary)
 
 
@@ -1285,59 +1306,85 @@ def apply_translations(entity, *relations, lang=None):
        City: München
     """
     hierarchy = _get_relations_hierarchy(*relations)
+    translations = _get_translations(entity, *relations, lang=lang)
 
-    dictionary = _get_translations_dictionary(
-        _get_translations(
-            entity,
-            *relations,
-            lang=lang
-        )
-    )
+    dictionary = _get_translations_dictionary(translations)
 
     _apply_entity_translations(entity, hierarchy, dictionary, included=True)
 
 
-def update_translations(entity, lang=None):
-    lang = _get_translation_language(lang)
+def _update_obj_translations(obj, fields, ct_dictionary, included=True):
+    if fields and included:
+        ct_dictionary[str(obj.id)] = {}
+        for field in fields:
+            value = getattr(obj, field.name, None)
+            if value:
+                ct_dictionary[str(obj.id)][field.name] = value
+
+
+def _update_rel_translations(obj, hierarchy, dictionary):
+    if hierarchy:
+        for (relation, detail) in hierarchy.items():
+            value = getattr(obj, relation, None)
+            if value is not None:
+                if isinstance(value, models.Manager):
+                    value = value.all()
+                _update_entity_translations(
+                    value,
+                    detail['relations'],
+                    dictionary,
+                    included=detail['included']
+                )
+
+
+def _update_entity_translations(entity, hierarchy, dictionary, included=True):
     iterable, model = _get_entity_details(entity)
 
-    # ------------ renew transaction
-    if issubclass(model, translations.models.Translatable):
-        translatable_fields = model.get_translatable_fields()
-        try:
-            with transaction.atomic():
-                # ------------ delete old translations
-                translations_queryset = _get_translations(
-                    entity,
-                    lang=lang
+    if model is None:
+        return
+
+    content_type = ContentType.objects.get_for_model(model)
+    ct_dictionary = dictionary.setdefault(content_type.id, {})
+
+    if included:
+        if issubclass(model, translations.models.Translatable):
+            fields = model.get_translatable_fields()
+        else:
+            raise TypeError('`{}` is not Translatable'.format(model))
+    else:
+        fields = []
+
+    if iterable:
+        for obj in entity:
+            _update_obj_translations(obj, fields, ct_dictionary, included)
+            _update_rel_translations(obj, hierarchy, dictionary)
+    else:
+        _update_obj_translations(entity, fields, ct_dictionary, included)
+        _update_rel_translations(entity, hierarchy, dictionary)
+
+
+def update_translations(entity, *relations, lang=None):
+    hierarchy = _get_relations_hierarchy(*relations)
+    old_translations = _get_translations(entity, *relations, lang=lang)
+
+    dictionary = {}
+
+    _update_entity_translations(entity, hierarchy, dictionary, included=True)
+
+    new_translations = []
+
+    for (ct_id, objs) in dictionary.items():
+        for (obj_id, fields) in objs.items():
+            for (field, value) in fields.items():
+                new_translations.append(
+                    translations.models.Translation(
+                        content_type_id=ct_id,
+                        object_id=obj_id,
+                        field=field,
+                        language=lang,
+                        text=value,
+                    )
                 )
-                translations_queryset.select_for_update().delete()
 
-                # ------------ add new translations
-                translations_objects = []
-
-                # add translations function
-                def add_translations(obj):
-                    for field in translatable_fields:
-                        field_value = getattr(obj, field.name, None)
-                        if field_value:
-                            translations_objects.append(
-                                translations.models.Translation(
-                                    content_object=obj,
-                                    language=lang,
-                                    field=field.name,
-                                    text=field_value
-                                )
-                            )
-
-                # translate based on plural/singular
-                if iterable:
-                    for obj in entity:
-                        add_translations(obj)
-                else:
-                    add_translations(entity)
-
-                if len(translations_objects) > 0:
-                    translations.models.Translation.objects.bulk_create(translations_objects)
-        except Exception:
-            raise
+    old_translations.delete()
+    translations.models.Translation.objects.bulk_create(new_translations)
