@@ -1370,4 +1370,20 @@ def update_translations(entity, *relations, lang=None):
 
     _update_entity_translations(entity, hierarchy, dictionary, included=True)
 
+    new_translations = []
+
+    for (ct_id, objs) in dictionary.items():
+        for (obj_id, fields) in objs.items():
+            for (field, value) in fields.items():
+                new_translations.append(
+                    _models.Translation(
+                        content_type_id=ct_id,
+                        object_id=obj_id,
+                        field=field,
+                        language=lang,
+                        text=value,
+                    )
+                )
+
     translations.delete()
+    _models.Translation.objects.bulk_create(new_translations)

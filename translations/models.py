@@ -105,6 +105,8 @@ class Translation(models.Model):
        <Question: Quel âge avez-vous?>
     """
 
+    objects = models.Manager()
+
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
         help_text=_('the content type of the object to translate'),
