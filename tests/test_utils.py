@@ -8,7 +8,7 @@ from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation, \
     _get_translations_reverse_relation, _get_translations, \
     _get_translations_dictionary, _fill_hierarchy, _get_relations_hierarchy, \
-    _apply_obj_translations, _apply_rel_translations, _apply_translations
+    _apply_obj_translations, _apply_rel_translations, _apply_entity_translations
 
 from translations.models import Translation
 
@@ -3324,8 +3324,8 @@ class ApplyRelTranslations(TestCase):
         )
 
 
-class ApplyTranslations(TestCase):
-    """Tests for `_apply_translations`."""
+class ApplyEntityTranslations(TestCase):
+    """Tests for `_apply_entity_translations`."""
 
     def test_level_0_hierarchy_level_0_dictionary(self):
         create_samples(
@@ -3346,7 +3346,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3396,7 +3396,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3446,7 +3446,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3495,7 +3495,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3545,7 +3545,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3595,7 +3595,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3646,7 +3646,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3696,7 +3696,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3746,7 +3746,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3797,7 +3797,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3847,7 +3847,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3897,7 +3897,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3946,7 +3946,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -3996,7 +3996,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4046,7 +4046,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4095,7 +4095,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary)
+        _apply_entity_translations(europe, hierarchy, dictionary)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4144,7 +4144,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4194,7 +4194,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4244,7 +4244,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4293,7 +4293,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy()
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4343,7 +4343,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4393,7 +4393,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4444,7 +4444,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4494,7 +4494,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4544,7 +4544,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4595,7 +4595,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4645,7 +4645,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4695,7 +4695,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4744,7 +4744,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4794,7 +4794,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4844,7 +4844,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -4893,7 +4893,7 @@ class ApplyTranslations(TestCase):
         dictionary = _get_translations_dictionary(translations)
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
-        _apply_translations(europe, hierarchy, dictionary, included=False)
+        _apply_entity_translations(europe, hierarchy, dictionary, included=False)
 
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
