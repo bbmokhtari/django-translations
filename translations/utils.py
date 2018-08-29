@@ -1285,20 +1285,22 @@ def apply_translations(entity, *relations, lang=None):
        City: München
     """
     hierarchy = _get_relations_hierarchy(*relations)
+    translations = _get_translations(entity, *relations, lang=lang)
 
-    dictionary = _get_translations_dictionary(
-        _get_translations(
-            entity,
-            *relations,
-            lang=lang
-        )
-    )
+    dictionary = _get_translations_dictionary(translations)
 
     _apply_entity_translations(entity, hierarchy, dictionary, included=True)
 
 
 def update_translations(entity, *relations, lang=None):
-    pass
+    hierarchy = _get_relations_hierarchy(*relations)
+    translations = _get_translations(entity, *relations, lang=lang)
+
+    dictionary = {}
+
+    _update_entity_translations(entity, hierarchy, dictionary, included=True)
+
+    translations.delete()
 
 
 def old_update_translations(entity, lang=None):
