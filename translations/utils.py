@@ -1141,34 +1141,42 @@ def read_translations(entity, *relations, lang=None):
     """
     Translate an entity and the relations of it in a language.
 
-    Translates the entity and the relations of it in a language or using a
-    :term:`translations dictionary`. If the translations dictionary isn't
-    provided it makes a translations dictionary automatically out of the
-    translations of the entity and the relations of it in a language then
-    apply that for the translation process, otherwise it just uses the
-    provided translations dictionary.
+    Fetches the translations of the entity and the relations of it and applies
+    them, field by field and in place.
 
-    :param entity: The entity to translate.
+    :param entity: The entity to apply the translations on and on the
+        relations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the entity to translate.
+    :param relations: The relations of the entity to apply the translations
+        on.
     :type relations: list(str)
-    :param lang: The language to translate in.
+    :param lang: The language to fetch the translations in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :param dictionary: The translations dictionary to use for the translation
-        process.
-        ``None`` means create the translations dictionary automatically.
-    :type dictionary: dict(int, dict(str, dict(str, str))) or None
-    :param included: Whether the entity itself should be translated along
-        with the relations of it or not, the default is ``True``.
-    :type included: bool
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
+
+    .. warning::
+       The relations of an instance, a queryset or a list of instances
+       **must** be fetched before performing the translation process.
+
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
+
+    .. warning::
+       Only when all the filterings are executed on the relations of an
+       instance, a queryset or a list of instances, they should go through the
+       translation process, otherwise if a relation is filtered after the
+       translation process the translations of that relation are reset.
+
+       To filter a relation when fetching it use
+       :class:`~django.db.models.Prefetch`.
 
     .. testsetup:: read_translations
 
@@ -1184,126 +1192,7 @@ def read_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To translate a list of model instances:
-
-    .. testcode:: read_translations
-
-       from sample.models import Continent, Country, City
-       from translations.utils import read_translations
-
-       continents = list(Continent.objects.all())
-
-       read_translations(continents, lang="de")
-
-       print(continents)
-
-    .. testoutput:: read_translations
-
-       [<Continent: Europa>, <Continent: Asien>]
-
-    To translate a queryset:
-
-    .. testcode:: read_translations
-
-       from sample.models import Continent, Country, City
-       from translations.utils import read_translations
-
-       continents = Continent.objects.all()
-
-       read_translations(continents, lang="de")
-
-       print(continents)
-
-    .. testoutput:: read_translations
-
-       <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
-
-    To translate a model instance:
-
-    .. testcode:: read_translations
-
-       from sample.models import Continent, Country, City
-       from translations.utils import read_translations
-
-       europe = Continent.objects.get(code="EU")
-
-       read_translations(europe, lang="de")
-
-       print(europe)
-
-    .. testoutput:: read_translations
-
-       Europa
-
-    .. warning::
-       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects` for fetching the
-       relations of the entity before using :func:`read_translations` on it.
-
-       Instead of:
-
-       .. testcode:: read_translations
-
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Not using `prefetch_related`
-          continents = Continent.objects.all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.all():
-                  print("Country: {} # Wrong".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Wrong".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Germany # Wrong
-          City: Cologne # Wrong
-          City: Munich # Wrong
-          Continent: Asien
-          Country: South Korea # Wrong
-          City: Seoul # Wrong
-          City: Ulsan # Wrong
-
-       This must be done:
-
-       .. testcode:: read_translations
-
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Using `prefetch_related`
-          continents = Continent.objects.prefetch_related(
-              'countries', 'countries__cities'
-          ).all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.all():
-                  print("Country: {} # Correct".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Correct".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Deutschland # Correct
-          City: Köln # Correct
-          City: München # Correct
-          Continent: Asien
-          Country: Südkorea # Correct
-          City: Seül # Correct
-          City: Ulsän # Correct
-
-    To translate a list of model instances with relations:
+    To translate a list of instances and the relations of it:
 
     .. testcode:: read_translations
 
@@ -1334,7 +1223,7 @@ def read_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To translate a queryset with relations:
+    To translate a queryset and the relations of it:
 
     .. testcode:: read_translations
 
@@ -1365,7 +1254,7 @@ def read_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To translate a model instance with relations:
+    To translate an instance and the relations of it:
 
     .. testcode:: read_translations
 
@@ -1390,79 +1279,6 @@ def read_translations(entity, *relations, lang=None):
        Country: Deutschland
        City: Köln
        City: München
-
-    .. warning::
-       If the relations of an entity must be filtered along the way, do it
-       before using :func:`read_translations` on it.
-
-       Instead of:
-
-       .. testcode:: read_translations
-
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Not using `Prefetch`
-          continents = Continent.objects.prefetch_related(
-              'countries', 'countries__cities'
-          ).all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.filter(code__isnull=False):
-                  print("Country: {} # Wrong".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Wrong".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Germany # Wrong
-          City: Cologne # Wrong
-          City: Munich # Wrong
-          Continent: Asien
-          Country: South Korea # Wrong
-          City: Seoul # Wrong
-          City: Ulsan # Wrong
-
-       This must be done:
-
-       .. testcode:: read_translations
-
-          from django.db.models import Prefetch
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Using `Prefetch`
-          continents = Continent.objects.prefetch_related(
-              Prefetch(
-                  'countries',
-                  queryset=Country.objects.filter(code__isnull=False)
-              ),
-              'countries__cities'
-          ).all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.all():
-                  print("Country: {} # Correct".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Correct".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Deutschland # Correct
-          City: Köln # Correct
-          City: München # Correct
-          Continent: Asien
-          Country: Südkorea # Correct
-          City: Seül # Correct
-          City: Ulsän # Correct
     """
     hierarchy = _get_relations_hierarchy(*relations)
 
