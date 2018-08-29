@@ -1140,12 +1140,20 @@ def _apply_entity_translations(entity, hierarchy, dictionary, included=True):
     content_type = ContentType.objects.get_for_model(model)
     ct_dictionary = dictionary.get(content_type.id, {})
 
+    if included:
+        if issubclass(model, translations.models.Translatable):
+            fields = model.get_translatable_fields()
+        else:
+            raise TypeError('`{}` is not Translatable'.format(model))
+    else:
+        fields = []
+
     if iterable:
         for obj in entity:
-            _apply_obj_translations(obj, ct_dictionary, included=included)
+            _apply_obj_translations(obj, fields, ct_dictionary, included)
             _apply_rel_translations(obj, hierarchy, dictionary)
     else:
-        _apply_obj_translations(entity, ct_dictionary, included=included)
+        _apply_obj_translations(entity, fields, ct_dictionary, included)
         _apply_rel_translations(entity, hierarchy, dictionary)
 
 
