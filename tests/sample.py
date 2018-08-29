@@ -151,7 +151,7 @@ SAMPLES = {
                         'translations': {
                             'de': {
                                 'name': 'Seül',
-                                'denonym': 'Seülisch'
+                                'denonym': 'Seüler'
                             },
                             'tr': {
                                 'name': 'Seul',

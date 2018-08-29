@@ -6,7 +6,7 @@ This module contains the utilities for the Translations app.
 :func:`_get_translation_language`
     Return a language code to use in the translation process.
 :func:`_get_entity_details`
-    Return the type and iteration details of an entity.
+    Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`_get_translations_reverse_relation`
@@ -15,21 +15,21 @@ This module contains the utilities for the Translations app.
 :func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
 :func:`_get_translations_dictionary`
-    Return the :term:`translations dictionary` out of some translations.
+    Return the :term:`translations dictionary` made out of some translations.
 :func:`_fill_hierarchy`
     Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`_get_relations_hierarchy`
-    Return the :term:`relations hierarchy` of some relations.
+    Return the :term:`relations hierarchy` made out of some relations.
 :func:`_apply_obj_translations`
     Apply a :term:`content type translations dictionary` on an object.
 :func:`_apply_rel_translations`
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
+:func:`_apply_entity_translations`
+    Apply a :term:`translations dictionary` on an entity and a
+    :term:`relations hierarchy` of it.
 :func:`apply_translations`
-    Translate an entity and the relations hierarchy of it using a
-    translations dictionary.
-:func:`read_translations`
-    Translate an entity and the relations of it in a language.
+    Apply the translations on an entity and the relations of it in a language.
 """
 
 from django.db import models, transaction
@@ -358,8 +358,8 @@ def _get_translations(entity, *relations, lang=None):
     """
     Return the translations of an entity and the relations of it in a language.
 
-    Collects all the translations of the entity and the specified relations
-    of it in a language and returns them as a
+    Fetches the translations of the entity and the specified relations of it
+    in a language and returns them as a
     :class:`~translations.models.Translation` queryset.
 
     :param entity: The entity to fetch the translations of.
@@ -427,7 +427,7 @@ def _get_translations(entity, *relations, lang=None):
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seülisch>,
+           <Translation: Seouler: Seüler>,
            <Translation: Ulsan: Ulsän>,
            <Translation: Ulsanian: Ulsänisch>
        ]>
@@ -465,7 +465,7 @@ def _get_translations(entity, *relations, lang=None):
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seülisch>,
+           <Translation: Seouler: Seüler>,
            <Translation: Ulsan: Ulsän>,
            <Translation: Ulsanian: Ulsänisch>
        ]>
@@ -622,7 +622,7 @@ def _get_translations_dictionary(translations):
        City translations:
        {'denonym': 'Kölner', 'name': 'Köln'}
        {'denonym': 'Münchner', 'name': 'München'}
-       {'denonym': 'Seülisch', 'name': 'Seül'}
+       {'denonym': 'Seüler', 'name': 'Seül'}
        {'denonym': 'Ulsänisch', 'name': 'Ulsän'}
     """
     dictionary = {}
@@ -864,9 +864,9 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
     Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
     of an object.
 
-    Loops through the :term:`relations hierarchy` of the object, searches
-    the :term:`translations dictionary` for the translations of the relation
-    and applies them on the relation, field by field and in place.
+    Searches the :term:`translations dictionary` for the translations of the
+    object's :term:`relations hierarchy` and applies them, field by field
+    and in place.
 
     :param obj: The object to apply the :term:`translations dictionary` on the
         :term:`relations hierarchy` of.
@@ -940,7 +940,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
             if value is not None:
                 if isinstance(value, models.Manager):
                     value = value.all()
-                apply_translations(
+                _apply_entity_translations(
                     value,
                     detail['relations'],
                     dictionary,
@@ -948,7 +948,7 @@ def _apply_rel_translations(obj, hierarchy, dictionary):
                 )
 
 
-def apply_translations(entity, hierarchy, dictionary, included=True):
+def _apply_entity_translations(entity, hierarchy, dictionary, included=True):
     """
     Apply a :term:`translations dictionary` on an entity and a
     :term:`relations hierarchy` of it.
@@ -958,14 +958,14 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
     by field and in place.
 
     :param entity: The entity to apply the :term:`translations dictionary` on
-        it and the :term:`relations hierarchy` of it.
+        and on the :term:`relations hierarchy` of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param hierarchy: The :term:`relations hierarchy` of the entity to apply
         the :term:`translations dictionary` on.
     :type hierarchy: dict(str, dict)
     :param dictionary: The :term:`translations dictionary` to apply on the
-        entity and the :term:`relations hierarchy` of it.
+        entity and on the :term:`relations hierarchy` of it.
     :type dictionary: dict(int, dict(str, dict(str, str)))
     :param included: Whether to apply the :term:`translations dictionary` on
         the entity or not.
@@ -974,26 +974,23 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
         an iterable of model instances.
 
     .. warning::
-       The relations of an object or a queryset **must** be fetched
-       before performing the translation process.
+       The relations of an instance, a queryset or a list of instances
+       **must** be fetched before performing the translation process.
 
-       To fetch the relations of an object or a queryset use
-       :meth:`~django.db.models.query.QuerySet.select_related`,
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
     .. warning::
-       If a relation of an object or a queryset is filtered
-       after performing the translation process,
-       the translations for that relation are lost.
-
-       Only when all the filterings are done on an object or a queryset and
-       the relations of it, it should go through the translation process.
+       Only when all the filterings are executed on the relations of an
+       instance, a queryset or a list of instances, they should go through the
+       translation process, otherwise if a relation is filtered after the
+       translation process the translations of that relation are reset.
 
        To filter a relation when fetching it use
        :class:`~django.db.models.Prefetch`.
 
-    .. testsetup:: apply_translations
+    .. testsetup:: _apply_entity_translations
 
        from tests.sample import create_samples
 
@@ -1007,17 +1004,17 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
            langs=["de"]
        )
 
-    To apply a :term:`translations dictionary` on a list of model instances
-    and a :term:`relations hierarchy` of them:
+    To apply a :term:`translations dictionary` on a list of instances and a
+    :term:`relations hierarchy` of it:
 
-    .. testcode:: apply_translations
+    .. testcode:: _apply_entity_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_translations
+       from translations.utils import _apply_entity_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1028,7 +1025,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_translations(continents, hierarchy, dictionary)
+       _apply_entity_translations(continents, hierarchy, dictionary)
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1037,7 +1034,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
                for city in country.cities.all():
                    print("City: {}".format(city))
 
-    .. testoutput:: apply_translations
+    .. testoutput:: _apply_entity_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1048,16 +1045,16 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Seül
        City: Ulsän
 
-    To apply a :term:`translations dictionary` on a queryset
-    and a :term:`relations hierarchy` of it:
+    To apply a :term:`translations dictionary` on a queryset and a
+    :term:`relations hierarchy` of it:
 
-    .. testcode:: apply_translations
+    .. testcode:: _apply_entity_translations
 
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_translations
+       from translations.utils import _apply_entity_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1067,7 +1064,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_translations(continents, hierarchy, dictionary)
+       _apply_entity_translations(continents, hierarchy, dictionary)
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1076,7 +1073,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
                for city in country.cities.all():
                    print("City: {}".format(city))
 
-    .. testoutput:: apply_translations
+    .. testoutput:: _apply_entity_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1087,17 +1084,17 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        City: Seül
        City: Ulsän
 
-    To apply a :term:`translations dictionary` on an instance
-    and a :term:`relations hierarchy` of it:
+    To apply a :term:`translations dictionary` on an instance and a
+    :term:`relations hierarchy` of it:
 
-    .. testcode:: apply_translations
+    .. testcode:: _apply_entity_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import _get_translations
        from translations.utils import _get_translations_dictionary
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import apply_translations
+       from translations.utils import _apply_entity_translations
 
        relations = ('countries', 'countries__cities',)
 
@@ -1108,7 +1105,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
        dictionary = _get_translations_dictionary(translations)
        hierarchy = _get_relations_hierarchy(*relations)
 
-       apply_translations(europe, hierarchy, dictionary)
+       _apply_entity_translations(europe, hierarchy, dictionary)
 
        print("Continent: {}".format(europe))
        for country in europe.countries.all():
@@ -1116,7 +1113,7 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
            for city in country.cities.all():
                print("City: {}".format(city))
 
-    .. testoutput:: apply_translations
+    .. testoutput:: _apply_entity_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1140,32 +1137,23 @@ def apply_translations(entity, hierarchy, dictionary, included=True):
         _apply_rel_translations(entity, hierarchy, dictionary)
 
 
-def read_translations(entity, *relations, lang=None):
+def apply_translations(entity, *relations, lang=None):
     """
-    Translate an entity and the relations of it in a language.
+    Apply the translations on an entity and the relations of it in a language.
 
-    Translates the entity and the relations of it in a language or using a
-    :term:`translations dictionary`. If the translations dictionary isn't
-    provided it makes a translations dictionary automatically out of the
-    translations of the entity and the relations of it in a language then
-    apply that for the translation process, otherwise it just uses the
-    provided translations dictionary.
+    Fetches the translations of the entity and the specified relations of it
+    in a language and applies them, field by field and in place.
 
-    :param entity: The entity to translate.
+    :param entity: The entity to apply the translations on and on the
+        relations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the entity to translate.
+    :param relations: The relations of the entity to apply the translations
+        on.
     :type relations: list(str)
-    :param lang: The language to translate in.
+    :param lang: The language to fetch the translations in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :param dictionary: The translations dictionary to use for the translation
-        process.
-        ``None`` means create the translations dictionary automatically.
-    :type dictionary: dict(int, dict(str, dict(str, str))) or None
-    :param included: Whether the entity itself should be translated along
-        with the relations of it or not, the default is ``True``.
-    :type included: bool
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError: If the entity is neither a model instance nor
@@ -1173,7 +1161,24 @@ def read_translations(entity, *relations, lang=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. testsetup:: read_translations
+    .. warning::
+       The relations of an instance, a queryset or a list of instances
+       **must** be fetched before performing the translation process.
+
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
+
+    .. warning::
+       Only when all the filterings are executed on the relations of an
+       instance, a queryset or a list of instances, they should go through the
+       translation process, otherwise if a relation is filtered after the
+       translation process the translations of that relation are reset.
+
+       To filter a relation when fetching it use
+       :class:`~django.db.models.Prefetch`.
+
+    .. testsetup:: apply_translations
 
        from tests.sample import create_samples
 
@@ -1187,137 +1192,20 @@ def read_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To translate a list of model instances:
+    To apply the translations on a list of instances and the relations of it:
 
-    .. testcode:: read_translations
-
-       from sample.models import Continent, Country, City
-       from translations.utils import read_translations
-
-       continents = list(Continent.objects.all())
-
-       read_translations(continents, lang="de")
-
-       print(continents)
-
-    .. testoutput:: read_translations
-
-       [<Continent: Europa>, <Continent: Asien>]
-
-    To translate a queryset:
-
-    .. testcode:: read_translations
-
-       from sample.models import Continent, Country, City
-       from translations.utils import read_translations
-
-       continents = Continent.objects.all()
-
-       read_translations(continents, lang="de")
-
-       print(continents)
-
-    .. testoutput:: read_translations
-
-       <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
-
-    To translate a model instance:
-
-    .. testcode:: read_translations
-
-       from sample.models import Continent, Country, City
-       from translations.utils import read_translations
-
-       europe = Continent.objects.get(code="EU")
-
-       read_translations(europe, lang="de")
-
-       print(europe)
-
-    .. testoutput:: read_translations
-
-       Europa
-
-    .. warning::
-       Always use :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects` for fetching the
-       relations of the entity before using :func:`read_translations` on it.
-
-       Instead of:
-
-       .. testcode:: read_translations
-
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Not using `prefetch_related`
-          continents = Continent.objects.all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.all():
-                  print("Country: {} # Wrong".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Wrong".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Germany # Wrong
-          City: Cologne # Wrong
-          City: Munich # Wrong
-          Continent: Asien
-          Country: South Korea # Wrong
-          City: Seoul # Wrong
-          City: Ulsan # Wrong
-
-       This must be done:
-
-       .. testcode:: read_translations
-
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Using `prefetch_related`
-          continents = Continent.objects.prefetch_related(
-              'countries', 'countries__cities'
-          ).all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.all():
-                  print("Country: {} # Correct".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Correct".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Deutschland # Correct
-          City: Köln # Correct
-          City: München # Correct
-          Continent: Asien
-          Country: Südkorea # Correct
-          City: Seül # Correct
-          City: Ulsän # Correct
-
-    To translate a list of model instances with relations:
-
-    .. testcode:: read_translations
+    .. testcode:: apply_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent, Country, City
-       from translations.utils import read_translations
+       from translations.utils import apply_translations
+
+       relations = ('countries', 'countries__cities',)
 
        continents = list(Continent.objects.all())
-       prefetch_related_objects(continents, 'countries', 'countries__cities')
+       prefetch_related_objects(continents, *relations)
 
-       read_translations(continents, "countries", "countries__cities", lang="de")
+       apply_translations(continents, *relations, lang="de")
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1326,7 +1214,7 @@ def read_translations(entity, *relations, lang=None):
                for city in country.cities.all():
                    print("City: {}".format(city))
 
-    .. testoutput:: read_translations
+    .. testoutput:: apply_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1337,18 +1225,18 @@ def read_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To translate a queryset with relations:
+    To apply the translations on a queryset and the relations of it:
 
-    .. testcode:: read_translations
+    .. testcode:: apply_translations
 
        from sample.models import Continent, Country, City
-       from translations.utils import read_translations
+       from translations.utils import apply_translations
 
-       continents = Continent.objects.prefetch_related(
-           'countries', 'countries__cities'
-       ).all()
+       relations = ('countries', 'countries__cities',)
 
-       read_translations(continents, "countries", "countries__cities", lang="de")
+       continents = Continent.objects.prefetch_related(*relations).all()
+
+       apply_translations(continents, *relations, lang="de")
 
        for continent in continents:
            print("Continent: {}".format(continent))
@@ -1357,7 +1245,7 @@ def read_translations(entity, *relations, lang=None):
                for city in country.cities.all():
                    print("City: {}".format(city))
 
-    .. testoutput:: read_translations
+    .. testoutput:: apply_translations
 
        Continent: Europa
        Country: Deutschland
@@ -1368,18 +1256,20 @@ def read_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To translate a model instance with relations:
+    To apply the translations on an instance and the relations of it:
 
-    .. testcode:: read_translations
+    .. testcode:: apply_translations
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent, Country, City
-       from translations.utils import read_translations
+       from translations.utils import apply_translations
+
+       relations = ('countries', 'countries__cities',)
 
        europe = Continent.objects.get(code="EU")
-       prefetch_related_objects([europe], 'countries', 'countries__cities')
+       prefetch_related_objects([europe], *relations)
 
-       read_translations(europe, "countries", "countries__cities", lang="de")
+       apply_translations(europe, *relations, lang="de")
 
        print("Continent: {}".format(europe))
        for country in europe.countries.all():
@@ -1387,85 +1277,12 @@ def read_translations(entity, *relations, lang=None):
            for city in country.cities.all():
                print("City: {}".format(city))
 
-    .. testoutput:: read_translations
+    .. testoutput:: apply_translations
 
        Continent: Europa
        Country: Deutschland
        City: Köln
        City: München
-
-    .. warning::
-       If the relations of an entity must be filtered along the way, do it
-       before using :func:`read_translations` on it.
-
-       Instead of:
-
-       .. testcode:: read_translations
-
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Not using `Prefetch`
-          continents = Continent.objects.prefetch_related(
-              'countries', 'countries__cities'
-          ).all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.filter(code__isnull=False):
-                  print("Country: {} # Wrong".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Wrong".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Germany # Wrong
-          City: Cologne # Wrong
-          City: Munich # Wrong
-          Continent: Asien
-          Country: South Korea # Wrong
-          City: Seoul # Wrong
-          City: Ulsan # Wrong
-
-       This must be done:
-
-       .. testcode:: read_translations
-
-          from django.db.models import Prefetch
-          from sample.models import Continent, Country, City
-          from translations.utils import read_translations
-
-          # Using `Prefetch`
-          continents = Continent.objects.prefetch_related(
-              Prefetch(
-                  'countries',
-                  queryset=Country.objects.filter(code__isnull=False)
-              ),
-              'countries__cities'
-          ).all()
-
-          read_translations(continents, "countries", "countries__cities", lang="de")
-
-          for continent in continents:
-              print("Continent: {}".format(continent))
-              for country in continent.countries.all():
-                  print("Country: {} # Correct".format(country))
-                  for city in country.cities.all():
-                      print("City: {} # Correct".format(city))
-
-       .. testoutput:: read_translations
-
-          Continent: Europa
-          Country: Deutschland # Correct
-          City: Köln # Correct
-          City: München # Correct
-          Continent: Asien
-          Country: Südkorea # Correct
-          City: Seül # Correct
-          City: Ulsän # Correct
     """
     hierarchy = _get_relations_hierarchy(*relations)
 
@@ -1477,7 +1294,7 @@ def read_translations(entity, *relations, lang=None):
         )
     )
 
-    apply_translations(entity, hierarchy, dictionary, included=True)
+    _apply_entity_translations(entity, hierarchy, dictionary, included=True)
 
 
 def update_translations(entity, lang=None):
