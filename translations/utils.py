@@ -502,33 +502,19 @@ def _get_translations(entity, *relations, lang=None):
        ]>
     """
     lang = _get_translation_language(lang)
-    iterable, model = _get_entity_details(entity)
-
-    if model is None:
-        return translations.models.Translation.objects.none()
-
-    if iterable:
-        condition = 'pk__in'
-        value = [instance.pk for instance in entity]
-    else:
-        condition = 'pk'
-        value = entity.pk
+    hierarchy = _get_relations_hierarchy(*relations)
+    groups = _get_entity_groups(entity, hierarchy)
 
     queries = []
-
-    if issubclass(model, translations.models.Translatable):
-        trans = _get_translations_reverse_relation(model)
-        prop = '{}__{}'.format(trans, condition)
-        queries.append(
-            models.Q(**{prop: value})
-        )
-
-    for relation in relations:
-        trans = _get_translations_reverse_relation(model, relation)
-        prop = '{}__{}'.format(trans, condition)
-        queries.append(
-            models.Q(**{prop: value})
-        )
+    for (ct_id, objs) in groups.items():
+        for (obj_id, obj) in objs.items():
+            queries.append(
+                models.Q(
+                    content_type__id=ct_id,
+                    object_id=obj_id,
+                    language=lang
+                )
+            )
 
     if len(queries) == 0:
         return translations.models.Translation.objects.none()
@@ -816,6 +802,7 @@ def _get_entity_groups(entity, hierarchy):
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
+                    model._meta.get_field(relation)  # raise when no such rel
                     value = getattr(obj, relation, None)
                     if value is not None:
                         if isinstance(value, models.Manager):
