@@ -797,7 +797,7 @@ def _get_entity_groups(entity, hierarchy):
 
         def _fill_obj(obj, hierarchy):
             if included:
-                content_type_groups[obj.id] = obj
+                content_type_groups[str(obj.id)] = obj
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
@@ -1332,11 +1332,13 @@ def apply_translations(entity, *relations, lang=None):
        City: München
     """
     hierarchy = _get_relations_hierarchy(*relations)
-    translations = _get_translations(entity, *relations, lang=lang)
+    groups = _get_entity_groups(entity, hierarchy)
+    tranz = _get_translations(entity, *relations, lang=lang)
 
-    dictionary = _get_translations_dictionary(translations)
-
-    _apply_entity_translations(entity, hierarchy, dictionary, included=True)
+    for translation in tranz:
+        ct_id = translation.content_type.id
+        obj_id = translation.object_id
+        setattr(groups[ct_id][obj_id], translation.field, translation.text)
 
 
 def _update_obj_translations(obj, fields, ct_dictionary, included=True):
