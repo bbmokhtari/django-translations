@@ -266,29 +266,23 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
-def _get_translations(entity, *relations, lang=None):
+def _get_translations(groups, lang=None):
     """
-    Return the translations of an entity and the relations of it in a language.
+    Return the translations of some :term:`entity groups` in a language.
 
-    Fetches the translations of the entity and the specified relations of it
-    in a language and returns them as a
-    :class:`~translations.models.Translation` queryset.
+    Fetches the translations of the :term:`entity groups` in a language and
+    returns them as a :class:`~translations.models.Translation` queryset.
 
-    :param entity: The entity to fetch the translations of.
-    :type entity: ~django.db.models.Model or
-        ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the entity to fetch the
-        translations of.
-    :type relations: list(str)
-    :param lang: The language to fetch the translations in.
+    :param groups: The :term:`entity groups` to fetch the translations of.
+    :type entity: dict(int, dict(str, ~django.db.models.Model))
+    :param lang: The language to fetch the translations of
+        the :term:`entity groups` in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :return: The translations.
     :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
-    :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances.
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
@@ -306,20 +300,22 @@ def _get_translations(entity, *relations, lang=None):
            langs=["de"]
        )
 
-    To get the translations of a list of instances and the relations of them:
+    To get the translations of some :term:`entity groups`:
 
     .. testcode:: _get_translations
 
        from sample.models import Continent
+       from translations.utils import _get_relations_hierarchy
+       from translations.utils import _get_entity_groups
        from translations.utils import _get_translations
+
+       relations = ('countries','countries__cities',)
 
        continents = list(Continent.objects.all())
+       hierarchy = _get_relations_hierarchy(*relations)
+       groups = _get_entity_groups(continents, hierarchy)
 
-       translations = _get_translations(
-           continents,
-           "countries", "countries__cities",
-           lang="de"
-       )
+       translations = _get_translations(groups, lang="de")
 
        print(translations)
 
@@ -342,79 +338,9 @@ def _get_translations(entity, *relations, lang=None):
            <Translation: Seouler: Seüler>,
            <Translation: Ulsan: Ulsän>,
            <Translation: Ulsanian: Ulsänisch>
-       ]>
-
-    To get the translations of a queryset and the relations of it:
-
-    .. testcode:: _get_translations
-
-       from sample.models import Continent
-       from translations.utils import _get_translations
-
-       continents = Continent.objects.all()
-
-       translations = _get_translations(
-           continents,
-           "countries", "countries__cities",
-           lang="de"
-       )
-
-       print(translations)
-
-    .. testoutput:: _get_translations
-
-       <QuerySet [
-           <Translation: Europe: Europa>,
-           <Translation: European: Europäisch>,
-           <Translation: Germany: Deutschland>,
-           <Translation: German: Deutsche>,
-           <Translation: Cologne: Köln>,
-           <Translation: Cologner: Kölner>,
-           <Translation: Munich: München>,
-           <Translation: Munichian: Münchner>,
-           <Translation: Asia: Asien>,
-           <Translation: Asian: Asiatisch>,
-           <Translation: South Korea: Südkorea>,
-           <Translation: South Korean: Südkoreanisch>,
-           <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seüler>,
-           <Translation: Ulsan: Ulsän>,
-           <Translation: Ulsanian: Ulsänisch>
-       ]>
-
-    To get the translations of an instance and the relations of it:
-
-    .. testcode:: _get_translations
-
-       from sample.models import Continent
-       from translations.utils import _get_translations
-
-       europe = Continent.objects.get(code="EU")
-
-       translations = _get_translations(
-           europe,
-           "countries", "countries__cities",
-           lang="de"
-       )
-
-       print(translations)
-
-    .. testoutput:: _get_translations
-
-       <QuerySet [
-           <Translation: Europe: Europa>,
-           <Translation: European: Europäisch>,
-           <Translation: Germany: Deutschland>,
-           <Translation: German: Deutsche>,
-           <Translation: Cologne: Köln>,
-           <Translation: Cologner: Kölner>,
-           <Translation: Munich: München>,
-           <Translation: Munichian: Münchner>
        ]>
     """
     lang = _get_translation_language(lang)
-    hierarchy = _get_relations_hierarchy(*relations)
-    groups = _get_entity_groups(entity, hierarchy)
 
     filters = models.Q()
     for (ct_id, objs) in groups.items():
@@ -712,7 +638,7 @@ def apply_translations(entity, *relations, lang=None):
     """
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
-    translations = _get_translations(entity, *relations, lang=lang)
+    translations = _get_translations(groups, lang=lang)
 
     for translation in translations:
         ct_id = translation.content_type.id
@@ -723,7 +649,7 @@ def apply_translations(entity, *relations, lang=None):
 def update_translations(entity, *relations, lang=None):
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
-    old_translations = _get_translations(entity, *relations, lang=lang)
+    old_translations = _get_translations(groups, lang=lang)
 
     new_translations = []
     for (ct_id, objs) in groups.items():
