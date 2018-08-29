@@ -511,8 +511,7 @@ def _get_translations(entity, *relations, lang=None):
             queries.append(
                 models.Q(
                     content_type__id=ct_id,
-                    object_id=obj_id,
-                    language=lang
+                    object_id=obj_id
                 )
             )
 
