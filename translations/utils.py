@@ -11,21 +11,8 @@ This module contains the utilities for the Translations app.
     Return the reverse of a model's relation.
 :func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
-:func:`_get_translations_dictionary`
-    Return the :term:`translations dictionary` made out of some translations.
-:func:`_fill_hierarchy`
-    Fills a :term:`relations hierarchy` with parts of a relation.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` made out of some relations.
-:func:`_apply_obj_translations`
-    Apply a :term:`content type translations dictionary` on some fields of an
-    object.
-:func:`_apply_rel_translations`
-    Apply a :term:`translations dictionary` on a :term:`relations hierarchy`
-    of an object.
-:func:`_apply_entity_translations`
-    Apply a :term:`translations dictionary` on an entity and a
-    :term:`relations hierarchy` of it.
 :func:`apply_translations`
     Apply the translations on an entity and the relations of it in a language.
 """
