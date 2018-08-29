@@ -458,7 +458,11 @@ def _get_entity_groups(entity, hierarchy):
             return
 
         content_type = ContentType.objects.get_for_model(model)
-        content_type_groups = groups.setdefault(content_type.id, {})
+
+        if included:
+            content_type_groups = groups.setdefault(content_type.id, {})
+            if not issubclass(model, translations.models.Translatable):
+                raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj, hierarchy):
             if included:
