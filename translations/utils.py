@@ -799,20 +799,25 @@ def _get_relations_hierarchy(*relations):
 
 def _apply_obj_translations(obj, fields, ct_dictionary, included=True):
     """
-    Apply a :term:`content type translations dictionary` on an object.
+    Apply a :term:`content type translations dictionary` on some fields of an
+    object.
 
     Searches the :term:`content type translations dictionary` for the
-    translations of the object and applies them on the object, field by field
-    and in place.
+    translations of the object's fields and applies them, field by field and
+    in place.
 
     :param obj: The object to apply
-        the :term:`content type translations dictionary` on.
+        the :term:`content type translations dictionary` on the fields of.
     :type obj: ~django.db.models.Model
+    :param fields: the fields of the object to apply
+        the :term:`content type translations dictionary` on.
+    :type fields: list(~django.db.models.Field)
     :param ct_dictionary: The :term:`content type translations dictionary` to
-        be applied on the object.
+        apply on the fields of the object.
     :type ct_dictionary: dict(str, dict(str, str))
     :param included: Whether to apply
-        the :term:`content type translations dictionary` on the object or not.
+        the :term:`content type translations dictionary` on the fields of the
+        object or not.
     :type included: bool
 
     .. testsetup:: _apply_obj_translations
@@ -825,7 +830,8 @@ def _apply_obj_translations(obj, fields, ct_dictionary, included=True):
            langs=["de"]
        )
 
-    To apply the :term:`content type translations dictionary` on an object:
+    To apply a :term:`content type translations dictionary` on some fields of
+    an object:
 
     .. testcode:: _apply_obj_translations
 
@@ -836,12 +842,13 @@ def _apply_obj_translations(obj, fields, ct_dictionary, included=True):
        from translations.utils import _apply_obj_translations
 
        europe = Continent.objects.get(code="EU")
+       fields = Continent.get_translatable_fields()
        translations = _get_translations(europe, lang="de")
        dictionary = _get_translations_dictionary(translations)
        europe_ct = ContentType.objects.get_for_model(europe)
        ct_dictionary = dictionary[europe_ct.id]
 
-       _apply_obj_translations(europe, ct_dictionary, included=True)
+       _apply_obj_translations(europe, fields, ct_dictionary, included=True)
 
        print(europe)
 
