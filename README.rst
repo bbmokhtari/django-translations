@@ -1,17 +1,17 @@
-Translations (In Development)
-=============================
+Translations
+============
 
 .. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
     :target: https://travis-ci.com/perplexionist/django-translations
 
-Translations provides an **easy** and **efficient** way of translating model
-contents.
+Translations app provides an **easy** and **efficient** way of translating
+model contents.
 
 Requirements
 ------------
 
-* Python (>=3.5) - Python 2.7 is **NOT** supported.
-* Django (1.11, 2.0) - Django 2.1 is **NOT** supported (yet).
+* Python (>=3.5)
+* Django (1.11, >=2.0)
 
 Installation
 ------------
@@ -58,20 +58,17 @@ Query
 
 You can use the extended ORM querysets::
 
-    >>> q = Question.objects.create_translated(
+    >>> q = Question.objects.create(
     ...     question_text="What's up?",
     ...     category='usuals',
-    ...     lang='en'
     ... )
     <Question: What's up?>
     >>> q.question_text = 'Quoi de neuf?'
     >>> q.category = 'habituels'
-    >>> q.update_translations(
-    ...     lang='fr'
-    ... )
-    >>> q.get_translated(lang='en')
+    >>> q.update_translations(lang='fr')
+    >>> q.apply_translations(lang='en')
     <Question: What's up?>
-    >>> q.get_translated(lang='fr')
+    >>> q.apply_translations(lang='fr')
     <Question: Quoi de neuf?>
 
 Admin
