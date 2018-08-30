@@ -11,6 +11,9 @@ This module contains the utilities for the Translations app.
     Return the reverse of a model's relation.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` made out of some relations.
+:func:`_get_entity_groups`
+    Return some :term:`entity groups` made out of an entity and
+    the :term:`relations hierarchy` of it.
 :func:`_get_translations`
     Return the translations of an entity and the relations of it in a language.
 :func:`apply_translations`
@@ -356,6 +359,24 @@ def _get_relations_hierarchy(*relations):
 
 
 def _get_entity_groups(entity, hierarchy):
+    """
+    Return some :term:`entity groups` made out of an entity and
+    the :term:`relations hierarchy` of it.
+
+    Processes the entity and the :term:`relations hierarchy` of it and returns
+    them as some :term:`entity groups`.
+
+    :param entity: the entity to make the :term:`entity groups` out of it and
+        the :term:`relations hierarchy` of it.
+    :type entity: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :param hierarchy: The :term:`relations hierarchy` of the entity to make
+        the :term:`entity groups` out of.
+    :type hierarchy: dict(str, dict)
+    :return: The :term:`entity groups` made out of the entity and
+        the :term:`relations hierarchy` of it.
+    :rtype: dict(int, dict(str, ~django.db.models.Model))
+    """
     groups = {}
 
     def _fill_entity(entity, hierarchy, groups, included=True):
@@ -408,7 +429,7 @@ def _get_translations(groups, lang=None):
     returns them as a :class:`~translations.models.Translation` queryset.
 
     :param groups: The :term:`entity groups` to fetch the translations of.
-    :type entity: dict(int, dict(str, ~django.db.models.Model))
+    :type groups: dict(int, dict(str, ~django.db.models.Model))
     :param lang: The language to fetch the translations of
         the :term:`entity groups` in.
         ``None`` means use the :term:`active language` code.
