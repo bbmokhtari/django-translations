@@ -376,12 +376,14 @@ def _get_entity_groups(entity, hierarchy):
     :return: The :term:`entity groups` made out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
-    :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances.
+    :raise TypeError:
 
-        Also raised when the model of the entity or the model of any
-        included relations in the :term:`relations hierarchy` is
-        not :class:`~translations.models.Translatable`.
+        - If the entity is neither a model instance nor
+          an iterable of model instances.
+
+        - If the model of the entity or the model of the included relations is
+          not :class:`~translations.models.Translatable`.
+
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
     """
@@ -539,8 +541,14 @@ def apply_translations(entity, *relations, lang=None):
     :type lang: str or None
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
-    :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances.
+    :raise TypeError:
+
+        - If the entity is neither a model instance nor
+          an iterable of model instances.
+
+        - If the model of the entity or the model of the included relations is
+          not :class:`~translations.models.Translatable`.
+
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
