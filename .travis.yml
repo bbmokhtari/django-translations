@@ -77,7 +77,7 @@ jobs:
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
       install:
-        - pip install django==2.0
+        - pip install django~=2.0.0
         - pip install sphinx
       before_script: python create.py && python config.py && python project/manage.py migrate
       script: make --directory docs doctest
@@ -86,7 +86,7 @@ jobs:
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
       install:
-        - pip install django==2.0
+        - pip install django~=2.0.0
         - pip install sphinx
       before_script: python create.py && python config.py && python project/manage.py migrate
       script: make --directory docs doctest
@@ -95,7 +95,7 @@ jobs:
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
       install:
-        - pip install django==1.11
+        - pip install django~=1.11
         - pip install sphinx
       before_script: python create.py && python config.py && python project/manage.py migrate
       script: make --directory docs doctest
@@ -104,7 +104,7 @@ jobs:
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip
       install:
-        - pip install django==1.11
+        - pip install django~=1.11
         - pip install sphinx
       before_script: python create.py && python config.py && python project/manage.py migrate
       script: make --directory docs doctest
