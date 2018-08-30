@@ -13,45 +13,6 @@ The terms you might see in the documentation:
      can access it in Django using the
      :func:`~django.utils.translation.get_language` function.
 
-   translations dictionary
-     A translation dictionary is an easy to search object made out of some
-     translations.
-
-     example::
-
-        {
-            content_type_id_1: {
-                object_id_1: {
-                    field_1: text_1,
-                    field_2: ...
-                },
-                object_id_2: ...
-            },
-            content_type_id_2: ...
-        }
-
-     The ``content_type_id`` represents the
-     :class:`~django.contrib.contenttypes.models.ContentType` ID, ``object_id``
-     represents the ID of the object in that content type, ``field``
-     represents the name of the field for that object.
-
-   content type translations dictionary
-     A content type translations dictionary is the value of a content type key
-     in a :term:`translations dictionary`.
-
-     example::
-     
-        {
-            object_id_1: {
-                field_1: text_1,
-                field_2: ...
-            },
-            object_id_2: ...
-        }
-
-     The ``object_id`` represents the ID of the object in that content type,
-     ``field`` represents the name of the field for that object.
-
    relations hierarchy
      A relations hierarchy is a hierarchy containing each level of relation
      and information about whether they are included or not.
@@ -80,3 +41,20 @@ The terms you might see in the documentation:
      ``relations`` represents the nested relations inside the relation and
      the ``nested_relation`` represents the second-level relation of the
      model and so on.
+
+   entity groups
+     The entity groups are a group of objects divided into groups based on
+     their content types and object ids.
+
+     example::
+
+        {
+            content_type_id_1: {
+                object_id_1: object_1,
+                object_id_2: ...
+            },
+            content_type_id_2: ...
+        }
+
+     The first level keys are content types, the second level keys are object
+     ids and the values of the object ids keys are the actual objects.
