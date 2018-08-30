@@ -1,9 +1,8 @@
 """
-This module contains the querysets for the Translations app.
+This module contains the querysets for the Translations app. It contains the
+following members:
 
-.. rubric:: Classes:
-
-:func:`TranslatableQuerySet`
+:class:`TranslatableQuerySet`
     The translations app extended queryset.
 """
 
