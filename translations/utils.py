@@ -364,10 +364,10 @@ def _get_entity_groups(entity, hierarchy):
     the :term:`relations hierarchy` of it.
 
     Processes the entity and the :term:`relations hierarchy` of it and returns
-    them as some :term:`entity groups`.
+    the :term:`entity groups` made out of them.
 
-    :param entity: the entity to make the :term:`entity groups` out of it and
-        the :term:`relations hierarchy` of it.
+    :param entity: the entity to make the :term:`entity groups` out of and out
+        of the :term:`relations hierarchy` of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param hierarchy: The :term:`relations hierarchy` of the entity to make
@@ -376,6 +376,14 @@ def _get_entity_groups(entity, hierarchy):
     :return: The :term:`entity groups` made out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
+    :raise TypeError: If the entity is neither a model instance nor
+        an iterable of model instances.
+
+        Also raised when the model of the entity or the model of any
+        included relations in the :term:`relations hierarchy` is
+        not :class:`~translations.models.Translatable`.
+    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+        pointing to the fields that don't exist.
     """
     groups = {}
 
