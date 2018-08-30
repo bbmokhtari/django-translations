@@ -2311,7 +2311,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        apply_translations(europe)
+        apply_translations(europe, *lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -2326,7 +2326,7 @@ class UpdateTranslationsTest(TestCase):
 
         # reapply
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        apply_translations(europe)
+        apply_translations(europe, *lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -2340,19 +2340,19 @@ class UpdateTranslationsTest(TestCase):
         )
         self.assertEqual(
             germany.name,
-            'Germany'
+            'Deutschland'
         )
         self.assertEqual(
             germany.denonym,
-            'German'
+            'Deutsche'
         )
         self.assertEqual(
             cologne.name,
-            'Cologne'
+            'Köln'
         )
         self.assertEqual(
             cologne.denonym,
-            'Cologner'
+            'Kölner'
         )
 
     def test_instance_level_1_relation_no_lang(self):
@@ -2372,7 +2372,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        apply_translations(europe, *lvl_1)
+        apply_translations(europe, *lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -2387,7 +2387,7 @@ class UpdateTranslationsTest(TestCase):
 
         # reapply
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        apply_translations(europe, *lvl_1)
+        apply_translations(europe, *lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -2409,11 +2409,11 @@ class UpdateTranslationsTest(TestCase):
         )
         self.assertEqual(
             cologne.name,
-            'Cologne'
+            'Köln'
         )
         self.assertEqual(
             cologne.denonym,
-            'Cologner'
+            'Kölner'
         )
 
     def test_instance_level_2_relation_no_lang(self):
@@ -2433,7 +2433,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        apply_translations(europe, *lvl_2)
+        apply_translations(europe, *lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -2448,7 +2448,7 @@ class UpdateTranslationsTest(TestCase):
 
         # reapply
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        apply_translations(europe, *lvl_2)
+        apply_translations(europe, *lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -2462,11 +2462,11 @@ class UpdateTranslationsTest(TestCase):
         )
         self.assertEqual(
             germany.name,
-            'Germany'
+            'Deutschland'
         )
         self.assertEqual(
             germany.denonym,
-            'German'
+            'Deutsche'
         )
         self.assertEqual(
             cologne.name,
