@@ -902,6 +902,8 @@ def update_translations(entity, *relations, lang=None):
        City: Cologne
        City: Munich
     """
+    lang = _get_translation_language(lang)
+
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
     old_translations = _get_translations(groups, lang=lang)
