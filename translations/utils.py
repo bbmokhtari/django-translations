@@ -386,6 +386,40 @@ def _get_entity_groups(entity, hierarchy):
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
+
+    .. testsetup:: _get_entity_groups
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe", "asia"],
+           country_names=["germany", "south korea"],
+           city_names=["cologne", "munich", "seoul", "ulsan"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To get the :term:`entity groups` of an entity and
+    the :term:`relations hierarchy` of it:
+
+    .. testcode:: _get_entity_groups
+
+       from sample.models import Continent
+       from translations.utils import _get_entity_groups
+       from translations.utils import _get_relations_hierarchy
+
+       relations = ('countries', 'countries__cities',)
+       hierarchy = _get_relations_hierarchy(*relations)
+
+       continents = Continent.objects.all()
+
+       groups = _get_entity_groups(continents, hierarchy)
+
+    .. testoutput:: _get_entity_groups
+
+       pass
     """
     groups = {}
 

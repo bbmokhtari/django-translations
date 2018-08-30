@@ -49,7 +49,11 @@ The terms you might see in the documentation:
      example::
 
         {
-
+            content_type_id_1: {
+                object_id_1: object_1,
+                object_id_2: ...
+            },
+            content_type_id_2: ...
         }
 
      The first level keys are content types, the second level keys are object
