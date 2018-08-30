@@ -464,6 +464,415 @@ class GetRelationsHierarchyTest(TestCase):
         )
 
 
+class GetEntityGroupsTest(TestCase):
+    """Tests for `_get_entity_groups`."""
+
+    # ---- arguments testing -------------------------------------------------
+
+    def test_instance_level_0_relation(self):
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy()
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+
+        self.assertDictEqual(
+            _get_entity_groups(europe, hierarchy),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                }
+            }
+        )
+
+    def test_instance_level_1_relation(self):
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries')
+
+        germany = europe.countries.all()[0]
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_country = ContentType.objects.get_for_model(Country)
+
+        self.assertDictEqual(
+            _get_entity_groups(europe, hierarchy),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                },
+                ct_country.id: {
+                    str(germany.id): germany
+                }
+            }
+        )
+
+    def test_instance_level_2_relation(self):
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries__cities')
+
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_city = ContentType.objects.get_for_model(City)
+
+        self.assertDictEqual(
+            _get_entity_groups(europe, hierarchy),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                },
+                ct_city.id: {
+                    str(cologne.id): cologne
+                }
+            }
+        )
+
+    def test_instance_level_1_2_relation(self):
+        create_samples(
+            continent_names=["europe"],
+            country_names=["germany"],
+            city_names=["cologne"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_country = ContentType.objects.get_for_model(Country)
+        ct_city = ContentType.objects.get_for_model(City)
+
+        self.assertDictEqual(
+            _get_entity_groups(europe, hierarchy),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                },
+                ct_country.id: {
+                    str(germany.id): germany
+                },
+                ct_city.id: {
+                    str(cologne.id): cologne
+                }
+            }
+        )
+
+    def test_queryset_level_0_relation_no_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(continents, hierarchy)
+
+        activate("de")
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+            ]
+        )
+
+    def test_queryset_level_1_relation_no_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries')
+        groups = _get_entity_groups(continents, hierarchy)
+
+        activate("de")
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: South Korea: Südkorea>",
+                "<Translation: South Korean: Südkoreanisch>",
+            ]
+        )
+
+    def test_queryset_level_2_relation_no_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
+
+        activate("de")
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölner>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: Seoul: Seül>",
+                "<Translation: Seouler: Seüler>",
+            ]
+        )
+
+    def test_queryset_level_1_2_relation_no_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
+
+        activate("de")
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölner>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: South Korea: Südkorea>",
+                "<Translation: South Korean: Südkoreanisch>",
+                "<Translation: Seoul: Seül>",
+                "<Translation: Seouler: Seüler>",
+            ]
+        )
+
+    def test_queryset_level_0_relation_with_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(continents, hierarchy)
+
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+            ]
+        )
+
+    def test_queryset_level_1_relation_with_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries')
+        groups = _get_entity_groups(continents, hierarchy)
+
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: South Korea: Südkorea>",
+                "<Translation: South Korean: Südkoreanisch>",
+            ]
+        )
+
+    def test_queryset_level_2_relation_with_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
+
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölner>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: Seoul: Seül>",
+                "<Translation: Seouler: Seüler>",
+            ]
+        )
+
+    def test_queryset_level_1_2_relation_with_lang(self):
+        create_samples(
+            continent_names=["europe", "asia"],
+            country_names=["germany", "south korea"],
+            city_names=["cologne", "seoul"],
+            continent_fields=["name", "denonym"],
+            country_fields=["name", "denonym"],
+            city_fields=["name", "denonym"],
+            langs=["de", "tr"]
+        )
+
+        continents = Continent.objects.all()
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        groups = _get_entity_groups(continents, hierarchy)
+
+        self.assertQuerysetEqual(
+            _get_translations(
+                groups,
+                lang="de"
+            ).order_by("id"),
+            [
+                "<Translation: Europe: Europa>",
+                "<Translation: European: Europäisch>",
+                "<Translation: Germany: Deutschland>",
+                "<Translation: German: Deutsche>",
+                "<Translation: Cologne: Köln>",
+                "<Translation: Cologner: Kölner>",
+                "<Translation: Asia: Asien>",
+                "<Translation: Asian: Asiatisch>",
+                "<Translation: South Korea: Südkorea>",
+                "<Translation: South Korean: Südkoreanisch>",
+                "<Translation: Seoul: Seül>",
+                "<Translation: Seouler: Seüler>",
+            ]
+        )
+
+    # ---- error testing -----------------------------------------------------
+
+    def test_invalid_lang(self):
+        create_samples(
+            continent_names=["europe"],
+            continent_fields=["name", "denonym"],
+            langs=["de"]
+        )
+
+        europe = Continent.objects.get(code="EU")
+        hierarchy = _get_relations_hierarchy()
+        groups = _get_entity_groups(europe, hierarchy)
+
+        with self.assertRaises(ValueError) as error:
+            _get_translations(
+                groups,
+                lang="xx"
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "The language code `xx` is not supported."
+        )
+
+
 class GetTranslationsTest(TestCase):
     """Tests for `_get_translations`."""
 
