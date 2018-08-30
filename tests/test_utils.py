@@ -6,7 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_translation_language, \
     _get_entity_details, _get_reverse_relation,  _get_relations_hierarchy, \
-    _get_entity_groups, _get_translations, apply_translations
+    _get_entity_groups, _get_translations, \
+    apply_translations, update_translations
 
 from translations.models import Translation
 
@@ -1300,14 +1301,12 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
-        activate("de")
-
         apply_translations(europe)
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1347,15 +1346,13 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
-        activate("de")
-
         apply_translations(europe, *lvl_1)
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1395,15 +1392,13 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
-        activate("de")
-
         apply_translations(europe, *lvl_2)
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1443,14 +1438,12 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
-        activate("de")
-
         apply_translations(europe, *lvl_1_2)
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1493,9 +1486,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
         apply_translations(europe, lang="de")
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1539,9 +1530,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
         apply_translations(europe, *lvl_1, lang="de")
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1585,9 +1574,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
         apply_translations(europe, *lvl_2, lang="de")
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1630,9 +1617,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-
         apply_translations(europe, *lvl_1_2, lang="de")
-
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1672,18 +1657,15 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
-        activate("de")
-
         apply_translations(continents)
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -1748,19 +1730,16 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
-        activate("de")
-
         apply_translations(continents, *lvl_1)
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -1825,19 +1804,16 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
-        activate("de")
-
         apply_translations(continents, *lvl_2)
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -1902,18 +1878,15 @@ class ApplyTranslationsTest(TestCase):
             langs=["de", "tr"]
         )
 
+        activate("de")
+
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
-        activate("de")
-
         apply_translations(continents, *lvl_1_2)
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -1981,13 +1954,10 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
         apply_translations(continents, lang="de")
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -2056,13 +2026,10 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
         apply_translations(continents, *lvl_1, lang="de")
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -2131,13 +2098,10 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
         apply_translations(continents, *lvl_2, lang="de")
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
@@ -2205,13 +2169,10 @@ class ApplyTranslationsTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2).all()
-
         apply_translations(continents, *lvl_1_2, lang="de")
-
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
-
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
