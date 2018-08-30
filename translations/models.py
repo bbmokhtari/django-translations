@@ -20,7 +20,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, \
 from django.utils.translation import ugettext_lazy as _
 
 from translations.utils import apply_translations, update_translations
-from translations.managers import TranslatableManager
+from translations.querysets import TranslatableQuerySet
 
 
 __docformat__ = 'restructuredtext'
@@ -170,7 +170,7 @@ class Translatable(models.Model):
        described in :class:`Translation`.
     """
 
-    objects = TranslatableManager()
+    objects = TranslatableQuerySet.as_manager()
     translations = GenericRelation(
         Translation,
         content_type_field='content_type',
