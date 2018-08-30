@@ -111,7 +111,7 @@ def _get_entity_details(entity):
 
     .. note::
        If the entity is an empty iterable it returns the model as ``None``,
-       even if the iterable is an empty queryset (which its model can be
+       even if the iterable is an empty queryset (which the model of can be
        retrieved). It's because the other parts of the code first check to see
        if the model in the details is ``None``, in that case they skip the
        translation process all together (because there's nothing to
