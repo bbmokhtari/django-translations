@@ -472,11 +472,7 @@ class GetEntityGroupsTest(TestCase):
     def test_instance_level_0_relation(self):
         create_samples(
             continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
             continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
@@ -498,10 +494,8 @@ class GetEntityGroupsTest(TestCase):
         create_samples(
             continent_names=["europe"],
             country_names=["germany"],
-            city_names=["cologne"],
             continent_fields=["name", "denonym"],
             country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
             langs=["de", "tr"]
         )
 
