@@ -507,7 +507,7 @@ def _get_translations(groups, lang=None):
 
     filters = models.Q()
     for (ct_id, objs) in groups.items():
-        for (obj_id, obj) in objs.items():
+        for obj_id in objs:
             filters |= models.Q(
                 content_type__id=ct_id,
                 object_id=obj_id
