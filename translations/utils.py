@@ -406,7 +406,8 @@ def _get_entity_groups(entity, hierarchy):
 
     .. testcode:: _get_entity_groups
 
-       from sample.models import Continent
+       from django.contrib.contenttypes.models import ContentType
+       from sample.models import Continent, Country, City
        from translations.utils import _get_entity_groups
        from translations.utils import _get_relations_hierarchy
 
@@ -417,9 +418,27 @@ def _get_entity_groups(entity, hierarchy):
 
        groups = _get_entity_groups(continents, hierarchy)
 
+       ct_continent = ContentType.objects.get_for_model(Continent).id
+       ct_country = ContentType.objects.get_for_model(Country).id
+       ct_city = ContentType.objects.get_for_model(City).id
+
+       for id, obj in groups[ct_continent].items():
+           print(obj)
+       for id, obj in groups[ct_country].items():
+           print(obj)
+       for id, obj in groups[ct_city].items():
+           print(obj)
+
     .. testoutput:: _get_entity_groups
 
-       pass
+       Europe
+       Asia
+       Germany
+       South Korea
+       Cologne
+       Munich
+       Seoul
+       Ulsan
     """
     groups = {}
 
