@@ -15,7 +15,7 @@ This module contains the utilities for the Translations app.
     Return some :term:`entity groups` made out of an entity and
     the :term:`relations hierarchy` of it.
 :func:`_get_translations`
-    Return the translations of an entity and the relations of it in a language.
+    Return the translations of some :term:`entity groups` in a language.
 :func:`apply_translations`
     Apply the translations on an entity and the relations of it in a language.
 :func:`update_translations`
