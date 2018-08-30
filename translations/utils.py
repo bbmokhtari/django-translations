@@ -221,7 +221,7 @@ def _get_reverse_relation(model, relation):
 
     Processes the model's relation which points from the model to the target
     model and returns the reverse relation which points from the target model
-    to the model.
+    back to the model.
 
     :param model: The model which contains the relation and the reverse
         relation points to.
@@ -276,13 +276,13 @@ def _get_relations_hierarchy(*relations):
     """
     Return the :term:`relations hierarchy` made out of some relations.
 
-    Processes the relations and returns the :term:`relations hierarchy` to
-    use in the translation process.
+    Processes the relations and returns the :term:`relations hierarchy` made
+    out of them.
 
     :param relations: The relations to make the :term:`relations hierarchy`
         out of.
     :type relations: list(str)
-    :return: The :term:`relations hierarchy` made out of relations.
+    :return: The :term:`relations hierarchy` made out of the relations.
     :rtype: dict(str, dict)
 
     To get the :term:`relations hierarchy` of a first-level relation:
