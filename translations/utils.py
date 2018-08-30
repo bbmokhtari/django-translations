@@ -18,6 +18,9 @@ This module contains the utilities for the Translations app.
     Return the translations of an entity and the relations of it in a language.
 :func:`apply_translations`
     Apply the translations on an entity and the relations of it in a language.
+:func:`update_translations`
+    Update the translations of an entity and the relations of it in a
+    language.
 """
 
 from django.db import models, transaction
@@ -745,6 +748,160 @@ def apply_translations(entity, *relations, lang=None):
 
 
 def update_translations(entity, *relations, lang=None):
+    """
+    Update the translations of an entity and the relations of it in a
+    language.
+
+    Deletes the old translations of the entity and the specified relations of
+    it in a language and creates new translations for them based on their
+    fields values.
+
+    :param entity: The entity to update the translations of and update the
+        translations of the relations of.
+    :type entity: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :param relations: The relations of the entity to update the translations
+        of.
+    :type relations: list(str)
+    :param lang: The language to update the translations in.
+        ``None`` means use the :term:`active language` code.
+    :type lang: str or None
+    :raise ValueError: If the language code is not included in
+        the :data:`~django.conf.settings.LANGUAGES` setting.
+    :raise TypeError:
+
+        - If the entity is neither a model instance nor
+          an iterable of model instances.
+
+        - If the model of the entity or the model of the included relations is
+          not :class:`~translations.models.Translatable`.
+
+    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+        pointing to the fields that don't exist.
+
+    .. warning::
+       The relations of an instance, a queryset or a list of instances
+       **must** be fetched before performing the translation process.
+
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
+
+    .. warning::
+       Only when all the filterings are executed on the relations of an
+       instance, a queryset or a list of instances, they should go through the
+       translation process, otherwise if a relation is filtered after the
+       translation process the translations of that relation are reset.
+
+       To filter a relation when fetching it use
+       :class:`~django.db.models.Prefetch`.
+
+    .. testsetup:: update_translations
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe", "asia"],
+           country_names=["germany", "south korea"],
+           city_names=["cologne", "munich", "seoul", "ulsan"],
+           continent_fields=["name", "denonym"],
+           country_fields=["name", "denonym"],
+           city_fields=["name", "denonym"],
+           langs=["de"]
+       )
+
+    To update the translations of a list of instances and the relations of it:
+
+    .. testcode:: update_translations
+
+       from django.db.models import prefetch_related_objects
+       from sample.models import Continent, Country, City
+       from translations.utils import update_translations
+
+       relations = ('countries', 'countries__cities',)
+
+       continents = list(Continent.objects.all())
+       prefetch_related_objects(continents, *relations)
+
+       update_translations(continents, *relations, lang="en")
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: update_translations
+
+       Continent: Europe
+       Country: Germany
+       City: Cologne
+       City: Munich
+       Continent: Asia
+       Country: South Korea
+       City: Seoul
+       City: Ulsan
+
+    To update the translations of a queryset and the relations of it:
+
+    .. testcode:: update_translations
+
+       from sample.models import Continent, Country, City
+       from translations.utils import update_translations
+
+       relations = ('countries', 'countries__cities',)
+
+       continents = Continent.objects.prefetch_related(*relations).all()
+
+       update_translations(continents, *relations, lang="en")
+
+       for continent in continents:
+           print("Continent: {}".format(continent))
+           for country in continent.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+    .. testoutput:: update_translations
+
+       Continent: Europe
+       Country: Germany
+       City: Cologne
+       City: Munich
+       Continent: Asia
+       Country: South Korea
+       City: Seoul
+       City: Ulsan
+
+    To update the translations of an instance and the relations of it:
+
+    .. testcode:: update_translations
+
+       from django.db.models import prefetch_related_objects
+       from sample.models import Continent, Country, City
+       from translations.utils import update_translations
+
+       relations = ('countries', 'countries__cities',)
+
+       europe = Continent.objects.get(code="EU")
+       prefetch_related_objects([europe], *relations)
+
+       update_translations(europe, *relations, lang="en")
+
+       print("Continent: {}".format(europe))
+       for country in europe.countries.all():
+           print("Country: {}".format(country))
+           for city in country.cities.all():
+               print("City: {}".format(city))
+
+    .. testoutput:: update_translations
+
+       Continent: Europe
+       Country: Germany
+       City: Cologne
+       City: Munich
+    """
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
     old_translations = _get_translations(groups, lang=lang)

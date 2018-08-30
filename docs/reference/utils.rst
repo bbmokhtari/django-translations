@@ -13,3 +13,4 @@ Utilities
    .. autofunction:: _get_entity_groups
    .. autofunction:: _get_translations
    .. autofunction:: apply_translations
+   .. autofunction:: update_translations
