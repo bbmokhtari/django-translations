@@ -422,11 +422,11 @@ def _get_entity_groups(entity, hierarchy):
        ct_country = ContentType.objects.get_for_model(Country).id
        ct_city = ContentType.objects.get_for_model(City).id
 
-       for id, obj in groups[ct_continent].items():
+       for id, obj in sorted(groups[ct_continent].items(), key=lambda x: x[0]):
            print(obj)
-       for id, obj in groups[ct_country].items():
+       for id, obj in sorted(groups[ct_country].items(), key=lambda x: x[0]):
            print(obj)
-       for id, obj in groups[ct_city].items():
+       for id, obj in sorted(groups[ct_city].items(), key=lambda x: x[0]):
            print(obj)
 
     .. testoutput:: _get_entity_groups
