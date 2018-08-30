@@ -7,3 +7,4 @@ QuerySets
    .. autoclass:: TranslatableQuerySet
 
       .. automethod:: apply_translations
+      .. automethod:: update_translations
