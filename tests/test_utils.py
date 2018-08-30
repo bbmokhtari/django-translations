@@ -3563,7 +3563,7 @@ class UpdateTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         with self.assertRaises(ValueError) as error:
-            apply_translations(
+            update_translations(
                 europe,
                 lang="xx"
             )
@@ -3582,7 +3582,7 @@ class UpdateTranslationsTest(TestCase):
         europe = Continent.objects.get(code="EU")
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            apply_translations(
+            update_translations(
                 europe,
                 'wrong',
                 lang="de"
@@ -3605,7 +3605,7 @@ class UpdateTranslationsTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            apply_translations(
+            update_translations(
                 behzad,
                 lang="de"
             )
