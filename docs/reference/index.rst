@@ -13,4 +13,5 @@ reference.
    models
    querysets
    admin
+   forms
    utils
