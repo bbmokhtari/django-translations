@@ -27,6 +27,8 @@ class Translation(models.Model):
     """
     The model which represents the translations.
 
+    Manages storing, querying and the structure of the translation objects.
+
     Each translation belongs to a *unique* database address. Each address is
     composed of a :attr:`content_type` (table), an :attr:`object_id` (row) and
     a :attr:`field` (column).
@@ -38,68 +40,13 @@ class Translation(models.Model):
 
        :class:`~django.contrib.contenttypes.models.ContentType` is a django
        model which comes with the :mod:`~django.contrib.contenttypes` app.
-       This model represents the tables created in the database.
+       It represents the tables created in a database by all the apps in a
+       project.
 
        :attr:`content_type` and :attr:`object_id` together form something
        called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
-
-    .. warning:: Never work with the :class:`Translation` model directly
-       unless you really have to. (it's unlikely it ever happens)
-
-       Working directly with the :class:`Translation` model is discouraged
-       because it leads to hard, error prone and inefficient code. so never
-       do this. Here's an example why.
-
-    .. commented doctest
-       first create an object:
-
-       >>> from polls.models import Question
-       >>> from django.utils import timezone
-       >>> question = Question.objects.create(
-       ...     question_text='How old are you?',
-       ...     pub_date=timezone.now()
-       ... )
-
-       now let's create a translation for it manually:
-
-       >>> # hard: look at the amount of effort to do this
-       >>> # error prone: note the `field` is set manually
-       >>> # inefficient: consider the creation of multiple translations
-       >>> from django.contrib.contenttypes.models import ContentType
-       >>> from translations.models import Translation
-       >>> question_ct = ContentType.objects.get_for_model(Question)
-       >>> Translation.objects.create(
-       ...     content_type=question_ct,
-       ...     object_id=question.id,
-       ...     field='question_text',
-       ...     language='fr',
-       ...     text='Quel âge avez-vous?'
-       ... )
-       <Translation: How old are you?: Quel âge avez-vous?>
-
-       The same can also be achieved with this.
-
-       >>> # hard, error prone and inefficient AGAIN
-       >>> from translations.models import Translation
-       >>> Translation.objects.create(
-       ...     content_object=question,
-       ...     field='question_text',
-       ...     language='fr',
-       ...     text='Quel âge avez-vous?'
-       ... )
-       <Translation: How old are you?: Quel âge avez-vous?>
-
-       Never do this! This is just for the sake of demonstration.
-
-       The correct way to do this, is to use the :class:`Translatable` model.
-
-       >>> # the easy, correct and efficient way
-       >>> # inherit `Question` model from `Translatable`
-       >>> question.question_text = 'Quel âge avez-vous?'
-       >>> question.update_translations(lang='fr')
-       <Question: Quel âge avez-vous?>
     """
 
     objects = models.Manager()
