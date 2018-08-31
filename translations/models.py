@@ -183,7 +183,7 @@ class Translatable(models.Model):
         """
         :var fields: The fields of the model to use in the translation
             process.
-            ``None`` means use the text based fields.
+            ``None`` means use the text based fields automatically.
             ``[]`` means use no fields.
         :vartype fields: list(str) or None
         """
