@@ -2,12 +2,12 @@
 This module contains the admins for the Translations app. It contains the
 following members:
 
+:class:`TranslatableAdminMixin`
+    An admin mixin which provides custom translation functionalities.
 :class:`TranslatableAdmin`
     The admin which represents the translatables.
 :class:`TranslationInline`
     The admin inline which represents the translations.
-:class:`TranslatableAdminMixin`
-    An admin mixin which provides custom translation functionalities.
 """
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
@@ -17,24 +17,6 @@ from .forms import generate_translation_form
 
 
 __docformat__ = 'restructuredtext'
-
-
-class TranslationInline(GenericStackedInline):
-    """
-    The admin inline which represents the translations.
-
-    Manages creating, reading, updating and deleting the admin object's
-    translation inline objects.
-
-    The basic usage:
-
-    .. literalinclude:: ../../sample/admin.py
-       :pyobject: ContinentAdmin
-       :emphasize-lines: 2
-    """
-
-    model = Translation
-    extra = 1
 
 
 class TranslatableAdminMixin(object):
@@ -130,6 +112,24 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
         inlines = list(inlines)
         self.handle_translation_inlines(inlines)
         return inlines
+
+
+class TranslationInline(GenericStackedInline):
+    """
+    The admin inline which represents the translations.
+
+    Manages creating, reading, updating and deleting the admin object's
+    translation inline objects.
+
+    The basic usage:
+
+    .. literalinclude:: ../../sample/admin.py
+       :pyobject: ContinentAdmin
+       :emphasize-lines: 2
+    """
+
+    model = Translation
+    extra = 1
 
 
 """
