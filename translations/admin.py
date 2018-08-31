@@ -81,8 +81,8 @@ class TranslatableAdminMixin(object):
         A basic usage:
 
         .. literalinclude:: ../../translations/admin.py
-           :pyobject: TranslatableAdmin
-           :emphasize-lines: 5
+           :pyobject: TranslatableAdmin.get_inline_instances
+           :emphasize-lines: 4
         """
         choices = self._get_translation_choices()
         form = generate_translation_form(choices)
@@ -99,6 +99,18 @@ class TranslatableAdminMixin(object):
 
 
 class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
+    """
+    The admin which represents the translatables.
+
+    Manages creating, reading, updating and deleting the translatable admin
+    object.
+
+    The basic usage:
+
+    .. literalinclude:: ../../sample/admin.py
+       :pyobject: ContinentAdmin
+       :emphasize-lines: 1
+    """
     def get_inline_instances(self, request, obj=None):
         inlines = super(TranslatableAdmin, self).get_inline_instances(request, obj)
         inlines = list(inlines)
