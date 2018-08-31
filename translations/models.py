@@ -174,13 +174,17 @@ class Translatable(models.Model):
         abstract = True
 
     class TranslatableMeta:
-        """This class contains meta information about translation process."""
+        """
+        The class which contains meta information about the translation
+        process.
+        """
 
         fields = None
         """
-        :var fields: The fields of the model to be translated, ``None`` means
-            use all text based fields automatically, ``[]`` means no fields
-            should be translatable.
+        :var fields: The fields of the model to use in the translation
+            process.
+            ``None`` means use the text based fields.
+            ``[]`` means use no fields.
         :vartype fields: list(str) or None
         """
 

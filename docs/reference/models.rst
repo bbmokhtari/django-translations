@@ -7,3 +7,4 @@ Models
    .. autoclass:: Translation
 
    .. autoclass:: Translatable
+      :members: TranslatableMeta
