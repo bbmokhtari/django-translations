@@ -4,7 +4,7 @@ from django.db import utils
 
 from translations.models import Translation
 
-from sample.models import Continent, Country, City
+from sample.models import Continent, Country, City, Geo
 
 from .sample import create_samples
 
@@ -207,7 +207,10 @@ class TranslatableTest(TestCase):
 
     def test_fields_empty(self):
         """Make sure `TranslatableMeta.fields` works with ``None``."""
-        # TODO
+        self.assertListEqual(
+            Geo.get_translatable_fields(),
+            []
+        )
 
     def test_fields_explicit(self):
         """Make sure `TranslatableMeta.fields` works with explicit fields."""
