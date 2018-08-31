@@ -1,8 +1,22 @@
+"""
+This module contains the admins for the Translations app. It contains the
+following members:
+
+:class:`TranslatableAdmin`
+    The admin which represents the translatables.
+:class:`TranslationInline`
+    The admin inline which represents the translations.
+:class:`TranslatableAdminMixin`
+    An admin mixin which provides custom translation functionalities.
+"""
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
 
 from .models import Translation, Translatable
 from .forms import generate_translation_form
+
+
+__docformat__ = 'restructuredtext'
 
 
 class TranslationInline(GenericStackedInline):
