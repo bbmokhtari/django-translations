@@ -67,24 +67,32 @@ class TranslatableAdminMixin(object):
                 choices.append((field.name, field.verbose_name))
         return choices
 
-    def handle_translation_inlines(self, inlines):
+    def handle_translation_inlines(self, inlines, thetype):
         """
-        Manipulate the translation inlines based on the admin model.
+        Manipulate the translation inlines of one type based on the admin.
 
-        Processes the admin model and customizes the translation inlines
-        based on that in place.
+        Processes the admin and manipulates the translation inlines of one
+        type based on that in place.
 
-        A basic usage:
+        :param inlines: The translation inlines to manipulate based on the
+            admin.
+        :type inlines: list(~django.contrib.contenttypes.admin
+            .GenericStackedInline)
+        :param thetype: The type of the inlines.
+        :type thetype: type(~django.contrib.contenttypes.admin
+            .GenericStackedInline)
+
+        To manipulate translation inlines in place override this in admin:
 
         .. literalinclude:: ../../translations/admin.py
            :pyobject: TranslatableAdmin.get_inline_instances
-           :emphasize-lines: 4
+           :emphasize-lines: 8
         """
         choices = self._get_translation_choices()
         form = generate_translation_form(choices)
         remove_inlines = []
         for i, v in enumerate(inlines):
-            if isinstance(v, TranslationInline):
+            if isinstance(v, thetype):
                 if len(choices) == 1:
                     remove_inlines.append(i)
                 else:
@@ -108,9 +116,13 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
        :emphasize-lines: 1
     """
     def get_inline_instances(self, request, obj=None):
-        inlines = super(TranslatableAdmin, self).get_inline_instances(request, obj)
-        inlines = list(inlines)
-        self.handle_translation_inlines(inlines)
+        inlines = list(
+            super(TranslatableAdmin, self).get_inline_instances(
+                request,
+                obj
+            )
+        )
+        self.handle_translation_inlines(inlines, TranslationInline)
         return inlines
 
 
