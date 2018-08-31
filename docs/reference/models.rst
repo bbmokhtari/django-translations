@@ -10,3 +10,5 @@ Models
       :members: TranslatableMeta
 
       .. automethod:: get_translatable_fields
+
+      .. automethod:: apply_translations
