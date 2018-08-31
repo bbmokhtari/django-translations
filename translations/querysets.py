@@ -3,7 +3,8 @@ This module contains the querysets for the Translations app. It contains the
 following members:
 
 :class:`TranslatableQuerySet`
-    The translations app extended queryset.
+    A :class:`~django.db.models.QuerySet` which provides custom
+    translation functionalities.
 """
 
 from django.db import models, transaction
@@ -13,7 +14,13 @@ from translations.utils import apply_translations, update_translations
 
 class TranslatableQuerySet(models.QuerySet):
     """
-    The translations app extended queryset.
+    A :class:`~django.db.models.QuerySet` which provides custom
+    translation functionalities.
+
+    Provides functionalities like :meth:`apply_translations` to read and apply
+    translations from the database onto the queryset, and
+    :meth:`update_translations` to write and update translations from the
+    queryset onto the database.
     """
 
     def apply_translations(self, *relations, lang=None):
