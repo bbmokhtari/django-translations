@@ -2,7 +2,8 @@
 FAQ
 ###
 
-Here we tackle some of the every day problems you may want to solve.
+Here we answer some of the questions that might come up often while using the
+Translations app.
 
 ***************************************
 How to make custom admins translatable?
