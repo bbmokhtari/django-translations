@@ -188,57 +188,6 @@ class Translatable(models.Model):
         :vartype fields: list(str) or None
         """
 
-    @classmethod
-    def get_translatable_fields(cls):
-        """
-        Return the translatable fields of the model.
-
-        Returns the translatable fields of the model based on the field names
-        listed in :attr:`TranslatableMeta.fields`.
-
-        :return: The translatable fields.
-        :rtype: list(~django.db.models.Field)
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the translatable fields of the mentioned model:
-
-        .. testcode:: get_translatable_fields
-
-           from sample.models import Continent
-
-           for field in Continent.get_translatable_fields():
-               print(field)
-
-        .. testoutput:: get_translatable_fields
-
-           sample.Continent.name
-           sample.Continent.denonym
-        """
-        if cls.TranslatableMeta.fields is None:
-            fields = []
-            for field in cls._meta.get_fields():
-                if isinstance(
-                            field,
-                            (models.CharField, models.TextField,)
-                        ) and not isinstance(
-                            field,
-                            models.EmailField
-                        ) and not (
-                            hasattr(field, 'choices') and field.choices
-                        ):
-                    fields.append(field)
-        else:
-            fields = [
-                cls._meta.get_field(field_name)
-                for field_name in cls.TranslatableMeta.fields
-            ]
-        return fields
-
     def apply_translations(self, *relations, lang=None):
         """
         Apply the translations on the instance and the relations of it in a
@@ -399,3 +348,54 @@ class Translatable(models.Model):
            City: Munich
         """
         update_translations(self, *relations, lang=lang)
+
+    @classmethod
+    def get_translatable_fields(cls):
+        """
+        Return the translatable fields of the model.
+
+        Returns the translatable fields of the model based on the field names
+        listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The translatable fields.
+        :rtype: list(~django.db.models.Field)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the translatable fields of the mentioned model:
+
+        .. testcode:: get_translatable_fields
+
+           from sample.models import Continent
+
+           for field in Continent.get_translatable_fields():
+               print(field)
+
+        .. testoutput:: get_translatable_fields
+
+           sample.Continent.name
+           sample.Continent.denonym
+        """
+        if cls.TranslatableMeta.fields is None:
+            fields = []
+            for field in cls._meta.get_fields():
+                if isinstance(
+                            field,
+                            (models.CharField, models.TextField,)
+                        ) and not isinstance(
+                            field,
+                            models.EmailField
+                        ) and not (
+                            hasattr(field, 'choices') and field.choices
+                        ):
+                    fields.append(field)
+        else:
+            fields = [
+                cls._meta.get_field(field_name)
+                for field_name in cls.TranslatableMeta.fields
+            ]
+        return fields
