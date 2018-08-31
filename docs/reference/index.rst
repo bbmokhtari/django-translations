@@ -10,6 +10,6 @@ deeper level, we recommend you to read the reference.
    :caption: Reference:
 
    models
-   admin
    querysets
+   admin
    utils
