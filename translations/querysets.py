@@ -17,8 +17,7 @@ __docformat__ = 'restructuredtext'
 
 class TranslatableQuerySet(models.QuerySet):
     """
-    A :class:`~django.db.models.QuerySet` which provides custom
-    translation functionalities.
+    A queryset which provides custom translation functionalities.
 
     Provides functionalities like :meth:`apply_translations` to read and apply
     translations from the database onto the queryset, and

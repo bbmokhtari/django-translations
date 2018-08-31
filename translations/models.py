@@ -140,21 +140,26 @@ class Translation(models.Model):
 
 class Translatable(models.Model):
     """
-    This abstract model can be inherited by any model which needs translation
-    capabilities.
+    An abstract model which provides custom translation functionalities.
 
-    Inheriting this model adds :attr:`translations` relation to the model and
-    changes the :attr:`objects` manager of the model to add translation
-    capabilities to the ORM.
+    Provides functionalities like :meth:`apply_translations` to read and apply
+    translations from the database onto the instance, and
+    :meth:`update_translations` to write and update translations from the
+    instance onto the database.
+
+    It changes the default manager of the model to
+    :class:`~translations.querysets.TranslatableQuerySet` in order to provide
+    custom translation functionalities in the querysets.
+
+    It also adds the :attr:`translations` relation to the model, just in case
+    any one wants to work with the translations of the instances manually.
 
     .. note::
-       There is **no need for migrations** after inheriting this model. Simply
-       just use it afterwards!
 
-    .. note::
-       The :attr:`translations` relation is a reverse relation to the
+       The :attr:`translations` relation is the reverse relation of the
        :class:`~django.contrib.contenttypes.fields.GenericForeignKey`
-       described in :class:`Translation`.
+       described in :class:`Translation`. It's a
+       :class:`~django.contrib.contenttypes.fields.GenericRelation`.
     """
 
     objects = TranslatableQuerySet.as_manager()
