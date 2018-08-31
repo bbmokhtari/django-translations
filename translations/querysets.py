@@ -12,6 +12,9 @@ from django.db import models, transaction
 from translations.utils import apply_translations, update_translations
 
 
+__docformat__ = 'restructuredtext'
+
+
 class TranslatableQuerySet(models.QuerySet):
     """
     A :class:`~django.db.models.QuerySet` which provides custom
