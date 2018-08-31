@@ -198,6 +198,26 @@ class Translatable(models.Model):
 
         :return: The translatable fields.
         :rtype: list(~django.db.models.Field)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the translatable fields of the mentioned model:
+
+        .. testcode:: get_translatable_fields
+
+           from sample.models import Continent
+
+           for field in Continent.get_translatable_fields():
+               print(field)
+
+        .. testoutput:: get_translatable_fields
+
+           sample.Continent.name
+           sample.Continent.denonym
         """
         if cls.TranslatableMeta.fields is None:
             fields = []
