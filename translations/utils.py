@@ -1,7 +1,6 @@
 """
-This module contains the utilities for the Translations app.
-
-.. rubric:: Functions:
+This module contains the utilities for the Translations app. It contains the
+following members:
 
 :func:`_get_translation_language`
     Return a language code to use in the translation process.
