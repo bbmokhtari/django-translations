@@ -3,4 +3,6 @@ Models
 ******
 
 .. automodule:: translations.models
-   :members:
+
+   .. autoclass:: Translation
+   .. autoclass:: Translatable
