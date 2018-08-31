@@ -3,4 +3,5 @@ Admin
 *****
 
 .. automodule:: translations.admin
-   :members:
+
+   .. autoclass:: TranslationInline

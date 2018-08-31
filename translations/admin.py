@@ -6,6 +6,18 @@ from .forms import generate_translation_form
 
 
 class TranslationInline(GenericStackedInline):
+    """
+    The admin inline which represents the translations.
+
+    Manages creating, reading, updating and deleting the admin object's
+    translation inline objects.
+
+    The basic usage:
+
+    .. literalinclude:: ../../sample/admin.py
+       :pyobject: ContinentAdmin
+       :emphasize-lines: 2
+    """
     model = Translation
     extra = 1
 
