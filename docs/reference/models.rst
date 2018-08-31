@@ -9,8 +9,8 @@ Models
    .. autoclass:: Translatable
       :members: TranslatableMeta
 
-      .. automethod:: get_translatable_fields
-
       .. automethod:: apply_translations
 
       .. automethod:: update_translations
+
+      .. automethod:: get_translatable_fields
