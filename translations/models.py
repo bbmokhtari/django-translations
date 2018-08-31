@@ -1,13 +1,12 @@
 """
-This module contains the models for the Translations app.
+This module contains the models for the Translations app. It contains the
+following members:
 
-.. rubric:: Classes:
-
+:class:`Translation`
+    The model which represents the translations.
 :class:`Translatable`
     An abstract model which can be inherited by any model that needs
     translation capabilities.
-:class:`Translation`
-    The model which represents the translations.
 
 ----
 """
@@ -28,7 +27,7 @@ __docformat__ = 'restructuredtext'
 
 class Translation(models.Model):
     """
-    This model represents the translations.
+    The model which represents the translations.
 
     Each translation belongs to a *unique* database address. Each address is
     composed of a :attr:`content_type` (table), an :attr:`object_id` (row) and
