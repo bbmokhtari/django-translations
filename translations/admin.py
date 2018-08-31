@@ -101,7 +101,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
     Manages creating, reading, updating and deleting the translatable admin
     object.
 
-    The basic usage:
+    To make an admin translatable:
 
     .. literalinclude:: ../../sample/admin.py
        :pyobject: ContinentAdmin
@@ -121,7 +121,7 @@ class TranslationInline(GenericStackedInline):
     Manages creating, reading, updating and deleting the admin object's
     translation inline objects.
 
-    The basic usage:
+    To add translation inlines to a translatable admin:
 
     .. literalinclude:: ../../sample/admin.py
        :pyobject: ContinentAdmin
