@@ -7,12 +7,12 @@ from sample.models import Continent, Country, City
 from .sample import create_samples
 
 
-class ApplyTranslationsTest(TestCase):
-    """Tests for `apply_translations`."""
+class TranslatableQuerySetTest(TestCase):
+    """Tests for `TranslatableQuerySet`."""
 
     # ---- arguments testing -------------------------------------------------
 
-    def test_queryset_level_0_relation_no_lang(self):
+    def test_apply_translations_level_0_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -86,7 +86,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_1_relation_no_lang(self):
+    def test_apply_translations_level_1_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -163,7 +163,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_2_relation_no_lang(self):
+    def test_apply_translations_level_2_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -240,7 +240,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_1_2_relation_no_lang(self):
+    def test_apply_translations_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -316,7 +316,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_0_relation_with_lang(self):
+    def test_apply_translations_level_0_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -390,7 +390,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_1_relation_with_lang(self):
+    def test_apply_translations_level_1_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -466,7 +466,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_2_relation_with_lang(self):
+    def test_apply_translations_level_2_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -542,7 +542,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_1_2_relation_with_lang(self):
+    def test_apply_translations_level_1_2_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -619,7 +619,7 @@ class ApplyTranslationsTest(TestCase):
 
     # ---- error testing -----------------------------------------------------
 
-    def test_invalid_lang(self):
+    def test_apply_translations_invalid_lang(self):
         create_samples(
             continent_names=["europe"],
             continent_fields=["name", "denonym"],
@@ -633,7 +633,7 @@ class ApplyTranslationsTest(TestCase):
             "The language code `xx` is not supported."
         )
 
-    def test_invalid_relation(self):
+    def test_apply_translations_invalid_relation(self):
         create_samples(
             continent_names=["europe"],
             continent_fields=["name", "denonym"],
@@ -647,13 +647,9 @@ class ApplyTranslationsTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-
-class UpdateTranslationsTest(TestCase):
-    """Tests for `update_translations`."""
-
     # ---- arguments testing -------------------------------------------------
 
-    def test_queryset_level_0_relation_no_lang(self):
+    def test_update_translations_level_0_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -757,7 +753,7 @@ class UpdateTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_1_relation_no_lang(self):
+    def test_update_translations_level_1_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -862,7 +858,7 @@ class UpdateTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_2_relation_no_lang(self):
+    def test_update_translations_level_2_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -967,7 +963,7 @@ class UpdateTranslationsTest(TestCase):
             'Seoul Denonym'
         )
 
-    def test_queryset_level_1_2_relation_no_lang(self):
+    def test_update_translations_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -1071,7 +1067,7 @@ class UpdateTranslationsTest(TestCase):
             'Seoul Denonym'
         )
 
-    def test_queryset_level_0_relation_with_lang(self):
+    def test_update_translations_level_0_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -1175,7 +1171,7 @@ class UpdateTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_1_relation_with_lang(self):
+    def test_update_translations_level_1_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -1280,7 +1276,7 @@ class UpdateTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_2_relation_with_lang(self):
+    def test_update_translations_level_2_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -1385,7 +1381,7 @@ class UpdateTranslationsTest(TestCase):
             'Seoul Denonym'
         )
 
-    def test_queryset_level_1_2_relation_with_lang(self):
+    def test_update_translations_level_1_2_relation_with_lang(self):
         create_samples(
             continent_names=["europe", "asia"],
             country_names=["germany", "south korea"],
@@ -1491,7 +1487,7 @@ class UpdateTranslationsTest(TestCase):
 
     # ---- error testing -----------------------------------------------------
 
-    def test_invalid_lang(self):
+    def test_update_translations_invalid_lang(self):
         create_samples(
             continent_names=["europe"],
             continent_fields=["name", "denonym"],
@@ -1505,7 +1501,7 @@ class UpdateTranslationsTest(TestCase):
             "The language code `xx` is not supported."
         )
 
-    def test_invalid_relation(self):
+    def test_update_translations_invalid_relation(self):
         create_samples(
             continent_names=["europe"],
             continent_fields=["name", "denonym"],
