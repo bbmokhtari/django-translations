@@ -130,30 +130,3 @@ class TranslationInline(GenericStackedInline):
 
     model = Translation
     extra = 1
-
-
-"""
-from nested_inline.admin import NestedStackedInline, NestedModelAdmin
-
-
-class TranslationInline(NestedStackedInline, GenericStackedInline):
-    model = Translation
-    extra = 1
-
-
-class TranslatableAdmin(TranslatableAdminMixin, NestedModelAdmin):
-    def get_inline_instances(self, request, obj=None):
-        inlines = super(TranslatableAdmin, self).get_inline_instances(request, obj)
-        inlines = list(inlines)
-        self.handle_translation_inlines(inlines)
-        return inlines
-
-
-class TranslatableInline(TranslatableAdminMixin, NestedStackedInline):
-    def get_inline_instances(self, request, obj=None):
-        inlines = super(TranslatableInline, self).get_inline_instances(request, obj)
-        inlines = list(inlines)
-        self.handle_translation_inlines(inlines)
-        return inlines
-
-"""
