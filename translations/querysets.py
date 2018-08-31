@@ -12,10 +12,12 @@ from django.db import models, transaction
 from translations.utils import apply_translations, update_translations
 
 
+__docformat__ = 'restructuredtext'
+
+
 class TranslatableQuerySet(models.QuerySet):
     """
-    A :class:`~django.db.models.QuerySet` which provides custom
-    translation functionalities.
+    A queryset which provides custom translation functionalities.
 
     Provides functionalities like :meth:`apply_translations` to read and apply
     translations from the database onto the queryset, and
@@ -47,8 +49,9 @@ class TranslatableQuerySet(models.QuerySet):
            the translation process.
 
            To do this use
-           :meth:`~django.db.models.query.QuerySet.select_related` or
-           :meth:`~django.db.models.query.QuerySet.prefetch_related`.
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
 
         .. warning::
            Only when all the filterings are executed on the relations of the

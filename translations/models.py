@@ -1,15 +1,12 @@
 """
-This module contains the models for the Translations app.
+This module contains the models for the Translations app. It contains the
+following members:
 
-.. rubric:: Classes:
-
+:class:`Translation`
+    The model which represents the translations.
 :class:`Translatable`
     An abstract model which can be inherited by any model that needs
     translation capabilities.
-:class:`Translation`
-    The model which represents the translations.
-
-----
 """
 
 from django.db import models
@@ -28,7 +25,9 @@ __docformat__ = 'restructuredtext'
 
 class Translation(models.Model):
     """
-    This model represents the translations.
+    The model which represents the translations.
+
+    Manages storing, querying and the structure of the translation objects.
 
     Each translation belongs to a *unique* database address. Each address is
     composed of a :attr:`content_type` (table), an :attr:`object_id` (row) and
@@ -41,68 +40,56 @@ class Translation(models.Model):
 
        :class:`~django.contrib.contenttypes.models.ContentType` is a django
        model which comes with the :mod:`~django.contrib.contenttypes` app.
-       This model represents the tables created in the database.
+       It represents the tables created in a database by all the apps in a
+       project.
 
        :attr:`content_type` and :attr:`object_id` together form something
        called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
 
-    .. warning:: Never work with the :class:`Translation` model directly
-       unless you really have to. (it's unlikely it ever happens)
+    .. warning::
 
-       Working directly with the :class:`Translation` model is discouraged
-       because it leads to hard, error prone and inefficient code. so never
-       do this. Here's an example why.
+       Try **not** to work with the :class:`~translations.models.Translation`
+       model manually unless you *really* have to and you know what you're
+       doing.
 
-    .. commented doctest
-       first create an object:
+       Instead use the functionalities provided in
+       the :class:`~translations.models.Translatable` model.
 
-       >>> from polls.models import Question
-       >>> from django.utils import timezone
-       >>> question = Question.objects.create(
-       ...     question_text='How old are you?',
-       ...     pub_date=timezone.now()
-       ... )
+    To create the translation of a field manually:
 
-       now let's create a translation for it manually:
+    .. testsetup:: Translation
 
-       >>> # hard: look at the amount of effort to do this
-       >>> # error prone: note the `field` is set manually
-       >>> # inefficient: consider the creation of multiple translations
-       >>> from django.contrib.contenttypes.models import ContentType
-       >>> from translations.models import Translation
-       >>> question_ct = ContentType.objects.get_for_model(Question)
-       >>> Translation.objects.create(
-       ...     content_type=question_ct,
-       ...     object_id=question.id,
-       ...     field='question_text',
-       ...     language='fr',
-       ...     text='Quel âge avez-vous?'
-       ... )
-       <Translation: How old are you?: Quel âge avez-vous?>
+       from tests.sample import create_samples
 
-       The same can also be achieved with this.
+       create_samples(
+           continent_names=["europe"],
+       )
 
-       >>> # hard, error prone and inefficient AGAIN
-       >>> from translations.models import Translation
-       >>> Translation.objects.create(
-       ...     content_object=question,
-       ...     field='question_text',
-       ...     language='fr',
-       ...     text='Quel âge avez-vous?'
-       ... )
-       <Translation: How old are you?: Quel âge avez-vous?>
+    .. testcode:: Translation
 
-       Never do this! This is just for the sake of demonstration.
+       from django.contrib.contenttypes.models import ContentType
+       from sample.models import Continent
+       from translations.models import Translation
 
-       The correct way to do this, is to use the :class:`Translatable` model.
+       europe = Continent.objects.get(code='EU')
 
-       >>> # the easy, correct and efficient way
-       >>> # inherit `Question` model from `Translatable`
-       >>> question.question_text = 'Quel âge avez-vous?'
-       >>> question.update_translations(lang='fr')
-       <Question: Quel âge avez-vous?>
+       content_type = ContentType.objects.get_for_model(europe)
+
+       translation = Translation.objects.create(
+           content_type=content_type,
+           object_id=europe.id,
+           field='name',
+           language='de',
+           text='Europa'
+       )
+
+       print(translation)
+
+    .. testoutput:: Translation
+
+       Europe: Europa
     """
 
     objects = models.Manager()
@@ -153,21 +140,26 @@ class Translation(models.Model):
 
 class Translatable(models.Model):
     """
-    This abstract model can be inherited by any model which needs translation
-    capabilities.
+    An abstract model which provides custom translation functionalities.
 
-    Inheriting this model adds :attr:`translations` relation to the model and
-    changes the :attr:`objects` manager of the model to add translation
-    capabilities to the ORM.
+    Provides functionalities like :meth:`apply_translations` to read and apply
+    translations from the database onto the instance, and
+    :meth:`update_translations` to write and update translations from the
+    instance onto the database.
+
+    It changes the default manager of the model to
+    :class:`~translations.querysets.TranslatableQuerySet` in order to provide
+    custom translation functionalities in the querysets.
+
+    It also adds the :attr:`translations` relation to the model, just in case
+    any one wants to work with the translations of the instances manually.
 
     .. note::
-       There is **no need for migrations** after inheriting this model. Simply
-       just use it afterwards!
 
-    .. note::
-       The :attr:`translations` relation is a reverse relation to the
+       The :attr:`translations` relation is the reverse relation of the
        :class:`~django.contrib.contenttypes.fields.GenericForeignKey`
-       described in :class:`Translation`.
+       described in :class:`Translation`. It's a
+       :class:`~django.contrib.contenttypes.fields.GenericRelation`.
     """
 
     objects = TranslatableQuerySet.as_manager()
@@ -182,86 +174,228 @@ class Translatable(models.Model):
         abstract = True
 
     class TranslatableMeta:
-        """This class contains meta information about translation process."""
+        """
+        The class which contains meta information about the translation
+        process.
+        """
 
         fields = None
         """
-        :var fields: The fields of the model to be translated, ``None`` means
-            use all text based fields automatically, ``[]`` means no fields
-            should be translatable.
+        :var fields: The names of the fields to use in the translation
+            process.
+            ``None`` means use the text based fields automatically.
+            ``[]`` means use no fields.
         :vartype fields: list(str) or None
         """
 
-    @classmethod
-    def get_translatable_fields(cls):
-        """
-        Return the list of translatable fields.
-
-        Return the translatable fields for the model based on
-        :attr:`TranslatableMeta.fields`.
-
-        :return: The list of translatable fields
-        :rtype: list(~django.db.models.Field)
-        """
-        if hasattr(cls, 'TranslatableMeta'):
-            if cls.TranslatableMeta.fields is None:
-                fields = []
-                for field in cls._meta.get_fields():
-                    if isinstance(
-                                field,
-                                (models.CharField, models.TextField,)
-                            ) and not isinstance(
-                                field,
-                                models.EmailField
-                            ) and not (
-                                hasattr(field, 'choices') and field.choices
-                            ):
-                        fields.append(field)
-            else:
-                fields = [
-                    cls._meta.get_field(field_name)
-                    for field_name in cls.TranslatableMeta.fields
-                ]
-        else:
-            raise Exception(
-                '{cls} class is not a translatable model.'.format(cls=cls)
-            )
-        return fields
-
     def apply_translations(self, *relations, lang=None):
-        r"""
-        Translate the object and its relations (in place) in a language.
+        """
+        Apply the translations on the instance and the relations of it in a
+        language.
 
-        Translate the current object and its relations in a language
-        based on a queryset of translations and return it. If no
-        ``translations`` queryset is given one will be created based on the
-        ``relations`` and the ``lang`` parameters.
+        Fetches the translations of the instance and the specified relations
+        of it in a language and applies them field by field and in place.
 
-        .. note::
-           It's recommended that the ``translations`` queryset is not passed
-           in, so it's calculated automatically. Translations app is pretty
-           smart, it will fetch all the translations for the object and its
-           relations doing the minimum amount of queries needed (usually one).
-           It's only there just in case there is a need to query the
-           translations manually.
-
-        :param \*relations: a list of relations to translate
-        :type \*relations: list(str)
-        :param lang: the language of the translation, if ``None``
-            is given the current active language will be used.
+        :param relations: The relations of the instance to apply the
+            translations on.
+        :type relations: list(str)
+        :param lang: The language to fetch the translations in.
+            ``None`` means use the :term:`active language` code.
         :type lang: str or None
+        :raise ValueError: If the language code is not included in
+            the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+            pointing to the fields that don't exist.
+
+        .. warning::
+           The relations of the instance **must** be fetched before performing
+           the translation process.
+
+           To do this use
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
+
+        .. warning::
+           Only when all the filterings are executed on the relations of the
+           instance it should go through the translation process, otherwise if
+           a relation is filtered after the translation process the
+           translations of that relation are reset.
+
+           To filter a relation when fetching it use
+           :class:`~django.db.models.Prefetch`.
+
+        .. testsetup:: apply_translations
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=["europe", "asia"],
+               country_names=["germany", "south korea"],
+               city_names=["cologne", "munich", "seoul", "ulsan"],
+               continent_fields=["name", "denonym"],
+               country_fields=["name", "denonym"],
+               city_fields=["name", "denonym"],
+               langs=["de"]
+           )
+
+        To apply the translations on an instance and the relations of it:
+
+        .. testcode:: apply_translations
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent
+
+           relations = ('countries', 'countries__cities',)
+
+           europe = Continent.objects.get(code="EU")
+           prefetch_related_objects([europe], *relations)
+
+           europe.apply_translations(*relations, lang="de")
+
+           print("Continent: {}".format(europe))
+           for country in europe.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+        .. testoutput:: apply_translations
+
+           Continent: Europa
+           Country: Deutschland
+           City: Köln
+           City: München
         """
         apply_translations(self, *relations, lang=lang)
 
     def update_translations(self, *relations, lang=None):
         """
-        Update the translations of the object based on the object properties.
+        Update the translations of the instance and the relations of it in a
+        language.
 
-        Use the current properties of the object to update the translations in
-        a language.
+        Deletes the old translations of the instance and the specified
+        relations of it in a language and creates new translations for them
+        based on their fields values.
 
-        :param lang: the language of the translations to update, if ``None``
-            is given the current active language will be used.
+        :param relations: The relations of the instance to update the
+            translations of.
+        :type relations: list(str)
+        :param lang: The language to update the translations in.
+            ``None`` means use the :term:`active language` code.
         :type lang: str or None
+        :raise ValueError: If the language code is not included in
+            the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+            pointing to the fields that don't exist.
+
+        .. warning::
+           The relations of the instance **must** be fetched before performing
+           the translation process.
+
+           To do this use
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
+
+        .. warning::
+           Only when all the filterings are executed on the relations of the
+           instance it should go through the translation process, otherwise if
+           a relation is filtered after the translation process the
+           translations of that relation are reset.
+
+           To filter a relation when fetching it use
+           :class:`~django.db.models.Prefetch`.
+
+        .. testsetup:: update_translations
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=["europe", "asia"],
+               country_names=["germany", "south korea"],
+               city_names=["cologne", "munich", "seoul", "ulsan"],
+               continent_fields=["name", "denonym"],
+               country_fields=["name", "denonym"],
+               city_fields=["name", "denonym"],
+               langs=["de"]
+           )
+
+        To update the translations of an instance and the relations of it:
+
+        .. testcode:: update_translations
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent
+
+           relations = ('countries', 'countries__cities',)
+
+           europe = Continent.objects.get(code="EU")
+           prefetch_related_objects([europe], *relations)
+
+           europe.update_translations(*relations, lang="en")
+
+           print("Continent: {}".format(europe))
+           for country in europe.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+        .. testoutput:: update_translations
+
+           Continent: Europe
+           Country: Germany
+           City: Cologne
+           City: Munich
         """
         update_translations(self, *relations, lang=lang)
+
+    @classmethod
+    def get_translatable_fields(cls):
+        """
+        Return the translatable fields of the model.
+
+        Returns the translatable fields of the model based on the field names
+        listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The translatable fields.
+        :rtype: list(~django.db.models.Field)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the translatable fields of the mentioned model:
+
+        .. testcode:: get_translatable_fields
+
+           from sample.models import Continent
+
+           for field in Continent.get_translatable_fields():
+               print(field)
+
+        .. testoutput:: get_translatable_fields
+
+           sample.Continent.name
+           sample.Continent.denonym
+        """
+        if cls.TranslatableMeta.fields is None:
+            fields = []
+            for field in cls._meta.get_fields():
+                if isinstance(
+                            field,
+                            (models.CharField, models.TextField,)
+                        ) and not isinstance(
+                            field,
+                            models.EmailField
+                        ) and not (
+                            hasattr(field, 'choices') and field.choices
+                        ):
+                    fields.append(field)
+        else:
+            fields = [
+                cls._meta.get_field(field_name)
+                for field_name in cls.TranslatableMeta.fields
+            ]
+        return fields

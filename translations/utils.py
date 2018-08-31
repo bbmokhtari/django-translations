@@ -643,7 +643,7 @@ def apply_translations(entity, *relations, lang=None):
     .. testcode:: apply_translations
 
        from django.db.models import prefetch_related_objects
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -675,7 +675,7 @@ def apply_translations(entity, *relations, lang=None):
 
     .. testcode:: apply_translations
 
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -707,7 +707,7 @@ def apply_translations(entity, *relations, lang=None):
     .. testcode:: apply_translations
 
        from django.db.models import prefetch_related_objects
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import apply_translations
 
        relations = ('countries', 'countries__cities',)
@@ -814,7 +814,7 @@ def update_translations(entity, *relations, lang=None):
     .. testcode:: update_translations
 
        from django.db.models import prefetch_related_objects
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import update_translations
 
        relations = ('countries', 'countries__cities',)
@@ -846,7 +846,7 @@ def update_translations(entity, *relations, lang=None):
 
     .. testcode:: update_translations
 
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import update_translations
 
        relations = ('countries', 'countries__cities',)
@@ -878,7 +878,7 @@ def update_translations(entity, *relations, lang=None):
     .. testcode:: update_translations
 
        from django.db.models import prefetch_related_objects
-       from sample.models import Continent, Country, City
+       from sample.models import Continent
        from translations.utils import update_translations
 
        relations = ('countries', 'countries__cities',)
