@@ -18,12 +18,30 @@ class TranslationInline(GenericStackedInline):
        :pyobject: ContinentAdmin
        :emphasize-lines: 2
     """
+
     model = Translation
     extra = 1
 
 
 class TranslatableAdminMixin(object):
-    def get_translation_choices(self):
+    """
+    An admin mixin which provides custom translation functionalities.
+
+    Provides functionalities like :meth:`handle_translation_inlines` to
+    manipulate the translation inlines based on the the parent object
+    specifications.
+    """
+
+    def _get_translation_choices(self):
+        """
+        Return the choices made out of the translatable fields.
+
+        Fetches the translatable fields of the admin's model, creates choices
+        out of them and then returns them.
+
+        :return: The choices made out of the translatable fields.
+        :rtype: list(tuple(str, str))
+        """
         choices = [
             (None, '---------')
         ]
@@ -33,7 +51,7 @@ class TranslatableAdminMixin(object):
         return choices
 
     def handle_translation_inlines(self, inlines):
-        choices = self.get_translation_choices()
+        choices = self._get_translation_choices()
         remove_inlines = []
         for i, v in enumerate(inlines):
             if isinstance(v, TranslationInline):
