@@ -8,3 +8,5 @@ Models
 
    .. autoclass:: Translatable
       :members: TranslatableMeta
+
+      .. automethod:: get_translatable_fields
