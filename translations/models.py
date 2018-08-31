@@ -47,6 +47,49 @@ class Translation(models.Model):
        called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
+
+    .. warning::
+
+       Try **not** to work with the :class:`~translations.models.Translation`
+       model manually unless you *really* have to and you know what you're
+       doing.
+
+       Instead use the functionalities provided in
+       the :class:`~translations.models.Translatable` model.
+
+    To create the translation of a field manually:
+
+    .. testsetup:: Translation
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=["europe"],
+       )
+
+    .. testcode:: Translation
+
+       from django.contrib.contenttypes.models import ContentType
+       from sample.models import Continent
+       from translations.models import Translation
+
+       europe = Continent.objects.get(code='EU')
+
+       content_type = ContentType.objects.get_for_model(europe)
+
+       translation = Translation.objects.create(
+           content_type=content_type,
+           object_id=europe.id,
+           field='name',
+           language='de',
+           text='Europa'
+       )
+
+       print(translation)
+
+    .. testoutput:: Translation
+
+       Europe: Europa
     """
 
     objects = models.Manager()
