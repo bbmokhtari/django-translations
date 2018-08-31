@@ -4,8 +4,8 @@ Translations
 .. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
     :target: https://travis-ci.com/perplexionist/django-translations
 
-Translations app provides an **easy** and **efficient** way of translating
-model contents.
+Translations app provides an *easy*, *efficient* and *modular* way of
+translating django models.
 
 Requirements
 ------------
@@ -33,58 +33,63 @@ Installation
 
    $ python manage.py migrate
 
-Usage
------
+Basic Usage
+-----------
 
 Model
 ~~~~~
 
-Inherit ``Translatable`` in any model you want translated.
-
-**No migrations** needed afterwards! That's it!
-
-::
+Inherit ``Translatable`` in any model you want translated::
 
     from translations.models import Translatable
 
-    class Question(Translatable):
+    class Continent(Translatable):
         ...
 
-    class Choice(Translatable):
+    class Country(Translatable):
         ...
+
+    class City(Translatable):
+        ...
+
+**No Migrations** needed afterwards!
 
 Query
 ~~~~~
 
-You can use the extended ORM querysets::
+Use the queryset extensions::
 
-    >>> q = Question.objects.create(
-    ...     question_text="What's up?",
-    ...     category='usuals',
+    >>> continents = Continent.objects.prefetch_related(
+    ...     'countries',
+    ...     'countries__cities',
+    ... ).apply_translations(
+    ...     'countries',
+    ...     'countries__cities',
+    ...     lang='de'
     ... )
-    <Question: What's up?>
-    >>> q.question_text = 'Quoi de neuf?'
-    >>> q.category = 'habituels'
-    >>> q.update_translations(lang='fr')
-    >>> q.apply_translations(lang='en')
-    <Question: What's up?>
-    >>> q.apply_translations(lang='fr')
-    <Question: Quoi de neuf?>
+    >>> continents[0].name
+    Europa
+    >>> continents[0].countries.all()[0].name
+    Deutschland
+
+This does **Only One Query** for the queryset and relations translations!
 
 Admin
 ~~~~~
 
-You can also use the admin extensions::
+Use the admin extensions::
 
     from django.contrib import admin
     from translations.admin import TranslatableAdmin, TranslationInline
 
-    from .models import Question
+    from .models import Continent
 
-    class QuestionAdmin(TranslatableAdmin):
+    class ContinentAdmin(TranslatableAdmin):
         inlines = [TranslationInline,]
 
-    admin.site.register(Question, QuestionAdmin)
+    admin.site.register(Continent, ContinentAdmin)
+
+This provides admin inlines for the translations of the model.
 
 Documentation
 -------------
