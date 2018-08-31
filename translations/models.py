@@ -245,7 +245,7 @@ class Translatable(models.Model):
         language.
 
         Fetches the translations of the instance and the specified relations
-        of it in a language and applies them field by field.
+        of it in a language and applies them field by field and in place.
 
         :param relations: The relations of the instance to apply the
             translations on.
@@ -295,15 +295,14 @@ class Translatable(models.Model):
         .. testcode:: apply_translations
 
            from django.db.models import prefetch_related_objects
-           from sample.models import Continent, Country, City
-           from translations.utils import apply_translations
+           from sample.models import Continent
 
            relations = ('countries', 'countries__cities',)
 
            europe = Continent.objects.get(code="EU")
            prefetch_related_objects([europe], *relations)
 
-           apply_translations(europe, *relations, lang="de")
+           europe.apply_translations(*relations, lang="de")
 
            print("Continent: {}".format(europe))
            for country in europe.countries.all():
@@ -322,13 +321,81 @@ class Translatable(models.Model):
 
     def update_translations(self, *relations, lang=None):
         """
-        Update the translations of the object based on the object properties.
+        Update the translations of the instance and the relations of it in a
+        language.
 
-        Use the current properties of the object to update the translations in
-        a language.
+        Deletes the old translations of the instance and the specified
+        relations of it in a language and creates new translations for them
+        based on their fields values.
 
-        :param lang: the language of the translations to update, if ``None``
-            is given the current active language will be used.
+        :param relations: The relations of the instance to update the
+            translations of.
+        :type relations: list(str)
+        :param lang: The language to update the translations in.
+            ``None`` means use the :term:`active language` code.
         :type lang: str or None
+        :raise ValueError: If the language code is not included in
+            the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+            pointing to the fields that don't exist.
+
+        .. warning::
+           The relations of the instance **must** be fetched before performing
+           the translation process.
+
+           To do this use
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
+
+        .. warning::
+           Only when all the filterings are executed on the relations of the
+           instance it should go through the translation process, otherwise if
+           a relation is filtered after the translation process the
+           translations of that relation are reset.
+
+           To filter a relation when fetching it use
+           :class:`~django.db.models.Prefetch`.
+
+        .. testsetup:: update_translations
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=["europe", "asia"],
+               country_names=["germany", "south korea"],
+               city_names=["cologne", "munich", "seoul", "ulsan"],
+               continent_fields=["name", "denonym"],
+               country_fields=["name", "denonym"],
+               city_fields=["name", "denonym"],
+               langs=["de"]
+           )
+
+        To update the translations of an instance and the relations of it:
+
+        .. testcode:: update_translations
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent
+
+           relations = ('countries', 'countries__cities',)
+
+           europe = Continent.objects.get(code="EU")
+           prefetch_related_objects([europe], *relations)
+
+           europe.update_translations(*relations, lang="en")
+
+           print("Continent: {}".format(europe))
+           for country in europe.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+        .. testoutput:: update_translations
+
+           Continent: Europe
+           Country: Germany
+           City: Cologne
+           City: Munich
         """
         update_translations(self, *relations, lang=lang)

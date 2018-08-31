@@ -12,3 +12,5 @@ Models
       .. automethod:: get_translatable_fields
 
       .. automethod:: apply_translations
+
+      .. automethod:: update_translations
