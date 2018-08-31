@@ -240,27 +240,83 @@ class Translatable(models.Model):
         return fields
 
     def apply_translations(self, *relations, lang=None):
-        r"""
-        Translate the object and its relations (in place) in a language.
+        """
+        Apply the translations on the instance and the relations of it in a
+        language.
 
-        Translate the current object and its relations in a language
-        based on a queryset of translations and return it. If no
-        ``translations`` queryset is given one will be created based on the
-        ``relations`` and the ``lang`` parameters.
+        Fetches the translations of the instance and the specified relations
+        of it in a language and applies them field by field.
 
-        .. note::
-           It's recommended that the ``translations`` queryset is not passed
-           in, so it's calculated automatically. Translations app is pretty
-           smart, it will fetch all the translations for the object and its
-           relations doing the minimum amount of queries needed (usually one).
-           It's only there just in case there is a need to query the
-           translations manually.
-
-        :param \*relations: a list of relations to translate
-        :type \*relations: list(str)
-        :param lang: the language of the translation, if ``None``
-            is given the current active language will be used.
+        :param relations: The relations of the instance to apply the
+            translations on.
+        :type relations: list(str)
+        :param lang: The language to fetch the translations in.
+            ``None`` means use the :term:`active language` code.
         :type lang: str or None
+        :raise ValueError: If the language code is not included in
+            the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+            pointing to the fields that don't exist.
+
+        .. warning::
+           The relations of the instance **must** be fetched before performing
+           the translation process.
+
+           To do this use
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
+
+        .. warning::
+           Only when all the filterings are executed on the relations of the
+           instance it should go through the translation process, otherwise if
+           a relation is filtered after the translation process the
+           translations of that relation are reset.
+
+           To filter a relation when fetching it use
+           :class:`~django.db.models.Prefetch`.
+
+        .. testsetup:: apply_translations
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=["europe", "asia"],
+               country_names=["germany", "south korea"],
+               city_names=["cologne", "munich", "seoul", "ulsan"],
+               continent_fields=["name", "denonym"],
+               country_fields=["name", "denonym"],
+               city_fields=["name", "denonym"],
+               langs=["de"]
+           )
+
+        To apply the translations on an instance and the relations of it:
+
+        .. testcode:: apply_translations
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent, Country, City
+           from translations.utils import apply_translations
+
+           relations = ('countries', 'countries__cities',)
+
+           europe = Continent.objects.get(code="EU")
+           prefetch_related_objects([europe], *relations)
+
+           apply_translations(europe, *relations, lang="de")
+
+           print("Continent: {}".format(europe))
+           for country in europe.countries.all():
+               print("Country: {}".format(country))
+               for city in country.cities.all():
+                   print("City: {}".format(city))
+
+        .. testoutput:: apply_translations
+
+           Continent: Europa
+           Country: Deutschland
+           City: Köln
+           City: München
         """
         apply_translations(self, *relations, lang=lang)
 
