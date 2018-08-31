@@ -229,7 +229,7 @@ class Translatable(models.Model):
                             field,
                             models.EmailField
                         ) and not (
-                            hasattr(field, 'choices')
+                            hasattr(field, 'choices') and field.choices
                         ):
                     fields.append(field)
         else:
