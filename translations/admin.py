@@ -28,8 +28,14 @@ class TranslatableAdminMixin(object):
     An admin mixin which provides custom translation functionalities.
 
     Provides functionalities like :meth:`handle_translation_inlines` to
-    manipulate the translation inlines based on the the parent object
-    specifications.
+    manipulate the translation inlines based on the admin model.
+
+    .. note::
+
+       It can be used to make any admin translatable. Not only the default
+       admins but also the custom admins.
+
+       Check out :ref:`How to make custom admins translatable?`.
     """
 
     def _get_translation_choices(self):
@@ -66,6 +72,18 @@ class TranslatableAdminMixin(object):
         return choices
 
     def handle_translation_inlines(self, inlines):
+        """
+        Manipulate the translation inlines based on the admin model.
+
+        Processes the admin model and customizes the translation inlines
+        based on that in place.
+
+        A basic usage:
+
+        .. literalinclude:: ../../translations/admin.py
+           :pyobject: TranslatableAdmin
+           :emphasize-lines: 5
+        """
         choices = self._get_translation_choices()
         form = generate_translation_form(choices)
         remove_inlines = []
