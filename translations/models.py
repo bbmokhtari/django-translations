@@ -7,8 +7,6 @@ following members:
 :class:`Translatable`
     An abstract model which can be inherited by any model that needs
     translation capabilities.
-
-----
 """
 
 from django.db import models
