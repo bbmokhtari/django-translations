@@ -41,6 +41,21 @@ class TranslatableAdminMixin(object):
 
         :return: The choices made out of the translatable fields.
         :rtype: list(tuple(str, str))
+
+        To get the choices of a model admin:
+
+        .. testcode::
+
+           from django.contrib.admin import site
+           from sample.models import Continent
+           from sample.admin import ContinentAdmin
+
+           admin = ContinentAdmin(Continent, site)
+           print(admin._get_translation_choices())
+
+        .. testoutput::
+
+           [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         """
         choices = [
             (None, '---------')
