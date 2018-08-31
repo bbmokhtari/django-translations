@@ -67,13 +67,14 @@ class TranslatableAdminMixin(object):
 
     def handle_translation_inlines(self, inlines):
         choices = self._get_translation_choices()
+        form = generate_translation_form(choices)
         remove_inlines = []
         for i, v in enumerate(inlines):
             if isinstance(v, TranslationInline):
                 if len(choices) == 1:
                     remove_inlines.append(i)
                 else:
-                    inlines[i].form = generate_translation_form(choices)
+                    inlines[i].form = form
         remove_inlines.reverse()
         for index in remove_inlines:
             inlines.pop(index)
