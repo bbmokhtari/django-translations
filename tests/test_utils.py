@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import models
 from django.core.exceptions import FieldDoesNotExist
-from django.utils.translation import activate, deactivate
+from django.utils.translation import activate
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_translation_language, \
