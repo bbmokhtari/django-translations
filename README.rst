@@ -33,6 +33,21 @@ Installation
 
    $ python manage.py migrate
 
+4. Make sure django internationalization settings are set correctly::
+
+       USE_I18N = True          # use internationalization
+       USE_L10N = True          # use localization
+
+       MIDDLEWARE += [          # locale middleware
+           'django.middleware.locale.LocaleMiddleware',
+       ]
+
+       LANGUAGE_CODE = 'en-us'  # fallback language
+       LANGUAGES = (            # supported languages
+           ('en', 'English'), 
+           ('de', 'German'),
+       )
+
 Basic Usage
 -----------
 
