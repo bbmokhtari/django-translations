@@ -67,13 +67,13 @@ class TranslatableQuerySet(models.QuerySet):
            from tests.sample import create_samples
 
            create_samples(
-               continent_names=["europe", "asia"],
-               country_names=["germany", "south korea"],
-               city_names=["cologne", "munich", "seoul", "ulsan"],
-               continent_fields=["name", "denonym"],
-               country_fields=["name", "denonym"],
-               city_fields=["name", "denonym"],
-               langs=["de"]
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
            )
 
         To apply the translations on a queryset and the relations of it:
@@ -88,15 +88,15 @@ class TranslatableQuerySet(models.QuerySet):
                *relations
            ).apply_translations(
                *relations,
-               lang="de"
+               lang='de'
            )
 
            for continent in continents:
-               print("Continent: {}".format(continent))
+               print('Continent: {}'.format(continent))
                for country in continent.countries.all():
-                   print("Country: {}".format(country))
+                   print('Country: {}'.format(country))
                    for city in country.cities.all():
-                       print("City: {}".format(city))
+                       print('City: {}'.format(city))
 
         .. testoutput:: apply_translations
 
@@ -154,13 +154,13 @@ class TranslatableQuerySet(models.QuerySet):
            from tests.sample import create_samples
 
            create_samples(
-               continent_names=["europe", "asia"],
-               country_names=["germany", "south korea"],
-               city_names=["cologne", "munich", "seoul", "ulsan"],
-               continent_fields=["name", "denonym"],
-               country_fields=["name", "denonym"],
-               city_fields=["name", "denonym"],
-               langs=["de"]
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
            )
 
         To update the translations of a queryset and the relations of it:
@@ -176,15 +176,15 @@ class TranslatableQuerySet(models.QuerySet):
                *relations
            ).update_translations(
                *relations,
-               lang="en"
+               lang='en'
            )
 
            for continent in continents:
-               print("Continent: {}".format(continent))
+               print('Continent: {}'.format(continent))
                for country in continent.countries.all():
-                   print("Country: {}".format(country))
+                   print('Country: {}'.format(country))
                    for city in country.cities.all():
-                       print("City: {}".format(city))
+                       print('City: {}'.format(city))
 
         .. testoutput:: update_translations
 
