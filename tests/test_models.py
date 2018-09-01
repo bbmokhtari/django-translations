@@ -8,7 +8,7 @@ from translations.models import Translation
 
 from sample.models import Continent, Country, City, Geo
 
-from .sample import create_samples
+from tests.sample import create_samples
 
 
 class TranslationTest(TestCase):

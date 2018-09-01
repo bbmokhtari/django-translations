@@ -18,7 +18,8 @@ request = MockRequest()
 request.user = MockSuperUser()
 
 
-class TranslatableAdminMixin(TestCase):
+class TranslatableAdminMixinTest(TestCase):
+    """Tests for `TranslatableAdminMixin`."""
 
     def test_get_translation_choices_none(self):
         admin = CityAdmin(City, site)
