@@ -3,7 +3,7 @@ This module contains the utilities for the Translations app. It contains the
 following members:
 
 :func:`_get_translation_language`
-    Return a language code to use in the translation process.
+    Return a language code based on a custom language code.
 :func:`_get_entity_details`
     Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
