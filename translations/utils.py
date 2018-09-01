@@ -82,13 +82,28 @@ def _get_translation_language(lang=None):
        Language code: de
     """
     lang = lang if lang else get_language()
+    code = lang.split('-')[0]
 
-    if lang not in [language[0] for language in settings.LANGUAGES]:
+    lang_exists = False
+    code_exists = False
+
+    # break when the lang is found but not when the code is found
+    # cause the code might come before lang and we may miss an accent
+    for language in settings.LANGUAGES:
+        if lang == language[0]:
+            lang_exists = True
+            break
+        if code == language[0]:
+            code_exists = True
+
+    if lang_exists:
+        return lang
+    elif code_exists:
+        return code
+    else:
         raise ValueError(
             'The language code `{}` is not supported.'.format(lang)
         )
-
-    return lang
 
 
 def _get_entity_details(entity):
