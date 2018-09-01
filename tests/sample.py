@@ -781,6 +781,19 @@ def create_samples(
     # initialize langs
     langs = langs if langs is not None else []
 
+    # copy areas
+    continent_names = continent_names.copy()
+    country_names = country_names.copy()
+    city_names = city_names.copy()
+
+    # copy fields
+    continent_fields = continent_fields.copy()
+    country_fields = country_fields.copy()
+    city_fields = city_fields.copy()
+
+    # copy langs
+    langs = langs.copy()
+
     info = {
         'model': Continent,
         'names': continent_names,
