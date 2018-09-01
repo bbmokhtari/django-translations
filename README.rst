@@ -16,37 +16,43 @@ Requirements
 Installation
 ------------
 
-1. Install Translations using PIP (use ``--pre``, still in development)::
+1. Install Translations using PIP (use ``--pre``, still in development):
 
-   $ pip install --pre django-translations
+   .. code:: shell
+
+      $ pip install --pre django-translations
 
 2. Add ``'translations'`` to ``INSTALLED_APPS`` in the settings of your Django
-   project::
+   project:
 
-       INSTALLED_APPS = [
-           ...
-           'translations',
-           ...
-       ]
+   .. code:: python
 
-3. Run ``migrate``::
+      INSTALLED_APPS += [
+          'translations',
+      ]
 
-   $ python manage.py migrate
+3. Run ``migrate``:
 
-4. Make sure django internationalization settings are set correctly::
+   .. code:: shell
 
-       USE_I18N = True          # use internationalization
-       USE_L10N = True          # use localization
+      $ python manage.py migrate
 
-       MIDDLEWARE += [          # locale middleware
-           'django.middleware.locale.LocaleMiddleware',
-       ]
+4. Make sure django internationalization settings are set correctly:
 
-       LANGUAGE_CODE = 'en-us'  # fallback language
-       LANGUAGES = (            # supported languages
-           ('en', 'English'), 
-           ('de', 'German'),
-       )
+   .. code:: python
+
+      USE_I18N = True          # use internationalization
+      USE_L10N = True          # use localization
+
+      MIDDLEWARE += [          # locale middleware
+          'django.middleware.locale.LocaleMiddleware',
+      ]
+
+      LANGUAGE_CODE = 'en-us'  # fallback language
+      LANGUAGES = (            # supported languages
+          ('en', 'English'), 
+          ('de', 'German'),
+      )
 
 Basic Usage
 -----------
