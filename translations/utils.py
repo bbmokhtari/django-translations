@@ -39,17 +39,16 @@ def _get_translation_language(lang=None):
     Return a language code based on a custom language code.
 
     Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
-    the custom language code, if found it will return the language code
-    otherwise throws an error.
+    the custom language code, if the exact custom language code is found, it
+    returns it, otherwise searches for the unaccented form of the custom
+    language code, if the unaccented form of the custom language code is
+    found, it returns it, otherwise it throws an error stating there is no
+    such language supported in the settings.
 
-    If the exact custom language code with an accent can not be found but
-    the custom language without an accent can be found, it will return the
-    custom language code without an accent.
-
-    :param lang: The custom language code to use in the translation process.
+    :param lang: The custom language code to get the language code out of.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :return: The language code to use in the translation process.
+    :return: The language code gotten out of the custom language code.
     :rtype: str
     :raise ValueError: If the language code is not specified in
         the :data:`~django.conf.settings.LANGUAGES` setting.
@@ -73,13 +72,39 @@ def _get_translation_language(lang=None):
 
        Language code: en
 
-    To get a custom language code:
+    To get a simple custom language code:
 
     .. testcode:: _get_translation_language
 
        from translations.utils import _get_translation_language
 
        custom = _get_translation_language('de')
+       print('Language code: {}'.format(custom))
+
+    .. testoutput:: _get_translation_language
+
+       Language code: de
+
+    To get an existing accented custom language code:
+
+    .. testcode:: _get_translation_language
+
+       from translations.utils import _get_translation_language
+
+       custom = _get_translation_language('en-gb')
+       print('Language code: {}'.format(custom))
+
+    .. testoutput:: _get_translation_language
+
+       Language code: en-gb
+
+    To get a non-existing accented custom language code:
+
+    .. testcode:: _get_translation_language
+
+       from translations.utils import _get_translation_language
+
+       custom = _get_translation_language('de-at')
        print('Language code: {}'.format(custom))
 
     .. testoutput:: _get_translation_language
