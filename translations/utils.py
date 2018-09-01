@@ -59,6 +59,17 @@ def _get_translation_language(lang=None):
 
        activate('en')
 
+    Considering this setting:
+
+    .. code-block:: python
+
+       LANGUAGES = (
+           ('en', 'English'),
+           ('en-gb', 'English (Great Britain)'),
+           ('de', 'German'),
+           ('tr', 'Turkish'),
+       )
+
     To get the :term:`active language` code:
 
     .. testcode:: _get_translation_language

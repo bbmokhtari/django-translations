@@ -19,10 +19,10 @@ class GetTranslationLanguageTest(TestCase):
     """Tests for `_get_translation_language`."""
 
     def test_none_simple(self):
-        activate('en')
+        activate('de')
         self.assertEqual(
             _get_translation_language(),
-            'en'
+            'de'
         )
 
     def test_explicit_simple(self):
@@ -32,10 +32,10 @@ class GetTranslationLanguageTest(TestCase):
         )
 
     def test_none_accent_not_exists(self):
-        activate('en-us')
+        activate('de-at')
         self.assertEqual(
             _get_translation_language(),
-            'en'
+            'de'
         )
 
     def test_explicit_accent_not_exists(self):
@@ -53,8 +53,8 @@ class GetTranslationLanguageTest(TestCase):
 
     def test_explicit_accent_exists(self):
         self.assertEqual(
-            _get_translation_language('en-au'),
-            'en-au'
+            _get_translation_language('en-gb'),
+            'en-gb'
         )
 
     def test_invalid_lang(self):
