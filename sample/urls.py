@@ -14,9 +14,9 @@ if int(django.get_version().split('.')[0]) == 2:
             name='continent_list'
         ),
         path(
-            'continent/detailed/',
-            views.get_continent_list_detailed,
-            name='continent_list_detailed'
+            'continent/<int:pk>/',
+            views.get_continent_detail,
+            name='continent_detail'
         ),
     ]
 else:
@@ -28,8 +28,8 @@ else:
             name='continent_list'
         ),
         url(
-            'continent/detailed/',
-            views.get_continent_list_detailed,
-            name='continent_list_detailed'
+            'continent/(?P<pk>[0-9]+)/',
+            views.get_continent_detail,
+            name='continent_detail'
         ),
     ]

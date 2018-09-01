@@ -13,22 +13,6 @@ def _get_json(obj, *fields):
 
 
 def get_continent_list(request):
-    continents = Continent.objects.all().apply_translations()
-
-    continent_list = []
-    for continent in continents:
-        continent_detail = _get_json(
-            continent, 'id', 'code', 'name', 'denonym')
-        continent_list.append(continent_detail)
-
-    return HttpResponse(
-        json.dumps(continent_list),
-        content_type='application/json',
-        charset='utf-8'
-    )
-
-
-def get_continent_list_detailed(request):
     continents = Continent.objects.prefetch_related(
         'countries',
         'countries__cities',
@@ -57,6 +41,39 @@ def get_continent_list_detailed(request):
 
     return HttpResponse(
         json.dumps(continent_list),
+        content_type='application/json',
+        charset='utf-8'
+    )
+
+
+def get_continent_detail(request, pk):
+    continent = Continent.objects.prefetch_related(
+        'countries',
+        'countries__cities',
+    ).get(id=pk)
+
+    continent.apply_translations(
+        'countries',
+        'countries__cities',
+    )
+
+    continent_detail = _get_json(
+        continent, 'id', 'code', 'name', 'denonym')
+    country_list = []
+    for country in continent.countries.all():
+        country_detail = _get_json(
+            country, 'id', 'code', 'name', 'denonym')
+        city_list = []
+        for city in country.cities.all():
+            city_detail = _get_json(
+                city, 'id', 'name', 'denonym')
+            city_list.append(city_detail)
+        country_detail['cities'] = city_list
+        country_list.append(country_detail)
+    continent_detail['countries'] = country_list
+
+    return HttpResponse(
+        json.dumps(continent_detail),
         content_type='application/json',
         charset='utf-8'
     )
