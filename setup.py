@@ -20,6 +20,7 @@ setuptools.setup(
     author_email=info['email'],
     classifiers=[
         'Development Status :: ' + info['verbose_status'],
+        'Framework :: Django',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
         'Framework :: Django :: 2.1',
