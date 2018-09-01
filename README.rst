@@ -18,7 +18,7 @@ Installation
 
 1. Install Translations using PIP (use ``--pre``, still in development):
 
-   .. code:: shell
+   .. code:: bash
 
       $ pip install --pre django-translations
 
@@ -33,7 +33,7 @@ Installation
 
 3. Run ``migrate``:
 
-   .. code:: shell
+   .. code:: bash
 
       $ python manage.py migrate
 
@@ -60,38 +60,42 @@ Basic Usage
 Model
 ~~~~~
 
-Inherit ``Translatable`` in any model you want translated::
+Inherit ``Translatable`` in any model you want translated:
 
-    from translations.models import Translatable
+.. code:: python
 
-    class Continent(Translatable):
-        ...
+   from translations.models import Translatable
 
-    class Country(Translatable):
-        ...
+   class Continent(Translatable):
+       ...
 
-    class City(Translatable):
-        ...
+   class Country(Translatable):
+       ...
+
+   class City(Translatable):
+       ...
 
 **No Migrations** needed afterwards!
 
 Query
 ~~~~~
 
-Use the queryset extensions::
+Use the queryset extensions:
 
-    >>> continents = Continent.objects.prefetch_related(
-    ...     'countries',
-    ...     'countries__cities',
-    ... ).apply_translations(
-    ...     'countries',
-    ...     'countries__cities',
-    ...     lang='de'
-    ... )
-    >>> continents[0].name
-    Europa
-    >>> continents[0].countries.all()[0].name
-    Deutschland
+.. code:: python
+
+   >>> continents = Continent.objects.prefetch_related(
+   ...     'countries',
+   ...     'countries__cities',
+   ... ).apply_translations(
+   ...     'countries',
+   ...     'countries__cities',
+   ...     lang='de'
+   ... )
+   >>> continents[0].name
+   Europa
+   >>> continents[0].countries.all()[0].name
+   Deutschland
 
 This does **Only One Query** for the queryset and relations translations!
 
@@ -100,15 +104,17 @@ Admin
 
 Use the admin extensions::
 
-    from django.contrib import admin
-    from translations.admin import TranslatableAdmin, TranslationInline
+.. code:: python
 
-    from .models import Continent
+   from django.contrib import admin
+   from translations.admin import TranslatableAdmin, TranslationInline
 
-    class ContinentAdmin(TranslatableAdmin):
-        inlines = [TranslationInline,]
+   from .models import Continent
 
-    admin.site.register(Continent, ContinentAdmin)
+   class ContinentAdmin(TranslatableAdmin):
+       inlines = [TranslationInline,]
+
+   admin.site.register(Continent, ContinentAdmin)
 
 This provides admin inlines for the translations of the model.
 
