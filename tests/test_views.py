@@ -36,7 +36,7 @@ class GetContinentListTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertListEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode('utf-8')),
             [
                 {
                     "id": europe.id,
@@ -108,7 +108,7 @@ class GetContinentListTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertListEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode('utf-8')),
             [
                 {
                     "id": europe.id,
@@ -180,7 +180,7 @@ class GetContinentListTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertListEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode('utf-8')),
             [
                 {
                     "id": europe.id,
@@ -252,7 +252,7 @@ class GetContinentDetailTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode('utf-8')),
             {
                 "id": europe.id,
                 "code": "EU",
@@ -297,7 +297,7 @@ class GetContinentDetailTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode('utf-8')),
             {
                 "id": europe.id,
                 "code": "EU",
@@ -342,7 +342,7 @@ class GetContinentDetailTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
-            json.loads(response.content),
+            json.loads(response.content.decode('utf-8')),
             {
                 "id": europe.id,
                 "code": "EU",
