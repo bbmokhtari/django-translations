@@ -12,153 +12,143 @@ from .sample import create_samples
 
 
 class TranslationTest(TestCase):
+    """Tests for `Translation`."""
 
     def test_content_type_none(self):
-        """Make sure `content_type` can not be null."""
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name='Europe', code='EU')
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=None,
                 object_id=europe.id,
-                field="name",
-                language="de",
-                text="Europa",
+                field='name',
+                language='de',
+                text='Europa',
             )
         self.assertEqual(
             error.exception.args[0],
-            "NOT NULL constraint failed: translations_translation.content_type_id",
+            'NOT NULL constraint failed: translations_translation.content_type_id',
         )
 
     def test_object_id_none(self):
-        """Make sure `object_id` can not be null."""
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=None,
-                field="name",
-                language="de",
-                text="Europa",
+                field='name',
+                language='de',
+                text='Europa',
             )
         self.assertEqual(
             error.exception.args[0],
-            "NOT NULL constraint failed: translations_translation.object_id",
+            'NOT NULL constraint failed: translations_translation.object_id',
         )
 
     def test_content_object_none(self):
-        """Make sure `content_object` can not be null."""
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_object=None,
-                field="name",
-                language="de",
-                text="Europa",
+                field='name',
+                language='de',
+                text='Europa',
             )
         self.assertEqual(
             error.exception.args[0],
-            "NOT NULL constraint failed: translations_translation.object_id",
+            'NOT NULL constraint failed: translations_translation.object_id',
         )
 
     def test_field_none(self):
-        """Make sure `field` can not be null."""
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.id,
                 field=None,
-                language="de",
-                text="Europa",
+                language='de',
+                text='Europa',
             )
         self.assertEqual(
             error.exception.args[0],
-            "NOT NULL constraint failed: translations_translation.field",
+            'NOT NULL constraint failed: translations_translation.field',
         )
 
     def test_language_none(self):
-        """Make sure `language` can not be null."""
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.id,
-                field="name",
+                field='name',
                 language=None,
-                text="Europa",
+                text='Europa',
             )
         self.assertEqual(
             error.exception.args[0],
-            "NOT NULL constraint failed: translations_translation.language",
+            'NOT NULL constraint failed: translations_translation.language',
         )
 
     def test_text_none(self):
-        """Make sure text can not be null."""
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.id,
-                field="name",
-                language="de",
+                field='name',
+                language='de',
                 text=None,
             )
         self.assertEqual(
             error.exception.args[0],
-            "NOT NULL constraint failed: translations_translation.text",
+            'NOT NULL constraint failed: translations_translation.text',
         )
 
     def test_str(self):
-        """Make sure `__str__` returns source and translation."""
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         translation = Translation.objects.create(
             content_type=continent_ct,
             object_id=europe.id,
-            field="name",
-            language="de",
-            text="Europa"
+            field='name',
+            language='de',
+            text='Europa'
         )
-        self.assertEqual(str(translation), "Europe: Europa")
+        self.assertEqual(str(translation), 'Europe: Europa')
 
     def test_uniqueness(self):
-        """
-        Make sure `content_type`, `object_id`, `field` and `language`
-        combination is unique.
-        """
-        europe = Continent.objects.create(name="Europe", code="EU")
+        europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         Translation.objects.create(
             content_type=continent_ct,
             object_id=europe.id,
-            field="name",
-            language="de",
-            text="Europa"
+            field='name',
+            language='de',
+            text='Europa'
         )
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.id,
-                field="name",
-                language="de",
-                text="Europa"
+                field='name',
+                language='de',
+                text='Europa'
             )
         self.assertEqual(
             error.exception.args[0],
-            "UNIQUE constraint failed: translations_translation.content_type_id, translations_translation.object_id, translations_translation.field, translations_translation.language",
+            'UNIQUE constraint failed: translations_translation.content_type_id, translations_translation.object_id, translations_translation.field, translations_translation.language',
         )
 
 
 class TranslatableTest(TestCase):
+    """Tests for `Translatable`."""
 
     def test_one_translations_rel(self):
-        """Make sure `translations` rel works."""
         create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
         )
 
         europe = Continent.objects.get(code='EU')
@@ -166,17 +156,16 @@ class TranslatableTest(TestCase):
         self.assertQuerysetEqual(
             europe.translations.all().order_by('id'),
             [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
+                '<Translation: Europe: Europa>',
+                '<Translation: European: Europäisch>',
             ]
         )
 
     def test_two_translations_rel(self):
-        """Make sure `translations` for distinct objects are different."""
         create_samples(
-            continent_names=["europe", "asia"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
+            continent_names=['europe', 'asia'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
         )
 
         europe = Continent.objects.get(code='EU')
@@ -185,42 +174,39 @@ class TranslatableTest(TestCase):
         self.assertQuerysetEqual(
             europe.translations.all().order_by('id'),
             [
-                "<Translation: Europe: Europa>",
-                "<Translation: European: Europäisch>",
+                '<Translation: Europe: Europa>',
+                '<Translation: European: Europäisch>',
             ]
         )
         self.assertQuerysetEqual(
             asia.translations.all().order_by('id'),
             [
-                "<Translation: Asia: Asien>",
-                "<Translation: Asian: Asiatisch>",
+                '<Translation: Asia: Asien>',
+                '<Translation: Asian: Asiatisch>',
             ]
         )
 
     def test_fields_none_automatic(self):
-        """Make sure `TranslatableMeta.fields` works with ``None``."""
         self.assertListEqual(
             City.get_translatable_fields(),
             [
-                City._meta.get_field("name"),
-                City._meta.get_field("denonym"),
+                City._meta.get_field('name'),
+                City._meta.get_field('denonym'),
             ]
         )
 
     def test_fields_empty(self):
-        """Make sure `TranslatableMeta.fields` works with ``None``."""
         self.assertListEqual(
             Geo.get_translatable_fields(),
             []
         )
 
     def test_fields_explicit(self):
-        """Make sure `TranslatableMeta.fields` works with explicit fields."""
         self.assertListEqual(
             Continent.get_translatable_fields(),
             [
-                Continent._meta.get_field("name"),
-                Continent._meta.get_field("denonym"),
+                Continent._meta.get_field('name'),
+                Continent._meta.get_field('denonym'),
             ]
         )
 
@@ -228,20 +214,20 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_0_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations()
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -273,21 +259,21 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_1_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -319,21 +305,21 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_2_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -365,20 +351,20 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_1_2_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -410,19 +396,19 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_0_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -453,20 +439,20 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_1_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -497,20 +483,20 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_2_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -541,19 +527,19 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_level_1_2_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -586,28 +572,28 @@ class TranslatableTest(TestCase):
 
     def test_apply_translations_lang(self):
         create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
         )
 
-        europe = Continent.objects.get(code="EU")
+        europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            europe.apply_translations(lang="xx")
+            europe.apply_translations(lang='xx')
         self.assertEqual(
             error.exception.args[0],
-            "The language code `xx` is not supported."
+            'The language code `xx` is not supported.'
         )
 
     def test_apply_translations_invalid_relation(self):
         create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
         )
 
-        europe = Continent.objects.get(code="EU")
+        europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
             europe.apply_translations('wrong')
@@ -620,20 +606,20 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_0_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -648,7 +634,7 @@ class TranslatableTest(TestCase):
         europe.update_translations()
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -680,21 +666,21 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_1_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -709,7 +695,7 @@ class TranslatableTest(TestCase):
         europe.update_translations(*lvl_1)
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -741,21 +727,21 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_2_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -770,7 +756,7 @@ class TranslatableTest(TestCase):
         europe.update_translations(*lvl_2)
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -802,20 +788,20 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_1_2_relation_no_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
-        activate("de")
+        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -830,7 +816,7 @@ class TranslatableTest(TestCase):
         europe.update_translations(*lvl_1_2)
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
         europe.apply_translations(*lvl_1_2)
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -862,19 +848,19 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_0_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -885,11 +871,11 @@ class TranslatableTest(TestCase):
         germany.denonym = 'Germany Denonym'
         cologne.name = 'Cologne Name'
         cologne.denonym = 'Cologne Denonym'
-        europe.update_translations(lang="de")
+        europe.update_translations(lang='de')
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -920,20 +906,20 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_1_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -944,11 +930,11 @@ class TranslatableTest(TestCase):
         germany.denonym = 'Germany Denonym'
         cologne.name = 'Cologne Name'
         cologne.denonym = 'Cologne Denonym'
-        europe.update_translations(*lvl_1, lang="de")
+        europe.update_translations(*lvl_1, lang='de')
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -979,20 +965,20 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_2_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1003,11 +989,11 @@ class TranslatableTest(TestCase):
         germany.denonym = 'Germany Denonym'
         cologne.name = 'Cologne Name'
         cologne.denonym = 'Cologne Denonym'
-        europe.update_translations(*lvl_2, lang="de")
+        europe.update_translations(*lvl_2, lang='de')
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1038,19 +1024,19 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_level_1_2_relation_with_lang(self):
         create_samples(
-            continent_names=["europe"],
-            country_names=["germany"],
-            city_names=["cologne"],
-            continent_fields=["name", "denonym"],
-            country_fields=["name", "denonym"],
-            city_fields=["name", "denonym"],
-            langs=["de", "tr"]
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1061,11 +1047,11 @@ class TranslatableTest(TestCase):
         germany.denonym = 'Germany Denonym'
         cologne.name = 'Cologne Name'
         cologne.denonym = 'Cologne Denonym'
-        europe.update_translations(*lvl_1_2, lang="de")
+        europe.update_translations(*lvl_1_2, lang='de')
 
         # reapply
-        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code="EU")
-        europe.apply_translations(*lvl_1_2, lang="de")
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        europe.apply_translations(*lvl_1_2, lang='de')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -1098,28 +1084,28 @@ class TranslatableTest(TestCase):
 
     def test_update_translations_invalid_lang(self):
         create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
         )
 
-        europe = Continent.objects.get(code="EU")
+        europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            europe.update_translations(lang="xx")
+            europe.update_translations(lang='xx')
         self.assertEqual(
             error.exception.args[0],
-            "The language code `xx` is not supported."
+            'The language code `xx` is not supported.'
         )
 
     def test_update_translations_invalid_relation(self):
         create_samples(
-            continent_names=["europe"],
-            continent_fields=["name", "denonym"],
-            langs=["de"]
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
         )
 
-        europe = Continent.objects.get(code="EU")
+        europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
             europe.update_translations('wrong')
