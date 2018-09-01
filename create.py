@@ -83,7 +83,7 @@ LOGGING = {
 
 urls_1 = """
 
-from django.urls import include
+from django.conf.urls import include
 
 urlpatterns += [
     url('sample/', include('sample.urls'))
