@@ -102,7 +102,7 @@ This does **Only One Query** for the queryset and relations translations!
 Admin
 ~~~~~
 
-Use the admin extensions::
+Use the admin extensions:
 
 .. code:: python
 
