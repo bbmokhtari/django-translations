@@ -17,6 +17,10 @@ INSTALLED_APPS += [
     'tests.apps.TestsConfig',
 ]
 
+MIDDLEWARE += [
+    'django.middleware.locale.LocaleMiddleware',
+]
+
 
 # Read DB configuration from environment variables
 DEFAULT_ENGINE = 'sqlite3'
@@ -76,7 +80,16 @@ LOGGING = {
 }
 """
 
-urls = """
+urls_1 = """
+
+from django.urls import include
+
+urlpatterns += [
+    url('sample/', include('sample.urls'))
+]
+"""
+
+urls_2 = """
 
 from django.urls import include
 
