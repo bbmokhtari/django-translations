@@ -64,7 +64,7 @@ class Translation(models.Model):
        from tests.sample import create_samples
 
        create_samples(
-           continent_names=["europe"],
+           continent_names=['europe'],
        )
 
     .. testcode:: Translation
@@ -167,7 +167,7 @@ class Translatable(models.Model):
         Translation,
         content_type_field='content_type',
         object_id_field='object_id',
-        related_query_name="%(app_label)s_%(class)s"
+        related_query_name='%(app_label)s_%(class)s'
     )
 
     class Meta:
@@ -230,13 +230,13 @@ class Translatable(models.Model):
            from tests.sample import create_samples
 
            create_samples(
-               continent_names=["europe", "asia"],
-               country_names=["germany", "south korea"],
-               city_names=["cologne", "munich", "seoul", "ulsan"],
-               continent_fields=["name", "denonym"],
-               country_fields=["name", "denonym"],
-               city_fields=["name", "denonym"],
-               langs=["de"]
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
            )
 
         To apply the translations on an instance and the relations of it:
@@ -248,16 +248,16 @@ class Translatable(models.Model):
 
            relations = ('countries', 'countries__cities',)
 
-           europe = Continent.objects.get(code="EU")
+           europe = Continent.objects.get(code='EU')
            prefetch_related_objects([europe], *relations)
 
-           europe.apply_translations(*relations, lang="de")
+           europe.apply_translations(*relations, lang='de')
 
-           print("Continent: {}".format(europe))
+           print('Continent: {}'.format(europe))
            for country in europe.countries.all():
-               print("Country: {}".format(country))
+               print('Country: {}'.format(country))
                for city in country.cities.all():
-                   print("City: {}".format(city))
+                   print('City: {}'.format(city))
 
         .. testoutput:: apply_translations
 
@@ -311,13 +311,13 @@ class Translatable(models.Model):
            from tests.sample import create_samples
 
            create_samples(
-               continent_names=["europe", "asia"],
-               country_names=["germany", "south korea"],
-               city_names=["cologne", "munich", "seoul", "ulsan"],
-               continent_fields=["name", "denonym"],
-               country_fields=["name", "denonym"],
-               city_fields=["name", "denonym"],
-               langs=["de"]
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
            )
 
         To update the translations of an instance and the relations of it:
@@ -329,16 +329,16 @@ class Translatable(models.Model):
 
            relations = ('countries', 'countries__cities',)
 
-           europe = Continent.objects.get(code="EU")
+           europe = Continent.objects.get(code='EU')
            prefetch_related_objects([europe], *relations)
 
-           europe.update_translations(*relations, lang="en")
+           europe.update_translations(*relations, lang='en')
 
-           print("Continent: {}".format(europe))
+           print('Continent: {}'.format(europe))
            for country in europe.countries.all():
-               print("Country: {}".format(country))
+               print('Country: {}'.format(country))
                for city in country.cities.all():
-                   print("City: {}".format(city))
+                   print('City: {}'.format(city))
 
         .. testoutput:: update_translations
 
