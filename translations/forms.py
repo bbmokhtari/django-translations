@@ -10,6 +10,9 @@ from django import forms
 from .models import Translation
 
 
+__docformat__ = 'restructuredtext'
+
+
 def generate_translation_form(choices):
     """
     Return a translation form based on some choices.

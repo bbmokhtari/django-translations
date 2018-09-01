@@ -1,5 +1,6 @@
-from sample.models import Continent, Country, City
 from translations.utils import _get_reverse_relation
+
+from sample.models import Continent, Country, City
 
 
 # -------------------------------------------------------------------- samples
@@ -678,7 +679,7 @@ def handle_fields_consistency(fields, excluded, consistent):
     for field in consistent:
         if field not in extracted_fields:
             raise Exception(
-                "Field {} does not exist in {}".format(
+                'Field {} does not exist in {}'.format(
                     field,
                     consistent
                 )
@@ -698,7 +699,7 @@ def handle_langs_consistency(translations, lang_consistent, field_consistent):
         for field in translation_fields.keys():
             if field not in field_consistent:
                 raise Exception(
-                    "Field {} in translations is not in {}".format(
+                    'Field {} in translations is not in {}'.format(
                         field,
                         field_consistent
                     )
@@ -708,7 +709,7 @@ def handle_langs_consistency(translations, lang_consistent, field_consistent):
     for lang in lang_consistent:
         if lang not in extracted_langs:
             raise Exception(
-                "Language {} does not exist in {}".format(
+                'Language {} does not exist in {}'.format(
                     lang,
                     lang_consistent
                 )
@@ -780,6 +781,19 @@ def create_samples(
     # initialize langs
     langs = langs if langs is not None else []
 
+    # copy areas
+    continent_names = continent_names.copy()
+    country_names = country_names.copy()
+    city_names = city_names.copy()
+
+    # copy fields
+    continent_fields = continent_fields.copy()
+    country_fields = country_fields.copy()
+    city_fields = city_fields.copy()
+
+    # copy langs
+    langs = langs.copy()
+
     info = {
         'model': Continent,
         'names': continent_names,
@@ -811,17 +825,17 @@ def create_samples(
     error_items = []
 
     if continent_names:
-        error_items.append("Continents {}".format(continent_names))
+        error_items.append('Continents {}'.format(continent_names))
 
     if country_names:
-        error_items.append("Countries {}".format(country_names))
+        error_items.append('Countries {}'.format(country_names))
 
     if city_names:
-        error_items.append("Cities {}".format(city_names))
+        error_items.append('Cities {}'.format(city_names))
 
     if error_items:
-        items = ", ".join(error_items)
-        generated_error = "{} could not be created!".format(items)
+        items = ', '.join(error_items)
+        generated_error = '{} could not be created!'.format(items)
         raise Exception(generated_error)
 
 
@@ -876,7 +890,7 @@ def creator(**kwargs):
         for parent_key, parent_value in parent.items():
             info[parent_key] = parent_value
 
-        obj = model.objects.create(**info)
+        (obj, created) = model.objects.get_or_create(**info)
 
         translations_iterable = sorted(
             translations.items(),
@@ -892,7 +906,7 @@ def creator(**kwargs):
                 )
                 for field, text in dictionary_iterable:
                     if field in fields:
-                        obj.translations.create(
+                        obj.translations.get_or_create(
                             language=lang,
                             field=field,
                             text=text,

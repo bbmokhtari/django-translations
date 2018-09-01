@@ -36,10 +36,15 @@ __docformat__ = 'restructuredtext'
 
 def _get_translation_language(lang=None):
     """
-    Return a language code to use in the translation process.
+    Return a language code based on a custom language code.
 
-    If the custom language code is passed in it returns the custom language
-    code, otherwise it returns the :term:`active language` code.
+    Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
+    the custom language code, if found it will return the language code
+    otherwise throws an error.
+
+    If the exact custom language code with an accent can not be found but
+    the custom language without an accent can be found, it will return the
+    custom language code without an accent.
 
     :param lang: The custom language code to use in the translation process.
         ``None`` means use the :term:`active language` code.
@@ -62,7 +67,7 @@ def _get_translation_language(lang=None):
        from translations.utils import _get_translation_language
 
        active = _get_translation_language()
-       print("Language code: {}".format(active))
+       print('Language code: {}'.format(active))
 
     .. testoutput:: _get_translation_language
 
@@ -75,20 +80,35 @@ def _get_translation_language(lang=None):
        from translations.utils import _get_translation_language
 
        custom = _get_translation_language('de')
-       print("Language code: {}".format(custom))
+       print('Language code: {}'.format(custom))
 
     .. testoutput:: _get_translation_language
 
        Language code: de
     """
     lang = lang if lang else get_language()
+    code = lang.split('-')[0]
 
-    if lang not in [language[0] for language in settings.LANGUAGES]:
+    lang_exists = False
+    code_exists = False
+
+    # break when the lang is found but not when the code is found
+    # cause the code might come before lang and we may miss an accent
+    for language in settings.LANGUAGES:
+        if lang == language[0]:
+            lang_exists = True
+            break
+        if code == language[0]:
+            code_exists = True
+
+    if lang_exists:
+        return lang
+    elif code_exists:
+        return code
+    else:
         raise ValueError(
-            "The language code `{}` is not supported.".format(lang)
+            'The language code `{}` is not supported.'.format(lang)
         )
-
-    return lang
 
 
 def _get_entity_details(entity):
@@ -120,7 +140,7 @@ def _get_entity_details(entity):
 
        from tests.sample import create_samples
 
-       create_samples(continent_names=["europe"])
+       create_samples(continent_names=['europe'])
 
     To get the details of a list of instances:
 
@@ -131,8 +151,8 @@ def _get_entity_details(entity):
 
        continents = list(Continent.objects.all())
        details = _get_entity_details(continents)
-       print("Iterable: {}".format(details[0]))
-       print("Model: {}".format(details[1]))
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
 
     .. testoutput:: _get_entity_details
 
@@ -148,8 +168,8 @@ def _get_entity_details(entity):
 
        continents = Continent.objects.all()
        details = _get_entity_details(continents)
-       print("Iterable: {}".format(details[0]))
-       print("Model: {}".format(details[1]))
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
 
     .. testoutput:: _get_entity_details
 
@@ -163,10 +183,10 @@ def _get_entity_details(entity):
        from sample.models import Continent
        from translations.utils import _get_entity_details
 
-       europe = Continent.objects.get(code="EU")
+       europe = Continent.objects.get(code='EU')
        details = _get_entity_details(europe)
-       print("Iterable: {}".format(details[0]))
-       print("Model: {}".format(details[1]))
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
 
     .. testoutput:: _get_entity_details
 
@@ -182,8 +202,8 @@ def _get_entity_details(entity):
 
        empty = []
        details = _get_entity_details(empty)
-       print("Iterable: {}".format(details[0]))
-       print("Model: {}".format(details[1]))
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
 
     .. testoutput:: _get_entity_details
 
@@ -243,11 +263,11 @@ def _get_reverse_relation(model, relation):
        from translations.utils import _get_reverse_relation
 
        reverse_relation = _get_reverse_relation(Continent, 'countries__cities')
-       print("City can be queried with '{}'".format(reverse_relation))
+       print('City can be queried with `{}`'.format(reverse_relation))
 
     .. testoutput:: _get_reverse_relation
 
-       City can be queried with 'country__continent'
+       City can be queried with `country__continent`
     """
     parts = relation.split(LOOKUP_SEP)
     root = parts[0]
@@ -345,14 +365,14 @@ def _get_relations_hierarchy(*relations):
         nest = relation_parts[1:]
 
         hierarchy.setdefault(root, {
-            "included": False,
-            "relations": {}
+            'included': False,
+            'relations': {}
         })
 
         if nest:
-            _fill_hierarchy(hierarchy[root]["relations"], *nest)
+            _fill_hierarchy(hierarchy[root]['relations'], *nest)
         else:
-            hierarchy[root]["included"] = True
+            hierarchy[root]['included'] = True
 
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
@@ -394,13 +414,13 @@ def _get_entity_groups(entity, hierarchy):
        from tests.sample import create_samples
 
        create_samples(
-           continent_names=["europe", "asia"],
-           country_names=["germany", "south korea"],
-           city_names=["cologne", "munich", "seoul", "ulsan"],
-           continent_fields=["name", "denonym"],
-           country_fields=["name", "denonym"],
-           city_fields=["name", "denonym"],
-           langs=["de"]
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
        )
 
     To get the :term:`entity groups` of an entity and
@@ -509,13 +529,13 @@ def _get_translations(groups, lang=None):
        from tests.sample import create_samples
 
        create_samples(
-           continent_names=["europe", "asia"],
-           country_names=["germany", "south korea"],
-           city_names=["cologne", "munich", "seoul", "ulsan"],
-           continent_fields=["name", "denonym"],
-           country_fields=["name", "denonym"],
-           city_fields=["name", "denonym"],
-           langs=["de"]
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
        )
 
     To get the translations of some :term:`entity groups`:
@@ -533,7 +553,7 @@ def _get_translations(groups, lang=None):
        hierarchy = _get_relations_hierarchy(*relations)
        groups = _get_entity_groups(continents, hierarchy)
 
-       translations = _get_translations(groups, lang="de")
+       translations = _get_translations(groups, lang='de')
 
        print(translations)
 
@@ -629,13 +649,13 @@ def apply_translations(entity, *relations, lang=None):
        from tests.sample import create_samples
 
        create_samples(
-           continent_names=["europe", "asia"],
-           country_names=["germany", "south korea"],
-           city_names=["cologne", "munich", "seoul", "ulsan"],
-           continent_fields=["name", "denonym"],
-           country_fields=["name", "denonym"],
-           city_fields=["name", "denonym"],
-           langs=["de"]
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
        )
 
     To apply the translations on a list of instances and the relations of it:
@@ -651,14 +671,14 @@ def apply_translations(entity, *relations, lang=None):
        continents = list(Continent.objects.all())
        prefetch_related_objects(continents, *relations)
 
-       apply_translations(continents, *relations, lang="de")
+       apply_translations(continents, *relations, lang='de')
 
        for continent in continents:
-           print("Continent: {}".format(continent))
+           print('Continent: {}'.format(continent))
            for country in continent.countries.all():
-               print("Country: {}".format(country))
+               print('Country: {}'.format(country))
                for city in country.cities.all():
-                   print("City: {}".format(city))
+                   print('City: {}'.format(city))
 
     .. testoutput:: apply_translations
 
@@ -682,14 +702,14 @@ def apply_translations(entity, *relations, lang=None):
 
        continents = Continent.objects.prefetch_related(*relations).all()
 
-       apply_translations(continents, *relations, lang="de")
+       apply_translations(continents, *relations, lang='de')
 
        for continent in continents:
-           print("Continent: {}".format(continent))
+           print('Continent: {}'.format(continent))
            for country in continent.countries.all():
-               print("Country: {}".format(country))
+               print('Country: {}'.format(country))
                for city in country.cities.all():
-                   print("City: {}".format(city))
+                   print('City: {}'.format(city))
 
     .. testoutput:: apply_translations
 
@@ -712,16 +732,16 @@ def apply_translations(entity, *relations, lang=None):
 
        relations = ('countries', 'countries__cities',)
 
-       europe = Continent.objects.get(code="EU")
+       europe = Continent.objects.get(code='EU')
        prefetch_related_objects([europe], *relations)
 
-       apply_translations(europe, *relations, lang="de")
+       apply_translations(europe, *relations, lang='de')
 
-       print("Continent: {}".format(europe))
+       print('Continent: {}'.format(europe))
        for country in europe.countries.all():
-           print("Country: {}".format(country))
+           print('Country: {}'.format(country))
            for city in country.cities.all():
-               print("City: {}".format(city))
+               print('City: {}'.format(city))
 
     .. testoutput:: apply_translations
 
@@ -742,7 +762,7 @@ def apply_translations(entity, *relations, lang=None):
         field = translation.field
         text = translation.text
 
-        if field in [x.name for x in type(obj).get_translatable_fields()]:
+        if field in [x for x in type(obj).get_translatable_field_names()]:
             setattr(obj, field, text)
 
 
@@ -800,13 +820,13 @@ def update_translations(entity, *relations, lang=None):
        from tests.sample import create_samples
 
        create_samples(
-           continent_names=["europe", "asia"],
-           country_names=["germany", "south korea"],
-           city_names=["cologne", "munich", "seoul", "ulsan"],
-           continent_fields=["name", "denonym"],
-           country_fields=["name", "denonym"],
-           city_fields=["name", "denonym"],
-           langs=["de"]
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
        )
 
     To update the translations of a list of instances and the relations of it:
@@ -822,14 +842,14 @@ def update_translations(entity, *relations, lang=None):
        continents = list(Continent.objects.all())
        prefetch_related_objects(continents, *relations)
 
-       update_translations(continents, *relations, lang="en")
+       update_translations(continents, *relations, lang='en')
 
        for continent in continents:
-           print("Continent: {}".format(continent))
+           print('Continent: {}'.format(continent))
            for country in continent.countries.all():
-               print("Country: {}".format(country))
+               print('Country: {}'.format(country))
                for city in country.cities.all():
-                   print("City: {}".format(city))
+                   print('City: {}'.format(city))
 
     .. testoutput:: update_translations
 
@@ -853,14 +873,14 @@ def update_translations(entity, *relations, lang=None):
 
        continents = Continent.objects.prefetch_related(*relations).all()
 
-       update_translations(continents, *relations, lang="en")
+       update_translations(continents, *relations, lang='en')
 
        for continent in continents:
-           print("Continent: {}".format(continent))
+           print('Continent: {}'.format(continent))
            for country in continent.countries.all():
-               print("Country: {}".format(country))
+               print('Country: {}'.format(country))
                for city in country.cities.all():
-                   print("City: {}".format(city))
+                   print('City: {}'.format(city))
 
     .. testoutput:: update_translations
 
@@ -883,16 +903,16 @@ def update_translations(entity, *relations, lang=None):
 
        relations = ('countries', 'countries__cities',)
 
-       europe = Continent.objects.get(code="EU")
+       europe = Continent.objects.get(code='EU')
        prefetch_related_objects([europe], *relations)
 
-       update_translations(europe, *relations, lang="en")
+       update_translations(europe, *relations, lang='en')
 
-       print("Continent: {}".format(europe))
+       print('Continent: {}'.format(europe))
        for country in europe.countries.all():
-           print("Country: {}".format(country))
+           print('Country: {}'.format(country))
            for city in country.cities.all():
-               print("City: {}".format(city))
+               print('City: {}'.format(city))
 
     .. testoutput:: update_translations
 
@@ -910,14 +930,14 @@ def update_translations(entity, *relations, lang=None):
     new_translations = []
     for (ct_id, objs) in groups.items():
         for (obj_id, obj) in objs.items():
-            for field in type(obj).get_translatable_fields():
-                text = getattr(obj, field.name, None)
+            for field in type(obj).get_translatable_field_names():
+                text = getattr(obj, field, None)
                 if text:
                     new_translations.append(
                         translations.models.Translation(
                             content_type_id=ct_id,
                             object_id=obj_id,
-                            field=field.name,
+                            field=field,
                             language=lang,
                             text=text,
                         )

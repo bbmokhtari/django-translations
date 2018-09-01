@@ -1,6 +1,7 @@
 import sys
 import os
 import shutil
+import django
 
 
 settings = """
@@ -15,6 +16,10 @@ INSTALLED_APPS += [
     'translations.apps.TranslationsConfig',
     'sample.apps.SampleConfig',
     'tests.apps.TestsConfig',
+]
+
+MIDDLEWARE += [
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 
@@ -76,6 +81,23 @@ LOGGING = {
 }
 """
 
+urls_1 = """
+
+from django.conf.urls import include
+
+urlpatterns += [
+    url('sample/', include('sample.urls'))
+]
+"""
+
+urls_2 = """
+
+from django.urls import include
+
+urlpatterns += [
+    path('sample/', include('sample.urls'))
+]
+"""
 
 if __name__ == '__main__':
     # remove the old project
@@ -88,5 +110,12 @@ if __name__ == '__main__':
     os.system('django-admin startproject project')
 
     # configure settings
-    with open(os.path.join("project", "project", "settings.py"), "a") as fh:
+    with open(os.path.join('project', 'project', 'settings.py'), 'a') as fh:
         fh.write(settings)
+
+    # configure urls
+    with open(os.path.join('project', 'project', 'urls.py'), 'a') as fh:
+        if int(django.get_version().split('.')[0]) == 2:
+            fh.write(urls_2)
+        else:
+            fh.write(urls_1)
