@@ -877,7 +877,7 @@ def creator(**kwargs):
         for parent_key, parent_value in parent.items():
             info[parent_key] = parent_value
 
-        obj = model.objects.create(**info)
+        (obj, created) = model.objects.get_or_create(**info)
 
         translations_iterable = sorted(
             translations.items(),
@@ -893,7 +893,7 @@ def creator(**kwargs):
                 )
                 for field, text in dictionary_iterable:
                     if field in fields:
-                        obj.translations.create(
+                        obj.translations.get_or_create(
                             language=lang,
                             field=field,
                             text=text,

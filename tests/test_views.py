@@ -10,6 +10,7 @@ class GetContinentListTest(TestCase):
     """Tests for `get_continent_list`."""
 
     def test_get_continent_list(self):
+        create_all()
         response = self.client.get(reverse('sample:continent_list'))
         self.assertEqual(response.status_code, 200)
         self.assertListEqual(json.loads(response.content), [{
@@ -223,6 +224,7 @@ class GetContinentDetailTest(TestCase):
     """Tests for `get_continent_detail`."""
 
     def test_get_continent_detail(self):
+        create_all()
         response = self.client.get(reverse('sample:continent_detail', args=(1,)))
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(json.loads(response.content), {
