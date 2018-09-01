@@ -1,6 +1,7 @@
 import json
 
 from django.http import HttpResponse
+from django.utils.translation import get_language
 
 from .models import Continent
 
@@ -13,6 +14,7 @@ def _get_json(obj, *fields):
 
 
 def get_continent_list(request):
+    print("LANG: " + get_language())
     continents = Continent.objects.all().apply_translations()
 
     content = []
