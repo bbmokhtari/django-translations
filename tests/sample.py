@@ -1,5 +1,6 @@
-from sample.models import Continent, Country, City
 from translations.utils import _get_reverse_relation
+
+from sample.models import Continent, Country, City
 
 
 # -------------------------------------------------------------------- samples
