@@ -76,6 +76,14 @@ LOGGING = {
 }
 """
 
+urls = """
+
+from django.urls import include
+
+urlpatterns += [
+    path('sample/', include('sample.urls'))
+]
+"""
 
 if __name__ == '__main__':
     # remove the old project
@@ -90,3 +98,7 @@ if __name__ == '__main__':
     # configure settings
     with open(os.path.join('project', 'project', 'settings.py'), 'a') as fh:
         fh.write(settings)
+
+    # configure urls
+    with open(os.path.join('project', 'project', 'urls.py'), 'a') as fh:
+        fh.write(urls)
