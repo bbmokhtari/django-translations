@@ -31,17 +31,30 @@ class GetTranslationLanguageTest(TestCase):
             'de'
         )
 
-    def test_none_accent(self):
+    def test_none_accent_not_exists(self):
         activate('en-us')
         self.assertEqual(
             _get_translation_language(),
             'en'
         )
 
-    def test_explicit_simple(self):
+    def test_explicit_accent_not_exists(self):
         self.assertEqual(
             _get_translation_language('de-at'),
             'de'
+        )
+
+    def test_none_accent_exists(self):
+        activate('en-gb')
+        self.assertEqual(
+            _get_translation_language(),
+            'en-gb'
+        )
+
+    def test_explicit_accent_exists(self):
+        self.assertEqual(
+            _get_translation_language('en-au'),
+            'en-au'
         )
 
     def test_invalid_lang(self):
