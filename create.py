@@ -88,5 +88,5 @@ if __name__ == '__main__':
     os.system('django-admin startproject project')
 
     # configure settings
-    with open(os.path.join("project", "project", "settings.py"), "a") as fh:
+    with open(os.path.join('project', 'project', 'settings.py'), 'a') as fh:
         fh.write(settings)

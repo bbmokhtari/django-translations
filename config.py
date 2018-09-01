@@ -6,9 +6,9 @@ import json
 # ------------------------------------------------------------- Static Content
 
 # project
-name = "Django Translations"
-dist = "django-translations"
-description = "A Django app which provides support for model translation."
+name = 'Django Translations'
+dist = 'django-translations'
+description = 'A Django app which provides support for model translation.'
 
 # author
 author = 'Behzad B. Mokhtari'
@@ -21,7 +21,7 @@ documentation = 'https://perplexionist.github.io/django-translations'
 funding = 'https://blockchain.info/address/1FcPBamd6mVrHBNvjB5PqjbnGCBhdY7Rtm'
 
 # search optimization
-keywords = ["django", "internationalization"]
+keywords = ['django', 'internationalization']
 
 # ------------------------------------------------------------ Dynamic Content
 
@@ -67,21 +67,21 @@ if release:
 # --------------------------------------------------------------------- Output
 
 # Export to config.json
-if __name__ == "__main__":
-    with open("config.json", "w") as fh:
+if __name__ == '__main__':
+    with open('config.json', 'w') as fh:
         json.dump({
-            "name": name,
-            "dist": dist,
-            "description": description,
-            "author": author,
-            "email": email,
-            "source": source,
-            "tracker": tracker,
-            "documentation": documentation,
-            "funding": funding,
-            "keywords": keywords,
-            "release": release,
-            "version": version,
-            "status": status,
-            "verbose_status": verbose_status
+            'name': name,
+            'dist': dist,
+            'description': description,
+            'author': author,
+            'email': email,
+            'source': source,
+            'tracker': tracker,
+            'documentation': documentation,
+            'funding': funding,
+            'keywords': keywords,
+            'release': release,
+            'version': version,
+            'status': status,
+            'verbose_status': verbose_status
         }, fh)
