@@ -1,6 +1,7 @@
 import sys
 import os
 import shutil
+import django
 
 
 settings = """
@@ -114,4 +115,7 @@ if __name__ == '__main__':
 
     # configure urls
     with open(os.path.join('project', 'project', 'urls.py'), 'a') as fh:
-        fh.write(urls)
+        if int(django.get_version().split('.')[0]) == 2:
+            fh.write(urls_2)
+        else:
+            fh.write(urls_1)
