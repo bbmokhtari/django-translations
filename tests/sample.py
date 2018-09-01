@@ -678,7 +678,7 @@ def handle_fields_consistency(fields, excluded, consistent):
     for field in consistent:
         if field not in extracted_fields:
             raise Exception(
-                "Field {} does not exist in {}".format(
+                'Field {} does not exist in {}'.format(
                     field,
                     consistent
                 )
@@ -698,7 +698,7 @@ def handle_langs_consistency(translations, lang_consistent, field_consistent):
         for field in translation_fields.keys():
             if field not in field_consistent:
                 raise Exception(
-                    "Field {} in translations is not in {}".format(
+                    'Field {} in translations is not in {}'.format(
                         field,
                         field_consistent
                     )
@@ -708,7 +708,7 @@ def handle_langs_consistency(translations, lang_consistent, field_consistent):
     for lang in lang_consistent:
         if lang not in extracted_langs:
             raise Exception(
-                "Language {} does not exist in {}".format(
+                'Language {} does not exist in {}'.format(
                     lang,
                     lang_consistent
                 )
@@ -811,17 +811,17 @@ def create_samples(
     error_items = []
 
     if continent_names:
-        error_items.append("Continents {}".format(continent_names))
+        error_items.append('Continents {}'.format(continent_names))
 
     if country_names:
-        error_items.append("Countries {}".format(country_names))
+        error_items.append('Countries {}'.format(country_names))
 
     if city_names:
-        error_items.append("Cities {}".format(city_names))
+        error_items.append('Cities {}'.format(city_names))
 
     if error_items:
-        items = ", ".join(error_items)
-        generated_error = "{} could not be created!".format(items)
+        items = ', '.join(error_items)
+        generated_error = '{} could not be created!'.format(items)
         raise Exception(generated_error)
 
 
