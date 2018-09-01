@@ -36,10 +36,15 @@ __docformat__ = 'restructuredtext'
 
 def _get_translation_language(lang=None):
     """
-    Return a language code to use in the translation process.
+    Return a language code based on a custom language code.
 
-    If the custom language code is passed in it returns the custom language
-    code, otherwise it returns the :term:`active language` code.
+    Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
+    the custom language code, if found it will return the language code
+    otherwise throws an error.
+
+    If the exact custom language code with an accent can not be found but
+    the custom language without an accent can be found, it will return the
+    custom language code without an accent.
 
     :param lang: The custom language code to use in the translation process.
         ``None`` means use the :term:`active language` code.

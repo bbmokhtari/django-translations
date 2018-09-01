@@ -18,16 +18,29 @@ from tests.sample import create_samples
 class GetTranslationLanguageTest(TestCase):
     """Tests for `_get_translation_language`."""
 
-    def test_active_lang(self):
+    def test_none_simple(self):
         activate('en')
         self.assertEqual(
             _get_translation_language(),
             'en'
         )
 
-    def test_custom_lang(self):
+    def test_explicit_simple(self):
         self.assertEqual(
             _get_translation_language('de'),
+            'de'
+        )
+
+    def test_none_accent(self):
+        activate('en-us')
+        self.assertEqual(
+            _get_translation_language(),
+            'en'
+        )
+
+    def test_explicit_simple(self):
+        self.assertEqual(
+            _get_translation_language('de-at'),
             'de'
         )
 
