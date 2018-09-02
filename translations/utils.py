@@ -3,7 +3,7 @@ This module contains the utilities for the Translations app. It contains the
 following members:
 
 :func:`_get_standard_language`
-    Return the standard language code derived out of a custom language code.
+    Return the standard language code of a custom language code.
 :func:`_get_entity_details`
     Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
@@ -36,7 +36,7 @@ __docformat__ = 'restructuredtext'
 
 def _get_standard_language(lang=None):
     """
-    Return the standard language code derived out of a custom language code.
+    Return the standard language code of a custom language code.
 
     Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
     the custom language code, if the exact custom language code is found, it
@@ -72,7 +72,7 @@ def _get_standard_language(lang=None):
            ('tr', 'Turkish'),
        )
 
-    To get the standard :term:`active language` code:
+    To get the standard language code of the :term:`active language` code:
 
     .. testcode:: _get_standard_language
 
@@ -85,7 +85,7 @@ def _get_standard_language(lang=None):
 
        Language code: en
 
-    To get the standard unaccented custom language code:
+    To get the standard language code of an unaccented custom language code:
 
     .. testcode:: _get_standard_language
 
@@ -98,7 +98,8 @@ def _get_standard_language(lang=None):
 
        Language code: de
 
-    To get the standard existing accented custom language code:
+    To get the standard language code of an existing accented custom
+    language code:
 
     .. testcode:: _get_standard_language
 
@@ -111,7 +112,8 @@ def _get_standard_language(lang=None):
 
        Language code: en-gb
 
-    To get the standard non-existing accented custom language code:
+    To get the standard language code of a non-existing accented custom
+    language code:
 
     .. testcode:: _get_standard_language
 
