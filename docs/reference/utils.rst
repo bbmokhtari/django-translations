@@ -4,7 +4,7 @@ Utilities
 
 .. automodule:: translations.utils
 
-   .. autofunction:: _get_translation_language
+   .. autofunction:: _get_standard_language
 
    .. autofunction:: _get_entity_details
 

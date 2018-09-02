@@ -4,7 +4,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate
 from django.contrib.contenttypes.models import ContentType
 
-from translations.utils import _get_translation_language, \
+from translations.utils import _get_standard_language, \
     _get_entity_details, _get_reverse_relation,  _get_relations_hierarchy, \
     _get_entity_groups, _get_translations, \
     apply_translations, update_translations
@@ -15,51 +15,51 @@ from sample.models import Continent, Country, City
 from tests.sample import create_samples
 
 
-class GetTranslationLanguageTest(TestCase):
-    """Tests for `_get_translation_language`."""
+class GetStandardLanguageTest(TestCase):
+    """Tests for `_get_standard_language`."""
 
-    def test_active_language_simple(self):
+    def test_active_unaccented_language(self):
         activate('de')
         self.assertEqual(
-            _get_translation_language(),
+            _get_standard_language(),
             'de'
         )
 
-    def test_custom_language_simple(self):
+    def test_custom_unaccented_language(self):
         self.assertEqual(
-            _get_translation_language('de'),
+            _get_standard_language('de'),
             'de'
         )
 
-    def test_active_language_nonexisting_accent(self):
+    def test_active_nonexisting_accented_language(self):
         activate('de-at')
         self.assertEqual(
-            _get_translation_language(),
+            _get_standard_language(),
             'de'
         )
 
-    def test_custom_language_nonexisting_accent(self):
+    def test_custom_nonexisting_accented_language(self):
         self.assertEqual(
-            _get_translation_language('de-at'),
+            _get_standard_language('de-at'),
             'de'
         )
 
-    def test_active_language_existing_accent(self):
+    def test_active_existing_accented_language(self):
         activate('en-gb')
         self.assertEqual(
-            _get_translation_language(),
+            _get_standard_language(),
             'en-gb'
         )
 
-    def test_custom_language_existing_accent(self):
+    def test_custom_existing_accented_language(self):
         self.assertEqual(
-            _get_translation_language('en-gb'),
+            _get_standard_language('en-gb'),
             'en-gb'
         )
 
     def test_invalid_language(self):
         with self.assertRaises(ValueError) as error:
-            _get_translation_language('xx')
+            _get_standard_language('xx')
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'

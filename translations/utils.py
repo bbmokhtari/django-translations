@@ -2,8 +2,8 @@
 This module contains the utilities for the Translations app. It contains the
 following members:
 
-:func:`_get_translation_language`
-    Return a language code based on a custom language code.
+:func:`_get_standard_language`
+    Return the standard language code derived out of a custom language code.
 :func:`_get_entity_details`
     Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
@@ -34,9 +34,9 @@ import translations.models
 __docformat__ = 'restructuredtext'
 
 
-def _get_translation_language(lang=None):
+def _get_standard_language(lang=None):
     """
-    Return a language code based on a custom language code.
+    Return the standard language code derived out of a custom language code.
 
     Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
     the custom language code, if the exact custom language code is found, it
@@ -45,15 +45,17 @@ def _get_translation_language(lang=None):
     found, it returns it, otherwise it throws an error stating there is no
     such language supported in the settings.
 
-    :param lang: The custom language code to get the language code out of.
+    :param lang: The custom language code to derive the standard language code
+        out of.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :return: The language code gotten out of the custom language code.
+    :return: The standard language code derived out of the custom language
+        code.
     :rtype: str
     :raise ValueError: If the language code is not specified in
         the :data:`~django.conf.settings.LANGUAGES` setting.
 
-    .. testsetup:: _get_translation_language
+    .. testsetup:: _get_standard_language
 
        from django.utils.translation import activate
 
@@ -70,55 +72,55 @@ def _get_translation_language(lang=None):
            ('tr', 'Turkish'),
        )
 
-    To get the :term:`active language` code:
+    To get the standard :term:`active language` code:
 
-    .. testcode:: _get_translation_language
+    .. testcode:: _get_standard_language
 
-       from translations.utils import _get_translation_language
+       from translations.utils import _get_standard_language
 
-       active = _get_translation_language()
+       active = _get_standard_language()
        print('Language code: {}'.format(active))
 
-    .. testoutput:: _get_translation_language
+    .. testoutput:: _get_standard_language
 
        Language code: en
 
-    To get a simple custom language code:
+    To get the standard unaccented custom language code:
 
-    .. testcode:: _get_translation_language
+    .. testcode:: _get_standard_language
 
-       from translations.utils import _get_translation_language
+       from translations.utils import _get_standard_language
 
-       custom = _get_translation_language('de')
+       custom = _get_standard_language('de')
        print('Language code: {}'.format(custom))
 
-    .. testoutput:: _get_translation_language
+    .. testoutput:: _get_standard_language
 
        Language code: de
 
-    To get an existing accented custom language code:
+    To get the standard existing accented custom language code:
 
-    .. testcode:: _get_translation_language
+    .. testcode:: _get_standard_language
 
-       from translations.utils import _get_translation_language
+       from translations.utils import _get_standard_language
 
-       custom = _get_translation_language('en-gb')
+       custom = _get_standard_language('en-gb')
        print('Language code: {}'.format(custom))
 
-    .. testoutput:: _get_translation_language
+    .. testoutput:: _get_standard_language
 
        Language code: en-gb
 
-    To get a non-existing accented custom language code:
+    To get the standard non-existing accented custom language code:
 
-    .. testcode:: _get_translation_language
+    .. testcode:: _get_standard_language
 
-       from translations.utils import _get_translation_language
+       from translations.utils import _get_standard_language
 
-       custom = _get_translation_language('de-at')
+       custom = _get_standard_language('de-at')
        print('Language code: {}'.format(custom))
 
-    .. testoutput:: _get_translation_language
+    .. testoutput:: _get_standard_language
 
        Language code: de
     """
@@ -614,7 +616,7 @@ def _get_translations(groups, lang=None):
            <Translation: Ulsanian: Ulsänisch>
        ]>
     """
-    lang = _get_translation_language(lang)
+    lang = _get_standard_language(lang)
 
     filters = models.Q()
     for (ct_id, objs) in groups.items():
@@ -957,7 +959,7 @@ def update_translations(entity, *relations, lang=None):
        City: Cologne
        City: Munich
     """
-    lang = _get_translation_language(lang)
+    lang = _get_standard_language(lang)
 
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_entity_groups(entity, hierarchy)
