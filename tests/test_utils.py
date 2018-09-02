@@ -18,46 +18,46 @@ from tests.sample import create_samples
 class GetTranslationLanguageTest(TestCase):
     """Tests for `_get_translation_language`."""
 
-    def test_none_simple(self):
+    def test_active_language_simple(self):
         activate('de')
         self.assertEqual(
             _get_translation_language(),
             'de'
         )
 
-    def test_explicit_simple(self):
+    def test_custom_language_simple(self):
         self.assertEqual(
             _get_translation_language('de'),
             'de'
         )
 
-    def test_none_accent_not_exists(self):
+    def test_active_language_nonexisting_accent(self):
         activate('de-at')
         self.assertEqual(
             _get_translation_language(),
             'de'
         )
 
-    def test_explicit_accent_not_exists(self):
+    def test_custom_language_nonexisting_accent(self):
         self.assertEqual(
             _get_translation_language('de-at'),
             'de'
         )
 
-    def test_none_accent_exists(self):
+    def test_active_language_existing_accent(self):
         activate('en-gb')
         self.assertEqual(
             _get_translation_language(),
             'en-gb'
         )
 
-    def test_explicit_accent_exists(self):
+    def test_custom_language_existing_accent(self):
         self.assertEqual(
             _get_translation_language('en-gb'),
             'en-gb'
         )
 
-    def test_invalid_lang(self):
+    def test_invalid_language(self):
         with self.assertRaises(ValueError) as error:
             _get_translation_language('xx')
         self.assertEqual(
