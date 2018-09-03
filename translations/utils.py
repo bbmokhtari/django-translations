@@ -557,16 +557,18 @@ def _get_translations(groups, lang=None):
     """
     Return the translations of some :term:`instance groups` in a language.
 
-    Fetches the translations of the :term:`instance groups` in a language and
-    returns them as a :class:`~translations.models.Translation` queryset.
+    Loops through the :term:`instance groups` and collects the parameters
+    that can be used to query the translations of each instance. When all
+    the instances are processed it queries the
+    :class:`~translations.models.Translation` model using the gathered
+    parameters and returns the queryset.
 
     :param groups: The :term:`instance groups` to fetch the translations of.
     :type groups: dict(int, dict(str, ~django.db.models.Model))
-    :param lang: The language to fetch the translations of
-        the :term:`instance groups` in.
+    :param lang: The language to fetch the translations in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :return: The translations.
+    :return: The translations of the :term:`instance groups`.
     :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
     :raise ValueError: If the language code is not included in
         the :data:`~django.conf.settings.LANGUAGES` setting.
