@@ -642,7 +642,7 @@ def _get_translations(groups, lang=None):
         language=lang
     ).filter(
         filters
-    ).distinct().select_related('content_type')
+    ).select_related('content_type')
 
     return queryset
 
