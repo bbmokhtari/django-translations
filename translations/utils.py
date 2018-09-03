@@ -431,8 +431,8 @@ def _get_instance_groups(entity, hierarchy):
     a :term:`relations hierarchy` of it.
 
     Creates the :term:`instance groups`, loops through the entity and the
-    :term:`relations hierarchy` of it and categorizes each instance it
-    encounters inside the :term:`instance groups`. When all the instances
+    :term:`relations hierarchy` of it and fills the :term:`instance groups`
+    with each instance under a certain content type. When all the instances
     are processes returns the :term:`instance groups`.
 
     :param entity: the entity to make the :term:`instance groups` out of and
