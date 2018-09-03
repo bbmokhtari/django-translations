@@ -478,8 +478,6 @@ class GetRelationsHierarchyTest(TestCase):
 class GetInstanceGroupsTest(TestCase):
     """Tests for `_get_instance_groups`."""
 
-    # ---- arguments testing -------------------------------------------------
-
     def test_instance_level_0_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -489,9 +487,9 @@ class GetInstanceGroupsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
 
-        ct_continent = ContentType.objects.get_for_model(Continent)
-
         hierarchy = _get_relations_hierarchy()
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
 
         self.assertDictEqual(
             _get_instance_groups(europe, hierarchy),
@@ -514,10 +512,10 @@ class GetInstanceGroupsTest(TestCase):
         europe = Continent.objects.get(code='EU')
         germany = europe.countries.all()[0]
 
+        hierarchy = _get_relations_hierarchy('countries')
+
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
-
-        hierarchy = _get_relations_hierarchy('countries')
 
         self.assertDictEqual(
             _get_instance_groups(europe, hierarchy),
@@ -546,10 +544,10 @@ class GetInstanceGroupsTest(TestCase):
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
+        hierarchy = _get_relations_hierarchy('countries__cities')
+
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
-
-        hierarchy = _get_relations_hierarchy('countries__cities')
 
         self.assertDictEqual(
             _get_instance_groups(europe, hierarchy),
@@ -578,11 +576,11 @@ class GetInstanceGroupsTest(TestCase):
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
-
-        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
 
         self.assertDictEqual(
             _get_instance_groups(europe, hierarchy),
@@ -612,9 +610,9 @@ class GetInstanceGroupsTest(TestCase):
 
         asia = [x for x in continents if x.code == 'AS'][0]
 
-        ct_continent = ContentType.objects.get_for_model(Continent)
+        hierarchy = _get_relations_hierarchy()
 
-        hierarchy = _get_relations_hierarchy('countries',)
+        ct_continent = ContentType.objects.get_for_model(Continent)
 
         self.assertDictEqual(
             _get_instance_groups(continents, hierarchy),
@@ -643,10 +641,10 @@ class GetInstanceGroupsTest(TestCase):
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
 
+        hierarchy = _get_relations_hierarchy('countries')
+
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
-
-        hierarchy = _get_relations_hierarchy('countries',)
 
         self.assertDictEqual(
             _get_instance_groups(continents, hierarchy),
@@ -683,10 +681,10 @@ class GetInstanceGroupsTest(TestCase):
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
 
+        hierarchy = _get_relations_hierarchy('countries__cities')
+
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
-
-        hierarchy = _get_relations_hierarchy('countries__cities',)
 
         self.assertDictEqual(
             _get_instance_groups(continents, hierarchy),
@@ -723,11 +721,11 @@ class GetInstanceGroupsTest(TestCase):
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
 
+        hierarchy = _get_relations_hierarchy('countries', 'countries__cities',)
+
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
-
-        hierarchy = _get_relations_hierarchy('countries', 'countries__cities',)
 
         self.assertDictEqual(
             _get_instance_groups(continents, hierarchy),
@@ -746,8 +744,6 @@ class GetInstanceGroupsTest(TestCase):
                 }
             }
         )
-
-    # ---- error testing -----------------------------------------------------
 
     def test_invalid_relation(self):
         create_samples(
@@ -779,11 +775,13 @@ class GetInstanceGroupsTest(TestCase):
                 return self.name
 
         behzad = Person('Behzad')
+
         with self.assertRaises(TypeError) as error:
             _get_instance_groups(behzad, {})
         self.assertEqual(
             error.exception.args[0],
-            '`Behzad` is neither a model instance nor an iterable of model instances.'
+            ('`Behzad` is neither a model instance nor an iterable of' +
+             ' model instances.')
         )
 
 
