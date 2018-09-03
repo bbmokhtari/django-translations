@@ -658,7 +658,7 @@ def apply_translations(entity, *relations, lang=None):
     Apply the translations on an entity and the relations of it in a language.
 
     Fetches the translations of the entity and the specified relations of it
-    in a language and applies them, field by field and in place.
+    in a language and applies them in place.
 
     :param entity: The entity to apply the translations on and on the
         relations of.
@@ -683,22 +683,22 @@ def apply_translations(entity, *relations, lang=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. warning::
-       The relations of an instance, a queryset or a list of instances
-       **must** be fetched before performing the translation process.
+    .. note::
+
+       It is **recommended** for the relations of the entity to be prefetched
+       before applying the translations in order to reach optimal performance.
 
        To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
     .. warning::
-       Only when all the filterings are executed on the relations of an
-       instance, a queryset or a list of instances, they should go through the
-       translation process, otherwise if a relation is filtered after the
-       translation process the translations of that relation are reset.
 
-       To filter a relation when fetching it use
-       :class:`~django.db.models.Prefetch`.
+       Filtering any queryset after applying the translations will cause the
+       translations of that queryset to be reset. The solution is to do the
+       filtering before applying the translations.
+
+       To do this on the relations use :class:`~django.db.models.Prefetch`.
 
     .. testsetup:: apply_translations
 
