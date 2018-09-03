@@ -844,11 +844,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
         groups = _get_instance_groups(europe, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -870,11 +871,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries')
         groups = _get_instance_groups(europe, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -898,11 +900,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries__cities')
         groups = _get_instance_groups(europe, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -926,11 +929,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
         groups = _get_instance_groups(europe, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -1067,11 +1071,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
         groups = _get_instance_groups(continents, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -1095,11 +1100,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries')
         groups = _get_instance_groups(continents, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -1127,11 +1133,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries__cities')
         groups = _get_instance_groups(continents, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
@@ -1159,11 +1166,12 @@ class GetTranslationsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        activate('de')
+
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
         groups = _get_instance_groups(continents, hierarchy)
 
-        activate('de')
         self.assertQuerysetEqual(
             _get_translations(
                 groups
