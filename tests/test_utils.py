@@ -3282,7 +3282,8 @@ class ApplyTranslationsTest(TestCase):
             )
         self.assertEqual(
             error.exception.args[0],
-            '`Behzad` is neither a model instance nor an iterable of model instances.'
+            ('`Behzad` is neither a model instance nor an iterable of' +
+             ' model instances.')
         )
 
     def test_invalid_iterable(self):
@@ -3307,7 +3308,8 @@ class ApplyTranslationsTest(TestCase):
             )
         self.assertEqual(
             error.exception.args[0],
-            '`[Behzad, Max]` is neither a model instance nor an iterable of model instances.'
+            ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
+             ' model instances.')
         )
 
 
