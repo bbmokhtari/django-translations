@@ -520,13 +520,13 @@ def _get_instance_groups(entity, hierarchy):
         content_type = ContentType.objects.get_for_model(model)
 
         if included:
-            content_type_groups = groups.setdefault(content_type.id, {})
+            object_groups = groups.setdefault(content_type.id, {})
             if not issubclass(model, translations.models.Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj, hierarchy):
             if included:
-                content_type_groups[str(obj.id)] = obj
+                object_groups[str(obj.id)] = obj
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
