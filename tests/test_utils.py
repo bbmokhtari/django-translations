@@ -110,6 +110,27 @@ class GetEntityDetailsTest(TestCase):
             (True, None)
         )
 
+    def test_invalid_instance(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+
+        with self.assertRaises(TypeError) as error:
+            _get_entity_details(behzad)
+        self.assertEqual(
+            error.exception.args[0],
+            ('`Behzad` is neither a model instance nor an iterable' +
+             ' of model instances.')
+        )
+
     def test_invalid_iterable(self):
         class Person:
             def __init__(self, name):
@@ -124,31 +145,12 @@ class GetEntityDetailsTest(TestCase):
         people = []
         people.append(Person('Behzad'))
         people.append(Person('Max'))
+
         with self.assertRaises(TypeError) as error:
             _get_entity_details(people)
         self.assertEqual(
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable' +
-             ' of model instances.')
-        )
-
-    def test_invalid_instance(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-        with self.assertRaises(TypeError) as error:
-            _get_entity_details(behzad)
-        self.assertEqual(
-            error.exception.args[0],
-            ('`Behzad` is neither a model instance nor an iterable' +
              ' of model instances.')
         )
 
@@ -745,7 +747,7 @@ class GetInstanceGroupsTest(TestCase):
             }
         )
 
-    def test_invalid_relation(self):
+    def test_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -763,7 +765,27 @@ class GetInstanceGroupsTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_invalid_entity(self):
+    def test_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        hierarchy = _get_relations_hierarchy('countries__wrong')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            _get_instance_groups(europe, hierarchy)
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
+    def test_invalid_instance(self):
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -781,6 +803,29 @@ class GetInstanceGroupsTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             ('`Behzad` is neither a model instance nor an iterable of' +
+             ' model instances.')
+        )
+
+    def test_invalid_iterable(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        people = []
+        people.append(Person('Behzad'))
+        people.append(Person('Max'))
+
+        with self.assertRaises(TypeError) as error:
+            _get_instance_groups(people, {})
+        self.assertEqual(
+            error.exception.args[0],
+            ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
              ' model instances.')
         )
 
