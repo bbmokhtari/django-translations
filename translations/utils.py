@@ -23,6 +23,7 @@ following members:
 """
 
 from django.db import models, transaction
+from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
@@ -534,6 +535,11 @@ def _get_instance_groups(entity, hierarchy):
                     value = getattr(obj, relation, None)
                     if value is not None:
                         if isinstance(value, models.Manager):
+                            if not (
+                                hasattr(obj, '_prefetched_objects_cache') and
+                                relation in obj._prefetched_objects_cache
+                            ):
+                                prefetch_related_objects([obj], relation)
                             value = value.all()
                         _fill_entity(
                             entity=value,
