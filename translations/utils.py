@@ -10,11 +10,11 @@ following members:
     Return the reverse of a model's relation.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` made out of some relations.
-:func:`_get_entity_groups`
-    Return the :term:`entity groups` made out of an entity and
+:func:`_get_instance_groups`
+    Return the :term:`instance groups` made out of an entity and
     a :term:`relations hierarchy` of it.
 :func:`_get_translations`
-    Return the translations of some :term:`entity groups` in a language.
+    Return the translations of some :term:`instance groups` in a language.
 :func:`apply_translations`
     Apply the translations on an entity and the relations of it in a language.
 :func:`update_translations`
@@ -335,8 +335,8 @@ def _get_relations_hierarchy(*relations):
     """
     Return the :term:`relations hierarchy` made out of some relations.
 
-    Creates a :term:`relations hierarchy`, splits each relation into different
-    parts based on the relation depth and fills the
+    Creates the :term:`relations hierarchy`, splits each relation into
+    different parts based on the relation depth and fills the
     :term:`relations hierarchy` with them. When all the relations are
     processed returns the :term:`relations hierarchy`.
 
@@ -425,22 +425,24 @@ def _get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def _get_entity_groups(entity, hierarchy):
+def _get_instance_groups(entity, hierarchy):
     """
-    Return the :term:`entity groups` made out of an entity and
+    Return the :term:`instance groups` made out of an entity and
     a :term:`relations hierarchy` of it.
 
-    Processes the entity and the :term:`relations hierarchy` of it and returns
-    the :term:`entity groups` made out of them.
+    Creates the :term:`instance groups`, loops through the entity and the
+    :term:`relations hierarchy` of it and categorizes each instance it
+    encounters inside the :term:`instance groups`. When all the instances
+    are processes returns the :term:`instance groups`.
 
-    :param entity: the entity to make the :term:`entity groups` out of and out
-        of the :term:`relations hierarchy` of.
+    :param entity: the entity to make the :term:`instance groups` out of and
+        out of the :term:`relations hierarchy` of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param hierarchy: The :term:`relations hierarchy` of the entity to make
-        the :term:`entity groups` out of.
+        the :term:`instance groups` out of.
     :type hierarchy: dict(str, dict)
-    :return: The :term:`entity groups` made out of the entity and
+    :return: The :term:`instance groups` made out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
     :raise TypeError:
@@ -454,7 +456,7 @@ def _get_entity_groups(entity, hierarchy):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. testsetup:: _get_entity_groups
+    .. testsetup:: _get_instance_groups
 
        from tests.sample import create_samples
 
@@ -468,14 +470,14 @@ def _get_entity_groups(entity, hierarchy):
            langs=['de']
        )
 
-    To get the :term:`entity groups` of an entity and
+    To get the :term:`instance groups` of an entity and
     the :term:`relations hierarchy` of it:
 
-    .. testcode:: _get_entity_groups
+    .. testcode:: _get_instance_groups
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent, Country, City
-       from translations.utils import _get_entity_groups
+       from translations.utils import _get_instance_groups
        from translations.utils import _get_relations_hierarchy
 
        relations = ('countries', 'countries__cities',)
@@ -483,7 +485,7 @@ def _get_entity_groups(entity, hierarchy):
 
        continents = Continent.objects.all()
 
-       groups = _get_entity_groups(continents, hierarchy)
+       groups = _get_instance_groups(continents, hierarchy)
 
        ct_continent = ContentType.objects.get_for_model(Continent).id
        ct_country = ContentType.objects.get_for_model(Country).id
@@ -496,7 +498,7 @@ def _get_entity_groups(entity, hierarchy):
        for id, obj in sorted(groups[ct_city].items(), key=lambda x: x[0]):
            print(obj)
 
-    .. testoutput:: _get_entity_groups
+    .. testoutput:: _get_instance_groups
 
        Europe
        Asia
@@ -553,15 +555,15 @@ def _get_entity_groups(entity, hierarchy):
 
 def _get_translations(groups, lang=None):
     """
-    Return the translations of some :term:`entity groups` in a language.
+    Return the translations of some :term:`instance groups` in a language.
 
-    Fetches the translations of the :term:`entity groups` in a language and
+    Fetches the translations of the :term:`instance groups` in a language and
     returns them as a :class:`~translations.models.Translation` queryset.
 
-    :param groups: The :term:`entity groups` to fetch the translations of.
+    :param groups: The :term:`instance groups` to fetch the translations of.
     :type groups: dict(int, dict(str, ~django.db.models.Model))
     :param lang: The language to fetch the translations of
-        the :term:`entity groups` in.
+        the :term:`instance groups` in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
     :return: The translations.
@@ -583,20 +585,20 @@ def _get_translations(groups, lang=None):
            langs=['de']
        )
 
-    To get the translations of some :term:`entity groups`:
+    To get the translations of some :term:`instance groups`:
 
     .. testcode:: _get_translations
 
        from sample.models import Continent
        from translations.utils import _get_relations_hierarchy
-       from translations.utils import _get_entity_groups
+       from translations.utils import _get_instance_groups
        from translations.utils import _get_translations
 
        relations = ('countries','countries__cities',)
 
        continents = list(Continent.objects.all())
        hierarchy = _get_relations_hierarchy(*relations)
-       groups = _get_entity_groups(continents, hierarchy)
+       groups = _get_instance_groups(continents, hierarchy)
 
        translations = _get_translations(groups, lang='de')
 
@@ -796,7 +798,7 @@ def apply_translations(entity, *relations, lang=None):
        City: München
     """
     hierarchy = _get_relations_hierarchy(*relations)
-    groups = _get_entity_groups(entity, hierarchy)
+    groups = _get_instance_groups(entity, hierarchy)
     translations = _get_translations(groups, lang=lang)
 
     for translation in translations:
@@ -969,7 +971,7 @@ def update_translations(entity, *relations, lang=None):
     lang = _get_standard_language(lang)
 
     hierarchy = _get_relations_hierarchy(*relations)
-    groups = _get_entity_groups(entity, hierarchy)
+    groups = _get_instance_groups(entity, hierarchy)
     old_translations = _get_translations(groups, lang=lang)
 
     new_translations = []

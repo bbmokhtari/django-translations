@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_standard_language, \
     _get_entity_details, _get_reverse_relation,  _get_relations_hierarchy, \
-    _get_entity_groups, _get_translations, \
+    _get_instance_groups, _get_translations, \
     apply_translations, update_translations
 from translations.models import Translation
 
@@ -475,8 +475,8 @@ class GetRelationsHierarchyTest(TestCase):
         )
 
 
-class GetEntityGroupsTest(TestCase):
-    """Tests for `_get_entity_groups`."""
+class GetInstanceGroupsTest(TestCase):
+    """Tests for `_get_instance_groups`."""
 
     # ---- arguments testing -------------------------------------------------
 
@@ -494,7 +494,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy()
 
         self.assertDictEqual(
-            _get_entity_groups(europe, hierarchy),
+            _get_instance_groups(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -520,7 +520,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries')
 
         self.assertDictEqual(
-            _get_entity_groups(europe, hierarchy),
+            _get_instance_groups(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -552,7 +552,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries__cities')
 
         self.assertDictEqual(
-            _get_entity_groups(europe, hierarchy),
+            _get_instance_groups(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -585,7 +585,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
 
         self.assertDictEqual(
-            _get_entity_groups(europe, hierarchy),
+            _get_instance_groups(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -617,7 +617,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries',)
 
         self.assertDictEqual(
-            _get_entity_groups(continents, hierarchy),
+            _get_instance_groups(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -649,7 +649,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries',)
 
         self.assertDictEqual(
-            _get_entity_groups(continents, hierarchy),
+            _get_instance_groups(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -689,7 +689,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries__cities',)
 
         self.assertDictEqual(
-            _get_entity_groups(continents, hierarchy),
+            _get_instance_groups(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -730,7 +730,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities',)
 
         self.assertDictEqual(
-            _get_entity_groups(continents, hierarchy),
+            _get_instance_groups(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -761,7 +761,7 @@ class GetEntityGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_entity_groups(europe, hierarchy)
+            _get_instance_groups(europe, hierarchy)
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -780,7 +780,7 @@ class GetEntityGroupsTest(TestCase):
 
         behzad = Person('Behzad')
         with self.assertRaises(TypeError) as error:
-            _get_entity_groups(behzad, {})
+            _get_instance_groups(behzad, {})
         self.assertEqual(
             error.exception.args[0],
             '`Behzad` is neither a model instance nor an iterable of model instances.'
@@ -805,7 +805,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -831,7 +831,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries')
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -859,7 +859,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries__cities')
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -887,7 +887,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -917,7 +917,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -942,7 +942,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries')
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -970,7 +970,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries__cities')
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -998,7 +998,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -1028,7 +1028,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -1056,7 +1056,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries')
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -1088,7 +1088,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries__cities')
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -1120,7 +1120,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         activate('de')
         self.assertQuerysetEqual(
@@ -1156,7 +1156,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -1184,7 +1184,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries')
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -1216,7 +1216,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries__cities')
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -1248,7 +1248,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
-        groups = _get_entity_groups(continents, hierarchy)
+        groups = _get_instance_groups(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(
@@ -1282,7 +1282,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
-        groups = _get_entity_groups(europe, hierarchy)
+        groups = _get_instance_groups(europe, hierarchy)
 
         with self.assertRaises(ValueError) as error:
             _get_translations(

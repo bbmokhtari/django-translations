@@ -42,19 +42,19 @@ The terms you might see in the documentation:
      the ``nested_relation`` represents the second-level relation of the
      model and so on.
 
-   entity groups
-     The entity groups are a group of objects divided into groups based on
-     their content types and object ids.
+   instance groups
+     The instance groups are a group of instances divided into groups based on
+     their content types.
 
      example::
 
         {
             content_type_id_1: {
-                object_id_1: object_1,
+                object_id_1: instance_1,
                 object_id_2: ...
             },
             content_type_id_2: ...
         }
 
      The first level keys are content types, the second level keys are object
-     ids and the values of the object ids keys are the actual objects.
+     ids and the values of the object id keys are the instances.
