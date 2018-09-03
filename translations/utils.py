@@ -335,11 +335,16 @@ def _get_relations_hierarchy(*relations):
     """
     Return the :term:`relations hierarchy` made out of some relations.
 
-    Processes the relations and returns the :term:`relations hierarchy` made
-    out of them.
+    Creates a :term:`relations hierarchy`, splits each relation into different
+    parts based on the relation depth and fills the
+    :term:`relations hierarchy` with them. When all the relations are
+    processed returns the :term:`relations hierarchy`.
 
     :param relations: The relations to make the :term:`relations hierarchy`
         out of.
+        Each relation may be composed of many ``related_query_name``\\ s
+        separated by :data:`~django.db.models.constants.LOOKUP_SEP`
+        (usually ``__``) to represent a deeply nested relation.
     :type relations: list(str)
     :return: The :term:`relations hierarchy` made out of the relations.
     :rtype: dict(str, dict)
