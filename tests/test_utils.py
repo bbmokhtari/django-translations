@@ -215,13 +215,13 @@ class GetReverseRelationTest(TestCase):
 class GetRelationsHierarchyTest(TestCase):
     """Tests for `_get_relations_hierarchy`."""
 
-    def test_no_relations(self):
+    def test_level_0_relation(self):
         self.assertDictEqual(
             _get_relations_hierarchy(),
             {}
         )
 
-    def test_one_included_no_nested_relations(self):
+    def test_one_level_1_relation(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries'
@@ -234,7 +234,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_many_included_no_nested_relations(self):
+    def test_many_level_1_relations(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries',
@@ -252,7 +252,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_one_unincluded_one_nested_relation(self):
+    def test_one_unincluded_level_1_and_one_nested_level_2_relation(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries__cities'
@@ -270,7 +270,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_many_unincluded_one_nested_relation(self):
+    def test_many_unincluded_level_1_and_one_nested_level_2_relation(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries__cities',
@@ -298,7 +298,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_one_uincluded_many_nested_relations(self):
+    def test_one_unincluded_level_1_and_many_nested_level_2_relations(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries__cities',
@@ -321,7 +321,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_many_uincluded_many_nested_relations(self):
+    def test_many_unincluded_level_1_and_many_nested_level_2_relations(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries__cities',
@@ -359,7 +359,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_one_included_one_nested_relations(self):
+    def test_one_included_level_1_and_one_nested_level_2_relation(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries',
@@ -378,7 +378,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_many_included_one_nested_relations(self):
+    def test_many_included_level_1_and_one_nested_level_2_relation(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries',
@@ -408,7 +408,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_one_included_many_nested_relations(self):
+    def test_one_included_level_1_and_many_nested_level_2_relations(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries',
@@ -432,7 +432,7 @@ class GetRelationsHierarchyTest(TestCase):
             }
         )
 
-    def test_many_included_many_nested_relations(self):
+    def test_many_included_level_1_and_many_nested_level_2_relations(self):
         self.assertEqual(
             _get_relations_hierarchy(
                 'countries',
