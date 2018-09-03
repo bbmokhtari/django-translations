@@ -789,7 +789,6 @@ def apply_translations(entity, *relations, lang=None):
        relations = ('countries', 'countries__cities',)
 
        europe = Continent.objects.get(code='EU')
-       prefetch_related_objects([europe], *relations)
 
        apply_translations(europe, *relations, lang='de')
 
