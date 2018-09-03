@@ -1345,9 +1345,355 @@ class GetTranslationsTest(TestCase):
 class ApplyTranslationsTest(TestCase):
     """Tests for `apply_translations`."""
 
-    # ---- arguments testing -------------------------------------------------
-
     def test_instance_level_0_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe)
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+
+    def test_instance_level_1_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        lvl_1 = ('countries',)
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, *lvl_1)
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+
+    def test_instance_level_2_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        lvl_2 = ('countries__cities',)
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, *lvl_2)
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+
+    def test_instance_level_1_2_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        lvl_1_2 = ('countries', 'countries__cities',)
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, *lvl_1_2)
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+
+    def test_instance_level_0_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, lang='de')
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+
+    def test_instance_level_1_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1 = ('countries',)
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, *lvl_1, lang='de')
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+
+    def test_instance_level_2_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_2 = ('countries__cities',)
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, *lvl_2, lang='de')
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+
+    def test_instance_level_1_2_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1_2 = ('countries', 'countries__cities',)
+
+        europe = Continent.objects.get(code='EU')
+        apply_translations(europe, *lvl_1_2, lang='de')
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+
+    def test_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1392,7 +1738,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
-    def test_instance_level_1_relation_no_lang(self):
+    def test_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1438,7 +1784,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
-    def test_instance_level_2_relation_no_lang(self):
+    def test_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1484,7 +1830,7 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
-    def test_instance_level_1_2_relation_no_lang(self):
+    def test_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1529,7 +1875,7 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
-    def test_instance_level_0_relation_with_lang(self):
+    def test_prefetched_instance_level_0_relation_with_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1572,7 +1918,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
-    def test_instance_level_1_relation_with_lang(self):
+    def test_prefetched_instance_level_1_relation_with_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1616,7 +1962,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
-    def test_instance_level_2_relation_with_lang(self):
+    def test_prefetched_instance_level_2_relation_with_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1660,7 +2006,7 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
-    def test_instance_level_1_2_relation_with_lang(self):
+    def test_prefetched_instance_level_1_2_relation_with_lang(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1704,6 +2050,578 @@ class ApplyTranslationsTest(TestCase):
         )
 
     def test_queryset_level_0_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        continents = Continent.objects.all()
+        apply_translations(continents)
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'South Korea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'South Korean'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seoul'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seouler'
+        )
+
+    def test_queryset_level_1_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        lvl_1 = ('countries',)
+
+        continents = Continent.objects.all()
+        apply_translations(continents, *lvl_1)
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'Südkorea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'Südkoreanisch'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seoul'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seouler'
+        )
+
+    def test_queryset_level_2_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        lvl_2 = ('countries__cities',)
+
+        continents = Continent.objects.all()
+        apply_translations(continents, *lvl_2)
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'South Korea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'South Korean'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seül'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seüler'
+        )
+
+    def test_queryset_level_1_2_relation_no_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        activate('de')
+
+        lvl_1_2 = ('countries', 'countries__cities',)
+
+        continents = Continent.objects.all()
+        apply_translations(continents, *lvl_1_2)
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'Südkorea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'Südkoreanisch'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seül'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seüler'
+        )
+
+    def test_queryset_level_0_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        continents = Continent.objects.all()
+        apply_translations(continents, lang='de')
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'South Korea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'South Korean'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seoul'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seouler'
+        )
+
+    def test_queryset_level_1_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1 = ('countries',)
+
+        continents = Continent.objects.all()
+        apply_translations(continents, *lvl_1, lang='de')
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Cologne'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Cologner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'Südkorea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'Südkoreanisch'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seoul'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seouler'
+        )
+
+    def test_queryset_level_2_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_2 = ('countries__cities',)
+
+        continents = Continent.objects.all()
+        apply_translations(continents, *lvl_2, lang='de')
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Germany'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'German'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'South Korea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'South Korean'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seül'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seüler'
+        )
+
+    def test_queryset_level_1_2_relation_with_lang(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1_2 = ('countries', 'countries__cities',)
+
+        continents = Continent.objects.all()
+        apply_translations(continents, *lvl_1_2, lang='de')
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        self.assertEqual(
+            europe.name,
+            'Europa'
+        )
+        self.assertEqual(
+            europe.denonym,
+            'Europäisch'
+        )
+        self.assertEqual(
+            germany.name,
+            'Deutschland'
+        )
+        self.assertEqual(
+            germany.denonym,
+            'Deutsche'
+        )
+        self.assertEqual(
+            cologne.name,
+            'Köln'
+        )
+        self.assertEqual(
+            cologne.denonym,
+            'Kölner'
+        )
+        self.assertEqual(
+            asia.name,
+            'Asien'
+        )
+        self.assertEqual(
+            asia.denonym,
+            'Asiatisch'
+        )
+        self.assertEqual(
+            south_korea.name,
+            'Südkorea'
+        )
+        self.assertEqual(
+            south_korea.denonym,
+            'Südkoreanisch'
+        )
+        self.assertEqual(
+            seoul.name,
+            'Seül'
+        )
+        self.assertEqual(
+            seoul.denonym,
+            'Seüler'
+        )
+
+    def test_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -1776,7 +2694,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_1_relation_no_lang(self):
+    def test_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -1850,7 +2768,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_2_relation_no_lang(self):
+    def test_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -1924,7 +2842,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_1_2_relation_no_lang(self):
+    def test_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -1997,7 +2915,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_0_relation_with_lang(self):
+    def test_prefetched_queryset_level_0_relation_with_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -2068,7 +2986,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_1_relation_with_lang(self):
+    def test_prefetched_queryset_level_1_relation_with_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -2140,7 +3058,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
-    def test_queryset_level_2_relation_with_lang(self):
+    def test_prefetched_queryset_level_2_relation_with_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -2212,7 +3130,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_queryset_level_1_2_relation_with_lang(self):
+    def test_prefetched_queryset_level_1_2_relation_with_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -2283,8 +3201,6 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    # ---- error testing -----------------------------------------------------
-
     def test_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2304,7 +3220,7 @@ class ApplyTranslationsTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    def test_invalid_relation(self):
+    def test_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -2324,7 +3240,29 @@ class ApplyTranslationsTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_invalid_entity(self):
+    def test_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            apply_translations(
+                europe,
+                'countries__wrong',
+                lang='de'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
+    def test_invalid_instance(self):
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -2336,6 +3274,7 @@ class ApplyTranslationsTest(TestCase):
                 return self.name
 
         behzad = Person('Behzad')
+
         with self.assertRaises(TypeError) as error:
             apply_translations(
                 behzad,
@@ -2344,6 +3283,31 @@ class ApplyTranslationsTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             '`Behzad` is neither a model instance nor an iterable of model instances.'
+        )
+
+    def test_invalid_iterable(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        people = []
+        people.append(Person('Behzad'))
+        people.append(Person('Max'))
+
+        with self.assertRaises(TypeError) as error:
+            apply_translations(
+                people,
+                lang='de'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            '`[Behzad, Max]` is neither a model instance nor an iterable of model instances.'
         )
 
 
