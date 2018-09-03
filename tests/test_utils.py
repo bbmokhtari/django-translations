@@ -833,8 +833,6 @@ class GetInstanceGroupsTest(TestCase):
 class GetTranslationsTest(TestCase):
     """Tests for `_get_translations`."""
 
-    # ---- arguments testing -------------------------------------------------
-
     def test_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1313,8 +1311,6 @@ class GetTranslationsTest(TestCase):
                 '<Translation: Seouler: Seüler>',
             ]
         )
-
-    # ---- error testing -----------------------------------------------------
 
     def test_invalid_lang(self):
         create_samples(
