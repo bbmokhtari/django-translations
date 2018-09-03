@@ -596,10 +596,11 @@ def _get_translations(groups, lang=None):
        from translations.utils import _get_instance_groups
        from translations.utils import _get_translations
 
-       relations = ('countries','countries__cities',)
-
        continents = list(Continent.objects.all())
+
+       relations = ('countries','countries__cities',)
        hierarchy = _get_relations_hierarchy(*relations)
+
        groups = _get_instance_groups(continents, hierarchy)
 
        translations = _get_translations(groups, lang='de')
