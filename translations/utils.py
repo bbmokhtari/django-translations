@@ -477,13 +477,13 @@ def _get_instance_groups(entity, hierarchy):
 
        from django.contrib.contenttypes.models import ContentType
        from sample.models import Continent, Country, City
-       from translations.utils import _get_instance_groups
        from translations.utils import _get_relations_hierarchy
+       from translations.utils import _get_instance_groups
+
+       continents = Continent.objects.all()
 
        relations = ('countries', 'countries__cities',)
        hierarchy = _get_relations_hierarchy(*relations)
-
-       continents = Continent.objects.all()
 
        groups = _get_instance_groups(continents, hierarchy)
 
