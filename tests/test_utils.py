@@ -128,7 +128,8 @@ class GetEntityDetailsTest(TestCase):
             _get_entity_details(people)
         self.assertEqual(
             error.exception.args[0],
-            '`[Behzad, Max]` is neither a model instance nor an iterable of model instances.'
+            ('`[Behzad, Max]` is neither a model instance nor an iterable' +
+             ' of model instances.')
         )
 
     def test_invalid_instance(self):
@@ -147,7 +148,8 @@ class GetEntityDetailsTest(TestCase):
             _get_entity_details(behzad)
         self.assertEqual(
             error.exception.args[0],
-            '`Behzad` is neither a model instance nor an iterable of model instances.'
+            ('`Behzad` is neither a model instance nor an iterable' +
+             ' of model instances.')
         )
 
 
