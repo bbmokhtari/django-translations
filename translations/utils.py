@@ -685,7 +685,7 @@ def apply_translations(entity, *relations, lang=None):
 
     .. note::
 
-       It is **recommended** for the relations of the entity to be prefetched
+       It is recommended for the relations of the entity to be prefetched
        before applying the translations in order to reach optimal performance.
 
        To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
