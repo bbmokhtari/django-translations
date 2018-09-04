@@ -927,14 +927,19 @@ def update_translations(entity, *relations, lang=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. warning::
+    .. testsetup:: update_translations_0
 
-       The relations of the entity **must** be prefetched before updating
-       the translations.
+       from tests.sample import create_samples
 
-       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects`.
+       create_samples(
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
+       )
 
     .. testsetup:: update_translations_1
 
@@ -977,6 +982,53 @@ def update_translations(entity, *relations, lang=None):
            city_fields=['name', 'denonym'],
            langs=['de']
        )
+
+    .. warning::
+
+       It is **mandatory** for the relations of the entity to be prefetched
+       before making any changes to their fields in order for the Translations
+       app to be able to fetch them.
+
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
+
+       Consider this case:
+
+       .. testcode:: update_translations_0
+
+          from sample.models import Continent
+
+          europe = Continent.objects.get(code='EU')  # Wrong
+          europe.countries.all()[0].name = 'Germany (changed)'  # first query
+
+          new_name = europe.countries.all()[0].name  # does a second query
+
+          print('Country: {}  -- Wrong'.format(new_name))
+
+       .. testoutput:: update_translations_0
+
+          Country: Germany  -- Wrong
+
+       As we can see the new query did not fetch the changes we made before.
+       To fix it:
+
+       .. testcode:: update_translations_0
+
+          from sample.models import Continent
+
+          europe = Continent.objects.prefetch_related(  # Correct
+              'countries',
+          ).get(code='EU')
+          europe.countries.all()[0].name = 'Germany (changed)'  # first query
+
+          new_name = europe.countries.all()[0].name  # uses first query
+
+          print('Country: {}  -- Correct'.format(new_name))
+
+       .. testoutput:: update_translations_0
+
+          Country: Germany (changed)  -- Correct
 
     To update the translations of a list of instances and the relations of it:
 
