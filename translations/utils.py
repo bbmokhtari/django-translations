@@ -806,6 +806,8 @@ def apply_translations(entity, *relations, lang=None):
 
        To do this on the relations use :class:`~django.db.models.Prefetch`.
 
+       Consider this case:
+
        .. testcode:: apply_translations
 
           from sample.models import Continent
@@ -835,8 +837,8 @@ def apply_translations(entity, *relations, lang=None):
           City: Seoul  -- Wrong
           City: Ulsan  -- Wrong
 
-       As you can see the translations of the filtered queryset is reset.
-       To fix it, this can be done:
+       As we can see the translations of the filtered queryset is reset.
+       To fix it:
 
        .. testcode:: apply_translations
 
