@@ -837,7 +837,7 @@ def apply_translations(entity, *relations, lang=None):
           City: Seoul  -- Wrong
           City: Ulsan  -- Wrong
 
-       As we can see the translations of the filtered queryset is reset.
+       As we can see the translations of the filtered queryset are reset.
        To fix it:
 
        .. testcode:: apply_translations
