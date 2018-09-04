@@ -900,8 +900,9 @@ def update_translations(entity, *relations, lang=None):
     language.
 
     Deletes the old translations of the entity and the specified relations of
-    it in a language and creates new translations for them based on their
-    fields values.
+    it in a language and creates new translations for the translatable
+    :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
+    entity and the relations of it.
 
     :param entity: The entity to update the translations of and update the
         translations of the relations of.
