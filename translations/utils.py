@@ -820,20 +820,20 @@ def apply_translations(entity, *relations, lang=None):
           for continent in continents:
               print('Continent: {}'.format(continent))
               for country in continent.countries.exclude(name=''):  # Wrong
-                  print('Country: {}'.format(country))
+                  print('Country: {}  -- Wrong'.format(country))
                   for city in country.cities.all():
-                      print('City: {}'.format(city))
+                      print('City: {}  -- Wrong'.format(city))
 
        .. testoutput:: apply_translations
 
           Continent: Europa
-          Country: Germany
-          City: Cologne
-          City: Munich
+          Country: Germany  -- Wrong
+          City: Cologne  -- Wrong
+          City: Munich  -- Wrong
           Continent: Asien
-          Country: South Korea
-          City: Seoul
-          City: Ulsan
+          Country: South Korea  -- Wrong
+          City: Seoul  -- Wrong
+          City: Ulsan  -- Wrong
 
        As you can see the translations of the filtered queryset is reset.
        To fix it, this can be done:
