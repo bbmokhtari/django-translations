@@ -169,6 +169,12 @@ def _get_entity_details(entity):
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
 
+    .. testsetup:: _get_entity_details
+
+       from tests.sample import create_samples
+
+       create_samples(continent_names=['europe'])
+
     .. note::
 
        If the entity is an empty iterable it returns the model as ``None``,
@@ -177,12 +183,6 @@ def _get_entity_details(entity):
        if the model in the details is ``None``, in that case they skip the
        translation process all together (because there's nothing to
        translate).
-
-    .. testsetup:: _get_entity_details
-
-       from tests.sample import create_samples
-
-       create_samples(continent_names=['europe'])
 
     To get the details of a list of instances:
 
@@ -699,15 +699,6 @@ def apply_translations(entity, *relations, lang=None):
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
 
-    .. note::
-
-       It is recommended for the relations of the entity to be prefetched
-       before applying the translations in order to reach optimal performance.
-
-       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects`.
-
     .. testsetup:: apply_translations
 
        from tests.sample import create_samples
@@ -721,6 +712,15 @@ def apply_translations(entity, *relations, lang=None):
            city_fields=['name', 'denonym'],
            langs=['de']
        )
+
+    .. note::
+
+       It is recommended for the relations of the entity to be prefetched
+       before applying the translations in order to reach optimal performance.
+
+       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
+       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+       :func:`~django.db.models.prefetch_related_objects`.
 
     To apply the translations on a list of instances and the relations of it:
 
@@ -939,6 +939,7 @@ def update_translations(entity, *relations, lang=None):
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
+    :raise RuntimeError: If any of the relations is not prefetched.
 
     .. testsetup:: update_translations_0
 
@@ -1258,7 +1259,7 @@ def update_translations(entity, *relations, lang=None):
     lang = _get_standard_language(lang)
 
     hierarchy = _get_relations_hierarchy(*relations)
-    groups = _get_instance_groups(entity, hierarchy)
+    groups = _get_instance_groups(entity, hierarchy, prefetch_mandatory=True)
     old_translations = _get_translations(groups, lang=lang)
 
     new_translations = []
