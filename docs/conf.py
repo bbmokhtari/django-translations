@@ -225,7 +225,7 @@ import builtins
 TestCase.setUpClass()
 
 # Beautify `testoutput`
-def print(obj):
+def print(obj=''):
     if type(obj) == dict:
         pprint(obj, width=72)
     elif type(obj) == QuerySet:

@@ -936,7 +936,35 @@ def update_translations(entity, *relations, lang=None):
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
-    .. testsetup:: update_translations
+    .. testsetup:: update_translations_1
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
+       )
+
+    .. testsetup:: update_translations_2
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
+       )
+
+    .. testsetup:: update_translations_3
 
        from tests.sample import create_samples
 
@@ -952,10 +980,11 @@ def update_translations(entity, *relations, lang=None):
 
     To update the translations of a list of instances and the relations of it:
 
-    .. testcode:: update_translations
+    .. testcode:: update_translations_1
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
+       from translations.utils import apply_translations
        from translations.utils import update_translations
 
        relations = ('countries', 'countries__cities',)
@@ -963,7 +992,10 @@ def update_translations(entity, *relations, lang=None):
        continents = list(Continent.objects.all())
        prefetch_related_objects(continents, *relations)
 
-       update_translations(continents, *relations, lang='en')
+       print("OLD TRANSLATIONS:")
+       print("-----------------")
+
+       apply_translations(continents, *relations, lang='de')
 
        for continent in continents:
            print('Continent: {}'.format(continent))
@@ -972,29 +1004,89 @@ def update_translations(entity, *relations, lang=None):
                for city in country.cities.all():
                    print('City: {}'.format(city))
 
-    .. testoutput:: update_translations
+       print()
+       print("CHANGING:")
+       print("---------")
 
-       Continent: Europe
-       Country: Germany
-       City: Cologne
-       City: Munich
-       Continent: Asia
-       Country: South Korea
-       City: Seoul
-       City: Ulsan
+       for continent_i, continent in enumerate(continents):
+           new_continent = continent.name + ' (changed)'
+           print('Changing: `{}` to `{}`'.format(continent, new_continent))
+           continent.name = new_continent
+           for country_i, country in enumerate(continent.countries.all()):
+               new_country = country.name + ' (changed)'
+               print('Changing: `{}` to `{}`'.format(country, new_country))
+               country.name = new_country
+               for city_i, city in enumerate(country.cities.all()):
+                   new_city = city.name + ' (changed)'
+                   print('Changing: `{}` to `{}`'.format(city, new_city))
+                   city.name = new_city
+
+       update_translations(continents, *relations, lang='de')
+
+       print()
+       print("NEW TRANSLATIONS:")
+       print("-----------------")
+
+       apply_translations(continents, *relations, lang='de')
+
+       for continent in continents:
+           print('Continent: {}'.format(continent))
+           for country in continent.countries.all():
+               print('Country: {}'.format(country))
+               for city in country.cities.all():
+                   print('City: {}'.format(city))
+
+    .. testoutput:: update_translations_1
+
+       OLD TRANSLATIONS:
+       -----------------
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+       CHANGING:
+       ---------
+       Changing: `Europa` to `Europa (changed)`
+       Changing: `Deutschland` to `Deutschland (changed)`
+       Changing: `Köln` to `Köln (changed)`
+       Changing: `München` to `München (changed)`
+       Changing: `Asien` to `Asien (changed)`
+       Changing: `Südkorea` to `Südkorea (changed)`
+       Changing: `Seül` to `Seül (changed)`
+       Changing: `Ulsän` to `Ulsän (changed)`
+
+       NEW TRANSLATIONS:
+       -----------------
+       Continent: Europa (changed)
+       Country: Deutschland (changed)
+       City: Köln (changed)
+       City: München (changed)
+       Continent: Asien (changed)
+       Country: Südkorea (changed)
+       City: Seül (changed)
+       City: Ulsän (changed)
 
     To update the translations of a queryset and the relations of it:
 
-    .. testcode:: update_translations
+    .. testcode:: update_translations_2
 
        from sample.models import Continent
+       from translations.utils import apply_translations
        from translations.utils import update_translations
 
        relations = ('countries', 'countries__cities',)
 
        continents = Continent.objects.prefetch_related(*relations).all()
 
-       update_translations(continents, *relations, lang='en')
+       print("OLD TRANSLATIONS:")
+       print("-----------------")
+
+       apply_translations(continents, *relations, lang='de')
 
        for continent in continents:
            print('Continent: {}'.format(continent))
@@ -1003,23 +1095,80 @@ def update_translations(entity, *relations, lang=None):
                for city in country.cities.all():
                    print('City: {}'.format(city))
 
-    .. testoutput:: update_translations
+       print()
+       print("CHANGING:")
+       print("---------")
 
-       Continent: Europe
-       Country: Germany
-       City: Cologne
-       City: Munich
-       Continent: Asia
-       Country: South Korea
-       City: Seoul
-       City: Ulsan
+       for continent_i, continent in enumerate(continents):
+           new_continent = continent.name + ' (changed)'
+           print('Changing: `{}` to `{}`'.format(continent, new_continent))
+           continent.name = new_continent
+           for country_i, country in enumerate(continent.countries.all()):
+               new_country = country.name + ' (changed)'
+               print('Changing: `{}` to `{}`'.format(country, new_country))
+               country.name = new_country
+               for city_i, city in enumerate(country.cities.all()):
+                   new_city = city.name + ' (changed)'
+                   print('Changing: `{}` to `{}`'.format(city, new_city))
+                   city.name = new_city
+
+       update_translations(continents, *relations, lang='de')
+
+       print()
+       print("NEW TRANSLATIONS:")
+       print("-----------------")
+
+       apply_translations(continents, *relations, lang='de')
+
+       for continent in continents:
+           print('Continent: {}'.format(continent))
+           for country in continent.countries.all():
+               print('Country: {}'.format(country))
+               for city in country.cities.all():
+                   print('City: {}'.format(city))
+
+    .. testoutput:: update_translations_2
+
+       OLD TRANSLATIONS:
+       -----------------
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+       CHANGING:
+       ---------
+       Changing: `Europa` to `Europa (changed)`
+       Changing: `Deutschland` to `Deutschland (changed)`
+       Changing: `Köln` to `Köln (changed)`
+       Changing: `München` to `München (changed)`
+       Changing: `Asien` to `Asien (changed)`
+       Changing: `Südkorea` to `Südkorea (changed)`
+       Changing: `Seül` to `Seül (changed)`
+       Changing: `Ulsän` to `Ulsän (changed)`
+
+       NEW TRANSLATIONS:
+       -----------------
+       Continent: Europa (changed)
+       Country: Deutschland (changed)
+       City: Köln (changed)
+       City: München (changed)
+       Continent: Asien (changed)
+       Country: Südkorea (changed)
+       City: Seül (changed)
+       City: Ulsän (changed)
 
     To update the translations of an instance and the relations of it:
 
-    .. testcode:: update_translations
+    .. testcode:: update_translations_3
 
        from django.db.models import prefetch_related_objects
        from sample.models import Continent
+       from translations.utils import apply_translations
        from translations.utils import update_translations
 
        relations = ('countries', 'countries__cities',)
@@ -1027,7 +1176,10 @@ def update_translations(entity, *relations, lang=None):
        europe = Continent.objects.get(code='EU')
        prefetch_related_objects([europe], *relations)
 
-       update_translations(europe, *relations, lang='en')
+       print("OLD TRANSLATIONS:")
+       print("-----------------")
+
+       apply_translations(europe, *relations, lang='de')
 
        print('Continent: {}'.format(europe))
        for country in europe.countries.all():
@@ -1035,12 +1187,58 @@ def update_translations(entity, *relations, lang=None):
            for city in country.cities.all():
                print('City: {}'.format(city))
 
-    .. testoutput:: update_translations
+       print()
+       print("CHANGING:")
+       print("---------")
 
-       Continent: Europe
-       Country: Germany
-       City: Cologne
-       City: Munich
+       new_europe = europe.name + ' (changed)'
+       print('Changing: `{}` to `{}`'.format(europe, new_europe))
+       europe.name = new_europe
+       for country_i, country in enumerate(europe.countries.all()):
+           new_country = country.name + ' (changed)'
+           print('Changing: `{}` to `{}`'.format(country, new_country))
+           country.name = new_country
+           for city_i, city in enumerate(country.cities.all()):
+               new_city = city.name + ' (changed)'
+               print('Changing: `{}` to `{}`'.format(city, new_city))
+               city.name = new_city
+
+       update_translations(europe, *relations, lang='de')
+
+       print()
+       print("NEW TRANSLATIONS:")
+       print("-----------------")
+
+       apply_translations(europe, *relations, lang='de')
+
+       print('Continent: {}'.format(europe))
+       for country in europe.countries.all():
+           print('Country: {}'.format(country))
+           for city in country.cities.all():
+               print('City: {}'.format(city))
+
+    .. testoutput:: update_translations_3
+
+       OLD TRANSLATIONS:
+       -----------------
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+
+       CHANGING:
+       ---------
+       Changing: `Europa` to `Europa (changed)`
+       Changing: `Deutschland` to `Deutschland (changed)`
+       Changing: `Köln` to `Köln (changed)`
+       Changing: `München` to `München (changed)`
+
+       NEW TRANSLATIONS:
+       -----------------
+       Continent: Europa (changed)
+       Country: Deutschland (changed)
+       City: Köln (changed)
+       City: München (changed)
     """
     lang = _get_standard_language(lang)
 
