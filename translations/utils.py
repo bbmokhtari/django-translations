@@ -659,7 +659,9 @@ def apply_translations(entity, *relations, lang=None):
     Apply the translations on an entity and the relations of it in a language.
 
     Fetches the translations of the entity and the specified relations of it
-    in a language and applies them in place.
+    in a language and applies them on the translatable
+    :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
+    entity and the relations of it in place.
 
     :param entity: The entity to apply the translations on and on the
         relations of.
