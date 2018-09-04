@@ -1000,8 +1000,8 @@ def update_translations(entity, *relations, lang=None):
     .. warning::
 
        It is **mandatory** for the relations of the entity to be prefetched
-       before making any changes to their fields in order for the Translations
-       app to be able to fetch them.
+       before making any changes to them so that the changes can be fetched
+       later.
 
        To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
