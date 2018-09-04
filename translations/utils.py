@@ -427,7 +427,7 @@ def _get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def _get_instance_groups(entity, hierarchy):
+def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     """
     Return the :term:`instance groups` made out of an entity and
     a :term:`relations hierarchy` of it.
@@ -444,6 +444,10 @@ def _get_instance_groups(entity, hierarchy):
     :param hierarchy: The :term:`relations hierarchy` of the entity to make
         the :term:`instance groups` out of.
     :type hierarchy: dict(str, dict)
+    :param prefetch_mandatory: Whether prefetching the relations of
+        the :term:`relations hierarchy` is mandatory or not.
+        Defaults to ``False``.
+    :type prefetch_mandatory: bool
     :return: The :term:`instance groups` made out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
@@ -457,6 +461,8 @@ def _get_instance_groups(entity, hierarchy):
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
+    :raise RuntimeError: If ``prefetch_mandatory`` is ``True`` and any of the
+        relations in the :term:`relations hierarchy` is not prefetched.
 
     .. testsetup:: _get_instance_groups
 
@@ -540,6 +546,13 @@ def _get_instance_groups(entity, hierarchy):
                                 hasattr(obj, '_prefetched_objects_cache') and
                                 relation in obj._prefetched_objects_cache
                             ):
+                                if prefetch_mandatory:
+                                    raise RuntimeError(
+                                        '`{}.{}` must be prefetched.'.format(
+                                            model,
+                                            relation
+                                        )
+                                    )
                                 prefetch_related_objects([obj], relation)
                             value = value.all()
                         _fill_entity(
