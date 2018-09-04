@@ -928,21 +928,13 @@ def update_translations(entity, *relations, lang=None):
         pointing to the fields that don't exist.
 
     .. warning::
-       The relations of an instance, a queryset or a list of instances
-       **must** be fetched before performing the translation process.
+
+       The relations of the entity **must** be prefetched before updating
+       the translations.
 
        To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
-
-    .. warning::
-       Only when all the filterings are executed on the relations of an
-       instance, a queryset or a list of instances, they should go through the
-       translation process, otherwise if a relation is filtered after the
-       translation process the translations of that relation are reset.
-
-       To filter a relation when fetching it use
-       :class:`~django.db.models.Prefetch`.
 
     .. testsetup:: update_translations
 
