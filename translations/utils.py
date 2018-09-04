@@ -170,6 +170,7 @@ def _get_entity_details(entity):
         an iterable of model instances.
 
     .. note::
+
        If the entity is an empty iterable it returns the model as ``None``,
        even if the iterable is an empty queryset (which the model of can be
        retrieved). It's because the other parts of the code first check to see
@@ -692,14 +693,6 @@ def apply_translations(entity, *relations, lang=None):
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
-    .. warning::
-
-       Filtering any queryset after applying the translations will cause the
-       translations of that queryset to be reset. The solution is to do the
-       filtering before applying the translations.
-
-       To do this on the relations use :class:`~django.db.models.Prefetch`.
-
     .. testsetup:: apply_translations
 
        from tests.sample import create_samples
@@ -804,6 +797,82 @@ def apply_translations(entity, *relations, lang=None):
        Country: Deutschland
        City: Köln
        City: München
+
+    .. warning::
+
+       Filtering any queryset after applying the translations will cause the
+       translations of that queryset to be reset. The solution is to do the
+       filtering before applying the translations.
+
+       To do this on the relations use :class:`~django.db.models.Prefetch`.
+
+       .. testcode:: apply_translations
+
+          from sample.models import Continent
+          from translations.utils import apply_translations
+
+          relations = ('countries', 'countries__cities',)
+
+          continents = Continent.objects.prefetch_related(*relations).all()
+
+          apply_translations(continents, *relations, lang='de')
+
+          for continent in continents:
+              print('Continent: {}'.format(continent))
+              for country in continent.countries.exclude(name=''):  # Wrong
+                  print('Country: {}'.format(country))
+                  for city in country.cities.all():
+                      print('City: {}'.format(city))
+
+       .. testoutput:: apply_translations
+
+          Continent: Europa
+          Country: Germany
+          City: Cologne
+          City: Munich
+          Continent: Asien
+          Country: South Korea
+          City: Seoul
+          City: Ulsan
+
+       As you can see the translations of the filtered queryset is reset.
+       To fix it, this can be done:
+
+       .. testcode:: apply_translations
+
+          from django.db.models import Prefetch
+          from sample.models import Continent, Country
+          from translations.utils import apply_translations
+
+          relations = ('countries', 'countries__cities',)
+
+          continents = Continent.objects.prefetch_related(
+              Prefetch(
+                  'countries',
+                  queryset=Country.objects.exclude(name='')  # Correct
+              ),
+              'countries__cities',
+          ).all()
+
+          apply_translations(continents, *relations, lang='de')
+
+          for continent in continents:
+              print('Continent: {}'.format(continent))
+              for country in continent.countries.all():
+                  print('Country: {}'.format(country))
+                  for city in country.cities.all():
+                      print('City: {}'.format(city))
+
+       .. testoutput:: apply_translations
+
+          Continent: Europa
+          Country: Deutschland
+          City: Köln
+          City: München
+          Continent: Asien
+          Country: Südkorea
+          City: Seül
+          City: Ulsän
     """
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_instance_groups(entity, hierarchy)
