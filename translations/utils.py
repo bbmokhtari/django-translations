@@ -538,8 +538,13 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
-                    model._meta.get_field(relation)  # raise when no such rel
-                    value = getattr(obj, relation, None)
+                    try:
+                        value = getattr(obj, relation)
+                    except AttributeError:
+                        # raise when no such rel
+                        model._meta.get_field(relation)
+                        value = None
+
                     if value is not None:
                         if isinstance(value, models.Manager):
                             if not (
