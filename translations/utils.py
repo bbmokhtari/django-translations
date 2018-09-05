@@ -1065,8 +1065,8 @@ def update_translations(entity, *relations, lang=None):
        continents = list(Continent.objects.all())
        prefetch_related_objects(continents, *relations)
 
-       print("OLD TRANSLATIONS:")
-       print("-----------------")
+       print('OLD TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1078,7 +1078,7 @@ def update_translations(entity, *relations, lang=None):
                    print('City: {}'.format(city))
 
        print()
-       print("CHANGING...")
+       print('CHANGING...')
        print()
 
        continents[0].name = 'Europa (changed)'
@@ -1087,8 +1087,8 @@ def update_translations(entity, *relations, lang=None):
 
        update_translations(continents, *relations, lang='de')
 
-       print("NEW TRANSLATIONS:")
-       print("-----------------")
+       print('NEW TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1137,8 +1137,8 @@ def update_translations(entity, *relations, lang=None):
 
        continents = Continent.objects.prefetch_related(*relations).all()
 
-       print("OLD TRANSLATIONS:")
-       print("-----------------")
+       print('OLD TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1150,7 +1150,7 @@ def update_translations(entity, *relations, lang=None):
                    print('City: {}'.format(city))
 
        print()
-       print("CHANGING...")
+       print('CHANGING...')
        print()
 
        continents[0].name = 'Europa (changed)'
@@ -1160,8 +1160,8 @@ def update_translations(entity, *relations, lang=None):
        update_translations(continents, *relations, lang='de')
 
        print()
-       print("NEW TRANSLATIONS:")
-       print("-----------------")
+       print('NEW TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1212,8 +1212,8 @@ def update_translations(entity, *relations, lang=None):
        europe = Continent.objects.get(code='EU')
        prefetch_related_objects([europe], *relations)
 
-       print("OLD TRANSLATIONS:")
-       print("-----------------")
+       print('OLD TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(europe, *relations, lang='de')
 
@@ -1224,7 +1224,7 @@ def update_translations(entity, *relations, lang=None):
                print('City: {}'.format(city))
 
        print()
-       print("CHANGING...")
+       print('CHANGING...')
        print()
 
        europe.name = 'Europa (changed)'
@@ -1234,8 +1234,8 @@ def update_translations(entity, *relations, lang=None):
        update_translations(europe, *relations, lang='de')
 
        print()
-       print("NEW TRANSLATIONS:")
-       print("-----------------")
+       print('NEW TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(europe, *relations, lang='de')
 
