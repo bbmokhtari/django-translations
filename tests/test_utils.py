@@ -1058,85 +1058,6 @@ class GetInstanceGroupsTest(TestCase):
             }
         )
 
-    def test_invalid_prefetch_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('countries')
-
-        with self.assertRaises(RuntimeError) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy,
-                prefetch_mandatory=True
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `countries` of the model `Continent` must' +
-             ' be prefetched.')
-        )
-
-    def test_invalid_prefetch_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            city_names=['cologne'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            city_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('countries__cities')
-
-        with self.assertRaises(RuntimeError) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy,
-                prefetch_mandatory=True
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `countries` of the model `Continent` must' +
-             ' be prefetched.')
-        )
-
-    def test_invalid_prefetch_partial_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            city_names=['cologne'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            city_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.prefetch_related('countries').get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('countries__cities')
-
-        with self.assertRaises(RuntimeError) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy,
-                prefetch_mandatory=True
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `cities` of the model `Country` must' +
-             ' be prefetched.')
-        )
-
     def test_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -1229,6 +1150,85 @@ class GetInstanceGroupsTest(TestCase):
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
              ' model instances.')
+        )
+
+    def test_invalid_prefetch_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        hierarchy = _get_relations_hierarchy('countries')
+
+        with self.assertRaises(RuntimeError) as error:
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `countries` of the model `Continent` must' +
+             ' be prefetched.')
+        )
+
+    def test_invalid_prefetch_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        hierarchy = _get_relations_hierarchy('countries__cities')
+
+        with self.assertRaises(RuntimeError) as error:
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `countries` of the model `Continent` must' +
+             ' be prefetched.')
+        )
+
+    def test_invalid_prefetch_partial_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.prefetch_related('countries').get(code='EU')
+
+        hierarchy = _get_relations_hierarchy('countries__cities')
+
+        with self.assertRaises(RuntimeError) as error:
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `cities` of the model `Country` must' +
+             ' be prefetched.')
         )
 
 
@@ -5085,4 +5085,74 @@ class UpdateTranslationsTest(TestCase):
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
              ' model instances.')
+        )
+
+    def test_invalid_prefetch_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(RuntimeError) as error:
+            update_translations(
+                europe,
+                'countries'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `countries` of the model `Continent` must' +
+             ' be prefetched.')
+        )
+
+    def test_invalid_prefetch_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(RuntimeError) as error:
+            update_translations(
+                europe,
+                'countries__cities'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `countries` of the model `Continent` must' +
+             ' be prefetched.')
+        )
+
+    def test_invalid_prefetch_partial_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.prefetch_related('countries').get(code='EU')
+
+        with self.assertRaises(RuntimeError) as error:
+            update_translations(
+                europe,
+                'countries__cities'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `cities` of the model `Country` must' +
+             ' be prefetched.')
         )
