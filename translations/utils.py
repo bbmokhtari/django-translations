@@ -999,7 +999,7 @@ def update_translations(entity, *relations, lang=None):
            langs=['de']
        )
 
-    .. warning::
+    .. note::
 
        It is **mandatory** for the relations of the entity to be prefetched
        before making any changes to them so that the changes can be fetched
