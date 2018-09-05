@@ -747,6 +747,317 @@ class GetInstanceGroupsTest(TestCase):
             }
         )
 
+    def test_prefetched_instance_level_0_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        hierarchy = _get_relations_hierarchy()
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                }
+            }
+        )
+
+    def test_prefetched_instance_level_1_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1 = ('countries',)
+
+        europe = Continent.objects.prefetch_related(*lvl_1).get(code='EU')
+        germany = europe.countries.all()[0]
+
+        hierarchy = _get_relations_hierarchy(*lvl_1)
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_country = ContentType.objects.get_for_model(Country)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                },
+                ct_country.id: {
+                    str(germany.id): germany
+                }
+            }
+        )
+
+    def test_prefetched_instance_level_2_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_2 = ('countries__cities',)
+
+        europe = Continent.objects.prefetch_related(*lvl_2).get(code='EU')
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        hierarchy = _get_relations_hierarchy(*lvl_2)
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_city = ContentType.objects.get_for_model(City)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                },
+                ct_city.id: {
+                    str(cologne.id): cologne
+                }
+            }
+        )
+
+    def test_prefetched_instance_level_1_2_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1_2 = ('countries', 'countries__cities',)
+
+        europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        hierarchy = _get_relations_hierarchy(*lvl_1_2)
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_country = ContentType.objects.get_for_model(Country)
+        ct_city = ContentType.objects.get_for_model(City)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                europe,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe
+                },
+                ct_country.id: {
+                    str(germany.id): germany
+                },
+                ct_city.id: {
+                    str(cologne.id): cologne
+                }
+            }
+        )
+
+    def test_prefetched_queryset_level_0_relation(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            continent_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        continents = Continent.objects.all()
+
+        europe = [x for x in continents if x.code == 'EU'][0]
+
+        asia = [x for x in continents if x.code == 'AS'][0]
+
+        hierarchy = _get_relations_hierarchy()
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                continents,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe,
+                    str(asia.id): asia
+                },
+            }
+        )
+
+    def test_prefetched_queryset_level_1_relation(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1 = ('countries',)
+
+        continents = Continent.objects.prefetch_related(*lvl_1).all()
+
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+
+        hierarchy = _get_relations_hierarchy(*lvl_1)
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_country = ContentType.objects.get_for_model(Country)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                continents,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe,
+                    str(asia.id): asia
+                },
+                ct_country.id: {
+                    str(germany.id): germany,
+                    str(south_korea.id): south_korea
+                },
+            }
+        )
+
+    def test_prefetched_queryset_level_2_relation(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_2 = ('countries__cities',)
+
+        continents = Continent.objects.prefetch_related(*lvl_2).all()
+
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        hierarchy = _get_relations_hierarchy(*lvl_2)
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_city = ContentType.objects.get_for_model(City)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                continents,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe,
+                    str(asia.id): asia
+                },
+                ct_city.id: {
+                    str(cologne.id): cologne,
+                    str(seoul.id): seoul
+                }
+            }
+        )
+
+    def test_prefetched_queryset_level_1_2_relation(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        lvl_1_2 = ('countries', 'countries__cities',)
+
+        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+
+        europe = [x for x in continents if x.code == 'EU'][0]
+        germany = europe.countries.all()[0]
+        cologne = germany.cities.all()[0]
+
+        asia = [x for x in continents if x.code == 'AS'][0]
+        south_korea = asia.countries.all()[0]
+        seoul = south_korea.cities.all()[0]
+
+        hierarchy = _get_relations_hierarchy(*lvl_1_2)
+
+        ct_continent = ContentType.objects.get_for_model(Continent)
+        ct_country = ContentType.objects.get_for_model(Country)
+        ct_city = ContentType.objects.get_for_model(City)
+
+        self.assertDictEqual(
+            _get_instance_groups(
+                continents,
+                hierarchy,
+                prefetch_mandatory=True
+            ),
+            {
+                ct_continent.id: {
+                    str(europe.id): europe,
+                    str(asia.id): asia
+                },
+                ct_country.id: {
+                    str(germany.id): germany,
+                    str(south_korea.id): south_korea
+                },
+                ct_city.id: {
+                    str(cologne.id): cologne,
+                    str(seoul.id): seoul
+                }
+            }
+        )
+
     def test_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -759,7 +1070,10 @@ class GetInstanceGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(europe, hierarchy)
+            _get_instance_groups(
+                europe,
+                hierarchy
+            )
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -779,7 +1093,10 @@ class GetInstanceGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries__wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(europe, hierarchy)
+            _get_instance_groups(
+                europe,
+                hierarchy
+            )
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
@@ -799,7 +1116,10 @@ class GetInstanceGroupsTest(TestCase):
         behzad = Person('Behzad')
 
         with self.assertRaises(TypeError) as error:
-            _get_instance_groups(behzad, {})
+            _get_instance_groups(
+                behzad,
+                {}
+            )
         self.assertEqual(
             error.exception.args[0],
             ('`Behzad` is neither a model instance nor an iterable of' +
@@ -822,7 +1142,10 @@ class GetInstanceGroupsTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            _get_instance_groups(people, {})
+            _get_instance_groups(
+                people,
+                {}
+            )
         self.assertEqual(
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
