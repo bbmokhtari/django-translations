@@ -16,9 +16,10 @@ following members:
 :func:`_get_translations`
     Return the translations of some :term:`instance groups` in a language.
 :func:`apply_translations`
-    Apply the translations on an entity and the relations of it in a language.
+    Apply the translations on an entity and some relations of it in a
+    language.
 :func:`update_translations`
-    Update the translations of an entity and the relations of it in a
+    Update the translations of an entity and some relations of it in a
     language.
 """
 
@@ -676,7 +677,8 @@ def _get_translations(groups, lang=None):
 
 def apply_translations(entity, *relations, lang=None):
     """
-    Apply the translations on an entity and the relations of it in a language.
+    Apply the translations on an entity and some relations of it in a
+    language.
 
     Fetches the translations of the entity and the specified relations of it
     in a language and applies them on the translatable
@@ -916,7 +918,7 @@ def apply_translations(entity, *relations, lang=None):
 
 def update_translations(entity, *relations, lang=None):
     """
-    Update the translations of an entity and the relations of it in a
+    Update the translations of an entity and some relations of it in a
     language.
 
     Deletes the old translations of the entity and the specified relations of
