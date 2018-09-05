@@ -9,20 +9,21 @@ following members:
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`_get_relations_hierarchy`
-    Return the :term:`relations hierarchy` made out of some relations.
+    Return the :term:`relations hierarchy` of some relations.
 :func:`_get_instance_groups`
-    Return the :term:`instance groups` made out of an entity and
+    Return the :term:`instance groups` of an entity and
     a :term:`relations hierarchy` of it.
 :func:`_get_translations`
     Return the translations of some :term:`instance groups` in a language.
 :func:`apply_translations`
-    Apply the translations on an entity and the relations of it in a language.
+    Apply the translations of an entity and some relations of it in a
+    language.
 :func:`update_translations`
-    Update the translations of an entity and the relations of it in a
+    Update the translations of an entity and some relations of it in a
     language.
 """
 
-from django.db import models, transaction
+from django.db import models
 from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
 from django.contrib.contenttypes.models import ContentType
@@ -335,20 +336,20 @@ def _get_reverse_relation(model, relation):
 
 def _get_relations_hierarchy(*relations):
     """
-    Return the :term:`relations hierarchy` made out of some relations.
+    Return the :term:`relations hierarchy` of some relations.
 
     Creates the :term:`relations hierarchy`, splits each relation into
     different parts based on the relation depth and fills the
     :term:`relations hierarchy` with them. When all the relations are
     processed returns the :term:`relations hierarchy`.
 
-    :param relations: The relations to make the :term:`relations hierarchy`
+    :param relations: The relations to derive the :term:`relations hierarchy`
         out of.
         Each relation may be composed of many ``related_query_name``\\ s
         separated by :data:`~django.db.models.constants.LOOKUP_SEP`
         (usually ``__``) to represent a deeply nested relation.
     :type relations: list(str)
-    :return: The :term:`relations hierarchy` made out of the relations.
+    :return: The :term:`relations hierarchy` derived out of the relations.
     :rtype: dict(str, dict)
 
     To get the :term:`relations hierarchy` of a first-level relation:
@@ -429,7 +430,7 @@ def _get_relations_hierarchy(*relations):
 
 def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     """
-    Return the :term:`instance groups` made out of an entity and
+    Return the :term:`instance groups` of an entity and
     a :term:`relations hierarchy` of it.
 
     Creates the :term:`instance groups`, loops through the entity and the
@@ -437,18 +438,17 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     with each instance under a certain content type. When all the instances
     are processes returns the :term:`instance groups`.
 
-    :param entity: the entity to make the :term:`instance groups` out of and
-        out of the :term:`relations hierarchy` of.
+    :param entity: the entity to derive the :term:`instance groups` out of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param hierarchy: The :term:`relations hierarchy` of the entity to make
+    :param hierarchy: The :term:`relations hierarchy` of the entity to derive
         the :term:`instance groups` out of.
     :type hierarchy: dict(str, dict)
     :param prefetch_mandatory: Whether prefetching the relations of
         the :term:`relations hierarchy` is mandatory or not.
         Defaults to ``False``.
     :type prefetch_mandatory: bool
-    :return: The :term:`instance groups` made out of the entity and
+    :return: The :term:`instance groups` derived out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
     :raise TypeError:
@@ -456,8 +456,8 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the model of the included relations is
-          not :class:`~translations.models.Translatable`.
+        - If the model of the entity or the models of the included relations
+          are not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
@@ -676,19 +676,19 @@ def _get_translations(groups, lang=None):
 
 def apply_translations(entity, *relations, lang=None):
     """
-    Apply the translations on an entity and the relations of it in a language.
+    Apply the translations of an entity and some relations of it in a
+    language.
 
     Fetches the translations of the entity and the specified relations of it
     in a language and applies them on the translatable
     :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
     entity and the relations of it in place.
 
-    :param entity: The entity to apply the translations on and on the
-        relations of.
+    :param entity: The entity to apply the translations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to apply the translations
-        on.
+        of.
     :type relations: list(str)
     :param lang: The language to fetch the translations in.
         ``None`` means use the :term:`active language` code.
@@ -700,8 +700,8 @@ def apply_translations(entity, *relations, lang=None):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the model of the included relations is
-          not :class:`~translations.models.Translatable`.
+        - If the model of the entity or the models of the included relations
+          are not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
@@ -722,7 +722,14 @@ def apply_translations(entity, *relations, lang=None):
 
     .. note::
 
-       It is recommended for the relations of the entity to be prefetched
+       If there is no translation for a field in translatable
+       :attr:`~translations.models.Translatable.TranslatableMeta.fields`, the
+       translation of the field falls back to the value of the field in the
+       instance.
+
+    .. note::
+
+       It is **recommended** for the relations of the entity to be prefetched
        before applying the translations in order to reach optimal performance.
 
        To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
@@ -797,7 +804,6 @@ def apply_translations(entity, *relations, lang=None):
 
     .. testcode:: apply_translations
 
-       from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import apply_translations
 
@@ -916,7 +922,7 @@ def apply_translations(entity, *relations, lang=None):
 
 def update_translations(entity, *relations, lang=None):
     """
-    Update the translations of an entity and the relations of it in a
+    Update the translations of an entity and some relations of it in a
     language.
 
     Deletes the old translations of the entity and the specified relations of
@@ -924,8 +930,7 @@ def update_translations(entity, *relations, lang=None):
     :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
     entity and the relations of it.
 
-    :param entity: The entity to update the translations of and update the
-        translations of the relations of.
+    :param entity: The entity to update the translations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to update the translations
@@ -941,8 +946,8 @@ def update_translations(entity, *relations, lang=None):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the model of the included relations is
-          not :class:`~translations.models.Translatable`.
+        - If the model of the entity or the models of the included relations
+          are not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
@@ -1065,8 +1070,8 @@ def update_translations(entity, *relations, lang=None):
        continents = list(Continent.objects.all())
        prefetch_related_objects(continents, *relations)
 
-       print("OLD TRANSLATIONS:")
-       print("-----------------")
+       print('OLD TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1078,7 +1083,7 @@ def update_translations(entity, *relations, lang=None):
                    print('City: {}'.format(city))
 
        print()
-       print("CHANGING...")
+       print('CHANGING...')
        print()
 
        continents[0].name = 'Europa (changed)'
@@ -1087,8 +1092,8 @@ def update_translations(entity, *relations, lang=None):
 
        update_translations(continents, *relations, lang='de')
 
-       print("NEW TRANSLATIONS:")
-       print("-----------------")
+       print('NEW TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1137,8 +1142,8 @@ def update_translations(entity, *relations, lang=None):
 
        continents = Continent.objects.prefetch_related(*relations).all()
 
-       print("OLD TRANSLATIONS:")
-       print("-----------------")
+       print('OLD TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1150,7 +1155,7 @@ def update_translations(entity, *relations, lang=None):
                    print('City: {}'.format(city))
 
        print()
-       print("CHANGING...")
+       print('CHANGING...')
        print()
 
        continents[0].name = 'Europa (changed)'
@@ -1160,8 +1165,8 @@ def update_translations(entity, *relations, lang=None):
        update_translations(continents, *relations, lang='de')
 
        print()
-       print("NEW TRANSLATIONS:")
-       print("-----------------")
+       print('NEW TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(continents, *relations, lang='de')
 
@@ -1212,8 +1217,8 @@ def update_translations(entity, *relations, lang=None):
        europe = Continent.objects.get(code='EU')
        prefetch_related_objects([europe], *relations)
 
-       print("OLD TRANSLATIONS:")
-       print("-----------------")
+       print('OLD TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(europe, *relations, lang='de')
 
@@ -1224,7 +1229,7 @@ def update_translations(entity, *relations, lang=None):
                print('City: {}'.format(city))
 
        print()
-       print("CHANGING...")
+       print('CHANGING...')
        print()
 
        europe.name = 'Europa (changed)'
@@ -1234,8 +1239,8 @@ def update_translations(entity, *relations, lang=None):
        update_translations(europe, *relations, lang='de')
 
        print()
-       print("NEW TRANSLATIONS:")
-       print("-----------------")
+       print('NEW TRANSLATIONS:')
+       print('-----------------')
 
        apply_translations(europe, *relations, lang='de')
 
