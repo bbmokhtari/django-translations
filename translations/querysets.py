@@ -40,8 +40,7 @@ class TranslatableQuerySet(models.QuerySet):
         :param lang: The language to fetch the translations in.
             ``None`` means use the :term:`active language` code.
         :type lang: str or None
-        :return: The queryset which the translations of have been
-            applied on.
+        :return: The queryset which the translations of have been applied.
         :rtype: list(~translations.models.Translatable)
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
