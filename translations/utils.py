@@ -797,7 +797,6 @@ def apply_translations(entity, *relations, lang=None):
 
     .. testcode:: apply_translations
 
-       from django.db.models import prefetch_related_objects
        from sample.models import Continent
        from translations.utils import apply_translations
 
