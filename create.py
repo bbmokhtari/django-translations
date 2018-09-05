@@ -22,6 +22,13 @@ MIDDLEWARE += [
     'django.middleware.locale.LocaleMiddleware',
 ]
 
+LANGUAGES = (
+    ('en', 'English'),
+    ('en-gb', 'English (Great Britain)'),
+    ('de', 'German'),
+    ('tr', 'Turkish'),
+)
+
 
 # Read DB configuration from environment variables
 DEFAULT_ENGINE = 'sqlite3'
