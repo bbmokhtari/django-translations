@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.db import models
 from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate
 from django.contrib.contenttypes.models import ContentType
@@ -8,7 +7,6 @@ from translations.utils import _get_standard_language, \
     _get_entity_details, _get_reverse_relation,  _get_relations_hierarchy, \
     _get_instance_groups, _get_translations, \
     apply_translations, update_translations
-from translations.models import Translation
 
 from sample.models import Continent, Country, City
 
