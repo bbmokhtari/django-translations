@@ -548,9 +548,11 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
                             ):
                                 if prefetch_mandatory:
                                     raise RuntimeError(
-                                        '`{}.{}` must be prefetched.'.format(
-                                            model,
-                                            relation
+                                        ('The relation `{}`' +
+                                         ' of the model `{}`' +
+                                         ' must be prefetched.').format(
+                                            relation,
+                                            model.__name__,
                                         )
                                     )
                                 prefetch_related_objects([obj], relation)
