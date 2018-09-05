@@ -348,7 +348,7 @@ def _get_relations_hierarchy(*relations):
         separated by :data:`~django.db.models.constants.LOOKUP_SEP`
         (usually ``__``) to represent a deeply nested relation.
     :type relations: list(str)
-    :return: The :term:`relations hierarchy` of the relations.
+    :return: The :term:`relations hierarchy` derived out of the relations.
     :rtype: dict(str, dict)
 
     To get the :term:`relations hierarchy` of a first-level relation:
@@ -448,7 +448,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
         the :term:`relations hierarchy` is mandatory or not.
         Defaults to ``False``.
     :type prefetch_mandatory: bool
-    :return: The :term:`instance groups` of the entity and
+    :return: The :term:`instance groups` derived out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
     :raise TypeError:
