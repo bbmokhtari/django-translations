@@ -722,6 +722,13 @@ def apply_translations(entity, *relations, lang=None):
 
     .. note::
 
+       If there is no translation for a field in translatable
+       :attr:`~translations.models.Translatable.TranslatableMeta.fields`, the
+       translation of the field falls back to the value of the field in the
+       instance.
+
+    .. note::
+
        It is **recommended** for the relations of the entity to be prefetched
        before applying the translations in order to reach optimal performance.
 
