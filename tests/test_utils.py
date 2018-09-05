@@ -3316,8 +3316,6 @@ class ApplyTranslationsTest(TestCase):
 class UpdateTranslationsTest(TestCase):
     """Tests for `update_translations`."""
 
-    # ---- arguments testing -------------------------------------------------
-
     def test_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -4574,8 +4572,6 @@ class UpdateTranslationsTest(TestCase):
             'Seoul Denonym'
         )
 
-    # ---- error testing -----------------------------------------------------
-
     def test_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -4595,7 +4591,7 @@ class UpdateTranslationsTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    def test_invalid_relation(self):
+    def test_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -4615,7 +4611,31 @@ class UpdateTranslationsTest(TestCase):
             "Continent has no field named 'wrong'"
         )
 
-    def test_invalid_entity(self):
+    def test_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.prefetch_related(
+            'countries',
+        ).get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            update_translations(
+                europe,
+                'countries__wrong',
+                lang='de'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
+    def test_invalid_instance(self):
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -4627,6 +4647,7 @@ class UpdateTranslationsTest(TestCase):
                 return self.name
 
         behzad = Person('Behzad')
+
         with self.assertRaises(TypeError) as error:
             update_translations(
                 behzad,
@@ -4634,5 +4655,32 @@ class UpdateTranslationsTest(TestCase):
             )
         self.assertEqual(
             error.exception.args[0],
-            '`Behzad` is neither a model instance nor an iterable of model instances.'
+            ('`Behzad` is neither a model instance nor an iterable of' +
+             ' model instances.')
+        )
+
+    def test_invalid_iterable(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        people = []
+        people.append(Person('Behzad'))
+        people.append(Person('Max'))
+
+        with self.assertRaises(TypeError) as error:
+            update_translations(
+                people,
+                lang='de'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
+             ' model instances.')
         )
