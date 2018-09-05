@@ -16,7 +16,7 @@ following members:
 :func:`_get_translations`
     Return the translations of some :term:`instance groups` in a language.
 :func:`apply_translations`
-    Apply the translations on an entity and some relations of it in a
+    Apply the translations of an entity and some relations of it in a
     language.
 :func:`update_translations`
     Update the translations of an entity and some relations of it in a
@@ -677,7 +677,7 @@ def _get_translations(groups, lang=None):
 
 def apply_translations(entity, *relations, lang=None):
     """
-    Apply the translations on an entity and some relations of it in a
+    Apply the translations of an entity and some relations of it in a
     language.
 
     Fetches the translations of the entity and the specified relations of it
@@ -685,12 +685,11 @@ def apply_translations(entity, *relations, lang=None):
     :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
     entity and the relations of it in place.
 
-    :param entity: The entity to apply the translations on and on the
-        relations of.
+    :param entity: The entity to apply the translations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to apply the translations
-        on.
+        of.
     :type relations: list(str)
     :param lang: The language to fetch the translations in.
         ``None`` means use the :term:`active language` code.
@@ -724,7 +723,7 @@ def apply_translations(entity, *relations, lang=None):
 
     .. note::
 
-       It is recommended for the relations of the entity to be prefetched
+       It is **recommended** for the relations of the entity to be prefetched
        before applying the translations in order to reach optimal performance.
 
        To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
@@ -926,8 +925,7 @@ def update_translations(entity, *relations, lang=None):
     :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
     entity and the relations of it.
 
-    :param entity: The entity to update the translations of and update the
-        translations of the relations of.
+    :param entity: The entity to update the translations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param relations: The relations of the entity to update the translations
