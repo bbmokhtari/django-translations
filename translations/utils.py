@@ -23,7 +23,7 @@ following members:
     language.
 """
 
-from django.db import models, transaction
+from django.db import models
 from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
 from django.contrib.contenttypes.models import ContentType
