@@ -9,9 +9,9 @@ following members:
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`_get_relations_hierarchy`
-    Return the :term:`relations hierarchy` made out of some relations.
+    Return the :term:`relations hierarchy` of some relations.
 :func:`_get_instance_groups`
-    Return the :term:`instance groups` made out of an entity and
+    Return the :term:`instance groups` of an entity and
     a :term:`relations hierarchy` of it.
 :func:`_get_translations`
     Return the translations of some :term:`instance groups` in a language.
@@ -335,20 +335,20 @@ def _get_reverse_relation(model, relation):
 
 def _get_relations_hierarchy(*relations):
     """
-    Return the :term:`relations hierarchy` made out of some relations.
+    Return the :term:`relations hierarchy` of some relations.
 
     Creates the :term:`relations hierarchy`, splits each relation into
     different parts based on the relation depth and fills the
     :term:`relations hierarchy` with them. When all the relations are
     processed returns the :term:`relations hierarchy`.
 
-    :param relations: The relations to make the :term:`relations hierarchy`
+    :param relations: The relations to derive the :term:`relations hierarchy`
         out of.
         Each relation may be composed of many ``related_query_name``\\ s
         separated by :data:`~django.db.models.constants.LOOKUP_SEP`
         (usually ``__``) to represent a deeply nested relation.
     :type relations: list(str)
-    :return: The :term:`relations hierarchy` made out of the relations.
+    :return: The :term:`relations hierarchy` of the relations.
     :rtype: dict(str, dict)
 
     To get the :term:`relations hierarchy` of a first-level relation:
@@ -429,7 +429,7 @@ def _get_relations_hierarchy(*relations):
 
 def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     """
-    Return the :term:`instance groups` made out of an entity and
+    Return the :term:`instance groups` of an entity and
     a :term:`relations hierarchy` of it.
 
     Creates the :term:`instance groups`, loops through the entity and the
@@ -437,18 +437,18 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     with each instance under a certain content type. When all the instances
     are processes returns the :term:`instance groups`.
 
-    :param entity: the entity to make the :term:`instance groups` out of and
+    :param entity: the entity to derive the :term:`instance groups` out of and
         out of the :term:`relations hierarchy` of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param hierarchy: The :term:`relations hierarchy` of the entity to make
+    :param hierarchy: The :term:`relations hierarchy` of the entity to derive
         the :term:`instance groups` out of.
     :type hierarchy: dict(str, dict)
     :param prefetch_mandatory: Whether prefetching the relations of
         the :term:`relations hierarchy` is mandatory or not.
         Defaults to ``False``.
     :type prefetch_mandatory: bool
-    :return: The :term:`instance groups` made out of the entity and
+    :return: The :term:`instance groups` of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
     :raise TypeError:
