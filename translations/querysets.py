@@ -272,7 +272,8 @@ class TranslatableQuerySet(models.QuerySet):
 
               from sample.models import Continent
 
-              europe = Continent.objects.get(code='EU')  # Wrong
+              # un-prefetched queryset
+              europe = Continent.objects.get(code='EU')
 
               # first query
               europe.countries.all()[0].name = 'Germany (changed)'
@@ -280,11 +281,11 @@ class TranslatableQuerySet(models.QuerySet):
               # does a second query
               new_name = europe.countries.all()[0].name
 
-              print('Country: {}  -- Wrong'.format(new_name))
+              print('Country: {}'.format(new_name))
 
            .. testoutput:: update_translations_0
 
-              Country: Germany  -- Wrong
+              Country: Germany
 
            As we can see the new query did not fetch the changes we made
            before. To fix it:
@@ -293,6 +294,7 @@ class TranslatableQuerySet(models.QuerySet):
 
               from sample.models import Continent
 
+              # prefetched queryset
               europe = Continent.objects.prefetch_related(  # Correct
                   'countries',
               ).get(code='EU')
@@ -303,11 +305,11 @@ class TranslatableQuerySet(models.QuerySet):
               # uses the first query
               new_name = europe.countries.all()[0].name
 
-              print('Country: {}  -- Correct'.format(new_name))
+              print('Country: {}'.format(new_name))
 
            .. testoutput:: update_translations_0
 
-              Country: Germany (changed)  -- Correct
+              Country: Germany (changed)
 
         To update the translations of a queryset and the relations of it:
 
