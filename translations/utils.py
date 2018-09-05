@@ -456,8 +456,8 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the model of the included relations is
-          not :class:`~translations.models.Translatable`.
+        - If the model of the entity or the models of the included relations
+          are not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
@@ -700,8 +700,8 @@ def apply_translations(entity, *relations, lang=None):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the model of the included relations is
-          not :class:`~translations.models.Translatable`.
+        - If the model of the entity or the models of the included relations
+          are not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
@@ -941,8 +941,8 @@ def update_translations(entity, *relations, lang=None):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the model of the included relations is
-          not :class:`~translations.models.Translatable`.
+        - If the model of the entity or the models of the included relations
+          are not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
