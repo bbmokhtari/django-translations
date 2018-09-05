@@ -438,8 +438,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     with each instance under a certain content type. When all the instances
     are processes returns the :term:`instance groups`.
 
-    :param entity: the entity to derive the :term:`instance groups` out of and
-        out of the :term:`relations hierarchy` of.
+    :param entity: the entity to derive the :term:`instance groups` out of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
     :param hierarchy: The :term:`relations hierarchy` of the entity to derive
