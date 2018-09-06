@@ -1025,16 +1025,20 @@ def update_translations(entity, *relations, lang=None):
 
           from sample.models import Continent
 
-          europe = Continent.objects.get(code='EU')  # Wrong
-          europe.countries.all()[0].name = 'Germany (changed)'  # first query
+          # un-prefetched queryset
+          europe = Continent.objects.get(code='EU')
 
-          new_name = europe.countries.all()[0].name  # does a second query
+          # first query
+          europe.countries.all()[0].name = 'Germany (changed)'
 
-          print('Country: {}  -- Wrong'.format(new_name))
+          # does a second query
+          new_name = europe.countries.all()[0].name
+
+          print('Country: {}'.format(new_name))
 
        .. testoutput:: update_translations_0
 
-          Country: Germany  -- Wrong
+          Country: Germany
 
        As we can see the new query did not fetch the changes we made before.
        To fix it:
@@ -1043,18 +1047,22 @@ def update_translations(entity, *relations, lang=None):
 
           from sample.models import Continent
 
-          europe = Continent.objects.prefetch_related(  # Correct
+          # prefetched queryset
+          europe = Continent.objects.prefetch_related(
               'countries',
           ).get(code='EU')
-          europe.countries.all()[0].name = 'Germany (changed)'  # first query
 
-          new_name = europe.countries.all()[0].name  # uses first query
+          # first query
+          europe.countries.all()[0].name = 'Germany (changed)'
 
-          print('Country: {}  -- Correct'.format(new_name))
+          # uses the first query
+          new_name = europe.countries.all()[0].name
+
+          print('Country: {}'.format(new_name))
 
        .. testoutput:: update_translations_0
 
-          Country: Germany (changed)  -- Correct
+          Country: Germany (changed)
 
     To update the translations of a list of instances and the relations of it:
 
@@ -1088,7 +1096,6 @@ def update_translations(entity, *relations, lang=None):
 
        continents[0].name = 'Europa (changed)'
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
-       continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
        update_translations(continents, *relations, lang='de')
 
@@ -1123,7 +1130,7 @@ def update_translations(entity, *relations, lang=None):
        -----------------
        Continent: Europa (changed)
        Country: Deutschland (changed)
-       City: Köln (changed)
+       City: Köln
        City: München
        Continent: Asien
        Country: Südkorea
@@ -1160,7 +1167,6 @@ def update_translations(entity, *relations, lang=None):
 
        continents[0].name = 'Europa (changed)'
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
-       continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
        update_translations(continents, *relations, lang='de')
 
@@ -1196,7 +1202,7 @@ def update_translations(entity, *relations, lang=None):
        -----------------
        Continent: Europa (changed)
        Country: Deutschland (changed)
-       City: Köln (changed)
+       City: Köln
        City: München
        Continent: Asien
        Country: Südkorea
@@ -1234,7 +1240,6 @@ def update_translations(entity, *relations, lang=None):
 
        europe.name = 'Europa (changed)'
        europe.countries.all()[0].name = 'Deutschland (changed)'
-       europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
        update_translations(europe, *relations, lang='de')
 
@@ -1265,7 +1270,7 @@ def update_translations(entity, *relations, lang=None):
        -----------------
        Continent: Europa (changed)
        Country: Deutschland (changed)
-       City: Köln (changed)
+       City: Köln
        City: München
     """
     lang = _get_standard_language(lang)

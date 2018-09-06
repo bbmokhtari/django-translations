@@ -3,11 +3,10 @@ This module contains the querysets for the Translations app. It contains the
 following members:
 
 :class:`TranslatableQuerySet`
-    A :class:`~django.db.models.QuerySet` which provides custom
-    translation functionalities.
+    A queryset which provides custom translation functionalities.
 """
 
-from django.db import models, transaction
+from django.db import models
 
 from translations.utils import apply_translations, update_translations
 
@@ -19,48 +18,36 @@ class TranslatableQuerySet(models.QuerySet):
     """
     A queryset which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`apply_translations` to read and apply
-    translations from the database onto the queryset, and
-    :meth:`update_translations` to write and update translations from the
-    queryset onto the database.
+    Provides functionalities like :meth:`apply_translations` to read the
+    translations from the database and apply them on the queryset, and
+    :meth:`update_translations` to update the translations from the queryset
+    and write them on the database.
     """
 
     def apply_translations(self, *relations, lang=None):
         """
-        Apply the translations on the queryset and the relations of it in a
+        Apply the translations of the queryset and some relations of it in a
         language.
 
         Fetches the translations of the queryset and the specified relations
-        of it in a language and applies them field by field.
+        of it in a language and applies them on the translatable
+        :attr:`~translations.models.Translatable.TranslatableMeta.fields` of
+        the queryset and the relations of it.
 
         :param relations: The relations of the queryset to apply the
-            translations on.
+            translations of.
         :type relations: list(str)
         :param lang: The language to fetch the translations in.
             ``None`` means use the :term:`active language` code.
         :type lang: str or None
+        :return: The queryset which the translations of have been applied.
+        :rtype: ~translations.querysets.TranslatableQuerySet
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise TypeError: If the models of the included relations
+            are not :class:`~translations.models.Translatable`.
         :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
             pointing to the fields that don't exist.
-
-        .. warning::
-           The relations of the queryset **must** be fetched before performing
-           the translation process.
-
-           To do this use
-           :meth:`~django.db.models.query.QuerySet.select_related`,
-           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-           :func:`~django.db.models.prefetch_related_objects`.
-
-        .. warning::
-           Only when all the filterings are executed on the relations of the
-           queryset it should go through the translation process, otherwise if
-           a relation is filtered after the translation process the
-           translations of that relation are reset.
-
-           To filter a relation when fetching it use
-           :class:`~django.db.models.Prefetch`.
 
         .. testsetup:: apply_translations
 
@@ -76,11 +63,30 @@ class TranslatableQuerySet(models.QuerySet):
                langs=['de']
            )
 
-        To apply the translations on a queryset and the relations of it:
+        .. note::
+
+           If there is no translation for a field in translatable
+           :attr:`~translations.models.Translatable.TranslatableMeta.fields`,
+           the translation of the field falls back to the value of the field
+           in the instance.
+
+        .. note::
+
+           It is **recommended** for the relations of the queryset to be
+           prefetched before applying the translations in order to reach
+           optimal performance.
+
+           To do this use
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
+
+        To apply the translations of a queryset and the relations of it:
 
         .. testcode:: apply_translations
 
            from sample.models import Continent
+           from translations.utils import apply_translations
 
            relations = ('countries', 'countries__cities',)
 
@@ -108,18 +114,102 @@ class TranslatableQuerySet(models.QuerySet):
            Country: Südkorea
            City: Seül
            City: Ulsän
+
+        .. warning::
+
+           Filtering any queryset after applying the translations will cause
+           the translations of that queryset to be reset. The solution is to
+           do the filtering before applying the translations.
+
+           To do this on the relations use :class:`~django.db.models.Prefetch`.
+
+           Consider this case:
+
+           .. testcode:: apply_translations
+
+              from sample.models import Continent
+              from translations.utils import apply_translations
+
+              relations = ('countries', 'countries__cities',)
+
+              continents = Continent.objects.prefetch_related(
+                  *relations
+              ).apply_translations(
+                  *relations,
+                  lang='de'
+              )
+
+              for continent in continents:
+                  print('Continent: {}'.format(continent))
+                  for country in continent.countries.exclude(name=''):  # Wrong
+                      print('Country: {}  -- Wrong'.format(country))
+                      for city in country.cities.all():
+                          print('City: {}  -- Wrong'.format(city))
+
+           .. testoutput:: apply_translations
+
+              Continent: Europa
+              Country: Germany  -- Wrong
+              City: Cologne  -- Wrong
+              City: Munich  -- Wrong
+              Continent: Asien
+              Country: South Korea  -- Wrong
+              City: Seoul  -- Wrong
+              City: Ulsan  -- Wrong
+
+           As we can see the translations of the filtered queryset are reset.
+           To fix it:
+
+           .. testcode:: apply_translations
+
+              from django.db.models import Prefetch
+              from sample.models import Continent, Country
+              from translations.utils import apply_translations
+
+              relations = ('countries', 'countries__cities',)
+
+              continents = Continent.objects.prefetch_related(
+                  Prefetch(
+                      'countries',
+                      queryset=Country.objects.exclude(name='')  # Correct
+                  ),
+                  'countries__cities',
+              ).apply_translations(
+                  *relations,
+                  lang='de'
+              )
+
+              for continent in continents:
+                  print('Continent: {}'.format(continent))
+                  for country in continent.countries.all():
+                      print('Country: {}'.format(country))
+                      for city in country.cities.all():
+                          print('City: {}'.format(city))
+
+           .. testoutput:: apply_translations
+
+              Continent: Europa
+              Country: Deutschland
+              City: Köln
+              City: München
+              Continent: Asien
+              Country: Südkorea
+              City: Seül
+              City: Ulsän
         """
         apply_translations(self, *relations, lang=lang)
         return self
 
     def update_translations(self, *relations, lang=None):
         """
-        Update the translations of the queryset and the relations of it in a
+        Update the translations of the queryset and some relations of it in a
         language.
 
         Deletes the old translations of the queryset and the specified
-        relations of it in a language and creates new translations for them
-        based on their fields values.
+        relations of it in a language and creates new translations out of the
+        translatable
+        :attr:`~translations.models.Translatable.TranslatableMeta.fields` of
+        the queryset and the relations of it.
 
         :param relations: The relations of the queryset to update the
             translations of.
@@ -129,27 +219,13 @@ class TranslatableQuerySet(models.QuerySet):
         :type lang: str or None
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise TypeError: If the models of the included relations
+            are not :class:`~translations.models.Translatable`.
         :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
             pointing to the fields that don't exist.
+        :raise RuntimeError: If any of the relations is not prefetched.
 
-        .. warning::
-           The relations of the queryset **must** be fetched before performing
-           the translation process.
-
-           To do this use
-           :meth:`~django.db.models.query.QuerySet.select_related` or
-           :meth:`~django.db.models.query.QuerySet.prefetch_related`.
-
-        .. warning::
-           Only when all the filterings are executed on the relations of the
-           queryset it should go through the translation process, otherwise if
-           a relation is filtered after the translation process the
-           translations of that relation are reset.
-
-           To filter a relation when fetching it use
-           :class:`~django.db.models.Prefetch`.
-
-        .. testsetup:: update_translations
+        .. testsetup:: update_translations_0
 
            from tests.sample import create_samples
 
@@ -163,20 +239,94 @@ class TranslatableQuerySet(models.QuerySet):
                langs=['de']
            )
 
+        .. testsetup:: update_translations_1
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
+           )
+
+        .. note::
+
+           It is **mandatory** for the relations of the queryset to be
+           prefetched before making any changes to them so that the changes
+           can be fetched later.
+
+           To do this use
+           :meth:`~django.db.models.query.QuerySet.select_related`,
+           :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+           :func:`~django.db.models.prefetch_related_objects`.
+
+           Consider this case:
+
+           .. testcode:: update_translations_0
+
+              from sample.models import Continent
+
+              # un-prefetched queryset
+              europe = Continent.objects.get(code='EU')
+
+              # first query
+              europe.countries.all()[0].name = 'Germany (changed)'
+
+              # does a second query
+              new_name = europe.countries.all()[0].name
+
+              print('Country: {}'.format(new_name))
+
+           .. testoutput:: update_translations_0
+
+              Country: Germany
+
+           As we can see the new query did not fetch the changes we made
+           before. To fix it:
+
+           .. testcode:: update_translations_0
+
+              from sample.models import Continent
+
+              # prefetched queryset
+              europe = Continent.objects.prefetch_related(  # Correct
+                  'countries',
+              ).get(code='EU')
+
+              # first query
+              europe.countries.all()[0].name = 'Germany (changed)'
+
+              # uses the first query
+              new_name = europe.countries.all()[0].name
+
+              print('Country: {}'.format(new_name))
+
+           .. testoutput:: update_translations_0
+
+              Country: Germany (changed)
+
         To update the translations of a queryset and the relations of it:
 
-        .. testcode:: update_translations
+        .. testcode:: update_translations_1
 
-           from sample.models import Continent, Country, City
+           from sample.models import Continent
+           from translations.utils import apply_translations
            from translations.utils import update_translations
 
            relations = ('countries', 'countries__cities',)
 
-           continents = Continent.objects.prefetch_related(
-               *relations
-           ).update_translations(
+           continents = Continent.objects.prefetch_related(*relations).all()
+
+           print('OLD TRANSLATIONS:')
+           print('-----------------')
+
+           continents = continents.apply_translations(
                *relations,
-               lang='en'
+               lang='de'
            )
 
            for continent in continents:
@@ -186,16 +336,55 @@ class TranslatableQuerySet(models.QuerySet):
                    for city in country.cities.all():
                        print('City: {}'.format(city))
 
-        .. testoutput:: update_translations
+           print()
+           print('CHANGING...')
+           print()
 
-           Continent: Europe
-           Country: Germany
-           City: Cologne
-           City: Munich
-           Continent: Asia
-           Country: South Korea
-           City: Seoul
-           City: Ulsan
+           continents[0].name = 'Europa (changed)'
+           continents[0].countries.all()[0].name = 'Deutschland (changed)'
+
+           continents.update_translations(*relations, lang='de')
+
+           print()
+           print('NEW TRANSLATIONS:')
+           print('-----------------')
+
+           continents = continents.apply_translations(
+               *relations,
+               lang='de'
+           )
+
+           for continent in continents:
+               print('Continent: {}'.format(continent))
+               for country in continent.countries.all():
+                   print('Country: {}'.format(country))
+                   for city in country.cities.all():
+                       print('City: {}'.format(city))
+
+        .. testoutput:: update_translations_1
+
+           OLD TRANSLATIONS:
+           -----------------
+           Continent: Europa
+           Country: Deutschland
+           City: Köln
+           City: München
+           Continent: Asien
+           Country: Südkorea
+           City: Seül
+           City: Ulsän
+
+           CHANGING...
+
+           NEW TRANSLATIONS:
+           -----------------
+           Continent: Europa (changed)
+           Country: Deutschland (changed)
+           City: Köln
+           City: München
+           Continent: Asien
+           Country: Südkorea
+           City: Seül
+           City: Ulsän
         """
         update_translations(self, *relations, lang=lang)
-        return self
