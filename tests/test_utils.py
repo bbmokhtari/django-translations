@@ -5000,7 +5000,6 @@ class UpdateTranslationsTest(TestCase):
             update_translations(
                 europe,
                 'wrong',
-                lang='de'
             )
         self.assertEqual(
             error.exception.args[0],
@@ -5024,7 +5023,6 @@ class UpdateTranslationsTest(TestCase):
             update_translations(
                 europe,
                 'countries__wrong',
-                lang='de'
             )
         self.assertEqual(
             error.exception.args[0],
@@ -5047,7 +5045,6 @@ class UpdateTranslationsTest(TestCase):
         with self.assertRaises(TypeError) as error:
             update_translations(
                 behzad,
-                lang='de'
             )
         self.assertEqual(
             error.exception.args[0],
@@ -5073,7 +5070,6 @@ class UpdateTranslationsTest(TestCase):
         with self.assertRaises(TypeError) as error:
             update_translations(
                 people,
-                lang='de'
             )
         self.assertEqual(
             error.exception.args[0],
