@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate
 
-from sample.models import Continent, Country, City
+from sample.models import Continent
 
 from tests.sample import create_samples
 
