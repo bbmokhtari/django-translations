@@ -1196,8 +1196,6 @@ class TranslatableQuerySetTest(TestCase):
             'Seüler'
         )
 
-    # ---- error testing -----------------------------------------------------
-
     def test_apply_translations_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1206,13 +1204,15 @@ class TranslatableQuerySetTest(TestCase):
         )
 
         with self.assertRaises(ValueError) as error:
-            Continent.objects.apply_translations(lang='xx')
+            Continent.objects.apply_translations(
+                lang='xx'
+            )
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
         )
 
-    def test_apply_translations_invalid_relation(self):
+    def test_apply_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -1220,10 +1220,30 @@ class TranslatableQuerySetTest(TestCase):
         )
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            Continent.objects.apply_translations('wrong')
+            Continent.objects.apply_translations(
+                'wrong'
+            )
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
+        )
+
+    def test_apply_translations_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            Continent.objects.apply_translations(
+                'countries__wrong'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
         )
 
     # ---- arguments testing -------------------------------------------------
