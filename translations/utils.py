@@ -1057,11 +1057,12 @@ def update_translations(entity, *relations, lang=None):
 
     .. note::
 
-       It is **mandatory** for the relations of the entity to be prefetched
-       before making any changes to them so that the changes can be fetched
-       later.
+       It is **mandatory** for the relations of the entity to be
+       prefetched before making any changes to them so that the changes
+       can be fetched later.
 
-       To do this use :meth:`~django.db.models.query.QuerySet.select_related`,
+       To do this use
+       :meth:`~django.db.models.query.QuerySet.select_related`,
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
@@ -1086,8 +1087,8 @@ def update_translations(entity, *relations, lang=None):
 
           Country: Germany
 
-       As we can see the new query did not fetch the changes we made before.
-       To fix it:
+       As we can see the new query did not fetch the changes we made
+       before. To fix it:
 
        .. testcode:: update_translations_0
 

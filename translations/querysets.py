@@ -293,7 +293,7 @@ class TranslatableQuerySet(models.QuerySet):
               from sample.models import Continent
 
               # prefetched queryset
-              europe = Continent.objects.prefetch_related(  # Correct
+              europe = Continent.objects.prefetch_related(
                   'countries',
               ).get(code='EU')
 
