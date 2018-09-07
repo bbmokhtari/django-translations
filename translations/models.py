@@ -5,8 +5,7 @@ following members:
 :class:`Translation`
     The model which represents the translations.
 :class:`Translatable`
-    An abstract model which can be inherited by any model that needs
-    translation capabilities.
+    An abstract model which provides custom translation functionalities.
 """
 
 from django.db import models
