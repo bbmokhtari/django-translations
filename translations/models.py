@@ -34,31 +34,21 @@ class Translation(models.Model):
 
     .. note::
 
-       The :class:`~django.contrib.contenttypes.models.ContentType` model
-       represents the tables created in the database by all the apps in the
-       project.
-
-       The :class:`~django.contrib.contenttypes.models.ContentType` model
-       is in the :mod:`~django.contrib.contenttypes` app which is built in
-       to Django.
-
-    .. note::
-
-       :attr:`object_id` is defined as a :class:`~django.db.models.CharField`
-       so that it can work on the models which use character fields as primary
-       key.
-
-    .. note::
-
        :attr:`content_type` and :attr:`object_id` together form something
        called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
        This kind of foreign key contrary to the normal foreign key (which can
        point to a row in only one table) can point to a row in any table.
 
+    .. note::
+
+       :attr:`object_id` is defined as a :class:`~django.db.models.CharField`
+       so that it can also point to the rows in the tables which use character
+       fields (like :class:`~django.db.models.UUIDField`, etc.) as primary key.
+
     .. warning::
 
        Try **not** to work with the :class:`~translations.models.Translation`
-       model manually unless you *really* have to and you know what you're
+       model directly unless you *really* have to and you know what you're
        doing.
 
        Instead use the functionalities provided in
