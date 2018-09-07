@@ -679,10 +679,10 @@ def apply_translations(entity, *relations, lang=None):
     Apply the translations of an entity and some relations of it in a
     language.
 
-    Fetches the translations of the entity and the specified relations of it
-    in a language and applies them on the translatable
-    :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
-    entity and the relations of it in place.
+    Fetches the translations of the entity and the specified relations
+    of it in a language and applies them on the translatable
+    :attr:`~translations.models.Translatable.TranslatableMeta.fields` of
+    the entity and the relations of it in place.
 
     :param entity: The entity to apply the translations of.
     :type entity: ~django.db.models.Model or
@@ -700,8 +700,11 @@ def apply_translations(entity, *relations, lang=None):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the models of the included relations
-          are not :class:`~translations.models.Translatable`.
+        - If the model of the entity is
+          not :class:`~translations.models.Translatable`.
+
+        - If the models of the included relations are
+          not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.

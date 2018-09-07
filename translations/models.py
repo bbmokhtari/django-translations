@@ -200,8 +200,8 @@ class Translatable(models.Model):
         :type lang: str or None
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
-        :raise TypeError: If the models of the included relations
-            are not :class:`~translations.models.Translatable`.
+        :raise TypeError: If the models of the included relations are
+            not :class:`~translations.models.Translatable`.
         :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
             pointing to the fields that don't exist.
 
