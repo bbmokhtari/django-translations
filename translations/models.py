@@ -405,7 +405,7 @@ class Translatable(models.Model):
 
         .. note::
 
-           It is **mandatory** for the relations of the entity to be
+           It is **mandatory** for the relations of the instance to be
            prefetched before making any changes to them so that the changes
            can be fetched later.
 
