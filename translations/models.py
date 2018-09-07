@@ -237,12 +237,11 @@ class Translatable(models.Model):
            :meth:`~django.db.models.query.QuerySet.prefetch_related` or
            :func:`~django.db.models.prefetch_related_objects`.
 
-        To apply the translations on an instance and the relations of it:
+        To apply the translations of an instance and the relations of it:
 
         .. testcode:: apply_translations
 
            from sample.models import Continent
-           from translations.utils import apply_translations
 
            relations = ('countries', 'countries__cities',)
 

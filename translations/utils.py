@@ -741,7 +741,7 @@ def apply_translations(entity, *relations, lang=None):
        :meth:`~django.db.models.query.QuerySet.prefetch_related` or
        :func:`~django.db.models.prefetch_related_objects`.
 
-    To apply the translations on a list of instances and the relations of it:
+    To apply the translations of a list of instances and the relations of it:
 
     .. testcode:: apply_translations
 
@@ -752,40 +752,17 @@ def apply_translations(entity, *relations, lang=None):
        relations = ('countries', 'countries__cities',)
 
        continents = list(Continent.objects.all())
-       prefetch_related_objects(continents, *relations)
 
-       apply_translations(continents, *relations, lang='de')
+       prefetch_related_objects(
+           continents,
+           *relations,
+       )
 
-       for continent in continents:
-           print('Continent: {}'.format(continent))
-           for country in continent.countries.all():
-               print('Country: {}'.format(country))
-               for city in country.cities.all():
-                   print('City: {}'.format(city))
-
-    .. testoutput:: apply_translations
-
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
-       Continent: Asien
-       Country: Südkorea
-       City: Seül
-       City: Ulsän
-
-    To apply the translations on a queryset and the relations of it:
-
-    .. testcode:: apply_translations
-
-       from sample.models import Continent
-       from translations.utils import apply_translations
-
-       relations = ('countries', 'countries__cities',)
-
-       continents = Continent.objects.prefetch_related(*relations).all()
-
-       apply_translations(continents, *relations, lang='de')
+       apply_translations(
+           continents,
+           *relations,
+           lang='de',
+       )
 
        for continent in continents:
            print('Continent: {}'.format(continent))
@@ -805,7 +782,7 @@ def apply_translations(entity, *relations, lang=None):
        City: Seül
        City: Ulsän
 
-    To apply the translations on an instance and the relations of it:
+    To apply the translations of a queryset and the relations of it:
 
     .. testcode:: apply_translations
 
@@ -814,9 +791,52 @@ def apply_translations(entity, *relations, lang=None):
 
        relations = ('countries', 'countries__cities',)
 
-       europe = Continent.objects.get(code='EU')
+       continents = Continent.objects.prefetch_related(
+           *relations,
+       )
 
-       apply_translations(europe, *relations, lang='de')
+       apply_translations(
+           continents,
+           *relations,
+           lang='de',
+       )
+
+       for continent in continents:
+           print('Continent: {}'.format(continent))
+           for country in continent.countries.all():
+               print('Country: {}'.format(country))
+               for city in country.cities.all():
+                   print('City: {}'.format(city))
+
+    .. testoutput:: apply_translations
+
+       Continent: Europa
+       Country: Deutschland
+       City: Köln
+       City: München
+       Continent: Asien
+       Country: Südkorea
+       City: Seül
+       City: Ulsän
+
+    To apply the translations of an instance and the relations of it:
+
+    .. testcode:: apply_translations
+
+       from sample.models import Continent
+       from translations.utils import apply_translations
+
+       relations = ('countries', 'countries__cities',)
+
+       europe = Continent.objects.prefetch_related(
+           *relations,
+       ).get(code='EU')
+
+       apply_translations(
+           europe,
+           *relations,
+           lang='de',
+       )
 
        print('Continent: {}'.format(europe))
        for country in europe.countries.all():

@@ -84,17 +84,16 @@ class TranslatableQuerySet(models.QuerySet):
         .. testcode:: apply_translations
 
            from sample.models import Continent
-           from translations.utils import apply_translations
 
            relations = ('countries', 'countries__cities',)
 
            continents = Continent.objects.prefetch_related(
-               *relations
+               *relations,
            )
 
            continents.apply_translations(
                *relations,
-               lang='de'
+               lang='de',
            )
 
            for continent in continents:
