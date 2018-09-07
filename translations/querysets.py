@@ -197,8 +197,9 @@ class TranslatableQuerySet(models.QuerySet):
               City: Seül
               City: Ulsän
         """
-        apply_translations(self, *relations, lang=lang)
-        return self
+        clone = self.all()
+        apply_translations(clone, *relations, lang=lang)
+        return clone
 
     def update_translations(self, *relations, lang=None):
         """
