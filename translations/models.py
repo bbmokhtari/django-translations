@@ -435,8 +435,8 @@ class Translatable(models.Model):
 
               Country: Germany
 
-           As we can see the new query did not fetch the changes we made before.
-           To fix it:
+           As we can see the new query did not fetch the changes we made
+           before. To fix it:
 
            .. testcode:: update_translations_0
 
@@ -591,12 +591,12 @@ class Translatable(models.Model):
     @classmethod
     def get_translatable_field_names(cls):
         """
-        Return the translatable field names of the model.
+        Return the name of the model's translatable fields.
 
-        Returns the translatable field names of the model based on the
+        Returns the name of the model's translatable field based on the
         field names listed in :attr:`TranslatableMeta.fields`.
 
-        :return: The translatable field names.
+        :return: The names of the translatable field.
         :rtype: list(str)
 
         Considering this model:
@@ -605,7 +605,7 @@ class Translatable(models.Model):
            :pyobject: Continent
            :emphasize-lines: 27-28
 
-        To get the translatable field names of the mentioned model:
+        To get the name of the mentioned model's translatable fields:
 
         .. testcode:: get_translatable_field_names
 
