@@ -137,8 +137,8 @@ class Translatable(models.Model):
     An abstract model which provides custom translation functionalities.
 
     Provides functionalities like :meth:`apply_translations` to read the
-    translations from the database and apply them on the instance, and
-    :meth:`update_translations` to update the translations from the instance
+    translations from the database and apply them on an instance, and
+    :meth:`update_translations` to update the translations from an instance
     and write them on the database.
 
     It changes the default manager of the model to
@@ -146,7 +146,7 @@ class Translatable(models.Model):
     custom translation functionalities in the querysets.
 
     It also adds the :attr:`translations` relation to the model, just in case
-    any one wants to work with the translations of the instances manually.
+    any one wants to work with the translations of an instance manually.
 
     .. note::
 
