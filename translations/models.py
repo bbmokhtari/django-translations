@@ -578,9 +578,9 @@ class Translatable(models.Model):
     @classmethod
     def get_translatable_field_names(cls):
         """
-        Return the name of the model's translatable fields.
+        Return the names of the model's translatable fields.
 
-        Returns the name of the model's translatable field based on the
+        Returns the names of the model's translatable fields based on the
         field names listed in :attr:`TranslatableMeta.fields`.
 
         :return: The names of the translatable field.
@@ -592,7 +592,7 @@ class Translatable(models.Model):
            :pyobject: Continent
            :emphasize-lines: 27-28
 
-        To get the name of the mentioned model's translatable fields:
+        To get the names of the mentioned model's translatable fields:
 
         .. testcode:: get_translatable_field_names
 
