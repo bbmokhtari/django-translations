@@ -932,9 +932,7 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
-    # ---- error testing -----------------------------------------------------
-
-    def test_apply_translations_lang(self):
+    def test_apply_translations_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -944,13 +942,15 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            europe.apply_translations(lang='xx')
+            europe.apply_translations(
+                lang='xx'
+            )
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
         )
 
-    def test_apply_translations_invalid_relation(self):
+    def test_apply_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -960,10 +960,32 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            europe.apply_translations('wrong')
+            europe.apply_translations(
+                'wrong'
+            )
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
+        )
+
+    def test_apply_translations_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            europe.apply_translations(
+                'countries__wrong'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
         )
 
     # ---- arguments testing -------------------------------------------------
