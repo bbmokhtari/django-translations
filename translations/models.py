@@ -72,10 +72,8 @@ class Translation(models.Model):
 
        europe = Continent.objects.get(code='EU')
 
-       content_type = ContentType.objects.get_for_model(europe)
-
        translation = Translation.objects.create(
-           content_type=content_type,
+           content_type=ContentType.objects.get_for_model(Continent),
            object_id=europe.id,
            field='name',
            language='de',
