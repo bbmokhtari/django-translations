@@ -32,7 +32,7 @@ class TranslatableQuerySet(models.QuerySet):
         Fetches the translations of the queryset and the specified relations
         of it in a language and applies them on the translatable
         :attr:`~translations.models.Translatable.TranslatableMeta.fields` of
-        the queryset and the relations of it.
+        the queryset and the relations of it in place.
 
         :param relations: The relations of the queryset to apply the
             translations of.
@@ -40,8 +40,6 @@ class TranslatableQuerySet(models.QuerySet):
         :param lang: The language to fetch the translations in.
             ``None`` means use the :term:`active language` code.
         :type lang: str or None
-        :return: The queryset which the translations of have been applied.
-        :rtype: ~translations.querysets.TranslatableQuerySet
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
         :raise TypeError: If the models of the included relations
@@ -92,7 +90,9 @@ class TranslatableQuerySet(models.QuerySet):
 
            continents = Continent.objects.prefetch_related(
                *relations
-           ).apply_translations(
+           )
+
+           continents.apply_translations(
                *relations,
                lang='de'
            )
@@ -134,7 +134,9 @@ class TranslatableQuerySet(models.QuerySet):
 
               continents = Continent.objects.prefetch_related(
                   *relations
-              ).apply_translations(
+              )
+
+              continents.apply_translations(
                   *relations,
                   lang='de'
               )
@@ -174,7 +176,9 @@ class TranslatableQuerySet(models.QuerySet):
                       queryset=Country.objects.exclude(name='')  # Correct
                   ),
                   'countries__cities',
-              ).apply_translations(
+              )
+
+              continents.apply_translations(
                   *relations,
                   lang='de'
               )
@@ -197,9 +201,7 @@ class TranslatableQuerySet(models.QuerySet):
               City: Seül
               City: Ulsän
         """
-        clone = self.all()
-        apply_translations(clone, *relations, lang=lang)
-        return clone
+        apply_translations(self, *relations, lang=lang)
 
     def update_translations(self, *relations, lang=None):
         """
@@ -325,7 +327,7 @@ class TranslatableQuerySet(models.QuerySet):
            print('OLD TRANSLATIONS:')
            print('-----------------')
 
-           continents = continents.apply_translations(
+           continents.apply_translations(
                *relations,
                lang='de'
            )
@@ -350,7 +352,7 @@ class TranslatableQuerySet(models.QuerySet):
            print('NEW TRANSLATIONS:')
            print('-----------------')
 
-           continents = continents.apply_translations(
+           continents.apply_translations(
                *relations,
                lang='de'
            )

@@ -343,10 +343,6 @@ class Translatable(models.Model):
               Country: Deutschland
               City: Köln
               City: München
-              Continent: Asien
-              Country: Südkorea
-              City: Seül
-              City: Ulsän
         """
         apply_translations(self, *relations, lang=lang)
 
@@ -470,7 +466,7 @@ class Translatable(models.Model):
 
            relations = ('countries', 'countries__cities',)
 
-           europe = Continent.objects.prefetch_relations(
+           europe = Continent.objects.prefetch_related(
                *relations,
            ).get(code='EU')
 
