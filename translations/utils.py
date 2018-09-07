@@ -853,9 +853,9 @@ def apply_translations(entity, *relations, lang=None):
 
     .. warning::
 
-       Filtering any queryset after applying the translations will cause the
-       translations of that queryset to be reset. The solution is to do the
-       filtering before applying the translations.
+       Filtering any queryset after applying the translations will cause
+       the translations of that queryset to be reset. The solution is to
+       do the filtering before applying the translations.
 
        To do this on the relations use :class:`~django.db.models.Prefetch`.
 
@@ -863,14 +863,24 @@ def apply_translations(entity, *relations, lang=None):
 
        .. testcode:: apply_translations
 
+          from django.db.models import prefetch_related_objects
           from sample.models import Continent
           from translations.utils import apply_translations
 
           relations = ('countries', 'countries__cities',)
 
-          continents = Continent.objects.prefetch_related(*relations).all()
+          continents = list(Continent.objects.all())
 
-          apply_translations(continents, *relations, lang='de')
+          prefetch_related_objects(
+              continents,
+              *relations,
+          )
+
+          apply_translations(
+              continents,
+              *relations,
+              lang='de',
+          )
 
           for continent in continents:
               print('Continent: {}'.format(continent))
@@ -895,21 +905,28 @@ def apply_translations(entity, *relations, lang=None):
 
        .. testcode:: apply_translations
 
-          from django.db.models import Prefetch
+          from django.db.models import prefetch_related_objects, Prefetch
           from sample.models import Continent, Country
           from translations.utils import apply_translations
 
           relations = ('countries', 'countries__cities',)
 
-          continents = Continent.objects.prefetch_related(
+          continents = list(Continent.objects.all())
+
+          prefetch_related_objects(
+              continents,
               Prefetch(
                   'countries',
-                  queryset=Country.objects.exclude(name='')  # Correct
+                  queryset=Country.objects.exclude(name=''),  # Correct
               ),
               'countries__cities',
-          ).all()
+          )
 
-          apply_translations(continents, *relations, lang='de')
+          apply_translations(
+              continents,
+              *relations,
+              lang='de',
+          )
 
           for continent in continents:
               print('Continent: {}'.format(continent))

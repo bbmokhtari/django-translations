@@ -127,17 +127,16 @@ class TranslatableQuerySet(models.QuerySet):
            .. testcode:: apply_translations
 
               from sample.models import Continent
-              from translations.utils import apply_translations
 
               relations = ('countries', 'countries__cities',)
 
               continents = Continent.objects.prefetch_related(
-                  *relations
+                  *relations,
               )
 
               continents.apply_translations(
                   *relations,
-                  lang='de'
+                  lang='de',
               )
 
               for continent in continents:
@@ -165,21 +164,20 @@ class TranslatableQuerySet(models.QuerySet):
 
               from django.db.models import Prefetch
               from sample.models import Continent, Country
-              from translations.utils import apply_translations
 
               relations = ('countries', 'countries__cities',)
 
               continents = Continent.objects.prefetch_related(
                   Prefetch(
                       'countries',
-                      queryset=Country.objects.exclude(name='')  # Correct
+                      queryset=Country.objects.exclude(name=''),  # Correct
                   ),
                   'countries__cities',
               )
 
               continents.apply_translations(
                   *relations,
-                  lang='de'
+                  lang='de',
               )
 
               for continent in continents:

@@ -280,7 +280,6 @@ class Translatable(models.Model):
            .. testcode:: apply_translations
 
               from sample.models import Continent
-              from translations.utils import apply_translations
 
               relations = ('countries', 'countries__cities',)
 
@@ -290,7 +289,7 @@ class Translatable(models.Model):
 
               europe.apply_translations(
                   *relations,
-                  lang='de'
+                  lang='de',
               )
 
               print('Continent: {}'.format(europe))
@@ -313,7 +312,6 @@ class Translatable(models.Model):
 
               from django.db.models import Prefetch
               from sample.models import Continent, Country
-              from translations.utils import apply_translations
 
               relations = ('countries', 'countries__cities',)
 
