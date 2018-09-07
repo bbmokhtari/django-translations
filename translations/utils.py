@@ -967,16 +967,17 @@ def update_translations(entity, *relations, lang=None):
     Update the translations of an entity and some relations of it in a
     language.
 
-    Deletes the old translations of the entity and the specified relations of
-    it in a language and creates new translations out of the translatable
-    :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
-    entity and the relations of it.
+    Deletes the old translations of the entity and the specified
+    relations of it in a language and creates new translations out of the
+    translatable
+    :attr:`~translations.models.Translatable.TranslatableMeta.fields` of
+    the entity and the relations of it.
 
     :param entity: The entity to update the translations of.
     :type entity: ~django.db.models.Model or
         ~collections.Iterable(~django.db.models.Model)
-    :param relations: The relations of the entity to update the translations
-        of.
+    :param relations: The relations of the entity to update the
+        translations of.
     :type relations: list(str)
     :param lang: The language to update the translations in.
         ``None`` means use the :term:`active language` code.
@@ -988,8 +989,11 @@ def update_translations(entity, *relations, lang=None):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the models of the included relations
-          are not :class:`~translations.models.Translatable`.
+        - If the model of the entity is
+          not :class:`~translations.models.Translatable`.
+
+        - If the models of the included relations are
+          not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
