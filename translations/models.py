@@ -27,21 +27,28 @@ class Translation(models.Model):
     """
     The model which represents the translations.
 
-    Manages storing, querying and the structure of the translation objects.
-
     Each translation belongs to a *unique* database address. Each address is
     composed of a :attr:`content_type` (table), an :attr:`object_id` (row) and
-    a :attr:`field` (column).
-
-    Each unique address must have only one translation in a specific
-    :attr:`language`.
+    a :attr:`field` (column). Each unique address must have only one
+    translation :attr:`text` in a specific :attr:`language`.
 
     .. note::
 
-       :class:`~django.contrib.contenttypes.models.ContentType` is a django
-       model which comes with the :mod:`~django.contrib.contenttypes` app.
-       It represents the tables created in a database by all the apps in a
+       The :class:`~django.contrib.contenttypes.models.ContentType` model
+       represents the tables created in the database by all the apps in the
        project.
+
+       The :class:`~django.contrib.contenttypes.models.ContentType` model
+       is in the :mod:`~django.contrib.contenttypes` app which is built in
+       to Django.
+
+    .. note::
+
+       :attr:`object_id` is defined as a :class:`~django.db.models.CharField`
+       so that it can work on the models which use character fields as primary
+       key.
+
+    .. note::
 
        :attr:`content_type` and :attr:`object_id` together form something
        called a :class:`~django.contrib.contenttypes.fields.GenericForeignKey`.
