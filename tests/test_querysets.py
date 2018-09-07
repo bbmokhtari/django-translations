@@ -23,7 +23,8 @@ class TranslatableQuerySetTest(TestCase):
 
         activate('de')
 
-        continents = Continent.objects.apply_translations()
+        continents = Continent.objects.all()
+        continents.apply_translations()
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -95,8 +96,9 @@ class TranslatableQuerySetTest(TestCase):
 
         lvl_1 = ('countries',)
 
-        continents = Continent.objects.apply_translations(
-            *lvl_1
+        continents = Continent.objects.all()
+        continents.apply_translations(
+            *lvl_1,
         )
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -169,7 +171,8 @@ class TranslatableQuerySetTest(TestCase):
 
         lvl_2 = ('countries__cities',)
 
-        continents = Continent.objects.apply_translations(
+        continents = Continent.objects.all()
+        continents.apply_translations(
             *lvl_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -243,7 +246,8 @@ class TranslatableQuerySetTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.apply_translations(
+        continents = Continent.objects.all()
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -313,7 +317,8 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.apply_translations(
+        continents = Continent.objects.all()
+        continents.apply_translations(
             lang='de'
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -385,7 +390,8 @@ class TranslatableQuerySetTest(TestCase):
 
         lvl_1 = ('countries',)
 
-        continents = Continent.objects.apply_translations(
+        continents = Continent.objects.all()
+        continents.apply_translations(
             *lvl_1,
             lang='de'
         )
@@ -458,7 +464,8 @@ class TranslatableQuerySetTest(TestCase):
 
         lvl_2 = ('countries__cities',)
 
-        continents = Continent.objects.apply_translations(
+        continents = Continent.objects.all()
+        continents.apply_translations(
             *lvl_2,
             lang='de'
         )
@@ -531,7 +538,8 @@ class TranslatableQuerySetTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.apply_translations(
+        continents = Continent.objects.all()
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -608,7 +616,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations()
+        )
+        continents.apply_translations()
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -683,7 +692,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -760,7 +770,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -836,7 +847,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -910,7 +922,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             lang='de'
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -985,7 +998,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1,
             lang='de'
         )
@@ -1061,7 +1075,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_2,
             lang='de'
         )
@@ -1136,7 +1151,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1263,7 +1279,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1291,7 +1308,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1368,7 +1386,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1396,7 +1415,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1473,7 +1493,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1501,7 +1522,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1577,7 +1599,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1605,7 +1628,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2
         )
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -1679,7 +1703,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1708,7 +1733,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1784,7 +1810,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1813,7 +1840,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1889,7 +1917,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1918,7 +1947,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -1993,7 +2023,8 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )
@@ -2022,7 +2053,8 @@ class TranslatableQuerySetTest(TestCase):
         # reapply
         continents = Continent.objects.prefetch_related(
             *lvl_1_2
-        ).apply_translations(
+        )
+        continents.apply_translations(
             *lvl_1_2,
             lang='de'
         )

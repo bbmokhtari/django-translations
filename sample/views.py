@@ -16,7 +16,8 @@ def get_continent_list(request):
     continents = Continent.objects.prefetch_related(
         'countries',
         'countries__cities',
-    ).apply_translations(
+    )
+    continents.apply_translations(
         'countries',
         'countries__cities',
     )

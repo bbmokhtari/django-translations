@@ -32,7 +32,7 @@ class TranslatableQuerySet(models.QuerySet):
         Fetches the translations of the queryset and the specified relations
         of it in a language and applies them on the translatable
         :attr:`~translations.models.Translatable.TranslatableMeta.fields` of
-        the queryset and the relations of it.
+        the queryset and the relations of it in place.
 
         :param relations: The relations of the queryset to apply the
             translations of.
@@ -40,12 +40,10 @@ class TranslatableQuerySet(models.QuerySet):
         :param lang: The language to fetch the translations in.
             ``None`` means use the :term:`active language` code.
         :type lang: str or None
-        :return: The queryset which the translations of have been applied.
-        :rtype: ~translations.querysets.TranslatableQuerySet
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
-        :raise TypeError: If the models of the included relations
-            are not :class:`~translations.models.Translatable`.
+        :raise TypeError: If the models of the included relations are
+            not :class:`~translations.models.Translatable`.
         :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
             pointing to the fields that don't exist.
 
@@ -86,15 +84,16 @@ class TranslatableQuerySet(models.QuerySet):
         .. testcode:: apply_translations
 
            from sample.models import Continent
-           from translations.utils import apply_translations
 
            relations = ('countries', 'countries__cities',)
 
            continents = Continent.objects.prefetch_related(
-               *relations
-           ).apply_translations(
                *relations,
-               lang='de'
+           )
+
+           continents.apply_translations(
+               *relations,
+               lang='de',
            )
 
            for continent in continents:
@@ -128,15 +127,16 @@ class TranslatableQuerySet(models.QuerySet):
            .. testcode:: apply_translations
 
               from sample.models import Continent
-              from translations.utils import apply_translations
 
               relations = ('countries', 'countries__cities',)
 
               continents = Continent.objects.prefetch_related(
-                  *relations
-              ).apply_translations(
                   *relations,
-                  lang='de'
+              )
+
+              continents.apply_translations(
+                  *relations,
+                  lang='de',
               )
 
               for continent in continents:
@@ -164,19 +164,20 @@ class TranslatableQuerySet(models.QuerySet):
 
               from django.db.models import Prefetch
               from sample.models import Continent, Country
-              from translations.utils import apply_translations
 
               relations = ('countries', 'countries__cities',)
 
               continents = Continent.objects.prefetch_related(
                   Prefetch(
                       'countries',
-                      queryset=Country.objects.exclude(name='')  # Correct
+                      queryset=Country.objects.exclude(name=''),  # Correct
                   ),
                   'countries__cities',
-              ).apply_translations(
+              )
+
+              continents.apply_translations(
                   *relations,
-                  lang='de'
+                  lang='de',
               )
 
               for continent in continents:
@@ -198,7 +199,6 @@ class TranslatableQuerySet(models.QuerySet):
               City: Ulsän
         """
         apply_translations(self, *relations, lang=lang)
-        return self
 
     def update_translations(self, *relations, lang=None):
         """
@@ -293,7 +293,7 @@ class TranslatableQuerySet(models.QuerySet):
               from sample.models import Continent
 
               # prefetched queryset
-              europe = Continent.objects.prefetch_related(  # Correct
+              europe = Continent.objects.prefetch_related(
                   'countries',
               ).get(code='EU')
 
@@ -314,19 +314,19 @@ class TranslatableQuerySet(models.QuerySet):
         .. testcode:: update_translations_1
 
            from sample.models import Continent
-           from translations.utils import apply_translations
-           from translations.utils import update_translations
 
            relations = ('countries', 'countries__cities',)
 
-           continents = Continent.objects.prefetch_related(*relations).all()
+           continents = Continent.objects.prefetch_related(
+               *relations,
+           )
 
            print('OLD TRANSLATIONS:')
            print('-----------------')
 
-           continents = continents.apply_translations(
+           continents.apply_translations(
                *relations,
-               lang='de'
+               lang='de',
            )
 
            for continent in continents:
@@ -336,22 +336,22 @@ class TranslatableQuerySet(models.QuerySet):
                    for city in country.cities.all():
                        print('City: {}'.format(city))
 
-           print()
-           print('CHANGING...')
-           print()
+           print('\\nCHANGING...\\n')
 
            continents[0].name = 'Europa (changed)'
            continents[0].countries.all()[0].name = 'Deutschland (changed)'
 
-           continents.update_translations(*relations, lang='de')
+           continents.update_translations(
+               *relations,
+               lang='de',
+           )
 
-           print()
            print('NEW TRANSLATIONS:')
            print('-----------------')
 
-           continents = continents.apply_translations(
+           continents.apply_translations(
                *relations,
-               lang='de'
+               lang='de',
            )
 
            for continent in continents:
