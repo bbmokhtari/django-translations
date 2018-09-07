@@ -988,8 +988,6 @@ class TranslatableTest(TestCase):
             "Country has no field named 'wrong'"
         )
 
-    # ---- arguments testing -------------------------------------------------
-
     def test_update_translations_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1466,8 +1464,6 @@ class TranslatableTest(TestCase):
             'Cologne Denonym'
         )
 
-    # ---- error testing -----------------------------------------------------
-
     def test_update_translations_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1478,13 +1474,15 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            europe.update_translations(lang='xx')
+            europe.update_translations(
+                lang='xx'
+            )
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
         )
 
-    def test_update_translations_invalid_relation(self):
+    def test_update_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -1494,8 +1492,99 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            europe.update_translations('wrong')
+            europe.update_translations(
+                'wrong'
+            )
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
+        )
+
+    def test_update_translations_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.prefetch_related(
+            'countries',
+        ).get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            europe.update_translations(
+                'countries__wrong'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
+    def test_update_translations_invalid_prefetch_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(RuntimeError) as error:
+            europe.update_translations(
+                'countries'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `countries` of the model `Continent` must' +
+             ' be prefetched.')
+        )
+
+    def test_update_translations_invalid_prefetch_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(RuntimeError) as error:
+            europe.update_translations(
+                'countries__cities'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `countries` of the model `Continent` must' +
+             ' be prefetched.')
+        )
+
+    def test_update_translations_invalid_prefetch_partial_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            city_names=['cologne'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.prefetch_related('countries').get(code='EU')
+
+        with self.assertRaises(RuntimeError) as error:
+            europe.update_translations(
+                'countries__cities'
+            )
+        self.assertEqual(
+            error.exception.args[0],
+            ('The relation `cities` of the model `Country` must' +
+             ' be prefetched.')
         )
