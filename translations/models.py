@@ -456,10 +456,7 @@ class Translatable(models.Model):
 
         .. testcode:: update_translations_1
 
-           from django.db.models import prefetch_related_objects
            from sample.models import Continent
-           from translations.utils import apply_translations
-           from translations.utils import update_translations
 
            relations = ('countries', 'countries__cities',)
 
@@ -481,9 +478,7 @@ class Translatable(models.Model):
                for city in country.cities.all():
                    print('City: {}'.format(city))
 
-           print()
-           print('CHANGING...')
-           print()
+           print('\\nCHANGING...\\n')
 
            europe.name = 'Europa (changed)'
            europe.countries.all()[0].name = 'Deutschland (changed)'
@@ -493,7 +488,6 @@ class Translatable(models.Model):
                lang='de',
            )
 
-           print()
            print('NEW TRANSLATIONS:')
            print('-----------------')
 
