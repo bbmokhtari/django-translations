@@ -2449,6 +2449,77 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
+    def test_instance_invalid_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(ValueError) as error:
+            apply_translations(europe, lang='xx')
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
+        )
+
+    def test_instance_invalid_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            apply_translations(europe, 'wrong')
+        self.assertEqual(
+            error.exception.args[0],
+            "Continent has no field named 'wrong'"
+        )
+
+    def test_instance_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            apply_translations(europe, 'countries__wrong')
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
+    def test_instance_invalid_entity(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+
+        with self.assertRaises(TypeError) as error:
+            apply_translations(behzad)
+        self.assertEqual(
+            error.exception.args[0],
+            ('`Behzad` is neither a model instance nor an iterable of' +
+             ' model instances.')
+        )
+
     def test_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3601,45 +3672,39 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
-    def test_invalid_lang(self):
+    def test_queryset_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
             langs=['de']
         )
 
-        europe = Continent.objects.get(code='EU')
+        continents = Continent.objects.all()
 
         with self.assertRaises(ValueError) as error:
-            apply_translations(
-                europe,
-                lang='xx'
-            )
+            apply_translations(continents, lang='xx')
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
         )
 
-    def test_invalid_simple_relation(self):
+    def test_queryset_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
             langs=['de']
         )
 
-        europe = Continent.objects.get(code='EU')
+        continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            apply_translations(
-                europe,
-                'wrong',
-            )
+            apply_translations(continents, 'wrong')
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
         )
 
-    def test_invalid_nested_relation(self):
+    def test_queryset_invalid_nested_relation(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -3648,42 +3713,16 @@ class ApplyTranslationsTest(TestCase):
             langs=['de']
         )
 
-        europe = Continent.objects.get(code='EU')
+        continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            apply_translations(
-                europe,
-                'countries__wrong',
-            )
+            apply_translations(continents, 'countries__wrong')
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
         )
 
-    def test_invalid_instance(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-
-        with self.assertRaises(TypeError) as error:
-            apply_translations(
-                behzad,
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            ('`Behzad` is neither a model instance nor an iterable of' +
-             ' model instances.')
-        )
-
-    def test_invalid_iterable(self):
+    def test_queryset_invalid_entity(self):
         class Person:
             def __init__(self, name):
                 self.name = name
@@ -3699,9 +3738,7 @@ class ApplyTranslationsTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            apply_translations(
-                people,
-            )
+            apply_translations(people)
         self.assertEqual(
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable of' +

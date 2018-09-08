@@ -942,9 +942,7 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            europe.apply_translations(
-                lang='xx'
-            )
+            europe.apply_translations(lang='xx')
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
@@ -960,9 +958,7 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            europe.apply_translations(
-                'wrong'
-            )
+            europe.apply_translations('wrong')
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -980,9 +976,7 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            europe.apply_translations(
-                'countries__wrong'
-            )
+            europe.apply_translations('countries__wrong')
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
