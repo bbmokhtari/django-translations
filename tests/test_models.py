@@ -1473,9 +1473,7 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            europe.update_translations(
-                lang='xx'
-            )
+            europe.update_translations(lang='xx')
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
@@ -1491,9 +1489,7 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            europe.update_translations(
-                'wrong'
-            )
+            europe.update_translations('wrong')
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -1508,14 +1504,12 @@ class TranslatableTest(TestCase):
             langs=['de']
         )
 
-        europe = Continent.objects.prefetch_related(
-            'countries',
-        ).get(code='EU')
+        lvl_1 = ('countries',)
+
+        europe = Continent.objects.prefetch_related(*lvl_1).get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            europe.update_translations(
-                'countries__wrong'
-            )
+            europe.update_translations('countries__wrong')
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
@@ -1530,12 +1524,12 @@ class TranslatableTest(TestCase):
             langs=['de']
         )
 
+        lvl_1 = ('countries',)
+
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(RuntimeError) as error:
-            europe.update_translations(
-                'countries'
-            )
+            europe.update_translations(*lvl_1)
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -1553,12 +1547,12 @@ class TranslatableTest(TestCase):
             langs=['de']
         )
 
+        lvl_2 = ('countries__cities',)
+
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(RuntimeError) as error:
-            europe.update_translations(
-                'countries__cities'
-            )
+            europe.update_translations(*lvl_2)
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -1576,12 +1570,13 @@ class TranslatableTest(TestCase):
             langs=['de']
         )
 
-        europe = Continent.objects.prefetch_related('countries').get(code='EU')
+        lvl_1 = ('countries',)
+        lvl_2 = ('countries__cities',)
+
+        europe = Continent.objects.prefetch_related(*lvl_1).get(code='EU')
 
         with self.assertRaises(RuntimeError) as error:
-            europe.update_translations(
-                'countries__cities'
-            )
+            europe.update_translations(*lvl_2)
         self.assertEqual(
             error.exception.args[0],
             ('The relation `cities` of the model `Country` must' +
