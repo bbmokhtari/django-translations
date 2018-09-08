@@ -26,7 +26,8 @@ class TranslationTest(TestCase):
             )
         self.assertEqual(
             error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.content_type_id',
+            ('NOT NULL constraint failed: translations_translation' +
+             '.content_type_id'),
         )
 
     def test_object_id_none(self):
@@ -137,7 +138,11 @@ class TranslationTest(TestCase):
             )
         self.assertEqual(
             error.exception.args[0],
-            'UNIQUE constraint failed: translations_translation.content_type_id, translations_translation.object_id, translations_translation.field, translations_translation.language',
+            ('UNIQUE constraint failed: ' +
+             'translations_translation.content_type_id, ' +
+             'translations_translation.object_id, ' +
+             'translations_translation.field, ' +
+             'translations_translation.language'),
         )
 
 
