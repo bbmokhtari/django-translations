@@ -159,7 +159,7 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         self.assertQuerysetEqual(
-            europe.translations.all().order_by('id'),
+            europe.translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -177,14 +177,14 @@ class TranslatableTest(TestCase):
         asia = Continent.objects.get(code='AS')
 
         self.assertQuerysetEqual(
-            europe.translations.all().order_by('id'),
+            europe.translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
             ]
         )
         self.assertQuerysetEqual(
-            asia.translations.all().order_by('id'),
+            asia.translations.order_by('id'),
             [
                 '<Translation: Asia: Asien>',
                 '<Translation: Asian: Asiatisch>',

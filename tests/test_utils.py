@@ -928,7 +928,7 @@ class GetInstanceGroupsTest(TestCase):
 
         lvl_1 = ('countries',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1).all()
+        continents = Continent.objects.prefetch_related(*lvl_1)
 
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -972,7 +972,7 @@ class GetInstanceGroupsTest(TestCase):
 
         lvl_2 = ('countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_2)
 
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -1018,7 +1018,7 @@ class GetInstanceGroupsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
 
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3107,7 +3107,7 @@ class ApplyTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3181,7 +3181,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3255,7 +3255,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3328,7 +3328,7 @@ class ApplyTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3399,7 +3399,7 @@ class ApplyTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3471,7 +3471,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3543,7 +3543,7 @@ class ApplyTranslationsTest(TestCase):
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -3614,7 +3614,7 @@ class ApplyTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4240,7 +4240,7 @@ class UpdateTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4265,7 +4265,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents)
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4339,7 +4339,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4364,7 +4364,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, *lvl_1)
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4438,7 +4438,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4463,7 +4463,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, *lvl_2)
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4536,7 +4536,7 @@ class UpdateTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4561,7 +4561,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, *lvl_1_2)
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4632,7 +4632,7 @@ class UpdateTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4657,7 +4657,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, lang='de')
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4729,7 +4729,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4754,7 +4754,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, *lvl_1, lang='de')
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4826,7 +4826,7 @@ class UpdateTranslationsTest(TestCase):
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4851,7 +4851,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, *lvl_2, lang='de')
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4922,7 +4922,7 @@ class UpdateTranslationsTest(TestCase):
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -4947,7 +4947,7 @@ class UpdateTranslationsTest(TestCase):
         update_translations(continents, *lvl_1_2, lang='de')
 
         # reapply
-        continents = Continent.objects.prefetch_related(*lvl_1_2).all()
+        continents = Continent.objects.prefetch_related(*lvl_1_2)
         apply_translations(continents, *lvl_1_2, lang='de')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
