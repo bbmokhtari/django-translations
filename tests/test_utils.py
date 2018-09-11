@@ -71,6 +71,7 @@ class GetEntityDetailsTest(TestCase):
         create_samples(continent_names=['europe', 'asia'])
 
         continents = list(Continent.objects.all())
+
         self.assertEqual(
             _get_entity_details(continents),
             (True, Continent)
@@ -80,6 +81,7 @@ class GetEntityDetailsTest(TestCase):
         create_samples(continent_names=['europe', 'asia'])
 
         continents = Continent.objects.all()
+
         self.assertEqual(
             _get_entity_details(continents),
             (True, Continent)
@@ -103,6 +105,7 @@ class GetEntityDetailsTest(TestCase):
 
     def test_empty_queryset(self):
         continents = Continent.objects.none()
+
         self.assertEqual(
             _get_entity_details(continents),
             (True, None)
