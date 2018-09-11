@@ -58,6 +58,7 @@ class GetStandardLanguageTest(TestCase):
     def test_invalid_language(self):
         with self.assertRaises(ValueError) as error:
             _get_standard_language('xx')
+
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
@@ -126,6 +127,7 @@ class GetEntityDetailsTest(TestCase):
 
         with self.assertRaises(TypeError) as error:
             _get_entity_details(behzad)
+
         self.assertEqual(
             error.exception.args[0],
             ('`Behzad` is neither a model instance nor an iterable' +
@@ -149,6 +151,7 @@ class GetEntityDetailsTest(TestCase):
 
         with self.assertRaises(TypeError) as error:
             _get_entity_details(people)
+
         self.assertEqual(
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable' +
@@ -185,10 +188,8 @@ class GetReverseRelationTest(TestCase):
 
     def test_empty_relation(self):
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_reverse_relation(
-                Continent,
-                ''
-            )
+            _get_reverse_relation(Continent, '')
+
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named ''"
@@ -196,10 +197,8 @@ class GetReverseRelationTest(TestCase):
 
     def test_invalid_simple_relation(self):
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_reverse_relation(
-                Continent,
-                'wrong'
-            )
+            _get_reverse_relation(Continent, 'wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -207,10 +206,8 @@ class GetReverseRelationTest(TestCase):
 
     def test_invalid_nested_relation(self):
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_reverse_relation(
-                Continent,
-                'countries__wrong'
-            )
+            _get_reverse_relation(Continent, 'countries__wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
