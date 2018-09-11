@@ -5,7 +5,7 @@ Translations
     :target: https://travis-ci.com/perplexionist/django-translations
 
 Translations app provides an *easy*, *efficient* and *modular* way of
-translating django models.
+translating Django *models*.
 
 Requirements
 ------------
@@ -84,20 +84,25 @@ Use the queryset extensions:
 
 .. code:: python
 
+   >>> # 1. query the database
    >>> continents = Continent.objects.prefetch_related(
    ...     'countries',
-   ...     'countries__cities',
-   ... ).apply_translations(
+   ...     'countries__cities'
+   ... )
+   >>> # 2. apply the translations (in place)
+   >>> continents.apply_translations(
    ...     'countries',
    ...     'countries__cities',
    ...     lang='de'
    ... )
+   >>> # 3. use it like before
    >>> continents[0].name
    Europa
    >>> continents[0].countries.all()[0].name
    Deutschland
 
-This does **Only One Query** for the queryset and relations translations!
+This does **Only One Query** for the translations of the queryset and the
+specified relations!
 
 Admin
 ~~~~~
@@ -106,17 +111,12 @@ Use the admin extensions:
 
 .. code:: python
 
-   from django.contrib import admin
    from translations.admin import TranslatableAdmin, TranslationInline
-
-   from .models import Continent
 
    class ContinentAdmin(TranslatableAdmin):
        inlines = [TranslationInline,]
 
-   admin.site.register(Continent, ContinentAdmin)
-
-This provides admin inlines for the translations of the model.
+This provides specialized translation inlines for the model.
 
 Documentation
 -------------

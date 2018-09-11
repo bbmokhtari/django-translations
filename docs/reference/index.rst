@@ -2,9 +2,8 @@
 Reference
 #########
 
-If you want to know what's happening inside the Translations app in a deeper
-level or you want to contribute to the project, we recommend you to read the
-reference.
+Here is the reference of this project intended to be used by the contributors
+of the project and those who want to know more about how it works.
 
 .. toctree::
    :maxdepth: 2

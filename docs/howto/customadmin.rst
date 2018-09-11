@@ -1,13 +1,6 @@
-###
-FAQ
-###
-
-Here we answer some of the questions that might come up often while using the
-Translations app.
-
-***************************************
-How to make custom admins translatable?
-***************************************
+*******************************
+Make custom admins translatable
+*******************************
 
 All you have to do is to extend the custom admin you want to make translatable
 with the :class:`~translations.admin.TranslatableAdminMixin` functionalities.
