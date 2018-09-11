@@ -170,13 +170,12 @@ class Translatable(models.Model):
     class TranslatableMeta:
         """
         The class which contains meta information about the translation
-        process of the model instances.
+        of the model instances.
         """
 
         fields = None
         """
-        :var fields: The names of the fields to use in the translation
-            process.
+        :var fields: The names of the fields to use in the translation.
             ``None`` means use the text based fields automatically.
             ``[]`` means use no fields.
         :vartype fields: list(str) or None
@@ -530,7 +529,7 @@ class Translatable(models.Model):
         Returns the translatable fields of the model based on the
         field names listed in :attr:`TranslatableMeta.fields`.
 
-        :return: The translatable fields.
+        :return: The translatable fields of the model.
         :rtype: list(~django.db.models.Field)
 
         Considering this model:
