@@ -18,7 +18,7 @@ Table of Contents
    :caption: Contents:
 
    reference/index
-   faq
+   howto/index
    glossary
 
 Indices and tables

@@ -31,7 +31,7 @@ class TranslatableAdminMixin(object):
        It can be used to make any admin translatable. Not only the default
        admins but also the custom admins.
 
-       Check out :ref:`How to make custom admins translatable?`.
+       Check out :doc:`../howto/customadmin`.
     """
 
     def _get_translation_choices(self):
