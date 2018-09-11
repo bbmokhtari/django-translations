@@ -2096,7 +2096,7 @@ class TranslatableQuerySetTest(TestCase):
              ' be prefetched.')
         )
 
-    def test_update_translations_invalid_prefetch_partial_nested_relation(self):
+    def test_update_translations_invalid_prefetch_part_nested_relation(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
