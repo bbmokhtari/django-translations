@@ -509,10 +509,12 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        lvl_1 = ('countries',)
+
         europe = Continent.objects.get(code='EU')
         germany = europe.countries.all()[0]
 
-        hierarchy = _get_relations_hierarchy('countries')
+        hierarchy = _get_relations_hierarchy(*lvl_1)
 
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
@@ -540,11 +542,13 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        lvl_2 = ('countries__cities',)
+
         europe = Continent.objects.get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
-        hierarchy = _get_relations_hierarchy('countries__cities')
+        hierarchy = _get_relations_hierarchy(*lvl_2)
 
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
@@ -572,11 +576,13 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        lvl_1_2 = ('countries', 'countries__cities',)
+
         europe = Continent.objects.get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
-        hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+        hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
@@ -633,6 +639,8 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        lvl_1 = ('countries',)
+
         continents = Continent.objects.all()
 
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -641,7 +649,7 @@ class GetInstanceGroupsTest(TestCase):
         asia = [x for x in continents if x.code == 'AS'][0]
         south_korea = asia.countries.all()[0]
 
-        hierarchy = _get_relations_hierarchy('countries')
+        hierarchy = _get_relations_hierarchy(*lvl_1)
 
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
@@ -671,6 +679,8 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        lvl_2 = ('countries__cities',)
+
         continents = Continent.objects.all()
 
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -681,7 +691,7 @@ class GetInstanceGroupsTest(TestCase):
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
 
-        hierarchy = _get_relations_hierarchy('countries__cities')
+        hierarchy = _get_relations_hierarchy(*lvl_2)
 
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
@@ -711,6 +721,8 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de', 'tr']
         )
 
+        lvl_1_2 = ('countries', 'countries__cities',)
+
         continents = Continent.objects.all()
 
         europe = [x for x in continents if x.code == 'EU'][0]
@@ -721,7 +733,7 @@ class GetInstanceGroupsTest(TestCase):
         south_korea = asia.countries.all()[0]
         seoul = south_korea.cities.all()[0]
 
-        hierarchy = _get_relations_hierarchy('countries', 'countries__cities',)
+        hierarchy = _get_relations_hierarchy(*lvl_1_2)
 
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
@@ -1056,50 +1068,6 @@ class GetInstanceGroupsTest(TestCase):
             }
         )
 
-    def test_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('wrong')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('countries__wrong')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy
-            )
-        self.assertEqual(
-            error.exception.args[0],
-            "Country has no field named 'wrong'"
-        )
-
     def test_invalid_instance(self):
         class Person:
             def __init__(self, name):
@@ -1118,6 +1086,7 @@ class GetInstanceGroupsTest(TestCase):
                 behzad,
                 {}
             )
+
         self.assertEqual(
             error.exception.args[0],
             ('`Behzad` is neither a model instance nor an iterable of' +
@@ -1144,10 +1113,57 @@ class GetInstanceGroupsTest(TestCase):
                 people,
                 {}
             )
+
         self.assertEqual(
             error.exception.args[0],
             ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
              ' model instances.')
+        )
+
+    def test_invalid_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        hierarchy = _get_relations_hierarchy('wrong')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            _get_instance_groups(
+                europe,
+                hierarchy
+            )
+
+        self.assertEqual(
+            error.exception.args[0],
+            "Continent has no field named 'wrong'"
+        )
+
+    def test_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        hierarchy = _get_relations_hierarchy('countries__wrong')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            _get_instance_groups(
+                europe,
+                hierarchy
+            )
+
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
         )
 
     def test_invalid_prefetch_simple_relation(self):
@@ -1159,9 +1175,11 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de']
         )
 
+        lvl_1 = ('countries',)
+
         europe = Continent.objects.get(code='EU')
 
-        hierarchy = _get_relations_hierarchy('countries')
+        hierarchy = _get_relations_hierarchy(*lvl_1)
 
         with self.assertRaises(RuntimeError) as error:
             _get_instance_groups(
@@ -1169,6 +1187,7 @@ class GetInstanceGroupsTest(TestCase):
                 hierarchy,
                 prefetch_mandatory=True
             )
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -1186,9 +1205,11 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de']
         )
 
+        lvl_2 = ('countries__cities',)
+
         europe = Continent.objects.get(code='EU')
 
-        hierarchy = _get_relations_hierarchy('countries__cities')
+        hierarchy = _get_relations_hierarchy(*lvl_2)
 
         with self.assertRaises(RuntimeError) as error:
             _get_instance_groups(
@@ -1196,6 +1217,7 @@ class GetInstanceGroupsTest(TestCase):
                 hierarchy,
                 prefetch_mandatory=True
             )
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -1213,9 +1235,12 @@ class GetInstanceGroupsTest(TestCase):
             langs=['de']
         )
 
-        europe = Continent.objects.prefetch_related('countries').get(code='EU')
+        lvl_1 = ('countries',)
+        lvl_2 = ('countries__cities',)
 
-        hierarchy = _get_relations_hierarchy('countries__cities')
+        europe = Continent.objects.prefetch_related(*lvl_1).get(code='EU')
+
+        hierarchy = _get_relations_hierarchy(*lvl_2)
 
         with self.assertRaises(RuntimeError) as error:
             _get_instance_groups(
@@ -1223,6 +1248,7 @@ class GetInstanceGroupsTest(TestCase):
                 hierarchy,
                 prefetch_mandatory=True
             )
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `cities` of the model `Country` must' +
