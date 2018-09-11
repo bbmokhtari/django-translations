@@ -456,8 +456,11 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
         - If the entity is neither a model instance nor
           an iterable of model instances.
 
-        - If the model of the entity or the models of the included relations
-          are not :class:`~translations.models.Translatable`.
+        - If the model of the entity is
+          not :class:`~translations.models.Translatable`.
+
+        - If the models of the included relations are
+          not :class:`~translations.models.Translatable`.
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
