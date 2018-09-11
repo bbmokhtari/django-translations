@@ -961,7 +961,7 @@ def apply_translations(entity, *relations, lang=None):
         field = translation.field
         text = translation.text
 
-        if field in [x for x in type(obj).get_translatable_field_names()]:
+        if field in [x for x in type(obj).get_translatable_fields_names()]:
             setattr(obj, field, text)
 
 
@@ -1366,7 +1366,7 @@ def update_translations(entity, *relations, lang=None):
     new_translations = []
     for (ct_id, objs) in groups.items():
         for (obj_id, obj) in objs.items():
-            for field in type(obj).get_translatable_field_names():
+            for field in type(obj).get_translatable_fields_names():
                 text = getattr(obj, field, None)
                 if text:
                     new_translations.append(

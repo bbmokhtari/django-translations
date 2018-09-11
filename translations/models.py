@@ -575,14 +575,14 @@ class Translatable(models.Model):
         return cls._cached_translatable_fields
 
     @classmethod
-    def get_translatable_field_names(cls):
+    def get_translatable_fields_names(cls):
         """
         Return the names of the model's translatable fields.
 
         Returns the names of the model's translatable fields based on the
         field names listed in :attr:`TranslatableMeta.fields`.
 
-        :return: The names of the translatable field.
+        :return: The names of the model's translatable fields.
         :rtype: list(str)
 
         Considering this model:
@@ -593,14 +593,14 @@ class Translatable(models.Model):
 
         To get the names of the mentioned model's translatable fields:
 
-        .. testcode:: get_translatable_field_names
+        .. testcode:: get_translatable_fields_names
 
            from sample.models import Continent
 
-           for field in Continent.get_translatable_field_names():
+           for field in Continent.get_translatable_fields_names():
                print(field)
 
-        .. testoutput:: get_translatable_field_names
+        .. testoutput:: get_translatable_fields_names
 
            name
            denonym
