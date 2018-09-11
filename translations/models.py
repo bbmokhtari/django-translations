@@ -170,7 +170,7 @@ class Translatable(models.Model):
     class TranslatableMeta:
         """
         The class which contains meta information about the translation
-        process.
+        process of the model.
         """
 
         fields = None
