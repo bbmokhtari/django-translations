@@ -696,8 +696,6 @@ def apply_translations(entity, *relations, lang=None):
     :param lang: The language to fetch the translations in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :raise ValueError: If the language code is not included in
-        the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError:
 
         - If the entity is neither a model instance nor
@@ -711,6 +709,8 @@ def apply_translations(entity, *relations, lang=None):
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
+    :raise ValueError: If the language code is not included in
+        the :data:`~django.conf.settings.LANGUAGES` setting.
 
     .. testsetup:: apply_translations
 
@@ -985,8 +985,6 @@ def update_translations(entity, *relations, lang=None):
     :param lang: The language to update the translations in.
         ``None`` means use the :term:`active language` code.
     :type lang: str or None
-    :raise ValueError: If the language code is not included in
-        the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise TypeError:
 
         - If the entity is neither a model instance nor
@@ -1000,6 +998,8 @@ def update_translations(entity, *relations, lang=None):
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
+    :raise ValueError: If the language code is not included in
+        the :data:`~django.conf.settings.LANGUAGES` setting.
     :raise RuntimeError: If any of the relations is not prefetched.
 
     .. testsetup:: update_translations_0
