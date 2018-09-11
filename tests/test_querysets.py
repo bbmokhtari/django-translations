@@ -1162,22 +1162,6 @@ class TranslatableQuerySetTest(TestCase):
             'Seüler'
         )
 
-    def test_apply_translations_invalid_lang(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(ValueError) as error:
-            continents.apply_translations(lang='xx')
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
-
     def test_apply_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -1189,6 +1173,7 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             continents.apply_translations('wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -1207,9 +1192,27 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             continents.apply_translations('countries__wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
+        )
+
+    def test_apply_translations_invalid_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        continents = Continent.objects.all()
+
+        with self.assertRaises(ValueError) as error:
+            continents.apply_translations(lang='xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
         )
 
     def test_update_translations_level_0_relation_no_lang(self):
@@ -1992,22 +1995,6 @@ class TranslatableQuerySetTest(TestCase):
             'Seoul Denonym'
         )
 
-    def test_update_translations_invalid_lang(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(ValueError) as error:
-            continents.update_translations(lang='xx')
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
-
     def test_update_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -2019,6 +2006,7 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             continents.update_translations('wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -2039,9 +2027,27 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             continents.update_translations('countries__wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
+        )
+
+    def test_update_translations_invalid_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        continents = Continent.objects.all()
+
+        with self.assertRaises(ValueError) as error:
+            continents.update_translations(lang='xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
         )
 
     def test_update_translations_invalid_prefetch_simple_relation(self):
@@ -2059,6 +2065,7 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(RuntimeError) as error:
             continents.update_translations(*lvl_1)
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -2082,6 +2089,7 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(RuntimeError) as error:
             continents.update_translations(*lvl_2)
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -2106,6 +2114,7 @@ class TranslatableQuerySetTest(TestCase):
 
         with self.assertRaises(RuntimeError) as error:
             continents.update_translations(*lvl_2)
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `cities` of the model `Country` must' +

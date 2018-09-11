@@ -16,6 +16,7 @@ class TranslationTest(TestCase):
 
     def test_content_type_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
+        
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=None,
@@ -24,6 +25,7 @@ class TranslationTest(TestCase):
                 language='de',
                 text='Europa',
             )
+        
         self.assertEqual(
             error.exception.args[0],
             ('NOT NULL constraint failed: translations_translation' +
@@ -32,6 +34,7 @@ class TranslationTest(TestCase):
 
     def test_object_id_none(self):
         continent_ct = ContentType.objects.get_for_model(Continent)
+        
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
@@ -40,6 +43,7 @@ class TranslationTest(TestCase):
                 language='de',
                 text='Europa',
             )
+        
         self.assertEqual(
             error.exception.args[0],
             'NOT NULL constraint failed: translations_translation.object_id',
@@ -53,6 +57,7 @@ class TranslationTest(TestCase):
                 language='de',
                 text='Europa',
             )
+        
         self.assertEqual(
             error.exception.args[0],
             'NOT NULL constraint failed: translations_translation.object_id',
@@ -61,6 +66,7 @@ class TranslationTest(TestCase):
     def test_field_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
+        
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
@@ -69,6 +75,7 @@ class TranslationTest(TestCase):
                 language='de',
                 text='Europa',
             )
+        
         self.assertEqual(
             error.exception.args[0],
             'NOT NULL constraint failed: translations_translation.field',
@@ -77,6 +84,7 @@ class TranslationTest(TestCase):
     def test_language_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
+        
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
@@ -85,6 +93,7 @@ class TranslationTest(TestCase):
                 language=None,
                 text='Europa',
             )
+        
         self.assertEqual(
             error.exception.args[0],
             'NOT NULL constraint failed: translations_translation.language',
@@ -93,6 +102,7 @@ class TranslationTest(TestCase):
     def test_text_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
+        
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
@@ -101,6 +111,7 @@ class TranslationTest(TestCase):
                 language='de',
                 text=None,
             )
+        
         self.assertEqual(
             error.exception.args[0],
             'NOT NULL constraint failed: translations_translation.text',
@@ -128,6 +139,7 @@ class TranslationTest(TestCase):
             language='de',
             text='Europa'
         )
+        
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
@@ -136,6 +148,7 @@ class TranslationTest(TestCase):
                 language='de',
                 text='Europa'
             )
+        
         self.assertEqual(
             error.exception.args[0],
             ('UNIQUE constraint failed: ' +
@@ -937,22 +950,6 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
-    def test_apply_translations_invalid_lang(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(ValueError) as error:
-            europe.apply_translations(lang='xx')
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
-
     def test_apply_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -964,6 +961,7 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             europe.apply_translations('wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -982,9 +980,27 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             europe.apply_translations('countries__wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
+        )
+
+    def test_apply_translations_invalid_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(ValueError) as error:
+            europe.apply_translations(lang='xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
         )
 
     def test_update_translations_level_0_relation_no_lang(self):
@@ -1463,22 +1479,6 @@ class TranslatableTest(TestCase):
             'Cologne Denonym'
         )
 
-    def test_update_translations_invalid_lang(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(ValueError) as error:
-            europe.update_translations(lang='xx')
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
-
     def test_update_translations_invalid_simple_relation(self):
         create_samples(
             continent_names=['europe'],
@@ -1490,6 +1490,7 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             europe.update_translations('wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Continent has no field named 'wrong'"
@@ -1510,9 +1511,27 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(FieldDoesNotExist) as error:
             europe.update_translations('countries__wrong')
+
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
+        )
+
+    def test_update_translations_invalid_lang(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(ValueError) as error:
+            europe.update_translations(lang='xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
         )
 
     def test_update_translations_invalid_prefetch_simple_relation(self):
@@ -1530,6 +1549,7 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(RuntimeError) as error:
             europe.update_translations(*lvl_1)
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -1553,6 +1573,7 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(RuntimeError) as error:
             europe.update_translations(*lvl_2)
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `countries` of the model `Continent` must' +
@@ -1577,6 +1598,7 @@ class TranslatableTest(TestCase):
 
         with self.assertRaises(RuntimeError) as error:
             europe.update_translations(*lvl_2)
+
         self.assertEqual(
             error.exception.args[0],
             ('The relation `cities` of the model `Country` must' +
