@@ -85,7 +85,10 @@ Use the queryset extensions:
 .. code:: python
 
    >>> # 1. query the database
-   >>> continents = Continent.objects.all()
+   >>> continents = Continent.objects.prefetch_related(
+   ...     'countries',
+   ...     'countries__cities'
+   ... )
    >>> # 2. apply the translations (in place)
    >>> continents.apply_translations(
    ...     'countries',
