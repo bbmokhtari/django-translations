@@ -53,7 +53,7 @@ class TranslatableAdminMixin(object):
            from sample.admin import ContinentAdmin
 
            admin = ContinentAdmin(Continent, site)
-           print(admin._get_translation_choices())
+           print(admin._get_translatable_field_choices())
 
         .. testoutput::
 
