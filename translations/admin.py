@@ -36,15 +36,15 @@ class TranslatableAdminMixin(object):
 
     def _get_translatable_field_choices(self):
         """
-        Return the choices of the admin's translatable fields.
+        Return the choices of the admin model's translatable fields.
 
-        Fetches the translatable fields of the admin's model, creates choices
+        Fetches the translatable fields of the admin model, creates choices
         out of them and then returns them.
 
-        :return: The choices derived out of the translatable fields.
+        :return: The choices of the admin model's translatable fields.
         :rtype: list(tuple(str, str))
 
-        To get the choices of an admin's translatable fields:
+        To get the choices of an admin model's translatable fields:
 
         .. testcode::
 
