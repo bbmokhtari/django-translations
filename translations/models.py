@@ -605,8 +605,8 @@ class Translatable(models.Model):
            name
            denonym
         """
-        if not hasattr(cls, '_cached_translatable_field_names'):
-            cls._cached_translatable_field_names = [
+        if not hasattr(cls, '_cached_translatable_fields_names'):
+            cls._cached_translatable_fields_names = [
                 field.name for field in cls.get_translatable_fields()
             ]
-        return cls._cached_translatable_field_names
+        return cls._cached_translatable_fields_names
