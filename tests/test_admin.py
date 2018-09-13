@@ -21,27 +21,27 @@ request.user = MockSuperUser()
 class TranslatableAdminMixinTest(TestCase):
     """Tests for `TranslatableAdminMixin`."""
 
-    def test_get_translatable_field_choices_automatic(self):
+    def test_get_translatable_fields_choices_automatic(self):
         admin = CityAdmin(City, site)
 
         self.assertListEqual(
-            admin._get_translatable_field_choices(),
+            admin._get_translatable_fields_choices(),
             [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         )
 
-    def test_get_translatable_field_choices_empty(self):
+    def test_get_translatable_fields_choices_empty(self):
         admin = GeoAdmin(Geo, site)
 
         self.assertListEqual(
-            admin._get_translatable_field_choices(),
+            admin._get_translatable_fields_choices(),
             [(None, '---------')]
         )
 
-    def test_get_translatable_field_choices_explicit(self):
+    def test_get_translatable_fields_choices_explicit(self):
         admin = ContinentAdmin(Continent, site)
 
         self.assertListEqual(
-            admin._get_translatable_field_choices(),
+            admin._get_translatable_fields_choices(),
             [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         )
 

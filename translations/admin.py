@@ -34,7 +34,7 @@ class TranslatableAdminMixin(object):
        Check out :doc:`../howto/customadmin`.
     """
 
-    def _get_translatable_field_choices(self):
+    def _get_translatable_fields_choices(self):
         """
         Return the choices of the admin model's translatable fields.
 
@@ -59,7 +59,7 @@ class TranslatableAdminMixin(object):
            from sample.admin import ContinentAdmin
 
            admin = ContinentAdmin(Continent, site)
-           print(admin._get_translatable_field_choices())
+           print(admin._get_translatable_fields_choices())
 
         .. testoutput::
 
@@ -94,7 +94,7 @@ class TranslatableAdminMixin(object):
            :pyobject: TranslatableAdmin.get_inline_instances
            :emphasize-lines: 8
         """
-        choices = self._get_translatable_field_choices()
+        choices = self._get_translatable_fields_choices()
         form = generate_translation_form(choices)
         remove_inlines = []
         for i, v in enumerate(inlines):
