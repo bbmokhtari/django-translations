@@ -65,13 +65,15 @@ class TranslatableAdminMixin(object):
 
            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         """
-        choices = [
-            (None, '---------')
-        ]
-        if issubclass(self.model, Translatable):
-            for field in self.model.get_translatable_fields():
-                choices.append((field.name, field.verbose_name))
-        return choices
+        if not hasattr(self.model, '_cached_translatable_fields_choices'):
+            choices = [
+                (None, '---------')
+            ]
+            if issubclass(self.model, Translatable):
+                for field in self.model.get_translatable_fields():
+                    choices.append((field.name, field.verbose_name))
+            self.model._cached_translatable_fields_choices = choices
+        return self.model._cached_translatable_fields_choices
 
     def handle_translation_inlines(self, inlines, thetype):
         """
