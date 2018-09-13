@@ -44,6 +44,12 @@ class TranslatableAdminMixin(object):
         :return: The choices of the admin model's translatable fields.
         :rtype: list(tuple(str, str))
 
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
         To get the choices of an admin model's translatable fields:
 
         .. testcode::
