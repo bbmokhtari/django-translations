@@ -234,19 +234,19 @@ class TranslatableTest(TestCase):
 
     def test_get_translatable_fields_names_automatic(self):
         self.assertListEqual(
-            City.get_translatable_fields_names(),
+            City._get_translatable_fields_names(),
             ['name', 'denonym']
         )
 
     def test_get_translatable_fields_names_empty(self):
         self.assertListEqual(
-            Geo.get_translatable_fields_names(),
+            Geo._get_translatable_fields_names(),
             []
         )
 
     def test_get_translatable_fields_names_explicit(self):
         self.assertListEqual(
-            Continent.get_translatable_fields_names(),
+            Continent._get_translatable_fields_names(),
             ['name', 'denonym']
         )
 

@@ -15,4 +15,4 @@ Models
 
       .. automethod:: get_translatable_fields
 
-      .. automethod:: get_translatable_fields_names
+      .. automethod:: _get_translatable_fields_names

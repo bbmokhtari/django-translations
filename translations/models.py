@@ -167,20 +167,6 @@ class Translatable(models.Model):
     class Meta:
         abstract = True
 
-    class TranslatableMeta:
-        """
-        The class which contains meta information about the translation
-        of the model instances.
-        """
-
-        fields = None
-        """
-        :var fields: The names of the fields to use in the translation.
-            ``None`` means use the text based fields automatically.
-            ``[]`` means use no fields.
-        :vartype fields: list(str) or None
-        """
-
     def apply_translations(self, *relations, lang=None):
         """
         Apply the translations of the instance and some relations of it in a
@@ -575,7 +561,7 @@ class Translatable(models.Model):
         return cls._cached_translatable_fields
 
     @classmethod
-    def get_translatable_fields_names(cls):
+    def _get_translatable_fields_names(cls):
         """
         Return the names of the model's translatable fields.
 
@@ -593,14 +579,14 @@ class Translatable(models.Model):
 
         To get the names of the mentioned model's translatable fields:
 
-        .. testcode:: get_translatable_fields_names
+        .. testcode:: _get_translatable_fields_names
 
            from sample.models import Continent
 
-           for field in Continent.get_translatable_fields_names():
+           for field in Continent._get_translatable_fields_names():
                print(field)
 
-        .. testoutput:: get_translatable_fields_names
+        .. testoutput:: _get_translatable_fields_names
 
            name
            denonym
@@ -610,3 +596,17 @@ class Translatable(models.Model):
                 field.name for field in cls.get_translatable_fields()
             ]
         return cls._cached_translatable_fields_names
+
+    class TranslatableMeta:
+        """
+        The class which contains meta information about the translation
+        of the model instances.
+        """
+
+        fields = None
+        """
+        :var fields: The names of the fields to use in the translation.
+            ``None`` means use the text based fields automatically.
+            ``[]`` means use no fields.
+        :vartype fields: list(str) or None
+        """
