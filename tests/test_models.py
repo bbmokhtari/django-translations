@@ -250,6 +250,24 @@ class TranslatableTest(TestCase):
             ['name', 'denonym']
         )
 
+    def test_get_translatable_fields_choices_automatic(self):
+        self.assertListEqual(
+            City._get_translatable_fields_choices(),
+            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+        )
+
+    def test_get_translatable_fields_choices_empty(self):
+        self.assertListEqual(
+            Geo._get_translatable_fields_choices(),
+            [(None, '---------')]
+        )
+
+    def test_get_translatable_fields_choices_explicit(self):
+        self.assertListEqual(
+            Continent._get_translatable_fields_choices(),
+            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+        )
+
     def test_apply_translations_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],

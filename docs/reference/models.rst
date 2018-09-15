@@ -16,3 +16,5 @@ Models
       .. automethod:: get_translatable_fields
 
       .. automethod:: _get_translatable_fields_names
+
+      .. automethod:: _get_translatable_fields_choices

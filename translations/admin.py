@@ -34,47 +34,6 @@ class TranslatableAdminMixin(object):
        Check out :doc:`../howto/customadmin`.
     """
 
-    def _get_translatable_fields_choices(self):
-        """
-        Return the choices of the admin model's translatable fields.
-
-        Fetches the translatable fields of the admin model, creates choices
-        out of them and then returns them.
-
-        :return: The choices of the admin model's translatable fields.
-        :rtype: list(tuple(str, str))
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the choices of an admin model's translatable fields:
-
-        .. testcode::
-
-           from django.contrib.admin import site
-           from sample.models import Continent
-           from sample.admin import ContinentAdmin
-
-           admin = ContinentAdmin(Continent, site)
-           print(admin._get_translatable_fields_choices())
-
-        .. testoutput::
-
-           [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
-        """
-        if not hasattr(self.model, '_cached_translatable_fields_choices'):
-            choices = [
-                (None, '---------')
-            ]
-            if issubclass(self.model, Translatable):
-                for field in self.model.get_translatable_fields():
-                    choices.append((field.name, field.verbose_name))
-            self.model._cached_translatable_fields_choices = choices
-        return self.model._cached_translatable_fields_choices
-
     def handle_translation_inlines(self, inlines, thetype):
         """
         Manipulate the translation inlines of one type based on the admin.
@@ -96,7 +55,7 @@ class TranslatableAdminMixin(object):
            :pyobject: TranslatableAdmin.get_inline_instances
            :emphasize-lines: 8
         """
-        choices = self._get_translatable_fields_choices()
+        choices = self.model._get_translatable_fields_choices()
         form = generate_translation_form(choices)
         remove_inlines = []
         for i, v in enumerate(inlines):
