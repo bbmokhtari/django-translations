@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
 from django.core.exceptions import FieldDoesNotExist
@@ -268,6 +268,7 @@ class TranslatableTest(TestCase):
             [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -278,8 +279,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         europe = Continent.objects.get(code='EU')
         europe.apply_translations()
@@ -311,6 +310,7 @@ class TranslatableTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -321,8 +321,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
 
@@ -356,6 +354,7 @@ class TranslatableTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -366,8 +365,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
 
@@ -401,6 +398,7 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -411,8 +409,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -616,6 +612,7 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_prefetched_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -626,8 +623,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -661,6 +656,7 @@ class TranslatableTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_prefetched_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -671,8 +667,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -707,6 +701,7 @@ class TranslatableTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_prefetched_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -717,8 +712,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -753,6 +746,7 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_apply_translations_prefetched_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -763,8 +757,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -1025,6 +1017,7 @@ class TranslatableTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_update_translations_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1035,8 +1028,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -1085,6 +1076,7 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_update_translations_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1095,8 +1087,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -1146,6 +1136,7 @@ class TranslatableTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_update_translations_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1156,8 +1147,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -1207,6 +1196,7 @@ class TranslatableTest(TestCase):
             'Cologne Denonym'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_update_translations_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1217,8 +1207,6 @@ class TranslatableTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
