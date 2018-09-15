@@ -55,12 +55,11 @@ class TranslatableAdminMixin(object):
            :pyobject: TranslatableAdmin.get_inline_instances
            :emphasize-lines: 8
         """
-        choices = self.model._get_translatable_fields_choices()
-        form = generate_translation_form(choices)
+        form = generate_translation_form(self.model)
         remove_inlines = []
         for i, v in enumerate(inlines):
             if isinstance(v, thetype):
-                if len(choices) == 1:
+                if len(form.base_fields['field'].choices) == 1:
                     remove_inlines.append(i)
                 else:
                     inlines[i].form = form

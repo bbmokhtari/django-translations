@@ -13,27 +13,33 @@ from .models import Translation
 __docformat__ = 'restructuredtext'
 
 
-def generate_translation_form(choices):
+def generate_translation_form(translatable):
     """
-    Return a translation form based on some choices.
+    Return a translation form based on a translatable model.
 
-    Generates a translation form based on the given field choices and returns
-    it.
+    Generates a translation form based on the translatable fields of the
+    translatable model and returns it.
 
-    :param choices: The choices to generate the translation form based on.
-    :type choices: list(tuple(str, str))
-    :return: The translation form generated based on the choices.
+    :param translatable: The translatable model to generate the translation
+        form based on.
+    :type translatable: ~translations.models.Translatable
+    :return: The translation form generated based on the translatable model.
     :rtype: ~django.forms.ModelForm(~translations.models.Translation)
     """
-    class TranslationForm(forms.ModelForm):
-        field = forms.ChoiceField(choices=choices)
+    if not hasattr(translatable, '_cached_translation_form'):
+        choices = translatable._get_translatable_fields_choices()
 
-        class Meta:
-            model = Translation
-            fields = (
-                'field',
-                'language',
-                'text',
-            )
+        class TranslationForm(forms.ModelForm):
+            field = forms.ChoiceField(choices=choices)
 
-    return TranslationForm
+            class Meta:
+                model = Translation
+                fields = (
+                    'field',
+                    'language',
+                    'text',
+                )
+
+        translatable._cached_translation_form = TranslationForm
+
+    return translatable._cached_translation_form
