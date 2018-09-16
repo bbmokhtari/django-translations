@@ -24,8 +24,7 @@ class TranslatableAdminMixin(object):
     An admin mixin which provides custom translation functionalities.
 
     Provides functionalities like :meth:`prepare_translation_inlines` to
-    prepare the translation inlines of a specific inline type based on the
-    admin model.
+    prepare the translations in the inlines based on the admin model.
 
     .. note::
 
@@ -37,21 +36,20 @@ class TranslatableAdminMixin(object):
 
     def prepare_translation_inlines(self, inlines, inline_type):
         """
-        Prepare the translation inlines of a specific inline type based on the
-        admin model.
+        Prepare the translations in the inlines based on the admin model.
 
         Searches the inlines for the translation inlines of the specific
         inline type and prepares the translation inlines based on the admin
         model.
 
-        :param inlines: The admin inlines to prepare.
+        :param inlines: The inlines to prepare the translations of based on
+            the admin model.
         :type inlines: list(~django.contrib.admin.InlineModelAdmin)
         :param inline_type: The type of the translation inlines.
         :type inline_type: type(~django.contrib.contenttypes.admin
             .GenericStackedInline)
 
-        To prepare the translation inlines of a specific inline type based on
-        the admin model:
+        To prepare the translations in the inlines based on the admin model:
 
         .. literalinclude:: ../../translations/admin.py
            :pyobject: TranslatableAdmin.get_inline_instances
