@@ -6,7 +6,7 @@ Admin
 
    .. autoclass:: TranslatableAdminMixin
 
-      .. automethod:: handle_translation_inlines
+      .. automethod:: prepare_translation_inlines
 
    .. autoclass:: TranslatableAdmin
 

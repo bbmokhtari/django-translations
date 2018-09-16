@@ -23,7 +23,7 @@ class TranslatableAdminMixin(object):
     """
     An admin mixin which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`handle_translation_inlines` to
+    Provides functionalities like :meth:`prepare_translation_inlines` to
     manipulate the translation inlines based on the admin model.
 
     .. note::
@@ -34,7 +34,7 @@ class TranslatableAdminMixin(object):
        Check out :doc:`../howto/customadmin`.
     """
 
-    def handle_translation_inlines(self, inlines, thetype):
+    def prepare_translation_inlines(self, inlines, thetype):
         """
         Manipulate the translation inlines of one type based on the admin.
 
@@ -88,7 +88,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
                 obj
             )
         )
-        self.handle_translation_inlines(inlines, TranslationInline)
+        self.prepare_translation_inlines(inlines, TranslationInline)
         return inlines
 
 
