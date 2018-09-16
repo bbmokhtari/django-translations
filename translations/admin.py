@@ -35,7 +35,7 @@ class TranslatableAdminMixin(object):
        Check out :doc:`../howto/customadmin`.
     """
 
-    def prepare_translation_inlines(self, inlines, thetype):
+    def prepare_translation_inlines(self, inlines, inline_type):
         """
         Prepare the translation inlines of a specific inline type based on the
         admin model.
@@ -46,8 +46,8 @@ class TranslatableAdminMixin(object):
 
         :param inlines: The admin inlines to prepare.
         :type inlines: list(~django.contrib.admin.InlineModelAdmin)
-        :param thetype: The type of the translation inlines.
-        :type thetype: type(~django.contrib.contenttypes.admin
+        :param inline_type: The type of the translation inlines.
+        :type inline_type: type(~django.contrib.contenttypes.admin
             .GenericStackedInline)
 
         To prepare the translation inlines of a specific inline type based on
@@ -60,7 +60,7 @@ class TranslatableAdminMixin(object):
         form = generate_translation_form(self.model)
         remove_inlines = []
         for i, v in enumerate(inlines):
-            if isinstance(v, thetype):
+            if isinstance(v, inline_type):
                 if len(form.base_fields['field'].choices) == 1:
                     remove_inlines.append(i)
                 else:
