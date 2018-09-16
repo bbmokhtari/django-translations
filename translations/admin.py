@@ -24,36 +24,44 @@ class TranslatableAdminMixin(object):
     An admin mixin which provides custom translation functionalities.
 
     Provides functionalities like :meth:`prepare_translation_inlines` to
-    prepare the translations in the inlines based on the admin model.
-
-    .. note::
-
-       It can be used to make any admin translatable, even the custom admins
-       other than the default Django admin.
-
-       Check out :doc:`../howto/customadmin`.
+    prepare the translation inlines of a type in some inlines based on the
+    admin model.
     """
 
     def prepare_translation_inlines(self, inlines, inline_type):
         """
-        Prepare the translations in the inlines based on the admin model.
+        Prepare the translation inlines of a type in some inlines based on the
+        admin model.
 
-        Searches the inlines for the translation inlines of the specific
+        Searches the inlines for the translation inlines of the specified
         inline type and prepares the translation inlines based on the admin
         model.
 
-        :param inlines: The inlines to prepare the translations of based on
-            the admin model.
+        :param inlines: The inlines which contain the translation inlines to
+            prepare.
         :type inlines: list(~django.contrib.admin.InlineModelAdmin)
         :param inline_type: The type of the translation inlines.
-        :type inline_type: type(~django.contrib.contenttypes.admin
-            .GenericStackedInline)
+        :type inline_type: type(~django.contrib.contenttypes.admin.\\
+            GenericStackedInline)
 
-        To prepare the translations in the inlines based on the admin model:
+        To prepare the translation inlines of a type in some inlines based on
+        the admin model:
 
         .. literalinclude:: ../../translations/admin.py
-           :pyobject: TranslatableAdmin.get_inline_instances
-           :emphasize-lines: 8
+           :pyobject: TranslationInline
+           :lines: 1, 15-16
+
+        .. literalinclude:: ../../translations/admin.py
+           :pyobject: TranslatableAdmin
+           :lines: 1, 14-
+           :emphasize-lines: 9
+
+        .. note::
+
+           The code above is exactly how the Translations app makes Django
+           admin translatable. It can be used to make any admin translatable.
+
+           Check out :doc:`../howto/customadmin`.
         """
         form = generate_translation_form(self.model)
         remove_inlines = []
