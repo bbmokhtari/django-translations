@@ -256,7 +256,7 @@ def _get_entity_details(entity):
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
         'a model instance',
-        'an iterable of model instances'
+        'an iterable of model instances',
     )
 
     if isinstance(entity, models.Model):
@@ -328,7 +328,7 @@ def _get_reverse_relation(model, relation):
         )
         return '{}__{}'.format(
             branch_reverse_relation,
-            reverse_relation
+            reverse_relation,
         )
     else:
         return reverse_relation
@@ -414,7 +414,7 @@ def _get_relations_hierarchy(*relations):
 
         hierarchy.setdefault(root, {
             'included': False,
-            'relations': {}
+            'relations': {},
         })
 
         if nest:
@@ -569,7 +569,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
                             entity=value,
                             hierarchy=detail['relations'],
                             groups=groups,
-                            included=detail['included']
+                            included=detail['included'],
                         )
 
         if iterable:
@@ -665,13 +665,13 @@ def _get_translations(groups, lang=None):
         for obj_id in objs:
             filters |= models.Q(
                 content_type__id=ct_id,
-                object_id=obj_id
+                object_id=obj_id,
             )
 
     queryset = translations.models.Translation.objects.filter(
-        language=lang
+        language=lang,
     ).filter(
-        filters
+        filters,
     ).select_related('content_type')
 
     return queryset

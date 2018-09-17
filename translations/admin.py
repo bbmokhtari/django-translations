@@ -54,7 +54,7 @@ class TranslatableAdminMixin(object):
 
         .. literalinclude:: ../../translations/admin.py
            :pyobject: TranslatableAdmin
-           :lines: 1, 13-
+           :lines: 1, 14-
            :emphasize-lines: 9
 
         .. note::
@@ -89,6 +89,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
        :pyobject: ContinentAdmin
        :emphasize-lines: 1
     """
+
     def get_inline_instances(self, request, obj=None):
         inlines = list(
             super(TranslatableAdmin, self).get_inline_instances(

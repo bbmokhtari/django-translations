@@ -5,6 +5,7 @@ following members:
 :func:`generate_translation_form`
     Return a translation form based on a translatable model.
 """
+
 from django import forms
 
 from .models import Translation
