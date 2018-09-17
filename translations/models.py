@@ -167,6 +167,138 @@ class Translatable(models.Model):
     class Meta:
         abstract = True
 
+    @classmethod
+    def get_translatable_fields(cls):
+        """
+        Return the translatable fields of the model.
+
+        Returns the translatable fields of the model based on the
+        field names listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The translatable fields of the model.
+        :rtype: list(~django.db.models.Field)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the translatable fields of the mentioned model:
+
+        .. testcode:: get_translatable_fields
+
+           from sample.models import Continent
+
+           for field in Continent.get_translatable_fields():
+               print(field)
+
+        .. testoutput:: get_translatable_fields
+
+           sample.Continent.name
+           sample.Continent.denonym
+        """
+        if not hasattr(cls, '_cached_translatable_fields'):
+            if cls.TranslatableMeta.fields is None:
+                fields = []
+                for field in cls._meta.get_fields():
+                    if isinstance(
+                                field,
+                                (models.CharField, models.TextField,)
+                            ) and not isinstance(
+                                field,
+                                models.EmailField
+                            ) and not (
+                                hasattr(field, 'choices') and field.choices
+                            ):
+                        fields.append(field)
+            else:
+                fields = [
+                    cls._meta.get_field(field_name)
+                    for field_name in cls.TranslatableMeta.fields
+                ]
+            cls._cached_translatable_fields = fields
+        return cls._cached_translatable_fields
+
+    @classmethod
+    def _get_translatable_fields_names(cls):
+        """
+        Return the names of the model's translatable fields.
+
+        Returns the names of the model's translatable fields based on the
+        field names listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The names of the model's translatable fields.
+        :rtype: list(str)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the names of the mentioned model's translatable fields:
+
+        .. testcode:: _get_translatable_fields_names
+
+           from sample.models import Continent
+
+           for name in Continent._get_translatable_fields_names():
+               print(name)
+
+        .. testoutput:: _get_translatable_fields_names
+
+           name
+           denonym
+        """
+        if not hasattr(cls, '_cached_translatable_fields_names'):
+            cls._cached_translatable_fields_names = [
+                field.name for field in cls.get_translatable_fields()
+            ]
+        return cls._cached_translatable_fields_names
+
+    @classmethod
+    def _get_translatable_fields_choices(cls):
+        """
+        Return the choices of the model's translatable fields.
+
+        Returns the choices of the model's translatable fields based on the
+        field names listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The choices of the model's translatable fields.
+        :rtype: list(tuple(str, str))
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the choices of the mentioned model's translatable fields:
+
+        .. testcode:: _get_translatable_fields_choices
+
+           from sample.models import Continent
+
+           for choice in Continent._get_translatable_fields_choices():
+               print(choice)
+
+        .. testoutput:: _get_translatable_fields_choices
+
+           (None, '---------')
+           ('name', 'name')
+           ('denonym', 'denonym')
+        """
+        if not hasattr(cls, '_cached_translatable_fields_choices'):
+            choices = [
+                (None, '---------'),
+            ]
+            for field in cls.get_translatable_fields():
+                choice = (field.name, field.verbose_name)
+                choices.append(choice)
+            cls._cached_translatable_fields_choices = choices
+        return cls._cached_translatable_fields_choices
+
     def apply_translations(self, *relations, lang=None):
         """
         Apply the translations of the instance and some relations of it in a
@@ -506,138 +638,6 @@ class Translatable(models.Model):
            City: München
         """
         update_translations(self, *relations, lang=lang)
-
-    @classmethod
-    def get_translatable_fields(cls):
-        """
-        Return the translatable fields of the model.
-
-        Returns the translatable fields of the model based on the
-        field names listed in :attr:`TranslatableMeta.fields`.
-
-        :return: The translatable fields of the model.
-        :rtype: list(~django.db.models.Field)
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the translatable fields of the mentioned model:
-
-        .. testcode:: get_translatable_fields
-
-           from sample.models import Continent
-
-           for field in Continent.get_translatable_fields():
-               print(field)
-
-        .. testoutput:: get_translatable_fields
-
-           sample.Continent.name
-           sample.Continent.denonym
-        """
-        if not hasattr(cls, '_cached_translatable_fields'):
-            if cls.TranslatableMeta.fields is None:
-                fields = []
-                for field in cls._meta.get_fields():
-                    if isinstance(
-                                field,
-                                (models.CharField, models.TextField,)
-                            ) and not isinstance(
-                                field,
-                                models.EmailField
-                            ) and not (
-                                hasattr(field, 'choices') and field.choices
-                            ):
-                        fields.append(field)
-            else:
-                fields = [
-                    cls._meta.get_field(field_name)
-                    for field_name in cls.TranslatableMeta.fields
-                ]
-            cls._cached_translatable_fields = fields
-        return cls._cached_translatable_fields
-
-    @classmethod
-    def _get_translatable_fields_names(cls):
-        """
-        Return the names of the model's translatable fields.
-
-        Returns the names of the model's translatable fields based on the
-        field names listed in :attr:`TranslatableMeta.fields`.
-
-        :return: The names of the model's translatable fields.
-        :rtype: list(str)
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the names of the mentioned model's translatable fields:
-
-        .. testcode:: _get_translatable_fields_names
-
-           from sample.models import Continent
-
-           for name in Continent._get_translatable_fields_names():
-               print(name)
-
-        .. testoutput:: _get_translatable_fields_names
-
-           name
-           denonym
-        """
-        if not hasattr(cls, '_cached_translatable_fields_names'):
-            cls._cached_translatable_fields_names = [
-                field.name for field in cls.get_translatable_fields()
-            ]
-        return cls._cached_translatable_fields_names
-
-    @classmethod
-    def _get_translatable_fields_choices(cls):
-        """
-        Return the choices of the model's translatable fields.
-
-        Returns the choices of the model's translatable fields based on the
-        field names listed in :attr:`TranslatableMeta.fields`.
-
-        :return: The choices of the model's translatable fields.
-        :rtype: list(tuple(str, str))
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the choices of the mentioned model's translatable fields:
-
-        .. testcode:: _get_translatable_fields_choices
-
-           from sample.models import Continent
-
-           for choice in Continent._get_translatable_fields_choices():
-               print(choice)
-
-        .. testoutput:: _get_translatable_fields_choices
-
-           (None, '---------')
-           ('name', 'name')
-           ('denonym', 'denonym')
-        """
-        if not hasattr(cls, '_cached_translatable_fields_choices'):
-            choices = [
-                (None, '---------'),
-            ]
-            for field in cls.get_translatable_fields():
-                choice = (field.name, field.verbose_name)
-                choices.append(choice)
-            cls._cached_translatable_fields_choices = choices
-        return cls._cached_translatable_fields_choices
 
     class TranslatableMeta:
         """
