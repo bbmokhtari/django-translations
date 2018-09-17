@@ -8,7 +8,7 @@ following members:
 
 from django.db.models import query
 
-from translations.utils import apply_translations, update_translations
+from .utils import apply_translations, update_translations
 
 
 __docformat__ = 'restructuredtext'

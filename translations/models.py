@@ -15,8 +15,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey, \
     GenericRelation
 from django.utils.translation import ugettext_lazy as _
 
-from translations.utils import apply_translations, update_translations
-from translations.querysets import TranslatableQuerySet
+from .utils import apply_translations, update_translations
+from .querysets import TranslatableQuerySet
 
 
 __docformat__ = 'restructuredtext'

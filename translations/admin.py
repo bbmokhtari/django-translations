@@ -9,6 +9,7 @@ following members:
 :class:`TranslationInline`
     The inline which represents the translations.
 """
+
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
 
