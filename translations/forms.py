@@ -3,7 +3,7 @@ This module contains the forms for the Translations app. It contains the
 following members:
 
 :func:`generate_translation_form`
-    Return a translation form based on some choices.
+    Return a translation form based on a translatable model.
 """
 from django import forms
 
@@ -17,14 +17,14 @@ def generate_translation_form(translatable):
     """
     Return a translation form based on a translatable model.
 
-    Generates a translation form based on the translatable fields of the
+    Generates the translation form based on the translatable fields of the
     translatable model and returns it.
 
     :param translatable: The translatable model to generate the translation
         form based on.
-    :type translatable: ~translations.models.Translatable
+    :type translatable: type(~translations.models.Translatable)
     :return: The translation form generated based on the translatable model.
-    :rtype: ~django.forms.ModelForm(~translations.models.Translation)
+    :rtype: type(~django.forms.ModelForm(~translations.models.Translation))
     """
     if not hasattr(translatable, '_cached_translation_form'):
         choices = translatable._get_translatable_fields_choices()
