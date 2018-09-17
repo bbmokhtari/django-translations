@@ -7,7 +7,7 @@ following members:
 :class:`TranslatableAdmin`
     The admin which represents the translatables.
 :class:`TranslationInline`
-    The admin inline which represents the translations.
+    The inline which represents the translations.
 """
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
@@ -49,11 +49,11 @@ class TranslatableAdminMixin(object):
 
         .. literalinclude:: ../../translations/admin.py
            :pyobject: TranslationInline
-           :lines: 1, 15-16
+           :lines: 1, 14-
 
         .. literalinclude:: ../../translations/admin.py
            :pyobject: TranslatableAdmin
-           :lines: 1, 14-
+           :lines: 1, 13-
            :emphasize-lines: 9
 
         .. note::
@@ -80,8 +80,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
     """
     The admin which represents the translatables.
 
-    Manages creating, reading, updating and deleting the translatable admin
-    object.
+    Manages creating, reading, updating and deleting the translatable objects.
 
     To make an admin translatable:
 
@@ -102,10 +101,9 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
 
 class TranslationInline(GenericStackedInline):
     """
-    The admin inline which represents the translations.
+    The inline which represents the translations.
 
-    Manages creating, reading, updating and deleting the admin object's
-    translation inline objects.
+    Manages creating, reading, updating and deleting the translation objects.
 
     To add translation inlines to a translatable admin:
 
