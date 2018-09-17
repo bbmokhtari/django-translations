@@ -76,7 +76,7 @@ class Translation(models.Model):
            object_id=europe.id,
            field='name',
            language='de',
-           text='Europa'
+           text='Europa',
        )
 
        print(translation)
@@ -123,7 +123,7 @@ class Translation(models.Model):
         """Return the representation of the translation."""
         return '{source}: {translation}'.format(
             source=getattr(self.content_object, self.field),
-            translation=self.text
+            translation=self.text,
         )
 
     class Meta:
@@ -152,16 +152,17 @@ class Translatable(models.Model):
 
        The :attr:`translations` relation is the reverse relation of the
        :class:`~django.contrib.contenttypes.fields.GenericForeignKey`
-       described in :class:`Translation`. It's a
+       described in :class:`~translations.models.Translation`. It's a
        :class:`~django.contrib.contenttypes.fields.GenericRelation`.
     """
 
     objects = TranslatableQuerySet.as_manager()
+
     translations = GenericRelation(
         Translation,
         content_type_field='content_type',
         object_id_field='object_id',
-        related_query_name='%(app_label)s_%(class)s'
+        related_query_name='%(app_label)s_%(class)s',
     )
 
     class Meta:
