@@ -7,8 +7,9 @@ following members:
 :class:`TranslatableAdmin`
     The admin which represents the translatables.
 :class:`TranslationInline`
-    The admin inline which represents the translations.
+    The inline which represents the translations.
 """
+
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
 
@@ -23,77 +24,51 @@ class TranslatableAdminMixin(object):
     """
     An admin mixin which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`handle_translation_inlines` to
-    manipulate the translation inlines based on the admin model.
-
-    .. note::
-
-       It can be used to make any admin translatable, even the custom admins
-       other than the default Django admin.
-
-       Check out :doc:`../howto/customadmin`.
+    Provides functionalities like :meth:`prepare_translation_inlines` to
+    prepare the translation inlines of a type in some inlines based on the
+    admin model.
     """
 
-    def _get_translatable_field_choices(self):
+    def prepare_translation_inlines(self, inlines, inline_type):
         """
-        Return the choices of the admin's translatable fields.
+        Prepare the translation inlines of a type in some inlines based on the
+        admin model.
 
-        Fetches the translatable fields of the admin's model, creates choices
-        out of them and then returns them.
+        Searches the inlines for the translation inlines of the specified
+        inline type and prepares the translation inlines based on the admin
+        model.
 
-        :return: The choices derived out of the translatable fields.
-        :rtype: list(tuple(str, str))
+        :param inlines: The inlines which contain the translation inlines to
+            prepare.
+        :type inlines: list(~django.contrib.admin.InlineModelAdmin)
+        :param inline_type: The type of the translation inlines.
+        :type inline_type: type(~django.contrib.contenttypes.admin.\\
+            GenericStackedInline)
 
-        To get the choices of an admin's translatable fields:
-
-        .. testcode::
-
-           from django.contrib.admin import site
-           from sample.models import Continent
-           from sample.admin import ContinentAdmin
-
-           admin = ContinentAdmin(Continent, site)
-           print(admin._get_translatable_field_choices())
-
-        .. testoutput::
-
-           [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
-        """
-        choices = [
-            (None, '---------')
-        ]
-        if issubclass(self.model, Translatable):
-            for field in self.model.get_translatable_fields():
-                choices.append((field.name, field.verbose_name))
-        return choices
-
-    def handle_translation_inlines(self, inlines, thetype):
-        """
-        Manipulate the translation inlines of one type based on the admin.
-
-        Processes the admin and manipulates the translation inlines of one
-        type based on that in place.
-
-        :param inlines: The translation inlines to manipulate based on the
-            admin.
-        :type inlines: list(~django.contrib.contenttypes.admin
-            .GenericStackedInline)
-        :param thetype: The type of the inlines.
-        :type thetype: type(~django.contrib.contenttypes.admin
-            .GenericStackedInline)
-
-        To manipulate translation inlines in place override this in admin:
+        To prepare the translation inlines of a type in some inlines based on
+        the admin model:
 
         .. literalinclude:: ../../translations/admin.py
-           :pyobject: TranslatableAdmin.get_inline_instances
-           :emphasize-lines: 8
+           :pyobject: TranslationInline
+           :lines: 1, 14-
+
+        .. literalinclude:: ../../translations/admin.py
+           :pyobject: TranslatableAdmin
+           :lines: 1, 14-
+           :emphasize-lines: 9
+
+        .. note::
+
+           The code above is exactly how the Translations app makes Django
+           admin translatable. It can be used to make any admin translatable.
+
+           Check out :doc:`../howto/customadmin`.
         """
-        choices = self._get_translatable_field_choices()
-        form = generate_translation_form(choices)
+        form = generate_translation_form(self.model)
         remove_inlines = []
         for i, v in enumerate(inlines):
-            if isinstance(v, thetype):
-                if len(choices) == 1:
+            if isinstance(v, inline_type):
+                if len(form.base_fields['field'].choices) == 1:
                     remove_inlines.append(i)
                 else:
                     inlines[i].form = form
@@ -106,8 +81,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
     """
     The admin which represents the translatables.
 
-    Manages creating, reading, updating and deleting the translatable admin
-    object.
+    Manages creating, reading, updating and deleting the translatable objects.
 
     To make an admin translatable:
 
@@ -115,6 +89,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
        :pyobject: ContinentAdmin
        :emphasize-lines: 1
     """
+
     def get_inline_instances(self, request, obj=None):
         inlines = list(
             super(TranslatableAdmin, self).get_inline_instances(
@@ -122,16 +97,15 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
                 obj
             )
         )
-        self.handle_translation_inlines(inlines, TranslationInline)
+        self.prepare_translation_inlines(inlines, TranslationInline)
         return inlines
 
 
 class TranslationInline(GenericStackedInline):
     """
-    The admin inline which represents the translations.
+    The inline which represents the translations.
 
-    Manages creating, reading, updating and deleting the admin object's
-    translation inline objects.
+    Manages creating, reading, updating and deleting the translation objects.
 
     To add translation inlines to a translatable admin:
 

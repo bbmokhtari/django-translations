@@ -6,15 +6,15 @@ following members:
     A queryset which provides custom translation functionalities.
 """
 
-from django.db import models
+from django.db.models import query
 
-from translations.utils import apply_translations, update_translations
+from .utils import apply_translations, update_translations
 
 
 __docformat__ = 'restructuredtext'
 
 
-class TranslatableQuerySet(models.QuerySet):
+class TranslatableQuerySet(query.QuerySet):
     """
     A queryset which provides custom translation functionalities.
 

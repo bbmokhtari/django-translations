@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import activate
 from django.contrib.contenttypes.models import ContentType
@@ -16,8 +16,8 @@ from tests.sample import create_samples
 class GetStandardLanguageTest(TestCase):
     """Tests for `_get_standard_language`."""
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_active_unaccented_language(self):
-        activate('de')
         self.assertEqual(
             _get_standard_language(),
             'de'
@@ -29,8 +29,8 @@ class GetStandardLanguageTest(TestCase):
             'de'
         )
 
+    @override_settings(LANGUAGE_CODE='de-at')
     def test_active_nonexisting_accented_language(self):
-        activate('de-at')
         self.assertEqual(
             _get_standard_language(),
             'de'
@@ -42,8 +42,8 @@ class GetStandardLanguageTest(TestCase):
             'de'
         )
 
+    @override_settings(LANGUAGE_CODE='en-gb')
     def test_active_existing_accented_language(self):
-        activate('en-gb')
         self.assertEqual(
             _get_standard_language(),
             'en-gb'
@@ -1224,7 +1224,7 @@ class GetInstanceGroupsTest(TestCase):
              ' be prefetched.')
         )
 
-    def test_invalid_prefetch_partial_nested_relation(self):
+    def test_invalid_prefetch_part_nested_relation(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],
@@ -1259,6 +1259,7 @@ class GetInstanceGroupsTest(TestCase):
 class GetTranslationsTest(TestCase):
     """Tests for `_get_translations`."""
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1269,8 +1270,6 @@ class GetTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
@@ -1284,6 +1283,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1296,8 +1296,6 @@ class GetTranslationsTest(TestCase):
         )
 
         lvl_1 = ('countries',)
-
-        activate('de')
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1)
@@ -1313,6 +1311,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1325,8 +1324,6 @@ class GetTranslationsTest(TestCase):
         )
 
         lvl_2 = ('countries__cities',)
-
-        activate('de')
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_2)
@@ -1342,6 +1339,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1354,8 +1352,6 @@ class GetTranslationsTest(TestCase):
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
-
-        activate('de')
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
@@ -1479,6 +1475,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1489,8 +1486,6 @@ class GetTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
@@ -1506,6 +1501,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1518,8 +1514,6 @@ class GetTranslationsTest(TestCase):
         )
 
         lvl_1 = ('countries',)
-
-        activate('de')
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1)
@@ -1539,6 +1533,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1551,8 +1546,6 @@ class GetTranslationsTest(TestCase):
         )
 
         lvl_2 = ('countries__cities',)
-
-        activate('de')
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_2)
@@ -1572,6 +1565,7 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1584,8 +1578,6 @@ class GetTranslationsTest(TestCase):
         )
 
         lvl_1_2 = ('countries', 'countries__cities',)
-
-        activate('de')
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
@@ -1754,6 +1746,7 @@ class GetTranslationsTest(TestCase):
 class ApplyTranslationsTest(TestCase):
     """Tests for `apply_translations`."""
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1764,8 +1757,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         europe = Continent.objects.get(code='EU')
         apply_translations(europe)
@@ -1797,6 +1788,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1807,8 +1799,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
 
@@ -1842,6 +1832,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1852,8 +1843,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
 
@@ -1887,6 +1876,7 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -1897,8 +1887,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -2102,6 +2090,7 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2112,8 +2101,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -2147,6 +2134,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2157,8 +2145,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -2193,6 +2179,7 @@ class ApplyTranslationsTest(TestCase):
             'Cologner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2203,8 +2190,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -2239,6 +2224,7 @@ class ApplyTranslationsTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2249,8 +2235,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -2533,6 +2517,7 @@ class ApplyTranslationsTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2543,8 +2528,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         continents = Continent.objects.all()
         apply_translations(continents)
@@ -2604,6 +2587,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2614,8 +2598,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
 
@@ -2677,6 +2659,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2687,8 +2670,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
 
@@ -2750,6 +2731,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2760,8 +2742,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -3105,6 +3085,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3115,8 +3096,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -3178,6 +3157,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3188,8 +3168,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -3252,6 +3230,7 @@ class ApplyTranslationsTest(TestCase):
             'Seouler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3262,8 +3241,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -3326,6 +3303,7 @@ class ApplyTranslationsTest(TestCase):
             'Seüler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3336,8 +3314,6 @@ class ApplyTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -3766,6 +3742,7 @@ class ApplyTranslationsTest(TestCase):
 class UpdateTranslationsTest(TestCase):
     """Tests for `update_translations`."""
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3776,8 +3753,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -3826,6 +3801,7 @@ class UpdateTranslationsTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3836,8 +3812,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -3887,6 +3861,7 @@ class UpdateTranslationsTest(TestCase):
             'Kölner'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3897,8 +3872,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -3948,6 +3921,7 @@ class UpdateTranslationsTest(TestCase):
             'Cologne Denonym'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3958,8 +3932,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -4319,6 +4291,7 @@ class UpdateTranslationsTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4329,8 +4302,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -4417,6 +4388,7 @@ class UpdateTranslationsTest(TestCase):
             'Seüler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4427,8 +4399,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1 = ('countries',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -4516,6 +4486,7 @@ class UpdateTranslationsTest(TestCase):
             'Seüler'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4526,8 +4497,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_2 = ('countries__cities',)
         lvl_1_2 = ('countries', 'countries__cities',)
@@ -4615,6 +4584,7 @@ class UpdateTranslationsTest(TestCase):
             'Seoul Denonym'
         )
 
+    @override_settings(LANGUAGE_CODE='de')
     def test_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4625,8 +4595,6 @@ class UpdateTranslationsTest(TestCase):
             city_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
-
-        activate('de')
 
         lvl_1_2 = ('countries', 'countries__cities',)
 
@@ -5224,7 +5192,7 @@ class UpdateTranslationsTest(TestCase):
              ' be prefetched.')
         )
 
-    def test_queryset_invalid_prefetch_partial_nested_relation(self):
+    def test_queryset_invalid_prefetch_part_nested_relation(self):
         create_samples(
             continent_names=['europe'],
             country_names=['germany'],

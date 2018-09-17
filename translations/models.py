@@ -15,8 +15,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey, \
     GenericRelation
 from django.utils.translation import ugettext_lazy as _
 
-from translations.utils import apply_translations, update_translations
-from translations.querysets import TranslatableQuerySet
+from .utils import apply_translations, update_translations
+from .querysets import TranslatableQuerySet
 
 
 __docformat__ = 'restructuredtext'
@@ -76,7 +76,7 @@ class Translation(models.Model):
            object_id=europe.id,
            field='name',
            language='de',
-           text='Europa'
+           text='Europa',
        )
 
        print(translation)
@@ -123,7 +123,7 @@ class Translation(models.Model):
         """Return the representation of the translation."""
         return '{source}: {translation}'.format(
             source=getattr(self.content_object, self.field),
-            translation=self.text
+            translation=self.text,
         )
 
     class Meta:
@@ -152,35 +152,153 @@ class Translatable(models.Model):
 
        The :attr:`translations` relation is the reverse relation of the
        :class:`~django.contrib.contenttypes.fields.GenericForeignKey`
-       described in :class:`Translation`. It's a
+       described in :class:`~translations.models.Translation`. It's a
        :class:`~django.contrib.contenttypes.fields.GenericRelation`.
     """
 
     objects = TranslatableQuerySet.as_manager()
+
     translations = GenericRelation(
         Translation,
         content_type_field='content_type',
         object_id_field='object_id',
-        related_query_name='%(app_label)s_%(class)s'
+        related_query_name='%(app_label)s_%(class)s',
     )
 
     class Meta:
         abstract = True
 
-    class TranslatableMeta:
+    @classmethod
+    def get_translatable_fields(cls):
         """
-        The class which contains meta information about the translation
-        process of the model.
-        """
+        Return the translatable fields of the model.
 
-        fields = None
+        Returns the translatable fields of the model based on the
+        field names listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The translatable fields of the model.
+        :rtype: list(~django.db.models.Field)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the translatable fields of the mentioned model:
+
+        .. testcode:: get_translatable_fields
+
+           from sample.models import Continent
+
+           for field in Continent.get_translatable_fields():
+               print(field)
+
+        .. testoutput:: get_translatable_fields
+
+           sample.Continent.name
+           sample.Continent.denonym
         """
-        :var fields: The names of the fields to use in the translation
-            process.
-            ``None`` means use the text based fields automatically.
-            ``[]`` means use no fields.
-        :vartype fields: list(str) or None
+        if not hasattr(cls, '_cached_translatable_fields'):
+            if cls.TranslatableMeta.fields is None:
+                fields = []
+                for field in cls._meta.get_fields():
+                    if isinstance(
+                                field,
+                                (models.CharField, models.TextField,)
+                            ) and not isinstance(
+                                field,
+                                models.EmailField
+                            ) and not (
+                                hasattr(field, 'choices') and field.choices
+                            ):
+                        fields.append(field)
+            else:
+                fields = [
+                    cls._meta.get_field(field_name)
+                    for field_name in cls.TranslatableMeta.fields
+                ]
+            cls._cached_translatable_fields = fields
+        return cls._cached_translatable_fields
+
+    @classmethod
+    def _get_translatable_fields_names(cls):
         """
+        Return the names of the model's translatable fields.
+
+        Returns the names of the model's translatable fields based on the
+        field names listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The names of the model's translatable fields.
+        :rtype: list(str)
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the names of the mentioned model's translatable fields:
+
+        .. testcode:: _get_translatable_fields_names
+
+           from sample.models import Continent
+
+           for name in Continent._get_translatable_fields_names():
+               print(name)
+
+        .. testoutput:: _get_translatable_fields_names
+
+           name
+           denonym
+        """
+        if not hasattr(cls, '_cached_translatable_fields_names'):
+            cls._cached_translatable_fields_names = [
+                field.name for field in cls.get_translatable_fields()
+            ]
+        return cls._cached_translatable_fields_names
+
+    @classmethod
+    def _get_translatable_fields_choices(cls):
+        """
+        Return the choices of the model's translatable fields.
+
+        Returns the choices of the model's translatable fields based on the
+        field names listed in :attr:`TranslatableMeta.fields`.
+
+        :return: The choices of the model's translatable fields.
+        :rtype: list(tuple(str, str))
+
+        Considering this model:
+
+        .. literalinclude:: ../../sample/models.py
+           :pyobject: Continent
+           :emphasize-lines: 27-28
+
+        To get the choices of the mentioned model's translatable fields:
+
+        .. testcode:: _get_translatable_fields_choices
+
+           from sample.models import Continent
+
+           for choice in Continent._get_translatable_fields_choices():
+               print(choice)
+
+        .. testoutput:: _get_translatable_fields_choices
+
+           (None, '---------')
+           ('name', 'name')
+           ('denonym', 'denonym')
+        """
+        if not hasattr(cls, '_cached_translatable_fields_choices'):
+            choices = [
+                (None, '---------'),
+            ]
+            for field in cls.get_translatable_fields():
+                choice = (field.name, field.verbose_name)
+                choices.append(choice)
+            cls._cached_translatable_fields_choices = choices
+        return cls._cached_translatable_fields_choices
 
     def apply_translations(self, *relations, lang=None):
         """
@@ -522,92 +640,16 @@ class Translatable(models.Model):
         """
         update_translations(self, *relations, lang=lang)
 
-    @classmethod
-    def get_translatable_fields(cls):
+    class TranslatableMeta:
         """
-        Return the translatable fields of the model.
-
-        Returns the translatable fields of the model based on the
-        field names listed in :attr:`TranslatableMeta.fields`.
-
-        :return: The translatable fields.
-        :rtype: list(~django.db.models.Field)
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the translatable fields of the mentioned model:
-
-        .. testcode:: get_translatable_fields
-
-           from sample.models import Continent
-
-           for field in Continent.get_translatable_fields():
-               print(field)
-
-        .. testoutput:: get_translatable_fields
-
-           sample.Continent.name
-           sample.Continent.denonym
+        The class which contains meta information about the translation
+        of the model instances.
         """
-        if not hasattr(cls, '_cached_translatable_fields'):
-            if cls.TranslatableMeta.fields is None:
-                fields = []
-                for field in cls._meta.get_fields():
-                    if isinstance(
-                                field,
-                                (models.CharField, models.TextField,)
-                            ) and not isinstance(
-                                field,
-                                models.EmailField
-                            ) and not (
-                                hasattr(field, 'choices') and field.choices
-                            ):
-                        fields.append(field)
-            else:
-                fields = [
-                    cls._meta.get_field(field_name)
-                    for field_name in cls.TranslatableMeta.fields
-                ]
-            cls._cached_translatable_fields = fields
-        return cls._cached_translatable_fields
 
-    @classmethod
-    def get_translatable_field_names(cls):
+        fields = None
         """
-        Return the names of the model's translatable fields.
-
-        Returns the names of the model's translatable fields based on the
-        field names listed in :attr:`TranslatableMeta.fields`.
-
-        :return: The names of the translatable field.
-        :rtype: list(str)
-
-        Considering this model:
-
-        .. literalinclude:: ../../sample/models.py
-           :pyobject: Continent
-           :emphasize-lines: 27-28
-
-        To get the names of the mentioned model's translatable fields:
-
-        .. testcode:: get_translatable_field_names
-
-           from sample.models import Continent
-
-           for field in Continent.get_translatable_field_names():
-               print(field)
-
-        .. testoutput:: get_translatable_field_names
-
-           name
-           denonym
+        :var fields: The names of the fields to use in the translation.
+            ``None`` means use the text based fields automatically.
+            ``[]`` means use no fields.
+        :vartype fields: list(str) or None
         """
-        if not hasattr(cls, '_cached_translatable_field_names'):
-            cls._cached_translatable_field_names = [
-                field.name for field in cls.get_translatable_fields()
-            ]
-        return cls._cached_translatable_field_names

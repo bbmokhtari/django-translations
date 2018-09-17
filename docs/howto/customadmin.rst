@@ -38,8 +38,8 @@ To make it translatable you can do:
                    obj
                )
            )
-           # use `TranslatableAdminMixin.handle_translation_inlines`
-           self.handle_translation_inlines(inlines, TranslationInline)
+           # use `TranslatableAdminMixin.prepare_translation_inlines`
+           self.prepare_translation_inlines(inlines, TranslationInline)
            return inlines
 
    class TranslatableInline(TranslatableAdminMixin, NestedStackedInline):
@@ -56,6 +56,6 @@ To make it translatable you can do:
                    obj
                )
            )
-           # use `TranslatableAdminMixin.handle_translation_inlines`
-           self.handle_translation_inlines(inlines, TranslationInline)
+           # use `TranslatableAdminMixin.prepare_translation_inlines`
+           self.prepare_translation_inlines(inlines, TranslationInline)
            return inlines

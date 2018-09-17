@@ -21,28 +21,7 @@ request.user = MockSuperUser()
 class TranslatableAdminMixinTest(TestCase):
     """Tests for `TranslatableAdminMixin`."""
 
-    def test_get_translatable_field_choices_none(self):
-        admin = CityAdmin(City, site)
-        self.assertListEqual(
-            admin._get_translatable_field_choices(),
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
-        )
-
-    def test_get_translatable_field_choices_empty(self):
-        admin = GeoAdmin(Geo, site)
-        self.assertListEqual(
-            admin._get_translatable_field_choices(),
-            [(None, '---------')]
-        )
-
-    def test_get_translatable_field_choices_explicit(self):
-        admin = ContinentAdmin(Continent, site)
-        self.assertListEqual(
-            admin._get_translatable_field_choices(),
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
-        )
-
-    def test_handle_translation_inlines_none(self):
+    def test_prepare_translation_inlines_none(self):
         admin = CityAdmin(City, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertListEqual(
@@ -50,7 +29,7 @@ class TranslatableAdminMixinTest(TestCase):
             [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         )
 
-    def test_handle_translation_inlines_empty(self):
+    def test_prepare_translation_inlines_empty(self):
         admin = GeoAdmin(Geo, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertListEqual(
@@ -58,7 +37,7 @@ class TranslatableAdminMixinTest(TestCase):
             []
         )
 
-    def test_handle_translation_inlines_explicit(self):
+    def test_prepare_translation_inlines_explicit(self):
         admin = ContinentAdmin(Continent, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertEqual(

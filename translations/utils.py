@@ -256,7 +256,7 @@ def _get_entity_details(entity):
     error_message = '`{}` is neither {} nor {}.'.format(
         entity,
         'a model instance',
-        'an iterable of model instances'
+        'an iterable of model instances',
     )
 
     if isinstance(entity, models.Model):
@@ -328,7 +328,7 @@ def _get_reverse_relation(model, relation):
         )
         return '{}__{}'.format(
             branch_reverse_relation,
-            reverse_relation
+            reverse_relation,
         )
     else:
         return reverse_relation
@@ -414,7 +414,7 @@ def _get_relations_hierarchy(*relations):
 
         hierarchy.setdefault(root, {
             'included': False,
-            'relations': {}
+            'relations': {},
         })
 
         if nest:
@@ -569,7 +569,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
                             entity=value,
                             hierarchy=detail['relations'],
                             groups=groups,
-                            included=detail['included']
+                            included=detail['included'],
                         )
 
         if iterable:
@@ -665,13 +665,13 @@ def _get_translations(groups, lang=None):
         for obj_id in objs:
             filters |= models.Q(
                 content_type__id=ct_id,
-                object_id=obj_id
+                object_id=obj_id,
             )
 
     queryset = translations.models.Translation.objects.filter(
-        language=lang
+        language=lang,
     ).filter(
-        filters
+        filters,
     ).select_related('content_type')
 
     return queryset
@@ -961,7 +961,7 @@ def apply_translations(entity, *relations, lang=None):
         field = translation.field
         text = translation.text
 
-        if field in [x for x in type(obj).get_translatable_field_names()]:
+        if field in [x for x in type(obj)._get_translatable_fields_names()]:
             setattr(obj, field, text)
 
 
@@ -1366,7 +1366,7 @@ def update_translations(entity, *relations, lang=None):
     new_translations = []
     for (ct_id, objs) in groups.items():
         for (obj_id, obj) in objs.items():
-            for field in type(obj).get_translatable_field_names():
+            for field in type(obj)._get_translatable_fields_names():
                 text = getattr(obj, field, None)
                 if text:
                     new_translations.append(
