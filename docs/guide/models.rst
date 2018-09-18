@@ -11,9 +11,8 @@ To make a model translatable inherit the model from the
 :class:`~translations.models.Translatable` model.
 
 .. literalinclude:: ../../sample/models.py
-   :pyobject: Continent
-   :lines: -25
-   :emphasize-lines: 1
+   :lines: 1-6, 24-44
+   :emphasize-lines: 4, 7
 
 Since :class:`~translations.models.Translatable` is an abstract model there is
 no need to migrate afterwards.
