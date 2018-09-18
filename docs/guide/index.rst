@@ -11,3 +11,4 @@ recommend you to read the guide.
    :maxdepth: 2
    :caption: Reference:
 
+   models
