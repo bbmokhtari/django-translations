@@ -40,8 +40,8 @@ If needed, the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 can be set to nothing. You can do this by setting it to ``[]``.
 
-Apply the translations
-======================
+Apply the translations of the instance
+======================================
 
 To apply the translations of an instance use the
 :meth:`~translations.models.Translatable.apply_translations` method.
@@ -95,6 +95,9 @@ and returns ``None``. If it fails it throws the necessary error.
    :attr:`~translations.models.Translatable.TranslatableMeta.fields`,
    the translation of the field falls back to the value of the field
    in the instance.
+
+Apply the translations of the relations
+=======================================
 
 :meth:`~translations.models.Translatable.apply_translations` can also apply
 the translations of the instance's relations.
