@@ -46,7 +46,7 @@ Apply instance translations
 To apply the translations of an instance use the
 :meth:`~translations.models.Translatable.apply_translations` method.
 
-.. testsetup:: guide_apply_translations
+.. testsetup:: guide_apply_translations_instance
    
    from tests.sample import create_samples
 
@@ -60,7 +60,7 @@ To apply the translations of an instance use the
        langs=['de']
    )
 
-.. testcode:: guide_apply_translations
+.. testcode:: guide_apply_translations_instance
 
    from sample.models import Continent
 
@@ -74,7 +74,7 @@ To apply the translations of an instance use the
    print('Europe is called `{}` in German.'.format(europe.name))
    print('European is called `{}` in German.'.format(europe.denonym))
 
-.. testoutput:: guide_apply_translations
+.. testoutput:: guide_apply_translations_instance
 
    Europe is called `Europa` in German.
    European is called `Europäisch` in German.
@@ -88,3 +88,56 @@ and returns ``None``. If it fails it throws the necessary error.
 
    This is a convention in python that if a method does something in place it
    should return ``None``.
+
+:meth:`~translations.models.Translatable.apply_translations` can also apply
+the translations of the instance's relations.
+
+.. testsetup:: guide_apply_translations_relations
+   
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testcode:: guide_apply_translations_relations
+
+   from sample.models import Continent
+
+   # fetch an instance like before
+   europe = Continent.objects.prefetch_related(
+       'countries',
+       'countries__cities',
+   ).get(code='EU')
+
+   # apply translations in place
+   europe.apply_translations(
+       'countries',
+       'countries__cities',
+       lang='de'
+   )
+
+   # use the instance like before
+   print('Europe is called `{}` in German.'.format(europe.name))
+   print('European is called `{}` in German.'.format(europe.denonym))
+
+   # use the relations like before
+   germany = europe.countries.all()[0]
+   cologne = germany.cities.all()[0]
+   print('Germany is called `{}` in German.'.format(germany.name))
+   print('German is called `{}` in German.'.format(germany.denonym))
+
+.. testoutput:: guide_apply_translations_relations
+
+   Europe is called `Europa` in German.
+   European is called `Europäisch` in German.
+   Germany is called `Deutschland` in German.
+   German is called `Deutsche` in German.
+   Cologne is called `Köln` in German.
+   Cologner is called `Kölner` in German.
