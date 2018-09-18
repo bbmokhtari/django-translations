@@ -21,7 +21,7 @@ Specify translatable fields
 ===========================
 
 To specify the translatable fields specify the
-:class:`~translations.models.Translatable.TranslatableMeta.fields` attribute
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 of the :class:`~translations.models.Translatable.TranslatableMeta` class
 declared inside a :class:`~translations.models.Translatable` model.
 
@@ -29,5 +29,13 @@ declared inside a :class:`~translations.models.Translatable` model.
    :lines: 1-6, 24-51
    :emphasize-lines: 33-34
 
-By default the :class:`~translations.models.Translatable` model will only use
-the text based fields automatically.
+By default the
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute is
+set to ``None``. This means the translation will use the text based fields
+automatically, fields like :class:`~django.db.models.CharField` and
+:class:`~django.db.models.TextField`. (it automatically ignores the fields with
+the ``choices`` and :class:`~django.db.models.EmailField`)
+
+If needed, the
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
+can be set to nothing. You can do this by setting it to ``[]``.
