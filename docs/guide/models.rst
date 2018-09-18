@@ -39,3 +39,52 @@ the ``choices`` and :class:`~django.db.models.EmailField`)
 If needed, the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 can be set to nothing. You can do this by setting it to ``[]``.
+
+Apply instance translations
+===========================
+
+To apply the translations of an instance use the
+:meth:`~translations.models.Translatable.apply_translations` method.
+
+.. testsetup:: guide_apply_translations
+   
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testcode:: guide_apply_translations
+
+   from sample.models import Continent
+
+   # fetch an instance like before
+   europe = Continent.objects.get(code='EU')
+
+   # apply translations in place
+   europe.apply_translations(lang='de')
+
+   # use the instance like before
+   print('Europe is called `{}` in German.'.format(europe.name))
+   print('European is called `{}` in German.'.format(europe.denonym))
+
+.. testoutput:: guide_apply_translations
+
+   Europe is called `Europa` in German.
+   European is called `Europäisch` in German.
+
+If successful, :meth:`~translations.models.Translatable.apply_translations`
+applies the translations on the translatable
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` in place
+and returns ``None``. If it fails it throws the necessary error.
+
+.. note::
+
+   This is a convention in python that if a method does something in place it
+   should return ``None``.
