@@ -17,6 +17,12 @@ To make a model translatable inherit the model from the
 Since :class:`~translations.models.Translatable` is an abstract model there is
 no need to migrate afterwards.
 
+.. warning::
+
+   Care not to inherit the :class:`~translations.models.Translation` model
+   accidentally instead of the :class:`~translations.models.Translatable`
+   model.
+
 Specify translatable fields
 ===========================
 
@@ -40,8 +46,8 @@ If needed, the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 can be set to nothing. You can do this by setting it to ``[]``.
 
-Apply the translations of the instance
-======================================
+Apply the translations of an instance
+=====================================
 
 To apply the translations of an instance use the
 :meth:`~translations.models.Translatable.apply_translations` method.
@@ -81,8 +87,9 @@ To apply the translations of an instance use the
 
 If successful, :meth:`~translations.models.Translatable.apply_translations`
 applies the translations on the translatable
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` in place
-and returns ``None``. If it fails it throws the necessary error.
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
+instance in place and returns ``None``. If it fails it throws the appropriate
+error.
 
 .. note::
 
