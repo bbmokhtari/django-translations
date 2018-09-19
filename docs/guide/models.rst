@@ -73,7 +73,7 @@ To apply the translations of an instance use the
    # fetch an instance like before
    europe = Continent.objects.get(code='EU')
 
-   # apply translations in place
+   # apply the translations in place
    europe.apply_translations(lang='de')
 
    # use the instance like before
@@ -93,8 +93,8 @@ error.
 
 .. note::
 
-   This is a convention in python that if a method does something in place it
-   should return ``None``.
+   This is a convention in python that if a method changes the instance
+   in place it should return ``None``.
 
 .. note::
 
