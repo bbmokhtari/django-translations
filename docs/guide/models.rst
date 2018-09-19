@@ -91,6 +91,9 @@ applies the translations on the translatable
 instance in place and returns ``None``. If it fails it throws the appropriate
 error.
 
+The ``lang`` parameter can be dropped, if so it will be automatically set to
+the :term:`active language` code.
+
 .. note::
 
    This is a convention in python that if a method changes the instance
