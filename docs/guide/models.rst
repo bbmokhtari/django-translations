@@ -44,10 +44,10 @@ the ``choices`` and :class:`~django.db.models.EmailField`)
 
 If needed, the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
-can be set to nothing. You can do this by setting it to ``[]``.
+can be set to nothing. You can do this by explicitly setting it to ``[]``.
 
-Apply the translations of an instance
-=====================================
+Apply instance translations
+===========================
 
 To apply the translations of an instance use the
 :meth:`~translations.models.Translatable.apply_translations` method.
@@ -103,8 +103,8 @@ error.
    the translation of the field falls back to the value of the field
    in the instance.
 
-Apply the translations of the relations
-=======================================
+Apply relations translations
+============================
 
 :meth:`~translations.models.Translatable.apply_translations` can also apply
 the translations of the instance's relations.
