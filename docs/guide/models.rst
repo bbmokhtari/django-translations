@@ -85,14 +85,16 @@ To apply the translations of an instance use the
    Europe is called `Europa` in German.
    European is called `Europäisch` in German.
 
+The ``lang`` parameter is optional. It determines the language to apply the
+translations in. It must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
+will be automatically set to the :term:`active language` code.
+
 If successful, :meth:`~translations.models.Translatable.apply_translations`
 applies the translations on the translatable
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
 instance in place and returns ``None``. If it fails it throws the appropriate
 error.
-
-The ``lang`` parameter can be dropped, if so it will be automatically set to
-the :term:`active language` code.
 
 .. note::
 
