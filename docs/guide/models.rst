@@ -91,13 +91,13 @@ method.
    europe.apply_translations(lang='de')
 
    # use the instance like before
-   print('Europe is called `{}` in German.'.format(europe.name))
-   print('European is called `{}` in German.'.format(europe.denonym))
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
 
 .. testoutput:: guide_apply_translations_instance
 
-   Europe is called `Europa` in German.
-   European is called `Europäisch` in German.
+   `Europe` is called `Europa` in German.
+   `European` is called `Europäisch` in German.
 
 The ``lang`` parameter is optional. It determines the language to apply the
 translations in. It must be a language code already declared in the
@@ -161,25 +161,28 @@ well.
    )
 
    # use the instance like before
-   print('Europe is called `{}` in German.'.format(europe.name))
-   print('European is called `{}` in German.'.format(europe.denonym))
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
 
    # use the relations like before
    germany = europe.countries.all()[0]
    cologne = germany.cities.all()[0]
-   print('Germany is called `{}` in German.'.format(germany.name))
-   print('German is called `{}` in German.'.format(germany.denonym))
-   print('Cologne is called `{}` in German.'.format(cologne.name))
-   print('Cologner is called `{}` in German.'.format(cologne.denonym))
+   print('`Germany` is called `{}` in German.'.format(germany.name))
+   print('`German` is called `{}` in German.'.format(germany.denonym))
+   print('`Cologne` is called `{}` in German.'.format(cologne.name))
+   print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
 
 .. testoutput:: guide_apply_translations_relations
 
-   Europe is called `Europa` in German.
-   European is called `Europäisch` in German.
-   Germany is called `Deutschland` in German.
-   German is called `Deutsche` in German.
-   Cologne is called `Köln` in German.
-   Cologner is called `Kölner` in German.
+   `Europe` is called `Europa` in German.
+   `European` is called `Europäisch` in German.
+   `Germany` is called `Deutschland` in German.
+   `German` is called `Deutsche` in German.
+   `Cologne` is called `Köln` in German.
+   `Cologner` is called `Kölner` in German.
+
+The ``*relations`` parameter determines the relations to apply the
+translations of. They must be :class:`~translations.models.Translatable`.
 
 .. note::
 
