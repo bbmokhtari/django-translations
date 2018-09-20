@@ -38,9 +38,9 @@ declared inside a :class:`~translations.models.Translatable` model.
 By default the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute is
 set to ``None``. This means the translation will use the text based fields
-automatically, fields like :class:`~django.db.models.CharField` and
-:class:`~django.db.models.TextField`. (it automatically ignores the fields with
-the ``choices`` and :class:`~django.db.models.EmailField`)
+automatically. (like :class:`~django.db.models.CharField` and
+:class:`~django.db.models.TextField` - this does not include
+:class:`~django.db.models.EmailField` or the fields with ``choices``)
 
 If needed, the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
