@@ -246,8 +246,9 @@ error.
       Country: Germany  -- Wrong
       City: Cologne  -- Wrong
 
-   The solution is to do the filtering before applying the translations.
-   To do this on the relations use :class:`~django.db.models.Prefetch`.
+   The solution is to do the filtering before applying the
+   translations. To do this on the relations use
+   :class:`~django.db.models.Prefetch`.
 
    .. testcode:: guide_apply_translations_warning
 
