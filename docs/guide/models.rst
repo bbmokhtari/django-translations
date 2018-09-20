@@ -91,9 +91,9 @@ translations in. It must be a language code already declared in the
 will be automatically set to the :term:`active language` code.
 
 If successful, :meth:`~translations.models.Translatable.apply_translations`
-applies the translations on the translatable
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
-instance and returns ``None``. If it fails it throws the appropriate error.
+applies the translations of the instance on the translatable
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` of it and
+returns ``None``. If failed, it throws the appropriate error.
 
 .. note::
 
