@@ -203,10 +203,7 @@ error.
 .. warning::
 
    Filtering any queryset after applying the translations will cause
-   the translations of that queryset to be reset. The solution is to
-   do the filtering before applying the translations.
-
-   To do this on the relations use :class:`~django.db.models.Prefetch`.
+   the translations of that queryset to be reset.
 
    .. testsetup:: guide_apply_translations_warning
    
@@ -221,8 +218,6 @@ error.
           city_fields=['name', 'denonym'],
           langs=['de']
       )
-
-   Consider this case:
 
    .. testcode:: guide_apply_translations_warning
 
@@ -252,8 +247,8 @@ error.
       City: Cologne  -- Wrong
       City: Munich  -- Wrong
 
-   As we can see the translations of the filtered queryset are reset.
-   To fix it:
+   The solution is to do the filtering before applying the translations.
+   To do this on the relations use :class:`~django.db.models.Prefetch`.
 
    .. testcode:: guide_apply_translations_warning
 
