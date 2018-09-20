@@ -93,8 +93,7 @@ will be automatically set to the :term:`active language` code.
 If successful, :meth:`~translations.models.Translatable.apply_translations`
 applies the translations on the translatable
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` of the
-instance in place and returns ``None``. If it fails it throws the appropriate
-error.
+instance and returns ``None``. If it fails it throws the appropriate error.
 
 .. note::
 
