@@ -62,7 +62,7 @@ can be set to nothing. You can do this by explicitly setting it to ``[]``.
 Apply instance translations
 ===========================
 
-To apply the translations of a :class:`~translations.models.Translatbale`
+To apply the translations of a :class:`~translations.models.Translatable`
 instance use the :meth:`~translations.models.Translatable.apply_translations`
 method.
 
@@ -125,8 +125,8 @@ Apply relations translations
 ============================
 
 :meth:`~translations.models.Translatable.apply_translations` can also apply
-the translations of a :class:`~translations.models.Translatbale` instance's
-relations provided they are :class:`~translations.models.Translatbale` as
+the translations of a :class:`~translations.models.Translatable` instance's
+relations provided they are :class:`~translations.models.Translatable` as
 well.
 
 .. testsetup:: guide_apply_translations_relations
