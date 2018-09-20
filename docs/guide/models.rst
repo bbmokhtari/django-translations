@@ -62,8 +62,9 @@ can be set to nothing. You can do this by explicitly setting it to ``[]``.
 Apply instance translations
 ===========================
 
-To apply the translations of an instance use the
-:meth:`~translations.models.Translatable.apply_translations` method.
+To apply the translations of a :class:`~translations.models.Translatbale`
+instance use the :meth:`~translations.models.Translatable.apply_translations`
+method.
 
 .. testsetup:: guide_apply_translations_instance
    
@@ -124,7 +125,9 @@ Apply relations translations
 ============================
 
 :meth:`~translations.models.Translatable.apply_translations` can also apply
-the translations of the instance's relations.
+the translations of a :class:`~translations.models.Translatbale` instance's
+relations provided they are :class:`~translations.models.Translatbale` as
+well.
 
 .. testsetup:: guide_apply_translations_relations
    
@@ -150,7 +153,7 @@ the translations of the instance's relations.
        'countries__cities',
    ).get(code='EU')
 
-   # apply translations in place
+   # apply the translations in place
    europe.apply_translations(
        'countries',
        'countries__cities',
