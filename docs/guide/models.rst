@@ -126,8 +126,7 @@ Apply relations translations
 
 :meth:`~translations.models.Translatable.apply_translations` can also apply
 the translations of a :class:`~translations.models.Translatable` instance's
-relations provided they are :class:`~translations.models.Translatable` as
-well.
+relations.
 
 .. testsetup:: guide_apply_translations_relations
    
