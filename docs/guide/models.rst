@@ -11,8 +11,13 @@ To make a model translatable inherit the model from the
 :class:`~translations.models.Translatable` model.
 
 .. literalinclude:: ../../sample/models.py
-   :lines: 1-6, 24-48
-   :emphasize-lines: 4, 7
+   :lines: 1-4
+   :emphasize-lines: 4
+
+.. literalinclude:: ../../sample/models.py
+   :pyobject: Continent
+   :lines: 1-25
+   :emphasize-lines: 1
 
 Since :class:`~translations.models.Translatable` is an abstract model there is
 no need to migrate afterwards.
@@ -32,8 +37,8 @@ of the :class:`~translations.models.Translatable.TranslatableMeta` class
 declared inside a :class:`~translations.models.Translatable` model.
 
 .. literalinclude:: ../../sample/models.py
-   :lines: 1-6, 24-51
-   :emphasize-lines: 33-34
+   :pyobject: Continent
+   :emphasize-lines: 1, 27-28
 
 By default the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute is
