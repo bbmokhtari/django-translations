@@ -212,7 +212,7 @@ error.
       create_samples(
           continent_names=['europe', 'asia'],
           country_names=['germany', 'south korea'],
-          city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+          city_names=['cologne', 'seoul'],
           continent_fields=['name', 'denonym'],
           country_fields=['name', 'denonym'],
           city_fields=['name', 'denonym'],
@@ -245,7 +245,6 @@ error.
       Continent: Europa
       Country: Germany  -- Wrong
       City: Cologne  -- Wrong
-      City: Munich  -- Wrong
 
    The solution is to do the filtering before applying the translations.
    To do this on the relations use :class:`~django.db.models.Prefetch`.
@@ -271,14 +270,12 @@ error.
 
       print('Continent: {}'.format(europe))
       for country in europe.countries.all():
-          print('Country: {}'.format(country))
+          print('Country: {}  -- Correct'.format(country))
           for city in country.cities.all():
-              print('City: {}'.format(city))
+              print('City: {}  -- Correct'.format(city))
 
    .. testoutput:: guide_apply_translations_warning
 
       Continent: Europa
-      Country: Deutschland
-      City: Köln
-      City: München
-
+      Country: Deutschland  -- Correct
+      City: Köln  -- Correct
