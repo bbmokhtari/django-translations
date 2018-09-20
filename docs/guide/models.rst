@@ -184,6 +184,12 @@ well.
 The ``*relations`` parameter determines the relations to apply the
 translations of. They must be :class:`~translations.models.Translatable`.
 
+If successful, :meth:`~translations.models.Translatable.apply_translations`
+applies the translations of the instance and its relations on the translatable
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` of it and
+its relations and returns ``None``. If failed, it throws the appropriate
+error.
+
 .. note::
 
    It is **recommended** for the relations of the instance to be
