@@ -47,9 +47,17 @@ automatically. (like :class:`~django.db.models.CharField` and
 :class:`~django.db.models.TextField` - this does not include
 :class:`~django.db.models.EmailField` or the fields with ``choices``)
 
+.. literalinclude:: ../../sample/models.py
+   :pyobject: City
+   :emphasize-lines: 1
+
 If needed, the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 can be set to nothing. You can do this by explicitly setting it to ``[]``.
+
+.. literalinclude:: ../../sample/models.py
+   :pyobject: Timezone
+   :emphasize-lines: 1, 15-16
 
 Apply instance translations
 ===========================
