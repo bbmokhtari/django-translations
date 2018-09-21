@@ -180,8 +180,8 @@ relations.
    `Cologne` is called `Köln` in German.
    `Cologner` is called `Kölner` in German.
 
-The ``*relations`` parameter determines the relations to apply the
-translations of. They must be :class:`~translations.models.Translatable`.
+The ``*relations`` parameter determines the instance's relations to apply the
+translations of. They must also be :class:`~translations.models.Translatable`.
 
 If successful, :meth:`~translations.models.Translatable.apply_translations`
 applies the translations of the instance and its relations on the translatable
