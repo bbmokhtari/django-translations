@@ -105,9 +105,9 @@ translations in. It must be a language code already declared in the
 will be automatically set to the :term:`active language` code.
 
 If successful, :meth:`~translations.models.Translatable.apply_translations`
-applies the translations of the instance on the translatable
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` of it and
-returns ``None``. If failed, it throws the appropriate error.
+applies the translations of the instance on its translatable
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` and returns
+``None``. If failed, it throws the appropriate error.
 
 .. note::
 
@@ -184,10 +184,9 @@ The ``*relations`` parameter determines the instance's relations to apply the
 translations of. They must also be :class:`~translations.models.Translatable`.
 
 If successful, :meth:`~translations.models.Translatable.apply_translations`
-applies the translations of the instance and its relations on the translatable
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` of it and
-its relations and returns ``None``. If failed, it throws the appropriate
-error.
+applies the translations of the instance and its relations on their
+translatable :attr:`~translations.models.Translatable.TranslatableMeta.fields`
+and returns ``None``. If failed, it throws the appropriate error.
 
 .. note::
 
