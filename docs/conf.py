@@ -131,6 +131,7 @@ html_theme = 'alabaster'
 html_theme_options = {
     'note_bg': '#fec',
     'note_border': '#ffe2a8',
+    'pre_bg': '#f6f6f6',
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
