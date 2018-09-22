@@ -73,7 +73,7 @@ method.
    create_samples(
        continent_names=['europe', 'asia'],
        country_names=['germany', 'south korea'],
-       city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+       city_names=['cologne', 'seoul'],
        continent_fields=['name', 'denonym'],
        country_fields=['name', 'denonym'],
        city_fields=['name', 'denonym'],
@@ -135,7 +135,7 @@ relations.
    create_samples(
        continent_names=['europe', 'asia'],
        country_names=['germany', 'south korea'],
-       city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+       city_names=['cologne', 'seoul'],
        continent_fields=['name', 'denonym'],
        country_fields=['name', 'denonym'],
        city_fields=['name', 'denonym'],
@@ -279,3 +279,71 @@ and returns ``None``. If failed, it throws the appropriate error.
       Continent: Europa
       Country: Deutschland  -- Correct
       City: Köln  -- Correct
+
+Update instance translations
+============================
+
+To update the translations of a :class:`~translations.models.Translatable`
+instance use the :meth:`~translations.models.Translatable.update_translations`
+method.
+
+.. testsetup:: guide_update_translations_instance
+   
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testcode:: guide_update_translations_instance
+
+   from sample.models import Continent
+
+   # fetch an instance like before
+   europe = Continent.objects.get(code='EU')
+
+   # apply the translations in place
+   europe.apply_translations(lang='de')
+
+   # use the instance like before
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
+
+   # change the instance
+   print('Changing...')
+   europe.name = 'Europa (changed)'
+   europe.denonym = 'Europäisch (changed)'
+
+   # update the translations in place
+   europe.update_translations(lang='de')
+
+   # re-apply the translations in place
+   europe.apply_translations(lang='de')
+
+   # use the instance like before
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
+
+.. testoutput:: guide_update_translations_instance
+
+   `Europe` is called `Europa` in German.
+   `European` is called `Europäisch` in German.
+   Changing...
+   `Europe` is called `Europa (changed)` in German.
+   `European` is called `Europäisch (changed)` in German.
+
+The ``lang`` parameter is optional. It determines the language to update the
+translations in. It must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
+will be automatically set to the :term:`active language` code.
+
+If successful, :meth:`~translations.models.Translatable.update_translations`
+updates the translations of the instance using its translatable
+:attr:`~translations.models.Translatable.TranslatableMeta.fields` and returns
+``None``. If failed, it throws the appropriate error.
