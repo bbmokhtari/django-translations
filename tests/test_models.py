@@ -6,7 +6,7 @@ from django.utils.translation import activate
 
 from translations.models import Translation
 
-from sample.models import Continent, Country, City, Geo
+from sample.models import Timezone, Continent, Country, City
 
 from tests.sample import create_samples
 
@@ -219,7 +219,7 @@ class TranslatableTest(TestCase):
 
     def test_get_translatable_fields_empty(self):
         self.assertListEqual(
-            Geo.get_translatable_fields(),
+            Timezone.get_translatable_fields(),
             []
         )
 
@@ -240,7 +240,7 @@ class TranslatableTest(TestCase):
 
     def test_get_translatable_fields_names_empty(self):
         self.assertListEqual(
-            Geo._get_translatable_fields_names(),
+            Timezone._get_translatable_fields_names(),
             []
         )
 
@@ -258,7 +258,7 @@ class TranslatableTest(TestCase):
 
     def test_get_translatable_fields_choices_empty(self):
         self.assertListEqual(
-            Geo._get_translatable_fields_choices(),
+            Timezone._get_translatable_fields_choices(),
             [(None, '---------')]
         )
 

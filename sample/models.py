@@ -4,18 +4,19 @@ from django.utils.translation import ugettext_lazy as _
 from translations.models import Translatable
 
 
-class Geo(Translatable):
-    area = models.IntegerField(
-        verbose_name=_('area'),
-        help_text=_('the area of the geo'),
+class Timezone(Translatable):
+    name = models.CharField(
+        verbose_name=_('name'),
+        help_text=_('the name of the timezone'),
+        max_length=32,
     )
 
     def __str__(self):
-        return "Geo"
+        return self.name
 
     class Meta:
-        verbose_name = _('geo')
-        verbose_name_plural = _('geos')
+        verbose_name = _('timezone')
+        verbose_name_plural = _('timezones')
 
     class TranslatableMeta:
         fields = []

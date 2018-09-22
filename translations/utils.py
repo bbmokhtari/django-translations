@@ -857,12 +857,7 @@ def apply_translations(entity, *relations, lang=None):
     .. warning::
 
        Filtering any queryset after applying the translations will cause
-       the translations of that queryset to be reset. The solution is to
-       do the filtering before applying the translations.
-
-       To do this on the relations use :class:`~django.db.models.Prefetch`.
-
-       Consider this case:
+       the translations of that queryset to be reset.
 
        .. testcode:: apply_translations
 
@@ -903,8 +898,9 @@ def apply_translations(entity, *relations, lang=None):
           City: Seoul  -- Wrong
           City: Ulsan  -- Wrong
 
-       As we can see the translations of the filtered queryset are reset.
-       To fix it:
+       The solution is to do the filtering before applying the
+       translations. To do this on the relations use
+       :class:`~django.db.models.Prefetch`.
 
        .. testcode:: apply_translations
 

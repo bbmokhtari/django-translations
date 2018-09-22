@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.contrib.admin import site
 
-from sample.models import Continent, City, Geo
-from sample.admin import ContinentAdmin, CityAdmin, GeoAdmin
+from sample.models import Timezone, Continent, City
+from sample.admin import TimezoneAdmin, ContinentAdmin, CityAdmin
 
 
 class MockRequest:
@@ -30,7 +30,7 @@ class TranslatableAdminMixinTest(TestCase):
         )
 
     def test_prepare_translation_inlines_empty(self):
-        admin = GeoAdmin(Geo, site)
+        admin = TimezoneAdmin(Timezone, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertListEqual(
             inlines,
