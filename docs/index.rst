@@ -13,11 +13,8 @@ recommend you to read the guide.
 If you want to know how the inner parts of the app work or you want to
 contribute to the project we recommend you to read the reference.
 
-Table of Contents
-~~~~~~~~~~~~~~~~~
-
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
    :caption: Contents:
 
    guide/index
@@ -25,8 +22,7 @@ Table of Contents
    howto/index
    glossary
 
-Indices and tables
-~~~~~~~~~~~~~~~~~~
+.. rubric:: Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
