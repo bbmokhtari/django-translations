@@ -462,3 +462,73 @@ If successful, :meth:`~translations.models.Translatable.update_translations`
 updates the translations of the instance and its relations using their
 translatable :attr:`~translations.models.Translatable.TranslatableMeta.fields`
 and returns ``None``. If failed, it throws the appropriate error.
+
+.. note::
+
+   It is **mandatory** for the relations of the instance to be
+   prefetched before making any changes to them so that the changes
+   can be fetched later.
+
+   To do this use
+   :meth:`~django.db.models.query.QuerySet.select_related`,
+   :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+   :func:`~django.db.models.prefetch_related_objects`.
+
+   .. testsetup:: guide_update_translations_note
+   
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
+   Consider this case:
+
+   .. testcode:: guide_update_translations_note
+
+      from sample.models import Continent
+
+      # un-prefetched queryset
+      europe = Continent.objects.get(code='EU')
+
+      # first query
+      europe.countries.all()[0].name = 'Germany (changed)'
+
+      # does a second query
+      new_name = europe.countries.all()[0].name
+
+      print('Country: {}'.format(new_name))
+
+   .. testoutput:: guide_update_translations_note
+
+      Country: Germany
+
+   As we can see the new query did not fetch the changes we made
+   before. To fix it:
+
+   .. testcode:: guide_update_translations_note
+
+      from sample.models import Continent
+
+      # prefetched queryset
+      europe = Continent.objects.prefetch_related(
+          'countries',
+      ).get(code='EU')
+
+      # first query
+      europe.countries.all()[0].name = 'Germany (changed)'
+
+      # uses the first query
+      new_name = europe.countries.all()[0].name
+
+      print('Country: {}'.format(new_name))
+
+   .. testoutput:: guide_update_translations_note
+
+      Country: Germany (changed)
