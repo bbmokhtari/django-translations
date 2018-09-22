@@ -437,7 +437,7 @@ relations.
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
 
-.. testoutput:: guide_apply_translations_relations
+.. testoutput:: guide_update_translations_relations
 
    `Europe` is called `Europa` in German.
    `European` is called `Europäisch` in German.
