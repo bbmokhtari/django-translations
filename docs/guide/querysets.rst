@@ -4,6 +4,14 @@ QuerySets
 
 This module provides an in depth knowledge of the translatable querysets.
 
+Make querysets translatable
+===========================
+
+Just :ref:`make the model translatable <Make models translatable>`,
+then the querysets of the specified model will be
+:class:`translatable querysets <translations.querysets.TranslatableQuerySet>`
+automatically.
+
 Apply queryset translations
 ===========================
 

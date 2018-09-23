@@ -4,6 +4,8 @@ Models
 
 This module provides an in depth knowledge of the translatable models.
 
+.. _make models translatable:
+
 Make models translatable
 ========================
 
