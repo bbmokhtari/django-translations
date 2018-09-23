@@ -62,12 +62,13 @@ can be set to nothing. You can do this by explicitly setting it to ``[]``.
 Apply instance translations
 ===========================
 
-To apply the translations of a :class:`~translations.models.Translatable`
-instance use the :meth:`~translations.models.Translatable.apply_translations`
+To apply the translations of a
+:class:`translatable instance <translations.models.Translatable>`
+use the :meth:`~translations.models.Translatable.apply_translations`
 method.
 
 .. testsetup:: guide_apply_translations_instance
-   
+
    from tests.sample import create_samples
 
    create_samples(
@@ -104,20 +105,23 @@ translations in. It must be a language code already declared in the
 :data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
 will be automatically set to the :term:`active language` code.
 
-If successful, :meth:`~translations.models.Translatable.apply_translations`
-applies the translations of the instance on its translatable
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` and returns
+If successful,
+:meth:`~translations.models.Translatable.apply_translations`
+applies the translations of the instance on its
+:attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
 
 .. note::
 
-   This is a convention in python that if a method changes the instance
+   This is a convention in python that if a method changes the object
    in place it should return ``None``.
 
 .. note::
 
-   If there is no translation for a field in the translatable
-   :attr:`~translations.models.Translatable.TranslatableMeta.fields`,
+   If there is no translation for a field in the
+   :attr:`translatable fields \
+   <translations.models.Translatable.TranslatableMeta.fields>`,
    the translation of the field falls back to the value of the field
    in the instance.
 
