@@ -28,8 +28,8 @@ no need to migrate afterwards.
    accidentally instead of the :class:`~translations.models.Translatable`
    model.
 
-Specify translatable fields
-===========================
+Specify model's translatable fields
+===================================
 
 To specify the translatable fields specify the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
