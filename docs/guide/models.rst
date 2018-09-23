@@ -121,8 +121,8 @@ applies the translations of the instance on its translatable
    the translation of the field falls back to the value of the field
    in the instance.
 
-Apply relations translations
-============================
+Apply instance's relations translations
+=======================================
 
 :meth:`~translations.models.Translatable.apply_translations` can also apply
 the translations of a :class:`~translations.models.Translatable` instance's
@@ -350,8 +350,8 @@ updates the translations of the instance using its translatable
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` and returns
 ``None``. If failed, it throws the appropriate error.
 
-Update relations translations
-=============================
+Update instance's relations translations
+========================================
 
 :meth:`~translations.models.Translatable.update_translations` can also update
 the translations of a :class:`~translations.models.Translatable` instance's
