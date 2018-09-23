@@ -4,7 +4,7 @@ Models
 
 This module provides an in depth knowledge of the translatable models.
 
-.. _make models translatable:
+.. _translatable-models:
 
 Make models translatable
 ========================
@@ -29,6 +29,8 @@ no need to migrate afterwards.
    Care not to inherit the :class:`~translations.models.Translation` model
    accidentally instead of the :class:`~translations.models.Translatable`
    model.
+
+.. _specify-fields:
 
 Specify model's translatable fields
 ===================================
