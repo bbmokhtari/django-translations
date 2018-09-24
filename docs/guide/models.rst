@@ -134,11 +134,12 @@ applies the translations of the instance on its
 Apply instance's relations translations
 =======================================
 
-:meth:`~translations.models.Translatable.apply_translations` can also apply
-the translations of a :class:`~translations.models.Translatable` instance's
-relations.
+:meth:`~translations.models.Translatable.apply_translations`
+can also apply the translations of a
+:class:`translatable instance <translations.models.Translatable>`\
+'s relations.
 
-.. testsetup:: guide_apply_translations_relations
+.. testsetup:: guide_apply_translations_instance_relations
    
    from tests.sample import create_samples
 
@@ -152,7 +153,7 @@ relations.
        langs=['de']
    )
 
-.. testcode:: guide_apply_translations_relations
+.. testcode:: guide_apply_translations_instance_relations
 
    from sample.models import Continent
 
@@ -181,7 +182,7 @@ relations.
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
 
-.. testoutput:: guide_apply_translations_relations
+.. testoutput:: guide_apply_translations_instance_relations
 
    `Europe` is called `Europa` in German.
    `European` is called `Europäisch` in German.
