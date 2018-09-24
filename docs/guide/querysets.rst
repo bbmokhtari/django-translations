@@ -1,80 +1,33 @@
-******
-Models
-******
+*********
+QuerySets
+*********
 
-This module provides an in depth knowledge of the translatable models.
+This module provides an in depth knowledge of the translatable querysets.
 
-.. _translatable-models:
+Make querysets translatable
+===========================
 
-Make models translatable
-========================
+To make a queryset, a
+:class:`translatable querysets <translations.querysets.TranslatableQuerySet>`
+:ref:`make its model translatable <translatable-models>`.
 
-To make a model, a
-:class:`translatable model <translations.models.Translatable>`
-inherit the model from the :class:`~translations.models.Translatable` model.
+Specify queryset's translatable fields
+======================================
 
-.. literalinclude:: ../../sample/models.py
-   :lines: 1-4
-   :emphasize-lines: 4
+To specify the queryset's :attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>`
+:ref:`specify its model's translatable fields <specify-fields>`.
 
-.. literalinclude:: ../../sample/models.py
-   :pyobject: Continent
-   :lines: 1-25
-   :emphasize-lines: 1
-
-Since :class:`~translations.models.Translatable` is an abstract model there is
-no need to migrate afterwards.
-
-.. warning::
-
-   Care not to inherit the :class:`~translations.models.Translation` model
-   accidentally instead of the :class:`~translations.models.Translatable`
-   model.
-
-.. _specify-fields:
-
-Specify model's translatable fields
-===================================
-
-To specify the model's :attr:`translatable fields \
-<translations.models.Translatable.TranslatableMeta.fields>` specify the
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
-of the :class:`~translations.models.Translatable.TranslatableMeta` class
-declared inside a :class:`~translations.models.Translatable` model.
-
-.. literalinclude:: ../../sample/models.py
-   :pyobject: Continent
-   :emphasize-lines: 1, 27-28
-
-By default the
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute is
-set to ``None``. This means the translation will use the text based fields
-automatically. (like :class:`~django.db.models.CharField` and
-:class:`~django.db.models.TextField` - this does not include
-:class:`~django.db.models.EmailField` or the fields with ``choices``)
-
-.. literalinclude:: ../../sample/models.py
-   :pyobject: City
-   :emphasize-lines: 1
-
-If needed, the
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
-can be set to nothing. You can do this by explicitly setting it to ``[]``.
-
-.. literalinclude:: ../../sample/models.py
-   :pyobject: Timezone
-   :emphasize-lines: 1, 15-16
-
-Apply instance translations
+Apply queryset translations
 ===========================
 
 To apply the translations of a
-:class:`translatable instance <translations.models.Translatable>`
+:class:`translatable queryset <translations.querysets.TranslatableQuerySet>`
 use the
-:meth:`~translations.models.Translatable.apply_translations`
+:meth:`~translations.querysets.TranslatableQuerySet.apply_translations`
 method.
 
-.. testsetup:: guide_apply_translations_instance
+.. testsetup:: guide_apply_translations_queryset
 
    from tests.sample import create_samples
 
@@ -88,28 +41,32 @@ method.
        langs=['de']
    )
 
-.. testcode:: guide_apply_translations_instance
+.. testcode:: guide_apply_translations_queryset
 
    from sample.models import Continent
 
-   # fetch an instance like before
-   europe = Continent.objects.get(code='EU')
+   # fetch a queryset like before
+   continents = Continent.objects.all()
 
    # apply the translations in place
-   europe.apply_translations(lang='de')
+   continents.apply_translations(lang='de')
 
-   # use the instance like before
-   name = europe.name
-   denonym = europe.denonym
+   # use the queryset like before
+   europe = continents[0]
+   asia = continents[1]
 
    # output
-   print('`Europe` is called `{}` in German.'.format(name))
-   print('`European` is called `{}` in German.'.format(denonym))
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
 
-.. testoutput:: guide_apply_translations_instance
+.. testoutput:: guide_apply_translations_queryset
 
    `Europe` is called `Europa` in German.
    `European` is called `Europäisch` in German.
+   `Asia` is called `Asien` in German.
+   `Asian` is called `Asiatisch` in German.
 
 The ``lang`` parameter is optional. It determines the language to apply the
 translations in. It must be a language code already declared in the
@@ -117,8 +74,8 @@ translations in. It must be a language code already declared in the
 will be automatically set to the :term:`active language` code.
 
 If successful,
-:meth:`~translations.models.Translatable.apply_translations`
-applies the translations of the instance on its
+:meth:`~translations.querysets.TranslatableQuerySet.apply_translations`
+applies the translations of the queryset on its
 :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
@@ -136,16 +93,16 @@ applies the translations of the instance on its
    the translation of the field falls back to the value of the field
    in the instance.
 
-Apply instance's relations translations
+Apply queryset's relations translations
 =======================================
 
-:meth:`~translations.models.Translatable.apply_translations`
+:meth:`~translations.querysets.TranslatableQuerySet.apply_translations`
 can also apply the translations of a
-:class:`translatable instance <translations.models.Translatable>`\
+:class:`translatable queryset <translations.querysets.TranslatableQuerySet>`\
 's relations.
 
-.. testsetup:: guide_apply_translations_instance_relations
-   
+.. testsetup:: guide_apply_translations_queryset_relations
+
    from tests.sample import create_samples
 
    create_samples(
@@ -158,40 +115,48 @@ can also apply the translations of a
        langs=['de']
    )
 
-.. testcode:: guide_apply_translations_instance_relations
+.. testcode:: guide_apply_translations_queryset_relations
 
    from sample.models import Continent
 
-   # fetch an instance like before
-   europe = Continent.objects.prefetch_related(
+   # fetch a queryset like before
+   continents = Continent.objects.prefetch_related(
        'countries',
        'countries__cities',
-   ).get(code='EU')
+   )
 
    # apply the translations in place
-   europe.apply_translations(
+   continents.apply_translations(
        'countries',
        'countries__cities',
        lang='de',
    )
 
-   # use the instance like before
-   name = europe.name
-   denonym = europe.denonym
+   # use the queryset like before
+   europe = continents[0]
+   asia = continents[1]
 
    # use the relations like before
    germany = europe.countries.all()[0]
    cologne = germany.cities.all()[0]
+   south_korea = asia.countries.all()[0]
+   seoul = south_korea.cities.all()[0]
 
    # output
-   print('`Europe` is called `{}` in German.'.format(name))
-   print('`European` is called `{}` in German.'.format(denonym))
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
    print('`Germany` is called `{}` in German.'.format(germany.name))
    print('`German` is called `{}` in German.'.format(germany.denonym))
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
+   print('`South Korea` is called `{}` in German.'.format(south_korea.name))
+   print('`South Korean` is called `{}` in German.'.format(south_korea.denonym))
+   print('`Seoul` is called `{}` in German.'.format(seoul.name))
+   print('`Seouler` is called `{}` in German.'.format(seoul.denonym))
 
-.. testoutput:: guide_apply_translations_instance_relations
+.. testoutput:: guide_apply_translations_queryset_relations
 
    `Europe` is called `Europa` in German.
    `European` is called `Europäisch` in German.
@@ -199,20 +164,26 @@ can also apply the translations of a
    `German` is called `Deutsche` in German.
    `Cologne` is called `Köln` in German.
    `Cologner` is called `Kölner` in German.
+   `Asia` is called `Asien` in German.
+   `Asian` is called `Asiatisch` in German.
+   `South Korea` is called `Südkorea` in German.
+   `South Korean` is called `Südkoreanisch` in German.
+   `Seoul` is called `Seül` in German.
+   `Seouler` is called `Seüler` in German.
 
-The ``*relations`` parameter determines the instance's relations to apply the
+The ``*relations`` parameter determines the queryset's relations to apply the
 translations of. They must also be :class:`~translations.models.Translatable`.
 
 If successful,
-:meth:`~translations.models.Translatable.apply_translations`
-applies the translations of the instance and its relations on their
+:meth:`~translations.querysets.TranslatableQuerySet.apply_translations`
+applies the translations of the queryset and its relations on their
 :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
 
 .. note::
 
-   It is **recommended** for the relations of the instance to be
+   It is **recommended** for the relations of the queryset to be
    prefetched before applying the translations in order to reach
    optimal performance.
 
@@ -226,7 +197,7 @@ applies the translations of the instance and its relations on their
    Filtering any queryset after applying the translations will cause
    the translations of that queryset to be reset.
 
-   .. testsetup:: guide_apply_translations_instance_warning
+   .. testsetup:: guide_apply_translations_queryset_warning
    
       from tests.sample import create_samples
 
@@ -240,78 +211,86 @@ applies the translations of the instance and its relations on their
           langs=['de']
       )
 
-   .. testcode:: guide_apply_translations_instance_warning
+   .. testcode:: guide_apply_translations_queryset_warning
 
       from sample.models import Continent
 
-      europe = Continent.objects.prefetch_related(
+      continents = Continent.objects.prefetch_related(
           'countries',
           'countries__cities',
-      ).get(code='EU')
+      )
 
-      europe.apply_translations(
+      continents.apply_translations(
           'countries',
           'countries__cities',
           lang='de',
       )
 
-      print('Continent: {}'.format(europe))
-      for country in europe.countries.exclude(name=''):  # Wrong
-          print('Country: {}  -- Wrong'.format(country))
-          for city in country.cities.all():
-              print('City: {}  -- Wrong'.format(city))
+      for continent in continents:
+          print('Continent: {}'.format(continent))
+          for country in continent.countries.exclude(name=''):  # Wrong
+              print('Country: {}  -- Wrong'.format(country))
+              for city in country.cities.all():
+                  print('City: {}  -- Wrong'.format(city))
 
-   .. testoutput:: guide_apply_translations_instance_warning
+   .. testoutput:: guide_apply_translations_queryset_warning
 
       Continent: Europa
       Country: Germany  -- Wrong
       City: Cologne  -- Wrong
+      Continent: Asien
+      Country: South Korea  -- Wrong
+      City: Seoul  -- Wrong
 
    The solution is to do the filtering before applying the
    translations. To do this on the relations use
    :class:`~django.db.models.Prefetch`.
 
-   .. testcode:: guide_apply_translations_instance_warning
+   .. testcode:: guide_apply_translations_queryset_warning
 
       from django.db.models import Prefetch
       from sample.models import Continent, Country
 
-      europe = Continent.objects.prefetch_related(
+      continents = Continent.objects.prefetch_related(
           Prefetch(
               'countries',
               queryset=Country.objects.exclude(name=''),  # Correct
           ),
           'countries__cities',
-      ).get(code='EU')
+      )
 
-      europe.apply_translations(
+      continents.apply_translations(
           'countries',
           'countries__cities',
           lang='de',
       )
 
-      print('Continent: {}'.format(europe))
-      for country in europe.countries.all():
-          print('Country: {}  -- Correct'.format(country))
-          for city in country.cities.all():
-              print('City: {}  -- Correct'.format(city))
+      for continent in continents:
+          print('Continent: {}'.format(continent))
+          for country in continent.countries.all():
+              print('Country: {}  -- Correct'.format(country))
+              for city in country.cities.all():
+                  print('City: {}  -- Correct'.format(city))
 
-   .. testoutput:: guide_apply_translations_instance_warning
+   .. testoutput:: guide_apply_translations_queryset_warning
 
       Continent: Europa
       Country: Deutschland  -- Correct
       City: Köln  -- Correct
+      Continent: Asien
+      Country: Südkorea  -- Correct
+      City: Seül  -- Correct
 
-Update instance translations
+Update queryset translations
 ============================
 
 To update the translations of a
-:class:`translatable instance <translations.models.Translatable>`
+:class:`translatable queryset <translations.querysets.TranslatableQuerySet>`
 use the
-:meth:`~translations.models.Translatable.update_translations`
+:meth:`~translations.querysets.TranslatableQuerySet.update_translations`
 method.
 
-.. testsetup:: guide_update_translations_instance
+.. testsetup:: guide_update_translations_queryset
    
    from tests.sample import create_samples
 
@@ -325,28 +304,36 @@ method.
        langs=['de']
    )
 
-.. testcode:: guide_update_translations_instance
+.. testcode:: guide_update_translations_queryset
 
    from sample.models import Continent
 
-   # fetch an instance like before
-   europe = Continent.objects.get(code='EU')
+   # fetch a queryset like before
+   continents = Continent.objects.all()
 
-   # change the instance in place
+   # change the queryset in place
+   europe = continents[0]
+   asia = continents[1]
    europe.name = 'Europa (changed)'
    europe.denonym = 'Europäisch (changed)'
+   asia.name = 'Asien (changed)'
+   asia.denonym = 'Asiatisch (changed)'
 
    # update the translations
-   europe.update_translations(lang='de')
+   continents.update_translations(lang='de')
 
    # output
    print('`Europe` is called `{}` in German.'.format(europe.name))
    print('`European` is called `{}` in German.'.format(europe.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
 
-.. testoutput:: guide_update_translations_instance
+.. testoutput:: guide_update_translations_queryset
 
    `Europe` is called `Europa (changed)` in German.
    `European` is called `Europäisch (changed)` in German.
+   `Asia` is called `Asien (changed)` in German.
+   `Asian` is called `Asiatisch (changed)` in German.
 
 The ``lang`` parameter is optional. It determines the language to update the
 translations in. It must be a language code already declared in the
@@ -354,21 +341,21 @@ translations in. It must be a language code already declared in the
 will be automatically set to the :term:`active language` code.
 
 If successful,
-:meth:`~translations.models.Translatable.update_translations`
-updates the translations of the instance using its
+:meth:`~translations.querysets.TranslatableQuerySet.update_translations`
+updates the translations of the queryset using its
 :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
 
-Update instance's relations translations
+Update queryset's relations translations
 ========================================
 
-:meth:`~translations.models.Translatable.update_translations`
+:meth:`~translations.querysets.TranslatableQuerySet.update_translations`
 can also update the translations of a
-:class:`translatable instance <translations.models.Translatable>`\
+:class:`translatable queryset <translations.querysets.TranslatableQuerySet>`\
 's relations.
 
-.. testsetup:: guide_update_translations_instance_relations
+.. testsetup:: guide_update_translations_queryset_relations
    
    from tests.sample import create_samples
 
@@ -382,30 +369,40 @@ can also update the translations of a
        langs=['de']
    )
 
-.. testcode:: guide_update_translations_instance_relations
+.. testcode:: guide_update_translations_queryset_relations
 
    from sample.models import Continent
 
-   # fetch an instance like before
-   europe = Continent.objects.prefetch_related(
+   # fetch a queryset like before
+   continents = Continent.objects.prefetch_related(
        'countries',
        'countries__cities',
-   ).get(code='EU')
+   )
 
-   # change the instance in place
+   # change the queryset in place
+   europe = continents[0]
+   asia = continents[1]
    europe.name = 'Europa (changed)'
    europe.denonym = 'Europäisch (changed)'
+   asia.name = 'Asien (changed)'
+   asia.denonym = 'Asiatisch (changed)'
 
    # change the relations in place
    germany = europe.countries.all()[0]
    cologne = germany.cities.all()[0]
+   south_korea = asia.countries.all()[0]
+   seoul = south_korea.cities.all()[0]
    germany.name = 'Deutschland (changed)'
    germany.denonym = 'Deutsche (changed)'
    cologne.name = 'Köln (changed)'
    cologne.denonym = 'Kölner (changed)'
+   south_korea.name = 'Südkorea (changed)'
+   south_korea.denonym = 'Südkoreanisch (changed)'
+   seoul.name = 'Seül (changed)'
+   seoul.denonym = 'Seüler (changed)'
 
    # update the translations
-   europe.update_translations(
+   continents.update_translations(
        'countries',
        'countries__cities',
        lang='de',
@@ -418,8 +415,14 @@ can also update the translations of a
    print('`German` is called `{}` in German.'.format(germany.denonym))
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
+   print('`South Korea` is called `{}` in German.'.format(south_korea.name))
+   print('`South Korean` is called `{}` in German.'.format(south_korea.denonym))
+   print('`Seoul` is called `{}` in German.'.format(seoul.name))
+   print('`Seouler` is called `{}` in German.'.format(seoul.denonym))
 
-.. testoutput:: guide_update_translations_instance_relations
+.. testoutput:: guide_update_translations_queryset_relations
 
    `Europe` is called `Europa (changed)` in German.
    `European` is called `Europäisch (changed)` in German.
@@ -427,20 +430,26 @@ can also update the translations of a
    `German` is called `Deutsche (changed)` in German.
    `Cologne` is called `Köln (changed)` in German.
    `Cologner` is called `Kölner (changed)` in German.
+   `Asia` is called `Asien (changed)` in German.
+   `Asian` is called `Asiatisch (changed)` in German.
+   `South Korea` is called `Südkorea (changed)` in German.
+   `South Korean` is called `Südkoreanisch (changed)` in German.
+   `Seoul` is called `Seül (changed)` in German.
+   `Seouler` is called `Seüler (changed)` in German.
 
-The ``*relations`` parameter determines the instance's relations to update the
+The ``*relations`` parameter determines the queryset's relations to update the
 translations of. They must also be :class:`~translations.models.Translatable`.
 
 If successful,
-:meth:`~translations.models.Translatable.update_translations`
-updates the translations of the instance and its relations using their
+:meth:`~translations.querysets.TranslatableQuerySet.update_translations`
+updates the translations of the queryset and its relations using their
 :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
 
 .. note::
 
-   It is **mandatory** for the relations of the instance to be
+   It is **mandatory** for the relations of the queryset to be
    prefetched before making any changes to them so that the changes
    can be fetched later.
 
@@ -449,7 +458,7 @@ updates the translations of the instance and its relations using their
    :meth:`~django.db.models.query.QuerySet.prefetch_related` or
    :func:`~django.db.models.prefetch_related_objects`.
 
-   .. testsetup:: guide_update_translations_instance_note
+   .. testsetup:: guide_update_translations_queryset_note
    
       from tests.sample import create_samples
 
@@ -465,7 +474,7 @@ updates the translations of the instance and its relations using their
 
    Consider this case:
 
-   .. testcode:: guide_update_translations_instance_note
+   .. testcode:: guide_update_translations_queryset_note
 
       from sample.models import Continent
 
@@ -480,14 +489,14 @@ updates the translations of the instance and its relations using their
 
       print('Country: {}'.format(new_name))
 
-   .. testoutput:: guide_update_translations_instance_note
+   .. testoutput:: guide_update_translations_queryset_note
 
       Country: Germany
 
    As we can see the new query did not fetch the changes we made
    before. To fix it:
 
-   .. testcode:: guide_update_translations_instance_note
+   .. testcode:: guide_update_translations_queryset_note
 
       from sample.models import Continent
 
@@ -504,6 +513,6 @@ updates the translations of the instance and its relations using their
 
       print('Country: {}'.format(new_name))
 
-   .. testoutput:: guide_update_translations_instance_note
+   .. testoutput:: guide_update_translations_queryset_note
 
       Country: Germany (changed)
