@@ -214,28 +214,32 @@ applies the translations of the queryset and its relations on their
 
       from sample.models import Continent
 
-      europe = Continent.objects.prefetch_related(
+      continents = Continent.objects.prefetch_related(
           'countries',
           'countries__cities',
-      ).get(code='EU')
+      )
 
-      europe.apply_translations(
+      continents.apply_translations(
           'countries',
           'countries__cities',
           lang='de',
       )
 
-      print('Continent: {}'.format(europe))
-      for country in europe.countries.exclude(name=''):  # Wrong
-          print('Country: {}  -- Wrong'.format(country))
-          for city in country.cities.all():
-              print('City: {}  -- Wrong'.format(city))
+      for continent in continents:
+          print('Continent: {}'.format(continent))
+          for country in continent.countries.exclude(name=''):  # Wrong
+              print('Country: {}  -- Wrong'.format(country))
+              for city in country.cities.all():
+                  print('City: {}  -- Wrong'.format(city))
 
    .. testoutput:: guide_apply_translations_queryset_warning
 
       Continent: Europa
       Country: Germany  -- Wrong
       City: Cologne  -- Wrong
+      Continent: Asien
+      Country: South Korea  -- Wrong
+      City: Seoul  -- Wrong
 
    The solution is to do the filtering before applying the
    translations. To do this on the relations use
@@ -246,28 +250,32 @@ applies the translations of the queryset and its relations on their
       from django.db.models import Prefetch
       from sample.models import Continent, Country
 
-      europe = Continent.objects.prefetch_related(
+      continents = Continent.objects.prefetch_related(
           Prefetch(
               'countries',
               queryset=Country.objects.exclude(name=''),  # Correct
           ),
           'countries__cities',
-      ).get(code='EU')
+      )
 
-      europe.apply_translations(
+      continents.apply_translations(
           'countries',
           'countries__cities',
           lang='de',
       )
 
-      print('Continent: {}'.format(europe))
-      for country in europe.countries.all():
-          print('Country: {}  -- Correct'.format(country))
-          for city in country.cities.all():
-              print('City: {}  -- Correct'.format(city))
+      for continent in continents:
+          print('Continent: {}'.format(continent))
+          for country in continent.countries.all():
+              print('Country: {}  -- Correct'.format(country))
+              for city in country.cities.all():
+                  print('City: {}  -- Correct'.format(city))
 
    .. testoutput:: guide_apply_translations_queryset_warning
 
       Continent: Europa
       Country: Deutschland  -- Correct
       City: Köln  -- Correct
+      Continent: Asien
+      Country: Südkorea  -- Correct
+      City: Seül  -- Correct
