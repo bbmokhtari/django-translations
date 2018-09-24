@@ -122,7 +122,7 @@ can also apply the translations of a
    continents = Continent.objects.prefetch_related(
        'countries',
        'countries__cities',
-   ).get(code='EU')
+   )
 
    # apply the translations in place
    continents.apply_translations(
@@ -141,33 +141,34 @@ can also apply the translations of a
    south_korea = asia.countries.all()[0]
    seoul = south_korea.cities.all()[0]
 
+   # output
    print('`Europe` is called `{}` in German.'.format(europe.name))
    print('`European` is called `{}` in German.'.format(europe.denonym))
    print('`Germany` is called `{}` in German.'.format(germany.name))
    print('`German` is called `{}` in German.'.format(germany.denonym))
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
-   print('`Asia` is called `{}` in German.'.format(europe.name))
-   print('`Asian` is called `{}` in German.'.format(europe.denonym))
-   print('`South Korea` is called `{}` in German.'.format(germany.name))
-   print('`South Korean` is called `{}` in German.'.format(germany.denonym))
-   print('`Seoul` is called `{}` in German.'.format(cologne.name))
-   print('`Seouler` is called `{}` in German.'.format(cologne.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
+   print('`South Korea` is called `{}` in German.'.format(south_korea.name))
+   print('`South Korean` is called `{}` in German.'.format(south_korea.denonym))
+   print('`Seoul` is called `{}` in German.'.format(seoul.name))
+   print('`Seouler` is called `{}` in German.'.format(seoul.denonym))
 
 .. testoutput:: guide_apply_translations_queryset_relations
 
    `Europe` is called `Europa` in German.
    `European` is called `Europäisch` in German.
-   `Asia` is called `Asien` in German.
-   `Asian` is called `Asiatisch` in German.
    `Germany` is called `Deutschland` in German.
    `German` is called `Deutsche` in German.
    `Cologne` is called `Köln` in German.
    `Cologner` is called `Kölner` in German.
+   `Asia` is called `Asien` in German.
+   `Asian` is called `Asiatisch` in German.
    `South Korea` is called `Südkorea` in German.
    `South Korean` is called `Südkoreanisch` in German.
-   `Seoul` is called `Seul` in German.
-   `Seouler` is called `Seuler` in German.
+   `Seoul` is called `Seül` in German.
+   `Seouler` is called `Seüler` in German.
 
 The ``*relations`` parameter determines the queryset's relations to apply the
 translations of. They must also be :class:`~translations.models.Translatable`.
