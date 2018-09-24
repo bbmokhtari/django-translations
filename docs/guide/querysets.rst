@@ -14,11 +14,9 @@ To make a queryset, a
 Specify queryset's translatable fields
 ======================================
 
-Just :ref:`specify the model's translatable fields <specify-fields>`, and the
-:class:`translatable querysets <translations.querysets.TranslatableQuerySet>`
-will use those :attr:`translatable fields \
-<translations.models.Translatable.TranslatableMeta.fields>` in the translation
-automatically.
+To specify the queryset's :attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>`
+:ref:`specify its model's translatable fields <specify-fields>`.
 
 Apply queryset translations
 ===========================
