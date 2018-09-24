@@ -304,8 +304,9 @@ applies the translations of the instance and its relations on their
 Update instance translations
 ============================
 
-To update the translations of a :class:`~translations.models.Translatable`
-instance use the :meth:`~translations.models.Translatable.update_translations`
+To update the translations of a
+:class:`translatable instance <translations.models.Translatable>`
+use the :meth:`~translations.models.Translatable.update_translations`
 method.
 
 .. testsetup:: guide_update_translations_instance
@@ -329,34 +330,18 @@ method.
    # fetch an instance like before
    europe = Continent.objects.get(code='EU')
 
-   # apply the translations in place
-   europe.apply_translations(lang='de')
-
-   # use the instance like before
-   print('`Europe` is called `{}` in German.'.format(europe.name))
-   print('`European` is called `{}` in German.'.format(europe.denonym))
-
-   # change the instance
-   print('\nChanging...\n')
+   # change the instance in place
    europe.name = 'Europa (changed)'
    europe.denonym = 'Europäisch (changed)'
 
-   # update the translations in place
+   # update the translations
    europe.update_translations(lang='de')
 
-   # re-apply the translations in place
-   europe.apply_translations(lang='de')
-
-   # use the instance like before
+   # output
    print('`Europe` is called `{}` in German.'.format(europe.name))
    print('`European` is called `{}` in German.'.format(europe.denonym))
 
 .. testoutput:: guide_update_translations_instance
-
-   `Europe` is called `Europa` in German.
-   `European` is called `Europäisch` in German.
-
-   Changing...
 
    `Europe` is called `Europa (changed)` in German.
    `European` is called `Europäisch (changed)` in German.
@@ -366,9 +351,11 @@ translations in. It must be a language code already declared in the
 :data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
 will be automatically set to the :term:`active language` code.
 
-If successful, :meth:`~translations.models.Translatable.update_translations`
-updates the translations of the instance using its translatable
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` and returns
+If successful,
+:meth:`~translations.models.Translatable.update_translations`
+updates the translations of the instance using its
+:attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
 
 Update instance's relations translations
@@ -421,18 +408,18 @@ relations.
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
 
-   # change the instance
+   # change the instance in place
    print('\nChanging...\n')
    europe.name = 'Europa (changed)'
    europe.denonym = 'Europäisch (changed)'
 
-   # change the relations
+   # change the relations in place
    germany.name = 'Deutschland (changed)'
    germany.denonym = 'Deutsche (changed)'
    cologne.name = 'Köln (changed)'
    cologne.denonym = 'Kölner (changed)'
 
-   # update the translations in place
+   # update the translations
    europe.update_translations(
        'countries',
        'countries__cities',
