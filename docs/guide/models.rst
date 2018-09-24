@@ -223,7 +223,7 @@ and returns ``None``. If failed, it throws the appropriate error.
    Filtering any queryset after applying the translations will cause
    the translations of that queryset to be reset.
 
-   .. testsetup:: guide_apply_translations_warning
+   .. testsetup:: guide_apply_translations_instance_warning
    
       from tests.sample import create_samples
 
@@ -237,7 +237,7 @@ and returns ``None``. If failed, it throws the appropriate error.
           langs=['de']
       )
 
-   .. testcode:: guide_apply_translations_warning
+   .. testcode:: guide_apply_translations_instance_warning
 
       from sample.models import Continent
 
@@ -258,7 +258,7 @@ and returns ``None``. If failed, it throws the appropriate error.
           for city in country.cities.all():
               print('City: {}  -- Wrong'.format(city))
 
-   .. testoutput:: guide_apply_translations_warning
+   .. testoutput:: guide_apply_translations_instance_warning
 
       Continent: Europa
       Country: Germany  -- Wrong
@@ -268,7 +268,7 @@ and returns ``None``. If failed, it throws the appropriate error.
    translations. To do this on the relations use
    :class:`~django.db.models.Prefetch`.
 
-   .. testcode:: guide_apply_translations_warning
+   .. testcode:: guide_apply_translations_instance_warning
 
       from django.db.models import Prefetch
       from sample.models import Continent, Country
@@ -293,7 +293,7 @@ and returns ``None``. If failed, it throws the appropriate error.
           for city in country.cities.all():
               print('City: {}  -- Correct'.format(city))
 
-   .. testoutput:: guide_apply_translations_warning
+   .. testoutput:: guide_apply_translations_instance_warning
 
       Continent: Europa
       Country: Deutschland  -- Correct

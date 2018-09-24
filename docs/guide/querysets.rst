@@ -196,7 +196,7 @@ applies the translations of the queryset and its relations on their
    Filtering any queryset after applying the translations will cause
    the translations of that queryset to be reset.
 
-   .. testsetup:: guide_apply_translations_warning
+   .. testsetup:: guide_apply_translations_queryset_warning
    
       from tests.sample import create_samples
 
@@ -210,7 +210,7 @@ applies the translations of the queryset and its relations on their
           langs=['de']
       )
 
-   .. testcode:: guide_apply_translations_warning
+   .. testcode:: guide_apply_translations_queryset_warning
 
       from sample.models import Continent
 
@@ -231,7 +231,7 @@ applies the translations of the queryset and its relations on their
           for city in country.cities.all():
               print('City: {}  -- Wrong'.format(city))
 
-   .. testoutput:: guide_apply_translations_warning
+   .. testoutput:: guide_apply_translations_queryset_warning
 
       Continent: Europa
       Country: Germany  -- Wrong
@@ -241,7 +241,7 @@ applies the translations of the queryset and its relations on their
    translations. To do this on the relations use
    :class:`~django.db.models.Prefetch`.
 
-   .. testcode:: guide_apply_translations_warning
+   .. testcode:: guide_apply_translations_queryset_warning
 
       from django.db.models import Prefetch
       from sample.models import Continent, Country
@@ -266,7 +266,7 @@ applies the translations of the queryset and its relations on their
           for city in country.cities.all():
               print('City: {}  -- Correct'.format(city))
 
-   .. testoutput:: guide_apply_translations_warning
+   .. testoutput:: guide_apply_translations_queryset_warning
 
       Continent: Europa
       Country: Deutschland  -- Correct
