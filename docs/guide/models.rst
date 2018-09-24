@@ -202,10 +202,12 @@ can also apply the translations of a
 The ``*relations`` parameter determines the instance's relations to apply the
 translations of. They must also be :class:`~translations.models.Translatable`.
 
-If successful, :meth:`~translations.models.Translatable.apply_translations`
+If successful,
+:meth:`~translations.models.Translatable.apply_translations`
 applies the translations of the instance and its relations on their
-translatable :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-and returns ``None``. If failed, it throws the appropriate error.
+:attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
+``None``. If failed, it throws the appropriate error.
 
 .. note::
 
