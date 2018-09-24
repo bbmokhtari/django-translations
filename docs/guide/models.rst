@@ -36,7 +36,8 @@ no need to migrate afterwards.
 Specify model's translatable fields
 ===================================
 
-To specify the model's translatable fields specify the
+To specify the model's :attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` specify the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 of the :class:`~translations.models.Translatable.TranslatableMeta` class
 declared inside a :class:`~translations.models.Translatable` model.
