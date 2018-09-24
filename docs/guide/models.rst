@@ -70,7 +70,8 @@ Apply instance translations
 
 To apply the translations of a
 :class:`translatable instance <translations.models.Translatable>`
-use the :meth:`~translations.models.Translatable.apply_translations`
+use the
+:meth:`~translations.models.Translatable.apply_translations`
 method.
 
 .. testsetup:: guide_apply_translations_instance
@@ -306,7 +307,8 @@ Update instance translations
 
 To update the translations of a
 :class:`translatable instance <translations.models.Translatable>`
-use the :meth:`~translations.models.Translatable.update_translations`
+use the
+:meth:`~translations.models.Translatable.update_translations`
 method.
 
 .. testsetup:: guide_update_translations_instance
