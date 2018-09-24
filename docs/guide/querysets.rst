@@ -53,6 +53,8 @@ method.
    # use the queryset like before
    europe = continents[0]
    asia = continents[1]
+
+   # output
    print('`Europe` is called `{}` in German.'.format(europe.name))
    print('`European` is called `{}` in German.'.format(europe.denonym))
    print('`Asia` is called `{}` in German.'.format(asia.name))
@@ -132,20 +134,21 @@ can also apply the translations of a
    # use the queryset like before
    europe = continents[0]
    asia = continents[1]
-   print('`Europe` is called `{}` in German.'.format(europe.name))
-   print('`European` is called `{}` in German.'.format(europe.denonym))
-   print('`Asia` is called `{}` in German.'.format(europe.name))
-   print('`Asian` is called `{}` in German.'.format(europe.denonym))
 
    # use the relations like before
    germany = europe.countries.all()[0]
    cologne = germany.cities.all()[0]
    south_korea = asia.countries.all()[0]
    seoul = south_korea.cities.all()[0]
+
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
    print('`Germany` is called `{}` in German.'.format(germany.name))
    print('`German` is called `{}` in German.'.format(germany.denonym))
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
+   print('`Asia` is called `{}` in German.'.format(europe.name))
+   print('`Asian` is called `{}` in German.'.format(europe.denonym))
    print('`South Korea` is called `{}` in German.'.format(germany.name))
    print('`South Korean` is called `{}` in German.'.format(germany.denonym))
    print('`Seoul` is called `{}` in German.'.format(cologne.name))
@@ -173,7 +176,7 @@ If successful,
 :meth:`~translations.querysets.TranslatableQuerySet.apply_translations`
 applies the translations of the queryset and its relations on their
 :attr:`translatable fields \
-<translations.models.Translatable.TranslatableMeta.fields` and returns
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
 
 .. note::

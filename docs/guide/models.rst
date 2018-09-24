@@ -98,8 +98,12 @@ method.
    europe.apply_translations(lang='de')
 
    # use the instance like before
-   print('`Europe` is called `{}` in German.'.format(europe.name))
-   print('`European` is called `{}` in German.'.format(europe.denonym))
+   name = europe.name
+   denonym = europe.denonym
+
+   # output
+   print('`Europe` is called `{}` in German.'.format(name))
+   print('`European` is called `{}` in German.'.format(denonym))
 
 .. testoutput:: guide_apply_translations_instance
 
@@ -171,12 +175,16 @@ can also apply the translations of a
    )
 
    # use the instance like before
-   print('`Europe` is called `{}` in German.'.format(europe.name))
-   print('`European` is called `{}` in German.'.format(europe.denonym))
+   name = europe.name
+   denonym = europe.denonym
 
    # use the relations like before
    germany = europe.countries.all()[0]
    cologne = germany.cities.all()[0]
+
+   # output
+   print('`Europe` is called `{}` in German.'.format(name))
+   print('`European` is called `{}` in German.'.format(denonym))
    print('`Germany` is called `{}` in German.'.format(germany.name))
    print('`German` is called `{}` in German.'.format(germany.denonym))
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
