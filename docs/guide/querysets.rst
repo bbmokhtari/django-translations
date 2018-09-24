@@ -7,10 +7,9 @@ This module provides an in depth knowledge of the translatable querysets.
 Make querysets translatable
 ===========================
 
-Just :ref:`make the model translatable <translatable-models>`,
-and the querysets of the specified model will be
+To make a queryset, a
 :class:`translatable querysets <translations.querysets.TranslatableQuerySet>`
-automatically.
+:ref:`make its model translatable <translatable-models>`.
 
 Specify queryset's translatable fields
 ======================================

@@ -9,8 +9,9 @@ This module provides an in depth knowledge of the translatable models.
 Make models translatable
 ========================
 
-To make a model translatable inherit the model from the
-:class:`~translations.models.Translatable` model.
+To make a model, a
+:class:`translatable model <translations.models.Translatable>`
+inherit the model from the :class:`~translations.models.Translatable` model.
 
 .. literalinclude:: ../../sample/models.py
    :lines: 1-4
