@@ -363,9 +363,10 @@ updates the translations of the instance using its
 Update instance's relations translations
 ========================================
 
-:meth:`~translations.models.Translatable.update_translations` can also update
-the translations of a :class:`~translations.models.Translatable` instance's
-relations.
+:meth:`~translations.models.Translatable.update_translations`
+can also update the translations of a
+:class:`translatable instance <translations.models.Translatable>`\
+'s relations.
 
 .. testsetup:: guide_update_translations_relations
    
@@ -391,31 +392,13 @@ relations.
        'countries__cities',
    ).get(code='EU')
 
-   # apply the translations in place
-   europe.apply_translations(
-       'countries',
-       'countries__cities',
-       lang='de',
-   )
-
-   # use the instance like before
-   print('`Europe` is called `{}` in German.'.format(europe.name))
-   print('`European` is called `{}` in German.'.format(europe.denonym))
-
-   # use the relations like before
-   germany = europe.countries.all()[0]
-   cologne = germany.cities.all()[0]
-   print('`Germany` is called `{}` in German.'.format(germany.name))
-   print('`German` is called `{}` in German.'.format(germany.denonym))
-   print('`Cologne` is called `{}` in German.'.format(cologne.name))
-   print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
-
    # change the instance in place
-   print('\nChanging...\n')
    europe.name = 'Europa (changed)'
    europe.denonym = 'Europäisch (changed)'
 
    # change the relations in place
+   germany = europe.countries.all()[0]
+   cologne = germany.cities.all()[0]
    germany.name = 'Deutschland (changed)'
    germany.denonym = 'Deutsche (changed)'
    cologne.name = 'Köln (changed)'
@@ -428,35 +411,15 @@ relations.
        lang='de',
    )
 
-   # re-apply the translations in place
-   europe.apply_translations(
-       'countries',
-       'countries__cities',
-       lang='de',
-   )
-
-   # use the instance like before
+   # output
    print('`Europe` is called `{}` in German.'.format(europe.name))
    print('`European` is called `{}` in German.'.format(europe.denonym))
-
-   # use the relations like before
-   germany = europe.countries.all()[0]
-   cologne = germany.cities.all()[0]
    print('`Germany` is called `{}` in German.'.format(germany.name))
    print('`German` is called `{}` in German.'.format(germany.denonym))
    print('`Cologne` is called `{}` in German.'.format(cologne.name))
    print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
 
 .. testoutput:: guide_update_translations_relations
-
-   `Europe` is called `Europa` in German.
-   `European` is called `Europäisch` in German.
-   `Germany` is called `Deutschland` in German.
-   `German` is called `Deutsche` in German.
-   `Cologne` is called `Köln` in German.
-   `Cologner` is called `Kölner` in German.
-
-   Changing...
 
    `Europe` is called `Europa (changed)` in German.
    `European` is called `Europäisch (changed)` in German.
@@ -468,10 +431,12 @@ relations.
 The ``*relations`` parameter determines the instance's relations to update the
 translations of. They must also be :class:`~translations.models.Translatable`.
 
-If successful, :meth:`~translations.models.Translatable.update_translations`
+If successful,
+:meth:`~translations.models.Translatable.update_translations`
 updates the translations of the instance and its relations using their
-translatable :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-and returns ``None``. If failed, it throws the appropriate error.
+:attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
+``None``. If failed, it throws the appropriate error.
 
 .. note::
 
