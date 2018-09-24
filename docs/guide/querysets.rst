@@ -355,7 +355,7 @@ can also update the translations of a
 :class:`translatable queryset <translations.querysets.TranslatableQuerySet>`\
 's relations.
 
-.. testsetup:: guide_update_translations_relations
+.. testsetup:: guide_update_translations_queryset_relations
    
    from tests.sample import create_samples
 
@@ -369,7 +369,7 @@ can also update the translations of a
        langs=['de']
    )
 
-.. testcode:: guide_update_translations_relations
+.. testcode:: guide_update_translations_queryset_relations
 
    from sample.models import Continent
 
@@ -422,7 +422,7 @@ can also update the translations of a
    print('`Seoul` is called `{}` in German.'.format(seoul.name))
    print('`Seouler` is called `{}` in German.'.format(seoul.denonym))
 
-.. testoutput:: guide_update_translations_relations
+.. testoutput:: guide_update_translations_queryset_relations
 
    `Europe` is called `Europa (changed)` in German.
    `European` is called `Europäisch (changed)` in German.
@@ -458,7 +458,7 @@ updates the translations of the queryset and its relations using their
    :meth:`~django.db.models.query.QuerySet.prefetch_related` or
    :func:`~django.db.models.prefetch_related_objects`.
 
-   .. testsetup:: guide_update_translations_note
+   .. testsetup:: guide_update_translations_queryset_note
    
       from tests.sample import create_samples
 
@@ -474,7 +474,7 @@ updates the translations of the queryset and its relations using their
 
    Consider this case:
 
-   .. testcode:: guide_update_translations_note
+   .. testcode:: guide_update_translations_queryset_note
 
       from sample.models import Continent
 
@@ -489,14 +489,14 @@ updates the translations of the queryset and its relations using their
 
       print('Country: {}'.format(new_name))
 
-   .. testoutput:: guide_update_translations_note
+   .. testoutput:: guide_update_translations_queryset_note
 
       Country: Germany
 
    As we can see the new query did not fetch the changes we made
    before. To fix it:
 
-   .. testcode:: guide_update_translations_note
+   .. testcode:: guide_update_translations_queryset_note
 
       from sample.models import Continent
 
@@ -513,6 +513,6 @@ updates the translations of the queryset and its relations using their
 
       print('Country: {}'.format(new_name))
 
-   .. testoutput:: guide_update_translations_note
+   .. testoutput:: guide_update_translations_queryset_note
 
       Country: Germany (changed)
