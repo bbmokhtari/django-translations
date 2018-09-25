@@ -9,14 +9,14 @@ Make list of instances translatable
 
 To make a list of homogeneous instances, a
 :class:`translatable list of instances <translations.models.Translatable>`
-:ref:`make the instance model translatable <translatable-models>`.
+:ref:`make their model translatable <translatable-models>`.
 
 Specify list of instances' translatable fields
 ==============================================
 
 To specify the list of instances' :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>`
-:ref:`specify the instance model's translatable fields <specify-fields>`.
+:ref:`specify their model's translatable fields <specify-fields>`.
 
 Apply list of instances translations
 ====================================
@@ -76,7 +76,7 @@ will be automatically set to the :term:`active language` code.
 
 If successful,
 :meth:`~translations.utils.apply_translations`
-applies the translations of the list of instances on its
+applies the translations of the instances on their
 :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
