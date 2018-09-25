@@ -362,3 +362,178 @@ updates the translations of the instances using their
 :attr:`translatable fields \
 <translations.models.Translatable.TranslatableMeta.fields>` and returns
 ``None``. If failed, it throws the appropriate error.
+
+Update list of instances' relations translations
+================================================
+
+:meth:`~translations.utils.update_translations`
+can also update the translations of a
+:class:`translatable list of instances <translations.models.Translatable>`\
+'s relations.
+
+.. testsetup:: guide_update_translations_list_relations
+   
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testcode:: guide_update_translations_list_relations
+
+   from django.db.models import prefetch_related_objects
+   from sample.models import Continent
+   from translations.utils import update_translations
+
+   # fetch a list of instances like before
+   continents = list(Continent.objects.all())
+   prefetch_related_objects(
+       continents,
+       'countries',
+       'countries__cities',
+   )
+
+   # change the instances in place
+   europe = continents[0]
+   asia = continents[1]
+   europe.name = 'Europa (changed)'
+   europe.denonym = 'Europäisch (changed)'
+   asia.name = 'Asien (changed)'
+   asia.denonym = 'Asiatisch (changed)'
+
+   # change the relations in place
+   germany = europe.countries.all()[0]
+   cologne = germany.cities.all()[0]
+   south_korea = asia.countries.all()[0]
+   seoul = south_korea.cities.all()[0]
+   germany.name = 'Deutschland (changed)'
+   germany.denonym = 'Deutsche (changed)'
+   cologne.name = 'Köln (changed)'
+   cologne.denonym = 'Kölner (changed)'
+   south_korea.name = 'Südkorea (changed)'
+   south_korea.denonym = 'Südkoreanisch (changed)'
+   seoul.name = 'Seül (changed)'
+   seoul.denonym = 'Seüler (changed)'
+
+   # update the translations
+   update_translations(
+       continents,
+       'countries',
+       'countries__cities',
+       lang='de',
+   )
+
+   # output
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
+   print('`Germany` is called `{}` in German.'.format(germany.name))
+   print('`German` is called `{}` in German.'.format(germany.denonym))
+   print('`Cologne` is called `{}` in German.'.format(cologne.name))
+   print('`Cologner` is called `{}` in German.'.format(cologne.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
+   print('`South Korea` is called `{}` in German.'.format(south_korea.name))
+   print('`South Korean` is called `{}` in German.'.format(south_korea.denonym))
+   print('`Seoul` is called `{}` in German.'.format(seoul.name))
+   print('`Seouler` is called `{}` in German.'.format(seoul.denonym))
+
+.. testoutput:: guide_update_translations_list_relations
+
+   `Europe` is called `Europa (changed)` in German.
+   `European` is called `Europäisch (changed)` in German.
+   `Germany` is called `Deutschland (changed)` in German.
+   `German` is called `Deutsche (changed)` in German.
+   `Cologne` is called `Köln (changed)` in German.
+   `Cologner` is called `Kölner (changed)` in German.
+   `Asia` is called `Asien (changed)` in German.
+   `Asian` is called `Asiatisch (changed)` in German.
+   `South Korea` is called `Südkorea (changed)` in German.
+   `South Korean` is called `Südkoreanisch (changed)` in German.
+   `Seoul` is called `Seül (changed)` in German.
+   `Seouler` is called `Seüler (changed)` in German.
+
+The ``*relations`` parameter determines the instances' relations to update the
+translations of. They must also be :class:`~translations.models.Translatable`.
+
+If successful,
+:meth:`~translations.utils.update_translations`
+updates the translations of the instances and their relations using their
+:attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
+``None``. If failed, it throws the appropriate error.
+
+.. note::
+
+   It is **mandatory** for the relations of the instances to be
+   prefetched before making any changes to them so that the changes
+   can be fetched later.
+
+   To do this use
+   :meth:`~django.db.models.query.QuerySet.select_related`,
+   :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+   :func:`~django.db.models.prefetch_related_objects`.
+
+   .. testsetup:: guide_update_translations_list_note
+   
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
+   Consider this case:
+
+   .. testcode:: guide_update_translations_list_note
+
+      from sample.models import Continent
+
+      # un-prefetched queryset
+      europe = Continent.objects.get(code='EU')
+
+      # first query
+      europe.countries.all()[0].name = 'Germany (changed)'
+
+      # does a second query
+      new_name = europe.countries.all()[0].name
+
+      print('Country: {}'.format(new_name))
+
+   .. testoutput:: guide_update_translations_list_note
+
+      Country: Germany
+
+   As we can see the new query did not fetch the changes we made
+   before. To fix it:
+
+   .. testcode:: guide_update_translations_list_note
+
+      from sample.models import Continent
+
+      # prefetched queryset
+      europe = Continent.objects.prefetch_related(
+          'countries',
+      ).get(code='EU')
+
+      # first query
+      europe.countries.all()[0].name = 'Germany (changed)'
+
+      # uses the first query
+      new_name = europe.countries.all()[0].name
+
+      print('Country: {}'.format(new_name))
+
+   .. testoutput:: guide_update_translations_list_note
+
+      Country: Germany (changed)
