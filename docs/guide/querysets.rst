@@ -2,7 +2,7 @@
 QuerySets
 *********
 
-This module provides an in depth knowledge of the translatable querysets.
+This module provides an in depth knowledge of the Translations querysets.
 
 Make querysets translatable
 ===========================

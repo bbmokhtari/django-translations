@@ -2,7 +2,7 @@
 Models
 ******
 
-This module provides an in depth knowledge of the translatable models.
+This module provides an in depth knowledge of the Translations models.
 
 .. _translatable-models:
 
