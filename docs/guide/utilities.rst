@@ -295,3 +295,69 @@ applies the translations of the instances and their relations on their
       Continent: Asien
       Country: Südkorea  -- Correct
       City: Seül  -- Correct
+
+Update list of instances translations
+=====================================
+
+To update the translations of a
+:class:`translatable list of instances <translations.models.Translatable>`
+use the
+:meth:`~translations.utils.update_translations`
+method.
+
+.. testsetup:: guide_update_translations_list
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testcode:: guide_update_translations_list
+
+   from sample.models import Continent
+
+   # fetch a list of instances like before
+   continents = list(Continent.objects.all())
+
+   # change the instances in place
+   europe = continents[0]
+   asia = continents[1]
+   europe.name = 'Europa (changed)'
+   europe.denonym = 'Europäisch (changed)'
+   asia.name = 'Asien (changed)'
+   asia.denonym = 'Asiatisch (changed)'
+
+   # update the translations
+   continents.update_translations(lang='de')
+
+   # output
+   print('`Europe` is called `{}` in German.'.format(europe.name))
+   print('`European` is called `{}` in German.'.format(europe.denonym))
+   print('`Asia` is called `{}` in German.'.format(asia.name))
+   print('`Asian` is called `{}` in German.'.format(asia.denonym))
+
+.. testoutput:: guide_update_translations_list
+
+   `Europe` is called `Europa (changed)` in German.
+   `European` is called `Europäisch (changed)` in German.
+   `Asia` is called `Asien (changed)` in German.
+   `Asian` is called `Asiatisch (changed)` in German.
+
+The ``lang`` parameter is optional. It determines the language to update the
+translations in. It must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
+will be automatically set to the :term:`active language` code.
+
+If successful,
+:meth:`~translations.utils.update_translations`
+updates the translations of the instances using their
+:attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>` and returns
+``None``. If failed, it throws the appropriate error.
