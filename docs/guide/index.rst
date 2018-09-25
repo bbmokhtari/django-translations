@@ -13,3 +13,4 @@ recommend you to read the guide.
 
    models
    querysets
+   utilities
