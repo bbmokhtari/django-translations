@@ -19,7 +19,7 @@ To specify the list of instances' :attr:`translatable fields \
 :ref:`specify the instance model's translatable fields <specify-fields>`.
 
 Apply list of instances translations
-===========================
+====================================
 
 To apply the translations of a
 :class:`translatable list of instances <translations.models.Translatable>`
