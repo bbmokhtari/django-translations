@@ -322,6 +322,7 @@ method.
 .. testcode:: guide_update_translations_list
 
    from sample.models import Continent
+   from translations.utils import update_translations
 
    # fetch a list of instances like before
    continents = list(Continent.objects.all())
@@ -335,7 +336,7 @@ method.
    asia.denonym = 'Asiatisch (changed)'
 
    # update the translations
-   continents.update_translations(lang='de')
+   update_translations(continents, lang='de')
 
    # output
    print('`Europe` is called `{}` in German.'.format(europe.name))
