@@ -100,7 +100,7 @@ Apply list of instances' relations translations
 :meth:`~translations.utils.apply_translations`
 can also apply the translations of a
 :class:`translatable list of instances <translations.models.Translatable>`\
-'s relations.
+' relations.
 
 .. testsetup:: guide_apply_translations_list_relations
 
@@ -369,7 +369,7 @@ Update list of instances' relations translations
 :meth:`~translations.utils.update_translations`
 can also update the translations of a
 :class:`translatable list of instances <translations.models.Translatable>`\
-'s relations.
+' relations.
 
 .. testsetup:: guide_update_translations_list_relations
    
