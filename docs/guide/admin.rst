@@ -27,6 +27,14 @@ To make an admin, a
       :pyobject: ContinentAdmin
       :emphasize-lines: 2
 
+.. note::
+
+   An admin may contain an inline which itself needs to be translatable. Since
+   translations appear as inlines to the admins, then the inlines themselves
+   should have translation inlines in order to be translatable, and since
+   Django does not support nested inlines there may be a need to use an
+   external library. In that case check out :doc:`../howto/customadmin`.
+
 Specify admin's translatable fields
 ===================================
 
