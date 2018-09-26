@@ -14,8 +14,7 @@ To make a model, a
 inherit the model from the :class:`~translations.models.Translatable` model.
 
 .. literalinclude:: ../../sample/models.py
-   :lines: 1-4
-   :emphasize-lines: 4
+   :lines: 4
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Continent
