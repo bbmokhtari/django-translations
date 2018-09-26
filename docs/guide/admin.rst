@@ -26,3 +26,10 @@ To make an admin, a
    .. literalinclude:: ../../sample/admin.py
       :pyobject: ContinentAdmin
       :emphasize-lines: 2
+
+Specify admin's translatable fields
+===================================
+
+To specify the admin's :attr:`translatable fields \
+<translations.models.Translatable.TranslatableMeta.fields>`
+:ref:`specify its model's translatable fields <specify-fields>`.
