@@ -812,7 +812,7 @@ def create_samples(
                         'model': City,
                         'names': city_names,
                         'fields': city_fields,
-                        'fields_desc': True, # same reason as above
+                        'fields_desc': True,  # same reason as above
                         'langs': langs,
                     }
                 }
