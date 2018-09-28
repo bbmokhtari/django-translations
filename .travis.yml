@@ -10,6 +10,14 @@ branches:
 
 jobs:
   include:
+    - stage: linting
+      name: "Flake8"
+      python: 3.6
+      env: EXAMPLE_ENGINE=sqlite3
+      before_install: skip
+      install: pip install flake8~=3.0
+      before_script: skip
+      script: flake8
     - stage: unit test
       name: "Python 3.6, Django 2.1, SQLite - Unit Test"
       python: 3.6
