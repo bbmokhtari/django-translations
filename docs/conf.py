@@ -14,6 +14,8 @@
 #
 import os
 import sys
+import json
+import datetime
 
 # `Django setup` below, will add the path to `translations` module
 # automatically because it's been included in `project.settings`, so no need
@@ -32,10 +34,6 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
 django.setup()
 
 # -- Project information -----------------------------------------------------
-
-import json
-import datetime
-
 
 with open(
         os.path.join(
