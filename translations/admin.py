@@ -13,7 +13,7 @@ following members:
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
 
-from .models import Translation, Translatable
+from .models import Translation
 from .forms import generate_translation_form
 
 

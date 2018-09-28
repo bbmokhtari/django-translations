@@ -39,42 +39,42 @@ class GetContinentListTest(TestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
-                    "id": europe.id,
-                    "code": "EU",
-                    "name": "Europe",
-                    "denonym": "European",
-                    "countries": [
+                    'id': europe.id,
+                    'code': 'EU',
+                    'name': 'Europe',
+                    'denonym': 'European',
+                    'countries': [
                         {
-                            "id": germany.id,
-                            "code": "DE",
-                            "name": "Germany",
-                            "denonym": "German",
-                            "cities": [
+                            'id': germany.id,
+                            'code': 'DE',
+                            'name': 'Germany',
+                            'denonym': 'German',
+                            'cities': [
                                 {
-                                    "id": cologne.id,
-                                    "name": "Cologne",
-                                    "denonym": "Cologner"
+                                    'id': cologne.id,
+                                    'name': 'Cologne',
+                                    'denonym': 'Cologner'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "id": asia.id,
-                    "code": "AS",
-                    "name": "Asia",
-                    "denonym": "Asian",
-                    "countries": [
+                    'id': asia.id,
+                    'code': 'AS',
+                    'name': 'Asia',
+                    'denonym': 'Asian',
+                    'countries': [
                         {
-                            "id": south_korea.id,
-                            "code": "KR",
-                            "name": "South Korea",
-                            "denonym": "South Korean",
-                            "cities": [
+                            'id': south_korea.id,
+                            'code': 'KR',
+                            'name': 'South Korea',
+                            'denonym': 'South Korean',
+                            'cities': [
                                 {
-                                    "id": seoul.id,
-                                    "name": "Seoul",
-                                    "denonym": "Seouler"
+                                    'id': seoul.id,
+                                    'name': 'Seoul',
+                                    'denonym': 'Seouler'
                                 }
                             ]
                         }
@@ -111,42 +111,42 @@ class GetContinentListTest(TestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
-                    "id": europe.id,
-                    "code": "EU",
-                    "name": "Europa",
-                    "denonym": "Europäisch",
-                    "countries": [
+                    'id': europe.id,
+                    'code': 'EU',
+                    'name': 'Europa',
+                    'denonym': 'Europäisch',
+                    'countries': [
                         {
-                            "id": germany.id,
-                            "code": "DE",
-                            "name": "Deutschland",
-                            "denonym": "Deutsche",
-                            "cities": [
+                            'id': germany.id,
+                            'code': 'DE',
+                            'name': 'Deutschland',
+                            'denonym': 'Deutsche',
+                            'cities': [
                                 {
-                                    "id": cologne.id,
-                                    "name": "Köln",
-                                    "denonym": "Kölner"
+                                    'id': cologne.id,
+                                    'name': 'Köln',
+                                    'denonym': 'Kölner'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "id": asia.id,
-                    "code": "AS",
-                    "name": "Asien",
-                    "denonym": "Asiatisch",
-                    "countries": [
+                    'id': asia.id,
+                    'code': 'AS',
+                    'name': 'Asien',
+                    'denonym': 'Asiatisch',
+                    'countries': [
                         {
-                            "id": south_korea.id,
-                            "code": "KR",
-                            "name": "Südkorea",
-                            "denonym": "Südkoreanisch",
-                            "cities": [
+                            'id': south_korea.id,
+                            'code': 'KR',
+                            'name': 'Südkorea',
+                            'denonym': 'Südkoreanisch',
+                            'cities': [
                                 {
-                                    "id": seoul.id,
-                                    "name": "Seül",
-                                    "denonym": "Seüler"
+                                    'id': seoul.id,
+                                    'name': 'Seül',
+                                    'denonym': 'Seüler'
                                 }
                             ]
                         }
@@ -183,42 +183,42 @@ class GetContinentListTest(TestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
-                    "id": europe.id,
-                    "code": "EU",
-                    "name": "Europa",
-                    "denonym": "Europäisch",
-                    "countries": [
+                    'id': europe.id,
+                    'code': 'EU',
+                    'name': 'Europa',
+                    'denonym': 'Europäisch',
+                    'countries': [
                         {
-                            "id": germany.id,
-                            "code": "DE",
-                            "name": "Deutschland",
-                            "denonym": "Deutsche",
-                            "cities": [
+                            'id': germany.id,
+                            'code': 'DE',
+                            'name': 'Deutschland',
+                            'denonym': 'Deutsche',
+                            'cities': [
                                 {
-                                    "id": cologne.id,
-                                    "name": "Köln",
-                                    "denonym": "Kölner"
+                                    'id': cologne.id,
+                                    'name': 'Köln',
+                                    'denonym': 'Kölner'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "id": asia.id,
-                    "code": "AS",
-                    "name": "Asien",
-                    "denonym": "Asiatisch",
-                    "countries": [
+                    'id': asia.id,
+                    'code': 'AS',
+                    'name': 'Asien',
+                    'denonym': 'Asiatisch',
+                    'countries': [
                         {
-                            "id": south_korea.id,
-                            "code": "KR",
-                            "name": "Südkorea",
-                            "denonym": "Südkoreanisch",
-                            "cities": [
+                            'id': south_korea.id,
+                            'code': 'KR',
+                            'name': 'Südkorea',
+                            'denonym': 'Südkoreanisch',
+                            'cities': [
                                 {
-                                    "id": seoul.id,
-                                    "name": "Seül",
-                                    "denonym": "Seüler"
+                                    'id': seoul.id,
+                                    'name': 'Seül',
+                                    'denonym': 'Seüler'
                                 }
                             ]
                         }
@@ -254,21 +254,21 @@ class GetContinentDetailTest(TestCase):
         self.assertDictEqual(
             json.loads(response.content.decode('utf-8')),
             {
-                "id": europe.id,
-                "code": "EU",
-                "name": "Europe",
-                "denonym": "European",
-                "countries": [
+                'id': europe.id,
+                'code': 'EU',
+                'name': 'Europe',
+                'denonym': 'European',
+                'countries': [
                     {
-                        "id": germany.id,
-                        "code": "DE",
-                        "name": "Germany",
-                        "denonym": "German",
-                        "cities": [
+                        'id': germany.id,
+                        'code': 'DE',
+                        'name': 'Germany',
+                        'denonym': 'German',
+                        'cities': [
                             {
-                                "id": cologne.id,
-                                "name": "Cologne",
-                                "denonym": "Cologner"
+                                'id': cologne.id,
+                                'name': 'Cologne',
+                                'denonym': 'Cologner'
                             }
                         ]
                     }
@@ -299,21 +299,21 @@ class GetContinentDetailTest(TestCase):
         self.assertDictEqual(
             json.loads(response.content.decode('utf-8')),
             {
-                "id": europe.id,
-                "code": "EU",
-                "name": "Europa",
-                "denonym": "Europäisch",
-                "countries": [
+                'id': europe.id,
+                'code': 'EU',
+                'name': 'Europa',
+                'denonym': 'Europäisch',
+                'countries': [
                     {
-                        "id": germany.id,
-                        "code": "DE",
-                        "name": "Deutschland",
-                        "denonym": "Deutsche",
-                        "cities": [
+                        'id': germany.id,
+                        'code': 'DE',
+                        'name': 'Deutschland',
+                        'denonym': 'Deutsche',
+                        'cities': [
                             {
-                                "id": cologne.id,
-                                "name": "Köln",
-                                "denonym": "Kölner"
+                                'id': cologne.id,
+                                'name': 'Köln',
+                                'denonym': 'Kölner'
                             }
                         ]
                     }
@@ -344,21 +344,21 @@ class GetContinentDetailTest(TestCase):
         self.assertDictEqual(
             json.loads(response.content.decode('utf-8')),
             {
-                "id": europe.id,
-                "code": "EU",
-                "name": "Europa",
-                "denonym": "Europäisch",
-                "countries": [
+                'id': europe.id,
+                'code': 'EU',
+                'name': 'Europa',
+                'denonym': 'Europäisch',
+                'countries': [
                     {
-                        "id": germany.id,
-                        "code": "DE",
-                        "name": "Deutschland",
-                        "denonym": "Deutsche",
-                        "cities": [
+                        'id': germany.id,
+                        'code': 'DE',
+                        'name': 'Deutschland',
+                        'denonym': 'Deutsche',
+                        'cities': [
                             {
-                                "id": cologne.id,
-                                "name": "Köln",
-                                "denonym": "Kölner"
+                                'id': cologne.id,
+                                'name': 'Köln',
+                                'denonym': 'Kölner'
                             }
                         ]
                     }

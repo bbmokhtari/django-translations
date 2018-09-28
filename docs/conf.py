@@ -14,6 +14,8 @@
 #
 import os
 import sys
+import json
+import datetime
 
 # `Django setup` below, will add the path to `translations` module
 # automatically because it's been included in `project.settings`, so no need
@@ -33,35 +35,31 @@ django.setup()
 
 # -- Project information -----------------------------------------------------
 
-import json
-import datetime
-
-
 with open(
         os.path.join(
             os.path.dirname(os.path.abspath('.')),
             'config.json'
-        ), "r") as fh:
+        ), 'r') as fh:
     info = json.load(fh)
 
 
 # project
-project = info["name"]
+project = info['name']
 
 # documentation
 documentation = '{} {}'.format(project, 'Documentation')
 
 # description
-description = info["description"]
+description = info['description']
 
 # author
-author = info["author"]
+author = info['author']
 
 # The short X.Y version
-version = info["version"]
+version = info['version']
 
 # The full version, including alpha/beta/rc tags
-release = info["release"]
+release = info['release']
 
 # year
 year = datetime.datetime.now().year

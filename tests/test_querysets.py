@@ -1,6 +1,5 @@
 from django.test import TestCase, override_settings
 from django.core.exceptions import FieldDoesNotExist
-from django.utils.translation import activate
 
 from sample.models import Continent
 
