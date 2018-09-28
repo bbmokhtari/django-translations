@@ -290,15 +290,15 @@ class Translatable(models.Model):
            ('name', 'name')
            ('denonym', 'denonym')
         """
-        if not hasattr(cls, '_cached_translatable_fields_choices'):
-            choices = [
-                (None, '---------'),
-            ]
-            for field in cls.get_translatable_fields():
-                choice = (field.name, field.verbose_name)
-                choices.append(choice)
-            cls._cached_translatable_fields_choices = choices
-        return cls._cached_translatable_fields_choices
+        choices = [
+            (None, '---------'),
+        ]
+
+        for field in cls.get_translatable_fields():
+            choice = (field.name, field.verbose_name)
+            choices.append(choice)
+
+        return choices
 
     def apply_translations(self, *relations, lang=None):
         """
