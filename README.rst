@@ -1,8 +1,19 @@
 Translations
 ============
 
-.. image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
-    :target: https://travis-ci.com/perplexionist/django-translations
+|python||pypi||build||flake8|
+
+.. |python| image:: https://img.shields.io/badge/python-3.5%7C3.6-blue.svg
+            :target: https://pypi.org/project/django-translations/
+
+.. |pypi| image:: https://img.shields.io/badge/pypi-1.0.0-yellow.svg
+          :target: https://pypi.org/project/django-translations/
+
+.. |build| image:: https://travis-ci.com/perplexionist/django-translations.svg?branch=master
+           :target: https://travis-ci.com/perplexionist/django-translations
+
+.. |flake8| image:: https://img.shields.io/badge/flake8-linted-brightgreen.svg
+            :target: https://travis-ci.com/perplexionist/django-translations
 
 Translations app provides an *easy*, *efficient* and *modular* way of
 translating Django *models*.
