@@ -6,7 +6,7 @@ Translations
 .. |python| image:: https://img.shields.io/badge/python-3.5%7C3.6-0073b7.svg
             :target: https://pypi.org/project/django-translations/
 
-.. |pypi| image:: https://img.shields.io/badge/pypi-1.0.0-f9d35f.svg
+.. |pypi| image:: https://img.shields.io/badge/pypi-1.0.0-0073b7.svg
           :target: https://pypi.org/project/django-translations/
 
 .. |django| image:: https://img.shields.io/badge/django-1%7C2-0C4B33.svg
