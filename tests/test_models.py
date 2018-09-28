@@ -2,11 +2,10 @@ from django.test import TestCase, override_settings
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
 from django.core.exceptions import FieldDoesNotExist
-from django.utils.translation import activate
 
 from translations.models import Translation
 
-from sample.models import Timezone, Continent, Country, City
+from sample.models import Timezone, Continent, City
 
 from tests.sample import create_samples
 

@@ -1,6 +1,5 @@
 from django.test import TestCase, override_settings
 from django.core.exceptions import FieldDoesNotExist
-from django.utils.translation import activate
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_standard_language, \
