@@ -1,7 +1,7 @@
 Translations
 ============
 
-|python||pypi||build||flake8|
+|python| |pypi| |build| |flake8|
 
 .. |python| image:: https://img.shields.io/badge/python-3.5%7C3.6-blue.svg
             :target: https://pypi.org/project/django-translations/
