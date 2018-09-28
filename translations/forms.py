@@ -27,20 +27,17 @@ def generate_translation_form(translatable):
     :return: The translation form generated based on the translatable model.
     :rtype: type(~django.forms.ModelForm(~translations.models.Translation))
     """
-    if not hasattr(translatable, '_cached_translation_form'):
-        choices = translatable._get_translatable_fields_choices()
+    choices = translatable._get_translatable_fields_choices()
 
-        class TranslationForm(forms.ModelForm):
-            field = forms.ChoiceField(choices=choices)
+    class TranslationForm(forms.ModelForm):
+        field = forms.ChoiceField(choices=choices)
 
-            class Meta:
-                model = Translation
-                fields = (
-                    'field',
-                    'language',
-                    'text',
-                )
+        class Meta:
+            model = Translation
+            fields = (
+                'field',
+                'language',
+                'text',
+            )
 
-        translatable._cached_translation_form = TranslationForm
-
-    return translatable._cached_translation_form
+    return TranslationForm
