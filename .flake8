@@ -1,13 +1,12 @@
 [flake8]
 exclude =
-    # remove django auto-generated migrations
+    # remove auto-generated migrations
     migrations,
     # remove auto-generated test project
-    project/project/settings.py,
-    project/project/urls.py,
+    project,
+    # remove built distribution
+    dist,
     # remove virtual environment packages
     venv,
-    # remove git
-    .git,
     # remove cache
     __pycache__
