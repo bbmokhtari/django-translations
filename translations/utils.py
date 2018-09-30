@@ -80,7 +80,10 @@ def _get_standard_language(lang=None):
 
        from translations.utils import _get_standard_language
 
+       # usage
        active = _get_standard_language()
+
+       # output
        print('Language code: {}'.format(active))
 
     .. testoutput:: _get_standard_language
@@ -93,7 +96,10 @@ def _get_standard_language(lang=None):
 
        from translations.utils import _get_standard_language
 
+       # usage
        custom = _get_standard_language('de')
+
+       # output
        print('Language code: {}'.format(custom))
 
     .. testoutput:: _get_standard_language
@@ -107,7 +113,10 @@ def _get_standard_language(lang=None):
 
        from translations.utils import _get_standard_language
 
+       # usage
        custom = _get_standard_language('en-gb')
+
+       # output
        print('Language code: {}'.format(custom))
 
     .. testoutput:: _get_standard_language
@@ -121,7 +130,10 @@ def _get_standard_language(lang=None):
 
        from translations.utils import _get_standard_language
 
+       # usage
        custom = _get_standard_language('de-at')
+
+       # output
        print('Language code: {}'.format(custom))
 
     .. testoutput:: _get_standard_language
