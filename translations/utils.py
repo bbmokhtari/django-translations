@@ -345,7 +345,10 @@ def _get_reverse_relation(model, relation):
        from sample.models import Continent
        from translations.utils import _get_reverse_relation
 
+       # usage
        reverse_relation = _get_reverse_relation(Continent, 'countries__cities')
+
+       # output
        print('City can be queried with `{}`'.format(reverse_relation))
 
     .. testoutput:: _get_reverse_relation
