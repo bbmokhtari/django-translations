@@ -401,7 +401,11 @@ def _get_relations_hierarchy(*relations):
 
        from translations.utils import _get_relations_hierarchy
 
-       print(_get_relations_hierarchy('countries'))
+       # usage
+       hierarchy = _get_relations_hierarchy('countries')
+
+       # output
+       print(hierarchy)
 
     .. testoutput::
 
@@ -414,7 +418,11 @@ def _get_relations_hierarchy(*relations):
 
        from translations.utils import _get_relations_hierarchy
 
-       print(_get_relations_hierarchy('countries__cities'))
+       # usage
+       hierarchy = _get_relations_hierarchy('countries__cities')
+
+       # output
+       print(hierarchy)
 
     .. testoutput::
 
@@ -429,7 +437,11 @@ def _get_relations_hierarchy(*relations):
 
        from translations.utils import _get_relations_hierarchy
 
-       print(_get_relations_hierarchy('countries', 'countries__cities'))
+       # usage
+       hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+
+       # output
+       print(hierarchy)
 
     .. testoutput::
 
@@ -443,7 +455,11 @@ def _get_relations_hierarchy(*relations):
 
        from translations.utils import _get_relations_hierarchy
 
-       print(_get_relations_hierarchy())
+       # usage
+       hierarchy = _get_relations_hierarchy()
+
+       # output
+       print(hierarchy)
 
     .. testoutput::
 
