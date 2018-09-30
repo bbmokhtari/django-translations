@@ -533,7 +533,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
        create_samples(
            continent_names=['europe', 'asia'],
            country_names=['germany', 'south korea'],
-           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           city_names=['cologne', 'seoul'],
            continent_fields=['name', 'denonym'],
            country_fields=['name', 'denonym'],
            city_fields=['name', 'denonym'],
@@ -550,34 +550,31 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
        from translations.utils import _get_relations_hierarchy
        from translations.utils import _get_instance_groups
 
+       # input
        continents = Continent.objects.all()
+       hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
 
-       relations = ('countries', 'countries__cities',)
-       hierarchy = _get_relations_hierarchy(*relations)
-
+       # usage
        groups = _get_instance_groups(continents, hierarchy)
 
-       ct_continent = ContentType.objects.get_for_model(Continent).id
-       ct_country = ContentType.objects.get_for_model(Country).id
-       ct_city = ContentType.objects.get_for_model(City).id
+       # output
+       def output(model):
+           result = []
+           content_type_id = ContentType.objects.get_for_model(model).id
+           objects = groups[content_type_id].items()
+           for id, obj in sorted(objects, key=lambda x: x[0]):
+               result.append(str(obj))
+           print('{}: {}'.format(model.__name__, ', '.join(result)))
 
-       for id, obj in sorted(groups[ct_continent].items(), key=lambda x: x[0]):
-           print(obj)
-       for id, obj in sorted(groups[ct_country].items(), key=lambda x: x[0]):
-           print(obj)
-       for id, obj in sorted(groups[ct_city].items(), key=lambda x: x[0]):
-           print(obj)
+       output(Continent)
+       output(Country)
+       output(City)
 
     .. testoutput:: _get_instance_groups
 
-       Europe
-       Asia
-       Germany
-       South Korea
-       Cologne
-       Munich
-       Seoul
-       Ulsan
+       Continent: Europe, Asia
+       Country: Germany, South Korea
+       City: Cologne, Seoul
     """
     groups = {}
 
