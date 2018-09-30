@@ -666,7 +666,7 @@ def _get_translations(groups, lang=None):
        create_samples(
            continent_names=['europe', 'asia'],
            country_names=['germany', 'south korea'],
-           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           city_names=['cologne', 'seoul'],
            continent_fields=['name', 'denonym'],
            country_fields=['name', 'denonym'],
            city_fields=['name', 'denonym'],
@@ -682,15 +682,15 @@ def _get_translations(groups, lang=None):
        from translations.utils import _get_instance_groups
        from translations.utils import _get_translations
 
+       # input
        continents = list(Continent.objects.all())
-
-       relations = ('countries','countries__cities',)
-       hierarchy = _get_relations_hierarchy(*relations)
-
+       hierarchy = _get_relations_hierarchy('countries','countries__cities',)
        groups = _get_instance_groups(continents, hierarchy)
 
+       # usage
        translations = _get_translations(groups, lang='de')
 
+       # output
        print(translations)
 
     .. testoutput:: _get_translations
@@ -702,16 +702,12 @@ def _get_translations(groups, lang=None):
            <Translation: German: Deutsche>,
            <Translation: Cologne: Köln>,
            <Translation: Cologner: Kölner>,
-           <Translation: Munich: München>,
-           <Translation: Munichian: Münchner>,
            <Translation: Asia: Asien>,
            <Translation: Asian: Asiatisch>,
            <Translation: South Korea: Südkorea>,
            <Translation: South Korean: Südkoreanisch>,
            <Translation: Seoul: Seül>,
-           <Translation: Seouler: Seüler>,
-           <Translation: Ulsan: Ulsän>,
-           <Translation: Ulsanian: Ulsänisch>
+           <Translation: Seouler: Seüler>
        ]>
     """
     lang = _get_standard_language(lang)
