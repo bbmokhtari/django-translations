@@ -771,7 +771,7 @@ def apply_translations(entity, *relations, lang=None):
        create_samples(
            continent_names=['europe', 'asia'],
            country_names=['germany', 'south korea'],
-           city_names=['cologne', 'munich', 'seoul', 'ulsan'],
+           city_names=['cologne', 'seoul'],
            continent_fields=['name', 'denonym'],
            country_fields=['name', 'denonym'],
            city_fields=['name', 'denonym'],
@@ -806,36 +806,26 @@ def apply_translations(entity, *relations, lang=None):
 
        relations = ('countries', 'countries__cities',)
 
+       # input - fetch a list of instances like before
        continents = list(Continent.objects.all())
+       prefetch_related_objects(continents, *relations)
 
-       prefetch_related_objects(
-           continents,
-           *relations,
-       )
+       # usage - apply the translations in place
+       apply_translations(continents, *relations, lang='de')
 
-       apply_translations(
-           continents,
-           *relations,
-           lang='de',
-       )
-
-       for continent in continents:
-           print('Continent: {}'.format(continent))
-           for country in continent.countries.all():
-               print('Country: {}'.format(country))
-               for city in country.cities.all():
-                   print('City: {}'.format(city))
+       # output - use the list of instances like before
+       europe = continents[0]
+       germany = europe.countries.all()[0]
+       cologne = germany.cities.all()[0]
+       print('`Europe` is called `{}` in German.'.format(europe.name))
+       print('`Germany` is called `{}` in German.'.format(germany.name))
+       print('`Cologne` is called `{}` in German.'.format(cologne.name))
 
     .. testoutput:: apply_translations
 
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
-       Continent: Asien
-       Country: Südkorea
-       City: Seül
-       City: Ulsän
+       `Europe` is called `Europa` in German.
+       `Germany` is called `Deutschland` in German.
+       `Cologne` is called `Köln` in German.
 
     To apply the translations of a queryset and the relations of it:
 
@@ -846,33 +836,25 @@ def apply_translations(entity, *relations, lang=None):
 
        relations = ('countries', 'countries__cities',)
 
-       continents = Continent.objects.prefetch_related(
-           *relations,
-       )
+       # input - fetch a queryset like before
+       continents = Continent.objects.prefetch_related(*relations)
 
-       apply_translations(
-           continents,
-           *relations,
-           lang='de',
-       )
+       # usage - apply the translations in place
+       apply_translations(continents, *relations, lang='de')
 
-       for continent in continents:
-           print('Continent: {}'.format(continent))
-           for country in continent.countries.all():
-               print('Country: {}'.format(country))
-               for city in country.cities.all():
-                   print('City: {}'.format(city))
+       # output - use the queryset like before
+       europe = continents[0]
+       germany = europe.countries.all()[0]
+       cologne = germany.cities.all()[0]
+       print('`Europe` is called `{}` in German.'.format(europe.name))
+       print('`Germany` is called `{}` in German.'.format(germany.name))
+       print('`Cologne` is called `{}` in German.'.format(cologne.name))
 
     .. testoutput:: apply_translations
 
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
-       Continent: Asien
-       Country: Südkorea
-       City: Seül
-       City: Ulsän
+       `Europe` is called `Europa` in German.
+       `Germany` is called `Deutschland` in German.
+       `Cologne` is called `Köln` in German.
 
     To apply the translations of an instance and the relations of it:
 
@@ -883,28 +865,25 @@ def apply_translations(entity, *relations, lang=None):
 
        relations = ('countries', 'countries__cities',)
 
-       europe = Continent.objects.prefetch_related(
-           *relations,
-       ).get(code='EU')
+       # input - fetch an instance like before
+       continents = Continent.objects.prefetch_related(*relations)
+       europe = continents.get(code='EU')
 
-       apply_translations(
-           europe,
-           *relations,
-           lang='de',
-       )
+       # usage - apply the translations in place
+       apply_translations(europe, *relations, lang='de')
 
-       print('Continent: {}'.format(europe))
-       for country in europe.countries.all():
-           print('Country: {}'.format(country))
-           for city in country.cities.all():
-               print('City: {}'.format(city))
+       # output - use the instances like before
+       germany = europe.countries.all()[0]
+       cologne = germany.cities.all()[0]
+       print('`Europe` is called `{}` in German.'.format(europe.name))
+       print('`Germany` is called `{}` in German.'.format(germany.name))
+       print('`Cologne` is called `{}` in German.'.format(cologne.name))
 
     .. testoutput:: apply_translations
 
-       Continent: Europa
-       Country: Deutschland
-       City: Köln
-       City: München
+       `Europe` is called `Europa` in German.
+       `Germany` is called `Deutschland` in German.
+       `Cologne` is called `Köln` in German.
 
     .. warning::
 
@@ -920,35 +899,22 @@ def apply_translations(entity, *relations, lang=None):
           relations = ('countries', 'countries__cities',)
 
           continents = list(Continent.objects.all())
+          prefetch_related_objects(continents, *relations)
 
-          prefetch_related_objects(
-              continents,
-              *relations,
-          )
+          apply_translations(continents, *relations, lang='de')
 
-          apply_translations(
-              continents,
-              *relations,
-              lang='de',
-          )
-
-          for continent in continents:
-              print('Continent: {}'.format(continent))
-              for country in continent.countries.exclude(name=''):  # Wrong
-                  print('Country: {}  -- Wrong'.format(country))
-                  for city in country.cities.all():
-                      print('City: {}  -- Wrong'.format(city))
+          europe = continents[0]
+          germany = europe.countries.exclude(name='')[0]  # Wrong!
+          cologne = germany.cities.all()[0]  # Will affect this as well!
+          print('`Europe` is called `{}` in German.'.format(europe.name))
+          print('`Germany` is called `{}` in German.'.format(germany.name))
+          print('`Cologne` is called `{}` in German.'.format(cologne.name))
 
        .. testoutput:: apply_translations
 
-          Continent: Europa
-          Country: Germany  -- Wrong
-          City: Cologne  -- Wrong
-          City: Munich  -- Wrong
-          Continent: Asien
-          Country: South Korea  -- Wrong
-          City: Seoul  -- Wrong
-          City: Ulsan  -- Wrong
+          `Europe` is called `Europa` in German.
+          `Germany` is called `Germany` in German.
+          `Cologne` is called `Cologne` in German.
 
        The solution is to do the filtering before applying the
        translations. To do this on the relations use
@@ -963,39 +929,29 @@ def apply_translations(entity, *relations, lang=None):
           relations = ('countries', 'countries__cities',)
 
           continents = list(Continent.objects.all())
-
           prefetch_related_objects(
               continents,
               Prefetch(
                   'countries',
-                  queryset=Country.objects.exclude(name=''),  # Correct
+                  queryset=Country.objects.exclude(name=''),  # Correct!
               ),
               'countries__cities',
           )
 
-          apply_translations(
-              continents,
-              *relations,
-              lang='de',
-          )
+          apply_translations(continents, *relations, lang='de')
 
-          for continent in continents:
-              print('Continent: {}'.format(continent))
-              for country in continent.countries.all():
-                  print('Country: {}'.format(country))
-                  for city in country.cities.all():
-                      print('City: {}'.format(city))
+          europe = continents[0]
+          germany = europe.countries.all()[0]
+          cologne = germany.cities.all()[0]
+          print('`Europe` is called `{}` in German.'.format(europe.name))
+          print('`Germany` is called `{}` in German.'.format(germany.name))
+          print('`Cologne` is called `{}` in German.'.format(cologne.name))
 
        .. testoutput:: apply_translations
 
-          Continent: Europa
-          Country: Deutschland
-          City: Köln
-          City: München
-          Continent: Asien
-          Country: Südkorea
-          City: Seül
-          City: Ulsän
+          `Europe` is called `Europa` in German.
+          `Germany` is called `Deutschland` in German.
+          `Cologne` is called `Köln` in German.
     """
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_instance_groups(entity, hierarchy)
