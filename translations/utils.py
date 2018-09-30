@@ -186,7 +186,15 @@ def _get_entity_details(entity):
 
        from tests.sample import create_samples
 
-       create_samples(continent_names=['europe'])
+       create_samples(
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'seoul'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
+       )
 
     .. note::
 
@@ -204,8 +212,13 @@ def _get_entity_details(entity):
        from sample.models import Continent
        from translations.utils import _get_entity_details
 
+       # input
        continents = list(Continent.objects.all())
+
+       # usage
        details = _get_entity_details(continents)
+
+       # output
        print('Iterable: {}'.format(details[0]))
        print('Model: {}'.format(details[1]))
 
@@ -221,8 +234,13 @@ def _get_entity_details(entity):
        from sample.models import Continent
        from translations.utils import _get_entity_details
 
+       # intput
        continents = Continent.objects.all()
+
+       # usage
        details = _get_entity_details(continents)
+
+       # output
        print('Iterable: {}'.format(details[0]))
        print('Model: {}'.format(details[1]))
 
@@ -238,8 +256,13 @@ def _get_entity_details(entity):
        from sample.models import Continent
        from translations.utils import _get_entity_details
 
+       # input
        europe = Continent.objects.get(code='EU')
+
+       # usage
        details = _get_entity_details(europe)
+
+       # output
        print('Iterable: {}'.format(details[0]))
        print('Model: {}'.format(details[1]))
 
@@ -255,8 +278,13 @@ def _get_entity_details(entity):
        from sample.models import Continent
        from translations.utils import _get_entity_details
 
+       # input
        empty = []
+
+       # usage
        details = _get_entity_details(empty)
+
+       # output
        print('Iterable: {}'.format(details[0]))
        print('Model: {}'.format(details[1]))
 
