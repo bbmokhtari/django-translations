@@ -1250,6 +1250,7 @@ class TranslationContext:
 
         self.groups = _get_instance_groups(self.entity, self.hierarchy)
         self.translations = None
+        self.fields_reset = True
 
     def __enter__(self):
         return self
@@ -1257,7 +1258,18 @@ class TranslationContext:
     def __exit__(self, exc_type, exc_value, traceback):
         pass
 
+    def reset(self):
+        for (ct_id, objs) in self.groups.items():
+            for (obj_id, obj) in objs.items():
+                for (field, value) in obj._default_translatable_fields.items():
+                    setattr(obj, field, value)
+
+        self.fields_reset = True
+
     def apply(self):
+        if not self.fields_reset:
+            self.reset()
+
         if self.translations is None:
             self.translations = _get_translations(self.groups, lang=self.lang)
 
@@ -1271,6 +1283,8 @@ class TranslationContext:
 
             if field in [x for x in type(obj)._get_translatable_fields_names()]:
                 setattr(obj, field, text)
+
+        self.fields_reset = False
 
     def delete(self):
         if self.translations is None:
@@ -1297,5 +1311,5 @@ class TranslationContext:
                         )
 
         self.delete()
-
         Translation.objects.bulk_create(new_translations)
+        self.fields_reset = False
