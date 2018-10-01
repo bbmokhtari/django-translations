@@ -587,6 +587,10 @@ def _get_instance_groups(entity, hierarchy):
 
         def _fill_obj(obj):
             if included:
+                obj._default_translatable_fields = {
+                    field: getattr(obj, field) for field in
+                    type(obj)._get_translatable_fields_names()
+                }
                 object_groups[str(obj.id)] = obj
 
             if hierarchy:
