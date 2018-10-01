@@ -1244,8 +1244,8 @@ def update_translations(entity, *relations, lang=None):
 class TranslationContext:
 
     def __init__(self, entity, *relations):
-        self.hierarchy = _get_relations_hierarchy(*relations)
-        self.groups = _get_instance_groups(self.entity, self.hierarchy)
+        hierarchy = _get_relations_hierarchy(*relations)
+        self.groups = _get_instance_groups(entity, hierarchy)
         self.are_fields_reset = True
 
     def __enter__(self):
