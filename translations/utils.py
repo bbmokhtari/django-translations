@@ -578,7 +578,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     """
     groups = {}
 
-    def _fill_entity(entity, hierarchy, groups, included=True):
+    def _fill_entity(entity, hierarchy, included=True):
         iterable, model = _get_entity_details(entity)
 
         if model is None:
@@ -591,7 +591,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
             if not issubclass(model, Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
-        def _fill_obj(obj, hierarchy):
+        def _fill_obj(obj):
             if included:
                 object_groups[str(obj.id)] = obj
 
@@ -624,17 +624,16 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
                         _fill_entity(
                             entity=value,
                             hierarchy=detail['relations'],
-                            groups=groups,
                             included=detail['included'],
                         )
 
         if iterable:
             for obj in entity:
-                _fill_obj(obj, hierarchy)
+                _fill_obj(obj)
         else:
-            _fill_obj(entity, hierarchy)
+            _fill_obj(entity)
 
-    _fill_entity(entity, hierarchy, groups)
+    _fill_entity(entity, hierarchy)
 
     return groups
 
