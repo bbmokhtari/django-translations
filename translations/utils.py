@@ -627,7 +627,7 @@ def _get_instance_groups(entity, hierarchy):
     return groups
 
 
-def _get_translations(groups, lang=None):
+def _get_translations(groups, lang):
     """
     Return the translations of some :term:`instance groups` in a language.
 
@@ -698,8 +698,6 @@ def _get_translations(groups, lang=None):
            <Translation: Seouler: Seüler>
        ]>
     """
-    lang = _get_standard_language(lang)
-
     filters = models.Q()
     for (ct_id, objs) in groups.items():
         for obj_id in objs:
