@@ -30,7 +30,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
 from django.conf import settings
 
-import translations.models
+from translations.models import Translation, Translatable
 
 
 __docformat__ = 'restructuredtext'
@@ -588,7 +588,7 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
 
         if included:
             object_groups = groups.setdefault(content_type.id, {})
-            if not issubclass(model, translations.models.Translatable):
+            if not issubclass(model, Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj, hierarchy):
@@ -720,7 +720,7 @@ def _get_translations(groups, lang=None):
                 object_id=obj_id,
             )
 
-    queryset = translations.models.Translation.objects.filter(
+    queryset = Translation.objects.filter(
         language=lang,
     ).filter(
         filters,
@@ -1242,7 +1242,7 @@ def update_translations(entity, *relations, lang=None):
                 text = getattr(obj, field, None)
                 if text:
                     new_translations.append(
-                        translations.models.Translation(
+                        Translation(
                             content_type_id=ct_id,
                             object_id=obj_id,
                             field=field,
@@ -1252,4 +1252,64 @@ def update_translations(entity, *relations, lang=None):
                     )
 
     old_translations.delete()
-    translations.models.Translation.objects.bulk_create(new_translations)
+    Translation.objects.bulk_create(new_translations)
+
+
+class TranslationContext:
+
+    def __init__(self, entity, *relations, lang=None):
+        self.entity = entity
+        self.hierarchy = _get_relations_hierarchy(*relations)
+        self.lang = _get_standard_language(lang)
+
+        self.groups = _get_instance_groups(self.entity, self.hierarchy)
+        self.translations = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+    def apply(self):
+        if self.translations is None:
+            self.translations = _get_translations(self.groups, lang=self.lang)
+
+        for translation in self.translations:
+            ct_id = translation.content_type.id
+            obj_id = translation.object_id
+            obj = self.groups[ct_id][obj_id]
+
+            field = translation.field
+            text = translation.text
+
+            if field in [x for x in type(obj)._get_translatable_fields_names()]:
+                setattr(obj, field, text)
+
+    def delete(self):
+        if self.translations is None:
+            self.translations = _get_translations(self.groups, lang=self.lang)
+        self.translations.delete()
+        self.translations = None
+
+    def update(self):
+        new_translations = []
+
+        for (ct_id, objs) in self.groups.items():
+            for (obj_id, obj) in objs.items():
+                for field in type(obj)._get_translatable_fields_names():
+                    text = getattr(obj, field, None)
+                    if text:
+                        new_translations.append(
+                            Translation(
+                                content_type_id=ct_id,
+                                object_id=obj_id,
+                                field=field,
+                                language=self.lang,
+                                text=text,
+                            )
+                        )
+
+        self.delete()
+
+        Translation.objects.bulk_create(new_translations)
