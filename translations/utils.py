@@ -558,23 +558,23 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
        groups = _get_instance_groups(continents, hierarchy)
 
        # output
-       def output(model):
-           result = []
-           content_type_id = ContentType.objects.get_for_model(model).id
-           objects = groups[content_type_id].items()
-           for id, obj in sorted(objects, key=lambda x: x[0]):
-               result.append(str(obj))
-           print('{}: {}'.format(model.__name__, ', '.join(result)))
+       europe = continents[0]
+       germany = europe.countries.all()[0]
+       cologne = germany.cities.all()[0]
 
-       output(Continent)
-       output(Country)
-       output(City)
+       continent = ContentType.objects.get_for_model(Continent)
+       country = ContentType.objects.get_for_model(Country)
+       city = ContentType.objects.get_for_model(City)
+
+       print('Continent: `{}`'.format(groups[continent.id][str(europe.id)]))
+       print('Country: `{}`'.format(groups[country.id][str(germany.id)]))
+       print('City: `{}`'.format(groups[city.id][str(cologne.id)]))
 
     .. testoutput:: _get_instance_groups
 
-       Continent: Europe, Asia
-       Country: Germany, South Korea
-       City: Cologne, Seoul
+       Continent: `Europe`
+       Country: `Germany`
+       City: `Cologne`
     """
     groups = {}
 
