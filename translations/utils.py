@@ -16,7 +16,7 @@ following members:
 :func:`_get_translations`
     Return the translations of some :term:`instance groups` in a language.
 :class:`TranslationContext`
-    An context manager which provides custom translation functionalities.
+    A context manager which provides custom translation functionalities.
 """
 
 from django.db import models
@@ -711,7 +711,7 @@ def _get_translations(groups, lang):
 
 class TranslationContext:
     """
-    An context manager which provides custom translation functionalities.
+    A context manager which provides custom translation functionalities.
 
     Provides functionalities like :meth:`apply` to read the translations from
     the database and apply them to the context, and :meth:`update` to update
