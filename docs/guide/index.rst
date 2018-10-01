@@ -12,6 +12,5 @@ recommend you to read the guide.
    :caption: Reference:
 
    models
-   querysets
    admin
    utilities

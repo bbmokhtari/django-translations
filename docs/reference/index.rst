@@ -12,7 +12,6 @@ contribute to the project we recommend you to read the reference.
    :caption: Reference:
 
    models
-   querysets
    admin
    forms
    utils
