@@ -1389,25 +1389,6 @@ class GetTranslationsTest(TestCase):
             ]
         )
 
-    def test_invalid_lang(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-        hierarchy = _get_relations_hierarchy()
-        groups = _get_instance_groups(europe, hierarchy)
-
-        with self.assertRaises(ValueError) as error:
-            _get_translations(groups, lang='xx')
-
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
-
 
 class ApplyTranslationsTest(TestCase):
     """Tests for `apply_translations`."""

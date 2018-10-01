@@ -644,8 +644,6 @@ def _get_translations(groups, lang):
     :type lang: str or None
     :return: The translations of the :term:`instance groups`.
     :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
-    :raise ValueError: If the language code is not included in
-        the :data:`~django.conf.settings.LANGUAGES` setting.
 
     .. testsetup:: _get_translations
 
@@ -939,6 +937,8 @@ def apply_translations(entity, *relations, lang=None):
           `Germany` is called `Deutschland` in German.
           `Cologne` is called `Köln` in German.
     """
+    lang = _get_standard_language(lang)
+
     hierarchy = _get_relations_hierarchy(*relations)
     groups = _get_instance_groups(entity, hierarchy)
     translations = _get_translations(groups, lang=lang)
