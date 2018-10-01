@@ -1168,6 +1168,7 @@ def update_translations(entity, *relations, lang=None):
 
        # input - fetch a queryset like before
        continents = Continent.objects.prefetch_related(*relations)
+       list(continents)
 
        # prepare - change the queryset and relations in place
        continents[0].name = 'Europa (changed)'
