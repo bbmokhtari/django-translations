@@ -1261,7 +1261,7 @@ class TranslationContext:
         self.hierarchy = _get_relations_hierarchy(*relations)
         self.lang = _get_standard_language(lang)
 
-        self.groups = _get_instance_groups(self.entity, self.hierarchy)
+        self.groups = _get_instance_groups(self.entity, self.hierarchy, True)
         self.translations = None
 
     def __enter__(self):
