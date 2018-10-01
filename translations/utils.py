@@ -1243,14 +1243,10 @@ def update_translations(entity, *relations, lang=None):
 
 class TranslationContext:
 
-    def __init__(self, entity, *relations, lang=None):
-        self.entity = entity
+    def __init__(self, entity, *relations):
         self.hierarchy = _get_relations_hierarchy(*relations)
-        self.lang = _get_standard_language(lang)
-
         self.groups = _get_instance_groups(self.entity, self.hierarchy)
-        self.translations = None
-        self.fields_reset = True
+        self.are_fields_reset = True
 
     def __enter__(self):
         return self
@@ -1263,36 +1259,37 @@ class TranslationContext:
             for (obj_id, obj) in objs.items():
                 for (field, value) in obj._default_translatable_fields.items():
                     setattr(obj, field, value)
+        self.are_fields_reset = True
 
-        self.fields_reset = True
+    def apply(self, lang=None):
+        lang = _get_standard_language(lang)
 
-    def apply(self):
-        if not self.fields_reset:
+        if not self.are_fields_reset:
             self.reset()
 
-        if self.translations is None:
-            self.translations = _get_translations(self.groups, lang=self.lang)
+        translations = _get_translations(self.groups, lang)
 
-        for translation in self.translations:
+        for translation in translations:
             ct_id = translation.content_type.id
             obj_id = translation.object_id
-            obj = self.groups[ct_id][obj_id]
-
             field = translation.field
             text = translation.text
+
+            obj = self.groups[ct_id][obj_id]
 
             if field in [x for x in type(obj)._get_translatable_fields_names()]:
                 setattr(obj, field, text)
 
-        self.fields_reset = False
+        self.are_fields_reset = False
 
-    def delete(self):
-        if self.translations is None:
-            self.translations = _get_translations(self.groups, lang=self.lang)
-        self.translations.delete()
-        self.translations = None
+    def delete(self, lang=None):
+        lang = _get_standard_language(lang)
+        translations = _get_translations(self.groups, lang)
+        translations.delete()
 
-    def update(self):
+    def update(self, lang=None):
+        lang = _get_standard_language(lang)
+
         new_translations = []
 
         for (ct_id, objs) in self.groups.items():
@@ -1305,11 +1302,11 @@ class TranslationContext:
                                 content_type_id=ct_id,
                                 object_id=obj_id,
                                 field=field,
-                                language=self.lang,
+                                language=lang,
                                 text=text,
                             )
                         )
 
         self.delete()
         Translation.objects.bulk_create(new_translations)
-        self.fields_reset = False
+        self.are_fields_reset = False
