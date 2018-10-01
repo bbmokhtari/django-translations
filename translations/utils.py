@@ -487,7 +487,7 @@ def _get_relations_hierarchy(*relations):
     return hierarchy
 
 
-def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
+def _get_instance_groups(entity, hierarchy):
     """
     Return the :term:`instance groups` of an entity and
     a :term:`relations hierarchy` of it.
@@ -503,10 +503,6 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
     :param hierarchy: The :term:`relations hierarchy` of the entity to derive
         the :term:`instance groups` out of.
     :type hierarchy: dict(str, dict)
-    :param prefetch_mandatory: Whether prefetching the relations of
-        the :term:`relations hierarchy` is mandatory or not.
-        Defaults to ``False``.
-    :type prefetch_mandatory: bool
     :return: The :term:`instance groups` derived out of the entity and
         the :term:`relations hierarchy` of it.
     :rtype: dict(int, dict(str, ~django.db.models.Model))
@@ -523,8 +519,6 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
 
     :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
         pointing to the fields that don't exist.
-    :raise RuntimeError: If ``prefetch_mandatory`` is ``True`` and any of the
-        relations in the :term:`relations hierarchy` is not prefetched.
 
     .. testsetup:: _get_instance_groups
 
@@ -610,15 +604,6 @@ def _get_instance_groups(entity, hierarchy, prefetch_mandatory=False):
                                 hasattr(obj, '_prefetched_objects_cache') and
                                 relation in obj._prefetched_objects_cache
                             ):
-                                if prefetch_mandatory:
-                                    raise RuntimeError(
-                                        ('The relation `{}`' +
-                                         ' of the model `{}`' +
-                                         ' must be prefetched.').format(
-                                            relation,
-                                            model.__name__,
-                                        )
-                                    )
                                 prefetch_related_objects([obj], relation)
                             value = value.all()
                         _fill_entity(
@@ -1231,7 +1216,7 @@ def update_translations(entity, *relations, lang=None):
     lang = _get_standard_language(lang)
 
     hierarchy = _get_relations_hierarchy(*relations)
-    groups = _get_instance_groups(entity, hierarchy, prefetch_mandatory=True)
+    groups = _get_instance_groups(entity, hierarchy)
     old_translations = _get_translations(groups, lang=lang)
 
     new_translations = []
@@ -1261,7 +1246,7 @@ class TranslationContext:
         self.hierarchy = _get_relations_hierarchy(*relations)
         self.lang = _get_standard_language(lang)
 
-        self.groups = _get_instance_groups(self.entity, self.hierarchy, True)
+        self.groups = _get_instance_groups(self.entity, self.hierarchy)
         self.translations = None
 
     def __enter__(self):

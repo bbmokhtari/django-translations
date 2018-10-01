@@ -773,7 +773,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 europe,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -805,7 +804,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 europe,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -843,7 +841,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 europe,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -882,7 +879,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 europe,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -918,7 +914,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 continents,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -956,7 +951,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 continents,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -1002,7 +996,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 continents,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -1049,7 +1042,6 @@ class GetInstanceGroupsTest(TestCase):
             _get_instance_groups(
                 continents,
                 hierarchy,
-                prefetch_mandatory=True
             ),
             {
                 ct_continent.id: {
@@ -1163,95 +1155,6 @@ class GetInstanceGroupsTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             "Country has no field named 'wrong'"
-        )
-
-    def test_invalid_prefetch_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        lvl_1 = ('countries',)
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy(*lvl_1)
-
-        with self.assertRaises(RuntimeError) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy,
-                prefetch_mandatory=True
-            )
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `countries` of the model `Continent` must' +
-             ' be prefetched.')
-        )
-
-    def test_invalid_prefetch_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            city_names=['cologne'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            city_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        lvl_2 = ('countries__cities',)
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy(*lvl_2)
-
-        with self.assertRaises(RuntimeError) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy,
-                prefetch_mandatory=True
-            )
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `countries` of the model `Continent` must' +
-             ' be prefetched.')
-        )
-
-    def test_invalid_prefetch_part_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            city_names=['cologne'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            city_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        lvl_1 = ('countries',)
-        lvl_2 = ('countries__cities',)
-
-        europe = Continent.objects.prefetch_related(*lvl_1).get(code='EU')
-
-        hierarchy = _get_relations_hierarchy(*lvl_2)
-
-        with self.assertRaises(RuntimeError) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy,
-                prefetch_mandatory=True
-            )
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `cities` of the model `Country` must' +
-             ' be prefetched.')
         )
 
 
@@ -5143,75 +5046,4 @@ class UpdateTranslationsTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             'The language code `xx` is not supported.'
-        )
-
-    def test_queryset_invalid_prefetch_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        lvl_1 = ('countries',)
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(RuntimeError) as error:
-            update_translations(continents, *lvl_1)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `countries` of the model `Continent` must' +
-             ' be prefetched.')
-        )
-
-    def test_queryset_invalid_prefetch_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            city_names=['cologne'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            city_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        lvl_2 = ('countries__cities',)
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(RuntimeError) as error:
-            update_translations(continents, *lvl_2)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `countries` of the model `Continent` must' +
-             ' be prefetched.')
-        )
-
-    def test_queryset_invalid_prefetch_part_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            city_names=['cologne'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            city_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        lvl_1 = ('countries',)
-        lvl_2 = ('countries__cities',)
-
-        continents = Continent.objects.prefetch_related(*lvl_1)
-
-        with self.assertRaises(RuntimeError) as error:
-            update_translations(continents, *lvl_2)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('The relation `cities` of the model `Country` must' +
-             ' be prefetched.')
         )
