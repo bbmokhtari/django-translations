@@ -999,9 +999,9 @@ class TranslationContext:
     """
     An context manager which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`apply`, :meth:`update`,
-    :meth:`reset`, etc which can be used to crud translations and use them
-    in a context.
+    Provides functionalities like :meth:`apply` to read the translations from
+    the database and apply them to the context, and :meth:`update` to update
+    the translations from the context and write them on the database, etc.
     """
 
     def __init__(self, entity, *relations):
@@ -1046,7 +1046,7 @@ class TranslationContext:
 
     def apply(self, lang=None):
         """
-        Apply the translations in the context in a language.
+        Apply a language to the context.
 
         Fetches the translations of the entity and the specified relations
         of it in a language and applies them on the translatable
