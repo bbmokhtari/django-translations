@@ -1131,6 +1131,6 @@ class TranslationContext:
                             )
                         )
 
-        self.delete()
+        self.delete(lang)
         Translation.objects.bulk_create(new_translations)
         self.are_fields_reset = False
