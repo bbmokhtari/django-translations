@@ -21,3 +21,5 @@ Utilities
       .. automethod:: __init__
 
       .. automethod:: apply
+
+      .. automethod:: update
