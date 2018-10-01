@@ -14,7 +14,3 @@ Models
       .. automethod:: _get_translatable_fields_names
 
       .. automethod:: _get_translatable_fields_choices
-
-      .. automethod:: apply_translations
-
-      .. automethod:: update_translations
