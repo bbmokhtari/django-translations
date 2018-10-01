@@ -16,6 +16,8 @@ Utilities
 
    .. autofunction:: _get_translations
 
-   .. autofunction:: apply_translations
+   .. autoclass:: TranslationContext
 
-   .. autofunction:: update_translations
+      .. automethod:: __init__
+
+      .. automethod:: apply
