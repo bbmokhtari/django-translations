@@ -15,17 +15,3 @@ Utilities
    .. autofunction:: _get_instance_groups
 
    .. autofunction:: _get_translations
-
-   .. autoclass:: TranslationContext
-
-      .. automethod:: __init__
-
-      .. automethod:: reset
-
-      .. automethod:: create
-
-      .. automethod:: read
-
-      .. automethod:: update
-
-      .. automethod:: delete
