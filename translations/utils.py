@@ -977,7 +977,7 @@ class TranslationContext:
 
     def update(self, lang=None):
         """
-        Update the translations of a language from the context.
+        Update the translations from the context and write them.
 
         Updates the translations of the entity and the specified relations
         of it in a language using their translatable
