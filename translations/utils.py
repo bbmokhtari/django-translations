@@ -4,12 +4,12 @@ following members:
 
 :func:`_get_standard_language`
     Return the standard language code of a custom language code.
-:func:`_get_entity_details`
-    Return the iteration and type details of an entity.
 :func:`_get_reverse_relation`
     Return the reverse of a model's relation.
 :func:`_get_relations_hierarchy`
     Return the :term:`relations hierarchy` of some relations.
+:func:`_get_entity_details`
+    Return the iteration and type details of an entity.
 :func:`_get_instance_groups`
     Return the :term:`instance groups` of an entity and
     a :term:`relations hierarchy` of it.
@@ -171,157 +171,6 @@ def _get_standard_language(lang=None):
         )
 
     return _standard_language_cache[lang]
-
-def _get_entity_details(entity):
-    """
-    Return the iteration and type details of an entity.
-
-    If the entity is an iterable it returns the entity as iterable and the
-    type of the first object in the iteration (since it assumes all the
-    objects in the iteration are of the same type), otherwise it returns the
-    entity as not iterable and the type of the entity.
-
-    :param entity: The entity to get the details of.
-    :type entity: ~django.db.models.Model or
-        ~collections.Iterable(~django.db.models.Model)
-    :return: The details of the entity as (iterable, model).
-    :rtype: tuple(bool, type(~django.db.models.Model))
-    :raise TypeError: If the entity is neither a model instance nor
-        an iterable of model instances.
-
-    .. note::
-
-       If the entity is an empty iterable it returns the model as ``None``,
-       even if the iterable is an empty queryset (which the model of can be
-       retrieved). It's because the other parts of the code first check to see
-       if the model in the details is ``None``, in that case they skip the
-       translation process all together (because there's nothing to
-       translate).
-
-    .. testsetup:: _get_entity_details
-
-       from tests.sample import create_samples
-
-       create_samples(
-           continent_names=['europe', 'asia'],
-           country_names=['germany', 'south korea'],
-           city_names=['cologne', 'seoul'],
-           continent_fields=['name', 'denonym'],
-           country_fields=['name', 'denonym'],
-           city_fields=['name', 'denonym'],
-           langs=['de']
-       )
-
-    To get the details of a list of instances:
-
-    .. testcode:: _get_entity_details
-
-       from sample.models import Continent
-       from translations.utils import _get_entity_details
-
-       # input
-       continents = list(Continent.objects.all())
-
-       # usage
-       details = _get_entity_details(continents)
-
-       # output
-       print('Iterable: {}'.format(details[0]))
-       print('Model: {}'.format(details[1]))
-
-    .. testoutput:: _get_entity_details
-
-       Iterable: True
-       Model: <class 'sample.models.Continent'>
-
-    To get the details of a queryset:
-
-    .. testcode:: _get_entity_details
-
-       from sample.models import Continent
-       from translations.utils import _get_entity_details
-
-       # intput
-       continents = Continent.objects.all()
-
-       # usage
-       details = _get_entity_details(continents)
-
-       # output
-       print('Iterable: {}'.format(details[0]))
-       print('Model: {}'.format(details[1]))
-
-    .. testoutput:: _get_entity_details
-
-       Iterable: True
-       Model: <class 'sample.models.Continent'>
-
-    To get the details of an instance:
-
-    .. testcode:: _get_entity_details
-
-       from sample.models import Continent
-       from translations.utils import _get_entity_details
-
-       # input
-       europe = Continent.objects.get(code='EU')
-
-       # usage
-       details = _get_entity_details(europe)
-
-       # output
-       print('Iterable: {}'.format(details[0]))
-       print('Model: {}'.format(details[1]))
-
-    .. testoutput:: _get_entity_details
-
-       Iterable: False
-       Model: <class 'sample.models.Continent'>
-
-    To get the details of an empty list:
-
-    .. testcode:: _get_entity_details
-
-       from sample.models import Continent
-       from translations.utils import _get_entity_details
-
-       # input
-       empty = []
-
-       # usage
-       details = _get_entity_details(empty)
-
-       # output
-       print('Iterable: {}'.format(details[0]))
-       print('Model: {}'.format(details[1]))
-
-    .. testoutput:: _get_entity_details
-
-       Iterable: True
-       Model: None
-    """
-    error_message = '`{}` is neither {} nor {}.'.format(
-        entity,
-        'a model instance',
-        'an iterable of model instances',
-    )
-
-    if isinstance(entity, models.Model):
-        model = type(entity)
-        iterable = False
-    elif hasattr(entity, '__iter__'):
-        if len(entity) > 0:
-            if isinstance(entity[0], models.Model):
-                model = type(entity[0])
-            else:
-                raise TypeError(error_message)
-        else:
-            model = None
-        iterable = True
-    else:
-        raise TypeError(error_message)
-
-    return (iterable, model)
 
 
 def _get_reverse_relation(model, relation):
@@ -492,6 +341,158 @@ def _get_relations_hierarchy(*relations):
         parts = relation.split(LOOKUP_SEP)
         _fill_hierarchy(hierarchy, *parts)
     return hierarchy
+
+
+def _get_entity_details(entity):
+    """
+    Return the iteration and type details of an entity.
+
+    If the entity is an iterable it returns the entity as iterable and the
+    type of the first object in the iteration (since it assumes all the
+    objects in the iteration are of the same type), otherwise it returns the
+    entity as not iterable and the type of the entity.
+
+    :param entity: The entity to get the details of.
+    :type entity: ~django.db.models.Model or
+        ~collections.Iterable(~django.db.models.Model)
+    :return: The details of the entity as (iterable, model).
+    :rtype: tuple(bool, type(~django.db.models.Model))
+    :raise TypeError: If the entity is neither a model instance nor
+        an iterable of model instances.
+
+    .. note::
+
+       If the entity is an empty iterable it returns the model as ``None``,
+       even if the iterable is an empty queryset (which the model of can be
+       retrieved). It's because the other parts of the code first check to see
+       if the model in the details is ``None``, in that case they skip the
+       translation process all together (because there's nothing to
+       translate).
+
+    .. testsetup:: _get_entity_details
+
+       from tests.sample import create_samples
+
+       create_samples(
+           continent_names=['europe', 'asia'],
+           country_names=['germany', 'south korea'],
+           city_names=['cologne', 'seoul'],
+           continent_fields=['name', 'denonym'],
+           country_fields=['name', 'denonym'],
+           city_fields=['name', 'denonym'],
+           langs=['de']
+       )
+
+    To get the details of a list of instances:
+
+    .. testcode:: _get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import _get_entity_details
+
+       # input
+       continents = list(Continent.objects.all())
+
+       # usage
+       details = _get_entity_details(continents)
+
+       # output
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
+
+    .. testoutput:: _get_entity_details
+
+       Iterable: True
+       Model: <class 'sample.models.Continent'>
+
+    To get the details of a queryset:
+
+    .. testcode:: _get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import _get_entity_details
+
+       # intput
+       continents = Continent.objects.all()
+
+       # usage
+       details = _get_entity_details(continents)
+
+       # output
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
+
+    .. testoutput:: _get_entity_details
+
+       Iterable: True
+       Model: <class 'sample.models.Continent'>
+
+    To get the details of an instance:
+
+    .. testcode:: _get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import _get_entity_details
+
+       # input
+       europe = Continent.objects.get(code='EU')
+
+       # usage
+       details = _get_entity_details(europe)
+
+       # output
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
+
+    .. testoutput:: _get_entity_details
+
+       Iterable: False
+       Model: <class 'sample.models.Continent'>
+
+    To get the details of an empty list:
+
+    .. testcode:: _get_entity_details
+
+       from sample.models import Continent
+       from translations.utils import _get_entity_details
+
+       # input
+       empty = []
+
+       # usage
+       details = _get_entity_details(empty)
+
+       # output
+       print('Iterable: {}'.format(details[0]))
+       print('Model: {}'.format(details[1]))
+
+    .. testoutput:: _get_entity_details
+
+       Iterable: True
+       Model: None
+    """
+    error_message = '`{}` is neither {} nor {}.'.format(
+        entity,
+        'a model instance',
+        'an iterable of model instances',
+    )
+
+    if isinstance(entity, models.Model):
+        model = type(entity)
+        iterable = False
+    elif hasattr(entity, '__iter__'):
+        if len(entity) > 0:
+            if isinstance(entity[0], models.Model):
+                model = type(entity[0])
+            else:
+                raise TypeError(error_message)
+        else:
+            model = None
+        iterable = True
+    else:
+        raise TypeError(error_message)
+
+    return (iterable, model)
 
 
 def _get_instance_groups(entity, hierarchy):

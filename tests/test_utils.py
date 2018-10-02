@@ -64,100 +64,6 @@ class GetStandardLanguageTest(TestCase):
         )
 
 
-class GetEntityDetailsTest(TestCase):
-    """Tests for `_get_entity_details`."""
-
-    def test_iterable(self):
-        create_samples(continent_names=['europe', 'asia'])
-
-        continents = list(Continent.objects.all())
-
-        self.assertEqual(
-            _get_entity_details(continents),
-            (True, Continent)
-        )
-
-    def test_queryset(self):
-        create_samples(continent_names=['europe', 'asia'])
-
-        continents = Continent.objects.all()
-
-        self.assertEqual(
-            _get_entity_details(continents),
-            (True, Continent)
-        )
-
-    def test_instance(self):
-        create_samples(continent_names=['europe'])
-
-        europe = Continent.objects.get(code='EU')
-
-        self.assertEqual(
-            _get_entity_details(europe),
-            (False, Continent)
-        )
-
-    def test_empty_iterable(self):
-        self.assertEqual(
-            _get_entity_details([]),
-            (True, None)
-        )
-
-    def test_empty_queryset(self):
-        continents = Continent.objects.none()
-
-        self.assertEqual(
-            _get_entity_details(continents),
-            (True, None)
-        )
-
-    def test_invalid_instance(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-
-        with self.assertRaises(TypeError) as error:
-            _get_entity_details(behzad)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('`Behzad` is neither a model instance nor an iterable' +
-             ' of model instances.')
-        )
-
-    def test_invalid_iterable(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        people = []
-        people.append(Person('Behzad'))
-        people.append(Person('Max'))
-
-        with self.assertRaises(TypeError) as error:
-            _get_entity_details(people)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('`[Behzad, Max]` is neither a model instance nor an iterable' +
-             ' of model instances.')
-        )
-
-
 class GetReverseRelationTest(TestCase):
     """Tests for `_get_reverse_relation`."""
 
@@ -471,6 +377,100 @@ class GetRelationsHierarchyTest(TestCase):
                     }
                 },
             }
+        )
+
+
+class GetEntityDetailsTest(TestCase):
+    """Tests for `_get_entity_details`."""
+
+    def test_iterable(self):
+        create_samples(continent_names=['europe', 'asia'])
+
+        continents = list(Continent.objects.all())
+
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, Continent)
+        )
+
+    def test_queryset(self):
+        create_samples(continent_names=['europe', 'asia'])
+
+        continents = Continent.objects.all()
+
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, Continent)
+        )
+
+    def test_instance(self):
+        create_samples(continent_names=['europe'])
+
+        europe = Continent.objects.get(code='EU')
+
+        self.assertEqual(
+            _get_entity_details(europe),
+            (False, Continent)
+        )
+
+    def test_empty_iterable(self):
+        self.assertEqual(
+            _get_entity_details([]),
+            (True, None)
+        )
+
+    def test_empty_queryset(self):
+        continents = Continent.objects.none()
+
+        self.assertEqual(
+            _get_entity_details(continents),
+            (True, None)
+        )
+
+    def test_invalid_instance(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+
+        with self.assertRaises(TypeError) as error:
+            _get_entity_details(behzad)
+
+        self.assertEqual(
+            error.exception.args[0],
+            ('`Behzad` is neither a model instance nor an iterable' +
+             ' of model instances.')
+        )
+
+    def test_invalid_iterable(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        people = []
+        people.append(Person('Behzad'))
+        people.append(Person('Max'))
+
+        with self.assertRaises(TypeError) as error:
+            _get_entity_details(people)
+
+        self.assertEqual(
+            error.exception.args[0],
+            ('`[Behzad, Max]` is neither a model instance nor an iterable' +
+             ' of model instances.')
         )
 
 
