@@ -2998,9 +2998,7 @@ class TranslationContextTest(TestCase):
             langs=['de']
         )
 
-        lvl_1 = ('countries',)
-
-        europe = Continent.objects.prefetch_related(*lvl_1).get(code='EU')
+        europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
             with TranslationContext(europe, 'countries__wrong') as translations:
@@ -4561,9 +4559,7 @@ class TranslationContextTest(TestCase):
             langs=['de']
         )
 
-        lvl_1 = ('countries',)
-
-        continents = Continent.objects.prefetch_related(*lvl_1)
+        continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
             with TranslationContext(continents, 'countries__wrong') as translations:
