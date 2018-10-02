@@ -767,6 +767,25 @@ class TranslationContext:
                 for (field, value) in obj._default_translatable_fields.items():
                     setattr(obj, field, value)
 
+    def create(self, lang=None):
+        lang = _get_standard_language(lang)
+        translations = []
+        for (ct_id, objs) in self.groups.items():
+            for (obj_id, obj) in objs.items():
+                for field in type(obj)._get_translatable_fields_names():
+                    text = getattr(obj, field, None)
+                    if text:
+                        translations.append(
+                            Translation(
+                                content_type_id=ct_id,
+                                object_id=obj_id,
+                                field=field,
+                                language=lang,
+                                text=text,
+                            )
+                        )
+        Translation.objects.bulk_create(translations)
+
     def apply(self, lang=None):
         """
         Apply the translations of a language to the context.
@@ -946,26 +965,15 @@ class TranslationContext:
               Köln  -- Correct
         """
         lang = _get_standard_language(lang)
-
-        self.reset()
-
         translations = _get_translations(self.groups, lang)
-
         for translation in translations:
             ct_id = translation.content_type.id
             obj_id = translation.object_id
             field = translation.field
             text = translation.text
-
             obj = self.groups[ct_id][obj_id]
-
             if field in [x for x in type(obj)._get_translatable_fields_names()]:
                 setattr(obj, field, text)
-
-    def delete(self, lang=None):
-        lang = _get_standard_language(lang)
-        translations = _get_translations(self.groups, lang)
-        translations.delete()
 
     def update(self, lang=None):
         """
@@ -1107,24 +1115,10 @@ class TranslationContext:
            Deutschland (changed)
            Köln (changed)
         """
-        lang = _get_standard_language(lang)
-
-        new_translations = []
-
-        for (ct_id, objs) in self.groups.items():
-            for (obj_id, obj) in objs.items():
-                for field in type(obj)._get_translatable_fields_names():
-                    text = getattr(obj, field, None)
-                    if text:
-                        new_translations.append(
-                            Translation(
-                                content_type_id=ct_id,
-                                object_id=obj_id,
-                                field=field,
-                                language=lang,
-                                text=text,
-                            )
-                        )
-
         self.delete(lang)
-        Translation.objects.bulk_create(new_translations)
+        self.create(lang)
+
+    def delete(self, lang=None):
+        lang = _get_standard_language(lang)
+        translations = _get_translations(self.groups, lang)
+        translations.delete()
