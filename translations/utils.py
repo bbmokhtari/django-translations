@@ -819,7 +819,7 @@ class TranslationContext:
            prefetch_related_objects(continents, *relations)
 
            with TranslationContext(continents, *relations) as translations:
-               # usage - create the translations in place
+               # usage - create the translations
                continents[0].name = 'Europa (changed)'
                continents[0].countries.all()[0].name = 'Deutschland (changed)'
                continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
@@ -861,7 +861,7 @@ class TranslationContext:
            continents = Continent.objects.prefetch_related(*relations)
 
            with TranslationContext(continents, *relations) as translations:
-               # usage - create the translations in place
+               # usage - create the translations
                continents[0].name = 'Europa (changed)'
                continents[0].countries.all()[0].name = 'Deutschland (changed)'
                continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
@@ -903,7 +903,7 @@ class TranslationContext:
            europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
            with TranslationContext(europe, *relations) as translations:
-               # usage - create the translations in place
+               # usage - create the translations
                europe.name = 'Europa (changed)'
                europe.countries.all()[0].name = 'Deutschland (changed)'
                europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
@@ -1192,7 +1192,7 @@ class TranslationContext:
                # prepare - set initial value for the context
                translations.read(lang='de')
 
-               # usage - update the translations in place
+               # usage - update the translations
                continents[0].name = 'Europa (changed)'
                continents[0].countries.all()[0].name = 'Deutschland (changed)'
                continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
@@ -1226,7 +1226,7 @@ class TranslationContext:
                # prepare - set initial value for the context
                translations.read(lang='de')
 
-               # usage - update the translations in place
+               # usage - update the translations
                continents[0].name = 'Europa (changed)'
                continents[0].countries.all()[0].name = 'Deutschland (changed)'
                continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
@@ -1260,7 +1260,7 @@ class TranslationContext:
                # prepare - set initial value for the context
                translations.read(lang='de')
 
-               # usage - update the translations in place
+               # usage - update the translations
                europe.name = 'Europa (changed)'
                europe.countries.all()[0].name = 'Deutschland (changed)'
                europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
@@ -1282,6 +1282,149 @@ class TranslationContext:
         self.create(lang)
 
     def delete(self, lang=None):
+        """
+        Collect the translations from the context and delete them from the
+        database.
+
+        Collects the translations of the entity and the specified relations
+        of it in a language using their translatable
+        :attr:`~translations.models.Translatable.TranslatableMeta.fields`
+        and deletes them from the database.
+
+        :param lang: The language to delete the translations in.
+            ``None`` means use the :term:`active language` code.
+        :type lang: str or None
+        :raise ValueError: If the language code is not included in
+            the :data:`~django.conf.settings.LANGUAGES` setting.
+
+        To delete the translations of a list of instances and the relations of it:
+
+        .. testsetup:: delete_0
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
+           )
+
+        .. testcode:: delete_0
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent
+           from translations.utils import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch a list of instances like before
+           continents = list(Continent.objects.all())
+           prefetch_related_objects(continents, *relations)
+
+           with TranslationContext(continents, *relations) as translations:
+               # usage - delete the translations
+               translations.delete(lang='de')
+
+               # output - use the list of instances like before
+               translations.read(lang='de')
+               print(continents[0])
+               print(continents[0].countries.all()[0])
+               print(continents[0].countries.all()[0].cities.all()[0])
+
+        .. testoutput:: delete_0
+
+           Europe
+           Germany
+           Cologne
+
+        To delete the translations of a queryset and the relations of it:
+
+        .. testsetup:: delete_1
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
+           )
+
+        .. testcode:: delete_1
+
+           from sample.models import Continent
+           from translations.utils import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch a queryset like before
+           continents = Continent.objects.prefetch_related(*relations)
+
+           with TranslationContext(continents, *relations) as translations:
+               # usage - delete the translations
+               translations.delete(lang='de')
+
+               # output - use the queryset like before
+               translations.read(lang='de')
+               print(continents[0])
+               print(continents[0].countries.all()[0])
+               print(continents[0].countries.all()[0].cities.all()[0])
+
+        .. testoutput:: delete_1
+
+           Europe
+           Germany
+           Cologne
+
+        To delete the translations of an instance and the relations of it:
+
+        .. testsetup:: delete_2
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
+           )
+
+        .. testcode:: delete_2
+
+           from sample.models import Continent
+           from translations.utils import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch an instance like before
+           europe = Continent.objects.prefetch_related(*relations).get(code='EU')
+
+           with TranslationContext(europe, *relations) as translations:
+               # usage - delete the translations
+               translations.delete(lang='de')
+
+               # output - use the list of instances like before
+               translations.read(lang='de')
+               print(europe)
+               print(europe.countries.all()[0])
+               print(europe.countries.all()[0].cities.all()[0])
+
+        .. testoutput:: delete_2
+
+           Europe
+           Germany
+           Cologne
+        """
         lang = _get_standard_language(lang)
         translations = _get_translations(self.groups, lang)
         translations.delete()
