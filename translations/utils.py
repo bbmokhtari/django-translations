@@ -788,10 +788,11 @@ class TranslationContext:
 
     def read(self, lang=None):
         """
-        Read the translations and apply them on the context.
+        Read the translations from the database and apply them on the context.
 
         Reads the translations of the entity and the specified relations
-        of it in a language and applies them on their translatable
+        of it in a language from the database and applies them on their
+        translatable
         :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
 
         :param lang: The language to fetch the translations in.
@@ -977,12 +978,13 @@ class TranslationContext:
 
     def update(self, lang=None):
         """
-        Update the translations from the context and write them.
+        Update the translations from the context and write them to the
+        database.
 
         Updates the translations of the entity and the specified relations
         of it in a language from their translatable
         :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-        and writes them.
+        and writes them to the database.
 
         :param lang: The language to update the translations in.
             ``None`` means use the :term:`active language` code.
