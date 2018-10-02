@@ -20,6 +20,12 @@ Utilities
 
       .. automethod:: __init__
 
-      .. automethod:: apply
+      .. automethod:: reset
+
+      .. automethod:: create
+
+      .. automethod:: read
 
       .. automethod:: update
+
+      .. automethod:: delete
