@@ -713,7 +713,7 @@ class TranslationContext:
     """
     A context manager which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`apply` to read the translations from
+    Provides functionalities like :meth:`read` to read the translations from
     the database and apply them to the context, and :meth:`update` to update
     the translations from the context and write them on the database, etc.
 
@@ -786,11 +786,11 @@ class TranslationContext:
                         )
         Translation.objects.bulk_create(translations)
 
-    def apply(self, lang=None):
+    def read(self, lang=None):
         """
-        Apply the translations of a language to the context.
+        Read the translations and apply them on the context.
 
-        Fetches the translations of the entity and the specified relations
+        Reads the translations of the entity and the specified relations
         of it in a language and applies them on their translatable
         :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
 
@@ -800,7 +800,7 @@ class TranslationContext:
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
 
-        .. testsetup:: apply_translations
+        .. testsetup:: read
 
            from tests.sample import create_samples
 
@@ -821,9 +821,9 @@ class TranslationContext:
            the translation of the field falls back to the value of the field
            in the instance.
 
-        To apply the translations of a list of instances and the relations of it:
+        To read the translations of a list of instances and the relations of it:
 
-        .. testcode:: apply_translations
+        .. testcode:: read
 
            from django.db.models import prefetch_related_objects
            from sample.models import Continent
@@ -836,23 +836,23 @@ class TranslationContext:
            prefetch_related_objects(continents, *relations)
 
            with TranslationContext(continents, *relations) as translations:
-               # usage - apply the translations in place
-               translations.apply(lang='de')
+               # usage - read the translations
+               translations.read(lang='de')
 
                # output - use the list of instances like before
                print(continents[0])
                print(continents[0].countries.all()[0])
                print(continents[0].countries.all()[0].cities.all()[0])
 
-        .. testoutput:: apply_translations
+        .. testoutput:: read
 
            Europa
            Deutschland
            Köln
 
-        To apply the translations of a queryset and the relations of it:
+        To read the translations of a queryset and the relations of it:
 
-        .. testcode:: apply_translations
+        .. testcode:: read
 
            from sample.models import Continent
            from translations.utils import TranslationContext
@@ -863,23 +863,23 @@ class TranslationContext:
            continents = Continent.objects.prefetch_related(*relations)
 
            with TranslationContext(continents, *relations) as translations:
-               # usage - apply the translations in place
-               translations.apply(lang='de')
+               # usage - read the translations
+               translations.read(lang='de')
 
                # output - use the queryset like before
                print(continents[0])
                print(continents[0].countries.all()[0])
                print(continents[0].countries.all()[0].cities.all()[0])
 
-        .. testoutput:: apply_translations
+        .. testoutput:: read
 
            Europa
            Deutschland
            Köln
 
-        To apply the translations of an instance and the relations of it:
+        To read the translations of an instance and the relations of it:
 
-        .. testcode:: apply_translations
+        .. testcode:: read
 
            from sample.models import Continent
            from translations.utils import TranslationContext
@@ -890,15 +890,15 @@ class TranslationContext:
            europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
            with TranslationContext(europe, *relations) as translations:
-               # usage - apply the translations in place
-               translations.apply(lang='de')
+               # usage - read the translations
+               translations.read(lang='de')
 
                # output - use the instance like before
                print(europe)
                print(europe.countries.all()[0])
                print(europe.countries.all()[0].cities.all()[0])
 
-        .. testoutput:: apply_translations
+        .. testoutput:: read
 
            Europa
            Deutschland
@@ -906,10 +906,10 @@ class TranslationContext:
 
         .. warning::
 
-           Filtering any queryset after applying the translations will cause
+           Filtering any queryset after reading the translations will cause
            the translations of that queryset to be reset.
 
-           .. testcode:: apply_translations
+           .. testcode:: read
 
               from sample.models import Continent
               from translations.utils import TranslationContext
@@ -919,23 +919,23 @@ class TranslationContext:
               europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
               with TranslationContext(europe, *relations) as translations:
-                  translations.apply(lang='de')
+                  translations.read(lang='de')
 
                   print(europe.name)
                   print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
                   print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
 
-           .. testoutput:: apply_translations
+           .. testoutput:: read
 
               Europa
               Germany  -- Wrong
               Cologne  -- Wrong
 
-           The solution is to do the filtering before applying the
+           The solution is to do the filtering before reading the
            translations. To do this on the relations use
            :class:`~django.db.models.Prefetch`.
 
-           .. testcode:: apply_translations
+           .. testcode:: read
 
               from django.db.models import Prefetch
               from sample.models import Continent, Country
@@ -952,13 +952,13 @@ class TranslationContext:
               ).get(code='EU')
 
               with TranslationContext(europe, *relations) as translations:
-                  translations.apply(lang='de')
+                  translations.read(lang='de')
 
                   print(europe.name)
                   print(europe.countries.all()[0].name + '  -- Correct')
                   print(europe.countries.all()[0].cities.all()[0].name + '  -- Correct')
 
-           .. testoutput:: apply_translations
+           .. testoutput:: read
 
               Europa
               Deutschland  -- Correct
@@ -979,9 +979,8 @@ class TranslationContext:
         """
         Update the translations of a language from the context.
 
-        Deletes the old translations of the entity and the specified
-        relations of it in a language and creates new translations out of
-        their translatable
+        Updates the translations of the entity and the specified relations
+        of it in a language using their translatable
         :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
 
         :param lang: The language to update the translations in.
@@ -990,7 +989,7 @@ class TranslationContext:
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
 
-        .. testsetup:: update_translations
+        .. testsetup:: update
 
            from tests.sample import create_samples
 
@@ -1013,7 +1012,7 @@ class TranslationContext:
 
         To update the translations of a list of instances and the relations of it:
 
-        .. testcode:: update_translations
+        .. testcode:: update
 
            from django.db.models import prefetch_related_objects
            from sample.models import Continent
@@ -1027,7 +1026,7 @@ class TranslationContext:
 
            with TranslationContext(continents, *relations) as translations:
                # prepare - set initial value for the context
-               translations.apply(lang='de')
+               translations.read(lang='de')
 
                # usage - update the translations in place
                continents[0].name = 'Europa (changed)'
@@ -1036,12 +1035,12 @@ class TranslationContext:
                translations.update(lang='de')
 
                # output - use the list of instances like before
-               translations.apply(lang='de')
+               translations.read(lang='de')
                print(continents[0])
                print(continents[0].countries.all()[0])
                print(continents[0].countries.all()[0].cities.all()[0])
 
-        .. testoutput:: update_translations
+        .. testoutput:: update
 
            Europa (changed)
            Deutschland (changed)
@@ -1049,7 +1048,7 @@ class TranslationContext:
 
         To update the translations of a queryset and the relations of it:
 
-        .. testcode:: update_translations
+        .. testcode:: update
 
            from sample.models import Continent
            from translations.utils import TranslationContext
@@ -1061,7 +1060,7 @@ class TranslationContext:
 
            with TranslationContext(continents, *relations) as translations:
                # prepare - set initial value for the context
-               translations.apply(lang='de')
+               translations.read(lang='de')
 
                # usage - update the translations in place
                continents[0].name = 'Europa (changed)'
@@ -1070,12 +1069,12 @@ class TranslationContext:
                translations.update(lang='de')
 
                # output - use the queryset like before
-               translations.apply(lang='de')
+               translations.read(lang='de')
                print(continents[0])
                print(continents[0].countries.all()[0])
                print(continents[0].countries.all()[0].cities.all()[0])
 
-        .. testoutput:: update_translations
+        .. testoutput:: update
 
            Europa (changed)
            Deutschland (changed)
@@ -1083,7 +1082,7 @@ class TranslationContext:
 
         To update the translations of an instance and the relations of it:
 
-        .. testcode:: update_translations
+        .. testcode:: update
 
            from sample.models import Continent
            from translations.utils import TranslationContext
@@ -1095,7 +1094,7 @@ class TranslationContext:
 
            with TranslationContext(europe, *relations) as translations:
                # prepare - set initial value for the context
-               translations.apply(lang='de')
+               translations.read(lang='de')
 
                # usage - update the translations in place
                europe.name = 'Europa (changed)'
@@ -1104,12 +1103,12 @@ class TranslationContext:
                translations.update(lang='de')
 
                # output - use the list of instances like before
-               translations.apply(lang='de')
+               translations.read(lang='de')
                print(europe)
                print(europe.countries.all()[0])
                print(europe.countries.all()[0].cities.all()[0])
 
-        .. testoutput:: update_translations
+        .. testoutput:: update
 
            Europa (changed)
            Deutschland (changed)
