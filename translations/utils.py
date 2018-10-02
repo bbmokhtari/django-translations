@@ -31,6 +31,8 @@ from translations.models import Translation, Translatable
 
 __docformat__ = 'restructuredtext'
 
+_standard_language_cache = {}
+
 
 def _get_standard_language(lang=None):
     """
@@ -136,7 +138,15 @@ def _get_standard_language(lang=None):
 
        Language code: de
     """
+
     lang = lang if lang else get_language()
+
+    # check cache first
+    try:
+        return _standard_language_cache[lang]
+    except KeyError:
+        pass
+
     code = lang.split('-')[0]
 
     lang_exists = False
@@ -152,14 +162,15 @@ def _get_standard_language(lang=None):
             code_exists = True
 
     if lang_exists:
-        return lang
+        _standard_language_cache[lang] = lang
     elif code_exists:
-        return code
+        _standard_language_cache[lang] = code
     else:
         raise ValueError(
             'The language code `{}` is not supported.'.format(lang)
         )
 
+    return _standard_language_cache[lang]
 
 def _get_entity_details(entity):
     """
