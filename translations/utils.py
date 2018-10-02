@@ -754,7 +754,6 @@ class TranslationContext:
         """
         hierarchy = _get_relations_hierarchy(*relations)
         self.groups = _get_instance_groups(entity, hierarchy)
-        self.are_fields_reset = True
 
     def __enter__(self):
         return self
@@ -767,7 +766,6 @@ class TranslationContext:
             for (obj_id, obj) in objs.items():
                 for (field, value) in obj._default_translatable_fields.items():
                     setattr(obj, field, value)
-        self.are_fields_reset = True
 
     def apply(self, lang=None):
         """
@@ -949,8 +947,7 @@ class TranslationContext:
         """
         lang = _get_standard_language(lang)
 
-        if not self.are_fields_reset:
-            self.reset()
+        self.reset()
 
         translations = _get_translations(self.groups, lang)
 
@@ -964,8 +961,6 @@ class TranslationContext:
 
             if field in [x for x in type(obj)._get_translatable_fields_names()]:
                 setattr(obj, field, text)
-
-        self.are_fields_reset = False
 
     def delete(self, lang=None):
         lang = _get_standard_language(lang)
@@ -1133,4 +1128,3 @@ class TranslationContext:
 
         self.delete(lang)
         Translation.objects.bulk_create(new_translations)
-        self.are_fields_reset = False
