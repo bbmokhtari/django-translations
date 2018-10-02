@@ -178,6 +178,15 @@ def _get_entity_details(entity):
     :raise TypeError: If the entity is neither a model instance nor
         an iterable of model instances.
 
+    .. note::
+
+       If the entity is an empty iterable it returns the model as ``None``,
+       even if the iterable is an empty queryset (which the model of can be
+       retrieved). It's because the other parts of the code first check to see
+       if the model in the details is ``None``, in that case they skip the
+       translation process all together (because there's nothing to
+       translate).
+
     .. testsetup:: _get_entity_details
 
        from tests.sample import create_samples
@@ -191,15 +200,6 @@ def _get_entity_details(entity):
            city_fields=['name', 'denonym'],
            langs=['de']
        )
-
-    .. note::
-
-       If the entity is an empty iterable it returns the model as ``None``,
-       even if the iterable is an empty queryset (which the model of can be
-       retrieved). It's because the other parts of the code first check to see
-       if the model in the details is ``None``, in that case they skip the
-       translation process all together (because there's nothing to
-       translate).
 
     To get the details of a list of instances:
 
@@ -800,6 +800,13 @@ class TranslationContext:
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
 
+        .. note::
+
+           If there is no translation for a field in translatable
+           :attr:`~translations.models.Translatable.TranslatableMeta.fields`,
+           the translation of the field falls back to the value of the field
+           in the instance.
+
         .. testsetup:: read
 
            from tests.sample import create_samples
@@ -813,13 +820,6 @@ class TranslationContext:
                city_fields=['name', 'denonym'],
                langs=['de']
            )
-
-        .. note::
-
-           If there is no translation for a field in translatable
-           :attr:`~translations.models.Translatable.TranslatableMeta.fields`,
-           the translation of the field falls back to the value of the field
-           in the instance.
 
         To read the translations of a list of instances and the relations of it:
 
@@ -990,6 +990,13 @@ class TranslationContext:
         :raise ValueError: If the language code is not included in
             the :data:`~django.conf.settings.LANGUAGES` setting.
 
+        .. note::
+
+           The translations get updated based on the translatable
+           :attr:`~translations.models.Translatable.TranslatableMeta.fields`
+           even if they are not changed in the context, so they better have a
+           proper initial value.
+
         .. testsetup:: update
 
            from tests.sample import create_samples
@@ -1003,13 +1010,6 @@ class TranslationContext:
                city_fields=['name', 'denonym'],
                langs=['de']
            )
-
-        .. note::
-
-           The translations get updated based on the translatable
-           :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-           even if they are not changed in the context, so they better have a
-           proper initial value.
 
         To update the translations of a list of instances and the relations of it:
 
