@@ -768,6 +768,159 @@ class TranslationContext:
                     setattr(obj, field, value)
 
     def create(self, lang=None):
+        """
+        Create the translations from the context and write them to the
+        database.
+
+        Creates the translations of the entity and the specified relations
+        of it in a language from their translatable
+        :attr:`~translations.models.Translatable.TranslatableMeta.fields`
+        and writes them to the database.
+
+        :param lang: The language to create the translations in.
+            ``None`` means use the :term:`active language` code.
+        :type lang: str or None
+        :raise ValueError: If the language code is not included in
+            the :data:`~django.conf.settings.LANGUAGES` setting.
+        :raise ~django.db.utils.IntegrityError: If duplicate translations
+            are created for a specific field of a unique instance in a
+            language.
+
+        .. note::
+
+           The translations get created based on the translatable
+           :attr:`~translations.models.Translatable.TranslatableMeta.fields`
+           even if they are not changed in the context, so they better have a
+           proper initial value.
+
+        To create the translations of a list of instances and the relations of it:
+
+        .. testsetup:: create_0
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               langs=['de']
+           )
+
+        .. testcode:: create_0
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent
+           from translations.utils import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch a list of instances like before
+           continents = list(Continent.objects.all())
+           prefetch_related_objects(continents, *relations)
+
+           with TranslationContext(continents, *relations) as translations:
+               # usage - create the translations in place
+               continents[0].name = 'Europa (changed)'
+               continents[0].countries.all()[0].name = 'Deutschland (changed)'
+               continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+               translations.create(lang='de')
+
+               # output - use the list of instances like before
+               translations.read(lang='de')
+               print(continents[0])
+               print(continents[0].countries.all()[0])
+               print(continents[0].countries.all()[0].cities.all()[0])
+
+        .. testoutput:: create_0
+
+           Europa (changed)
+           Deutschland (changed)
+           Köln (changed)
+
+        To create the translations of a queryset and the relations of it:
+
+        .. testsetup:: create_1
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               langs=['de']
+           )
+
+        .. testcode:: create_1
+
+           from sample.models import Continent
+           from translations.utils import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch a queryset like before
+           continents = Continent.objects.prefetch_related(*relations)
+
+           with TranslationContext(continents, *relations) as translations:
+               # usage - create the translations in place
+               continents[0].name = 'Europa (changed)'
+               continents[0].countries.all()[0].name = 'Deutschland (changed)'
+               continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+               translations.create(lang='de')
+
+               # output - use the queryset like before
+               translations.read(lang='de')
+               print(continents[0])
+               print(continents[0].countries.all()[0])
+               print(continents[0].countries.all()[0].cities.all()[0])
+
+        .. testoutput:: create_1
+
+           Europa (changed)
+           Deutschland (changed)
+           Köln (changed)
+
+        To create the translations of an instance and the relations of it:
+
+        .. testsetup:: create_2
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               langs=['de']
+           )
+
+        .. testcode:: create_2
+
+           from sample.models import Continent
+           from translations.utils import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch an instance like before
+           europe = Continent.objects.prefetch_related(*relations).get(code='EU')
+
+           with TranslationContext(europe, *relations) as translations:
+               # usage - create the translations in place
+               europe.name = 'Europa (changed)'
+               europe.countries.all()[0].name = 'Deutschland (changed)'
+               europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+               translations.create(lang='de')
+
+               # output - use the list of instances like before
+               translations.read(lang='de')
+               print(europe)
+               print(europe.countries.all()[0])
+               print(europe.countries.all()[0].cities.all()[0])
+
+        .. testoutput:: create_2
+
+           Europa (changed)
+           Deutschland (changed)
+           Köln (changed)
+        """
         lang = _get_standard_language(lang)
         translations = []
         for (ct_id, objs) in self.groups.items():
