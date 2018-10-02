@@ -1152,6 +1152,14 @@ class TranslationContext:
            even if they are not changed in the context, so they better have a
            proper initial value.
 
+        .. note::
+
+           Since :meth:`update`, first deletes the old translations and then
+           creates the new translations, it may be a good idea to use
+           :func:`atomic transactions <django.db.transaction.atomic>` in order
+           to not lose old translations in case :meth:`update` throws an
+           exception.
+
         .. testsetup:: update
 
            from tests.sample import create_samples
