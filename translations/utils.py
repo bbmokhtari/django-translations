@@ -713,9 +713,9 @@ class TranslationContext:
     """
     A context manager which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`read` to read the translations from
-    the database and apply them to the context, and :meth:`update` to update
-    the translations from the context and write them on the database, etc.
+    Provides CRUD functionalities like :meth:`create`, :meth:`read`,
+    :meth:`update` and :meth:`delete` to work with the translations and also
+    some other functionalities to manage the context.
 
     .. note::
 
