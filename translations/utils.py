@@ -980,8 +980,9 @@ class TranslationContext:
         Update the translations from the context and write them.
 
         Updates the translations of the entity and the specified relations
-        of it in a language using their translatable
-        :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
+        of it in a language from their translatable
+        :attr:`~translations.models.Translatable.TranslatableMeta.fields`
+        and writes them.
 
         :param lang: The language to update the translations in.
             ``None`` means use the :term:`active language` code.
