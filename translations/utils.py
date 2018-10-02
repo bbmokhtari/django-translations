@@ -790,7 +790,7 @@ class TranslationContext:
 
            The translations get created based on the translatable
            :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-           even if they are not changed in the context, so they better have a
+           even if they are not set in the context, so they better have a
            proper initial value.
 
         To create the translations of a list of instances and the relations of it:
