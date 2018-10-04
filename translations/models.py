@@ -15,6 +15,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey, \
     GenericRelation
 from django.utils.translation import ugettext_lazy as _
 
+
 __docformat__ = 'restructuredtext'
 
 
@@ -45,9 +46,6 @@ class Translation(models.Model):
        Try **not** to work with the :class:`~translations.models.Translation`
        model directly unless you *really* have to and you know what you're
        doing.
-
-       Instead use the functionalities provided in
-       the :class:`~translations.models.Translatable` model.
 
     To create the translation of a field manually:
 
@@ -81,8 +79,6 @@ class Translation(models.Model):
 
        Europe: Europa
     """
-
-    objects = models.Manager()
 
     content_type = models.ForeignKey(
         verbose_name=_('content type'),
@@ -132,14 +128,8 @@ class Translatable(models.Model):
     """
     An abstract model which provides custom translation functionalities.
 
-    Provides functionalities like :meth:`apply_translations` to read the
-    translations from the database and apply them on an instance, and
-    :meth:`update_translations` to update the translations from an instance
-    and write them on the database.
-
-    It changes the default manager of the model to
-    :class:`~translations.querysets.TranslatableQuerySet` in order to provide
-    custom translation functionalities in the querysets.
+    Marks the subclasses as translatable and creates some default translation
+    configurations for them based on their structure, fields and etc.
 
     It also adds the :attr:`translations` relation to the model, just in case
     any one wants to work with the translations of an instance manually.
