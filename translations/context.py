@@ -119,9 +119,9 @@ class TranslationContext:
 
            with TranslationContext(continents, *relations) as translations:
                # usage - create the translations
-               continents[0].name = 'Europa (changed)'
-               continents[0].countries.all()[0].name = 'Deutschland (changed)'
-               continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+               continents[0].name = 'Europa'
+               continents[0].countries.all()[0].name = 'Deutschland'
+               continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
                translations.create(lang='de')
 
                # output - use the list of instances like before
@@ -132,9 +132,9 @@ class TranslationContext:
 
         .. testoutput:: create_0
 
-           Europa (changed)
-           Deutschland (changed)
-           Köln (changed)
+           Europa
+           Deutschland
+           Köln
 
         To create the translations of a queryset and the relations of it:
 
@@ -161,9 +161,9 @@ class TranslationContext:
 
            with TranslationContext(continents, *relations) as translations:
                # usage - create the translations
-               continents[0].name = 'Europa (changed)'
-               continents[0].countries.all()[0].name = 'Deutschland (changed)'
-               continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+               continents[0].name = 'Europa'
+               continents[0].countries.all()[0].name = 'Deutschland'
+               continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
                translations.create(lang='de')
 
                # output - use the queryset like before
@@ -174,9 +174,9 @@ class TranslationContext:
 
         .. testoutput:: create_1
 
-           Europa (changed)
-           Deutschland (changed)
-           Köln (changed)
+           Europa
+           Deutschland
+           Köln
 
         To create the translations of an instance and the relations of it:
 
@@ -203,9 +203,9 @@ class TranslationContext:
 
            with TranslationContext(europe, *relations) as translations:
                # usage - create the translations
-               europe.name = 'Europa (changed)'
-               europe.countries.all()[0].name = 'Deutschland (changed)'
-               europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+               europe.name = 'Europa'
+               europe.countries.all()[0].name = 'Deutschland'
+               europe.countries.all()[0].cities.all()[0].name = 'Köln'
                translations.create(lang='de')
 
                # output - use the list of instances like before
@@ -216,9 +216,9 @@ class TranslationContext:
 
         .. testoutput:: create_2
 
-           Europa (changed)
-           Deutschland (changed)
-           Köln (changed)
+           Europa
+           Deutschland
+           Köln
         """
         lang = _get_standard_language(lang)
         translations = []
