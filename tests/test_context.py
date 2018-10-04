@@ -3,7 +3,7 @@ from django.core.exceptions import FieldDoesNotExist
 
 from translations.context import TranslationContext
 
-from sample.models import Continent, Country, City
+from sample.models import Continent
 
 from tests.sample import create_samples
 
@@ -777,7 +777,8 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'countries__wrong') as translations:
+            with TranslationContext(europe, 'countries__wrong') \
+                    as translations:
                 translations.read()
 
         self.assertEqual(
@@ -2018,7 +2019,8 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'countries__wrong') as translations:
+            with TranslationContext(continents, 'countries__wrong') \
+                    as translations:
                 translations.read()
 
         self.assertEqual(
@@ -3001,7 +3003,8 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'countries__wrong') as translations:
+            with TranslationContext(europe, 'countries__wrong') \
+                    as translations:
                 translations.update()
 
         self.assertEqual(
@@ -4562,7 +4565,8 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'countries__wrong') as translations:
+            with TranslationContext(continents, 'countries__wrong') \
+                    as translations:
                 translations.update()
 
         self.assertEqual(

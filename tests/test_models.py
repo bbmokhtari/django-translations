@@ -1,7 +1,6 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
-from django.core.exceptions import FieldDoesNotExist
 
 from translations.models import Translation
 
