@@ -8,8 +8,6 @@ Context
 
       .. automethod:: __init__
 
-      .. automethod:: reset
-
       .. automethod:: create
 
       .. automethod:: read
@@ -17,3 +15,5 @@ Context
       .. automethod:: update
 
       .. automethod:: delete
+
+      .. automethod:: reset
