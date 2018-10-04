@@ -8,7 +8,7 @@ following members:
 
 from django import forms
 
-from .models import Translation
+from translations.models import Translation
 
 
 __docformat__ = 'restructuredtext'

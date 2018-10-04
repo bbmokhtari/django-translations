@@ -13,8 +13,8 @@ following members:
 from django.contrib.contenttypes.admin import GenericStackedInline
 from django.contrib import admin
 
-from .models import Translation
-from .forms import generate_translation_form
+from translations.models import Translation
+from translations.forms import generate_translation_form
 
 
 __docformat__ = 'restructuredtext'
