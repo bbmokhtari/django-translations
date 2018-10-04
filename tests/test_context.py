@@ -11,6 +11,132 @@ from tests.sample import create_samples
 class TranslationContextTest(TestCase):
     """Tests for `TranslationContext`."""
 
+    def test_init_instance_invalid_entity(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        behzad = Person('Behzad')
+
+        with self.assertRaises(TypeError) as error:
+            with TranslationContext(behzad) as translations:
+                pass
+
+        self.assertEqual(
+            error.exception.args[0],
+            ('`Behzad` is neither a model instance nor an iterable of' +
+             ' model instances.')
+        )
+
+    def test_init_instance_invalid_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            with TranslationContext(europe, 'wrong') as translations:
+                pass
+
+        self.assertEqual(
+            error.exception.args[0],
+            "Continent has no field named 'wrong'"
+        )
+
+    def test_init_instance_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        europe = Continent.objects.get(code='EU')
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            with TranslationContext(europe, 'countries__wrong') \
+                    as translations:
+                pass
+
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
+    def test_init_queryset_invalid_entity(self):
+        class Person:
+            def __init__(self, name):
+                self.name = name
+
+            def __str__(self):
+                return self.name
+
+            def __repr__(self):
+                return self.name
+
+        people = []
+        people.append(Person('Behzad'))
+        people.append(Person('Max'))
+
+        with self.assertRaises(TypeError) as error:
+            with TranslationContext(people) as translations:
+                pass
+
+        self.assertEqual(
+            error.exception.args[0],
+            ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
+             ' model instances.')
+        )
+
+    def test_init_queryset_invalid_simple_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        continents = Continent.objects.all()
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            with TranslationContext(continents, 'wrong') as translations:
+                pass
+
+        self.assertEqual(
+            error.exception.args[0],
+            "Continent has no field named 'wrong'"
+        )
+
+    def test_init_queryset_invalid_nested_relation(self):
+        create_samples(
+            continent_names=['europe'],
+            country_names=['germany'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            langs=['de']
+        )
+
+        continents = Continent.objects.all()
+
+        with self.assertRaises(FieldDoesNotExist) as error:
+            with TranslationContext(continents, 'countries__wrong') \
+                    as translations:
+                pass
+
+        self.assertEqual(
+            error.exception.args[0],
+            "Country has no field named 'wrong'"
+        )
+
     @override_settings(LANGUAGE_CODE='de')
     def test_read_instance_level_0_relation_no_lang(self):
         create_samples(
@@ -722,68 +848,6 @@ class TranslationContextTest(TestCase):
         self.assertEqual(
             cologne.denonym,
             'Kölner'
-        )
-
-    def test_read_instance_invalid_entity(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-
-        with self.assertRaises(TypeError) as error:
-            with TranslationContext(behzad) as translations:
-                translations.read()
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('`Behzad` is neither a model instance nor an iterable of' +
-             ' model instances.')
-        )
-
-    def test_read_instance_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'wrong') as translations:
-                translations.read()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_read_instance_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'countries__wrong') \
-                    as translations:
-                translations.read()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Country has no field named 'wrong'"
         )
 
     def test_read_instance_invalid_lang(self):
@@ -1964,70 +2028,6 @@ class TranslationContextTest(TestCase):
             'Seüler'
         )
 
-    def test_read_queryset_invalid_entity(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        people = []
-        people.append(Person('Behzad'))
-        people.append(Person('Max'))
-
-        with self.assertRaises(TypeError) as error:
-            with TranslationContext(people) as translations:
-                translations.read()
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
-             ' model instances.')
-        )
-
-    def test_read_queryset_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'wrong') as translations:
-                translations.read()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_read_queryset_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'countries__wrong') \
-                    as translations:
-                translations.read()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Country has no field named 'wrong'"
-        )
-
     def test_read_queryset_invalid_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2948,68 +2948,6 @@ class TranslationContextTest(TestCase):
         self.assertEqual(
             cologne.denonym,
             'Cologne Denonym'
-        )
-
-    def test_update_instance_invalid_entity(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        behzad = Person('Behzad')
-
-        with self.assertRaises(TypeError) as error:
-            with TranslationContext(behzad) as translations:
-                translations.update(behzad)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('`Behzad` is neither a model instance nor an iterable of' +
-             ' model instances.')
-        )
-
-    def test_update_instance_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'wrong') as translations:
-                translations.update()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_update_instance_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'countries__wrong') \
-                    as translations:
-                translations.update()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Country has no field named 'wrong'"
         )
 
     def test_update_instance_invalid_lang(self):
@@ -4508,70 +4446,6 @@ class TranslationContextTest(TestCase):
         self.assertEqual(
             seoul.denonym,
             'Seoul Denonym'
-        )
-
-    def test_update_queryset_invalid_entity(self):
-        class Person:
-            def __init__(self, name):
-                self.name = name
-
-            def __str__(self):
-                return self.name
-
-            def __repr__(self):
-                return self.name
-
-        people = []
-        people.append(Person('Behzad'))
-        people.append(Person('Max'))
-
-        with self.assertRaises(TypeError) as error:
-            with TranslationContext(people) as translations:
-                translations.update(people)
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
-             ' model instances.')
-        )
-
-    def test_update_queryset_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'wrong') as translations:
-                translations.update()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_update_queryset_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'countries__wrong') \
-                    as translations:
-                translations.update()
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Country has no field named 'wrong'"
         )
 
     def test_update_queryset_invalid_lang(self):
