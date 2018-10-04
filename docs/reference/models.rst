@@ -6,7 +6,7 @@ Models
 
 This module contains the models for the Translations app.
 
-.. class:: translations.models.Translation
+.. class:: Translation
 
    The model which represents the translations.
 
@@ -66,7 +66,7 @@ This module contains the models for the Translations app.
 
       Europe: Europa
 
-.. class:: translations.models.Translatable
+.. class:: Translatable
 
    An abstract model which provides custom translation functionalities.
 
