@@ -7,7 +7,10 @@ class TranslationsConfig(AppConfig):
     verbose_name = _('translations')
 
     def ready(self):
-        # cache all content types at the start
-        from django.contrib.contenttypes.models import ContentType
-        models = [ct.model_class() for ct in ContentType.objects.all()]
-        ContentType.objects.get_for_models(*models)
+        try:
+            # cache all content types at the start
+            from django.contrib.contenttypes.models import ContentType
+            models = [ct.model_class() for ct in ContentType.objects.all()]
+            ContentType.objects.get_for_models(*models)
+        except Exception:
+            pass
