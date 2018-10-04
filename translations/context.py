@@ -66,122 +66,6 @@ class TranslationContext:
     def __exit__(self, exc_type, exc_value, traceback):
         pass
 
-    def reset(self):
-        """
-        Reset the translations of the context to the original values.
-
-        Resets the translations of the entity and the specified relations
-        of it on their translatable
-        :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
-
-        .. testsetup:: reset
-
-           from tests.sample import create_samples
-
-           create_samples(
-               continent_names=['europe', 'asia'],
-               country_names=['germany', 'south korea'],
-               city_names=['cologne', 'seoul'],
-               continent_fields=['name', 'denonym'],
-               country_fields=['name', 'denonym'],
-               city_fields=['name', 'denonym'],
-               langs=['de']
-           )
-
-        To reset the translations of a list of instances and the relations of it:
-
-        .. testcode:: reset
-
-           from django.db.models import prefetch_related_objects
-           from sample.models import Continent
-           from translations.context import TranslationContext
-
-           relations = ('countries', 'countries__cities',)
-
-           # input - fetch a list of instances like before
-           continents = list(Continent.objects.all())
-           prefetch_related_objects(continents, *relations)
-
-           with TranslationContext(continents, *relations) as translations:
-               translations.read(lang='de')
-  
-               # usage - reset the translations
-               translations.reset()
-
-               # output - use the list of instances like before
-               print(continents[0])
-               print(continents[0].countries.all()[0])
-               print(continents[0].countries.all()[0].cities.all()[0])
-
-        .. testoutput:: reset
-
-           Europe
-           Germany
-           Cologne
-
-        To reset the translations of a queryset and the relations of it:
-
-        .. testcode:: reset
-
-           from sample.models import Continent
-           from translations.context import TranslationContext
-
-           relations = ('countries', 'countries__cities',)
-
-           # input - fetch a queryset like before
-           continents = Continent.objects.prefetch_related(*relations)
-
-           with TranslationContext(continents, *relations) as translations:
-               translations.read(lang='de')
-
-               # usage - reset the translations
-               translations.reset()
-
-               # output - use the queryset like before
-               print(continents[0])
-               print(continents[0].countries.all()[0])
-               print(continents[0].countries.all()[0].cities.all()[0])
-
-        .. testoutput:: reset
-
-           Europe
-           Germany
-           Cologne
-
-        To reset the translations of an instance and the relations of it:
-
-        .. testcode:: reset
-
-           from sample.models import Continent
-           from translations.context import TranslationContext
-
-           relations = ('countries', 'countries__cities',)
-
-           # input - fetch an instance like before
-           europe = Continent.objects.prefetch_related(*relations).get(code='EU')
-
-           with TranslationContext(europe, *relations) as translations:
-               translations.read(lang='de')
-
-               # usage - reset the translations
-               translations.reset()
-
-               # output - use the instance like before
-               print(europe)
-               print(europe.countries.all()[0])
-               print(europe.countries.all()[0].cities.all()[0])
-
-        .. testoutput:: reset
-
-           Europe
-           Germany
-           Cologne
-        """
-        for (ct_id, objs) in self.groups.items():
-            for (obj_id, obj) in objs.items():
-                for (field, value) in obj._default_translatable_fields.items():
-                    setattr(obj, field, value)
-
     def create(self, lang=None):
         """
         Create the translations from the context and write them to the
@@ -843,3 +727,119 @@ class TranslationContext:
         lang = _get_standard_language(lang)
         translations = _get_translations(self.groups, lang)
         translations.delete()
+
+    def reset(self):
+        """
+        Reset the translations of the context to the original values.
+
+        Resets the translations of the entity and the specified relations
+        of it on their translatable
+        :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
+
+        .. testsetup:: reset
+
+           from tests.sample import create_samples
+
+           create_samples(
+               continent_names=['europe', 'asia'],
+               country_names=['germany', 'south korea'],
+               city_names=['cologne', 'seoul'],
+               continent_fields=['name', 'denonym'],
+               country_fields=['name', 'denonym'],
+               city_fields=['name', 'denonym'],
+               langs=['de']
+           )
+
+        To reset the translations of a list of instances and the relations of it:
+
+        .. testcode:: reset
+
+           from django.db.models import prefetch_related_objects
+           from sample.models import Continent
+           from translations.context import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch a list of instances like before
+           continents = list(Continent.objects.all())
+           prefetch_related_objects(continents, *relations)
+
+           with TranslationContext(continents, *relations) as translations:
+               translations.read(lang='de')
+  
+               # usage - reset the translations
+               translations.reset()
+
+               # output - use the list of instances like before
+               print(continents[0])
+               print(continents[0].countries.all()[0])
+               print(continents[0].countries.all()[0].cities.all()[0])
+
+        .. testoutput:: reset
+
+           Europe
+           Germany
+           Cologne
+
+        To reset the translations of a queryset and the relations of it:
+
+        .. testcode:: reset
+
+           from sample.models import Continent
+           from translations.context import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch a queryset like before
+           continents = Continent.objects.prefetch_related(*relations)
+
+           with TranslationContext(continents, *relations) as translations:
+               translations.read(lang='de')
+
+               # usage - reset the translations
+               translations.reset()
+
+               # output - use the queryset like before
+               print(continents[0])
+               print(continents[0].countries.all()[0])
+               print(continents[0].countries.all()[0].cities.all()[0])
+
+        .. testoutput:: reset
+
+           Europe
+           Germany
+           Cologne
+
+        To reset the translations of an instance and the relations of it:
+
+        .. testcode:: reset
+
+           from sample.models import Continent
+           from translations.context import TranslationContext
+
+           relations = ('countries', 'countries__cities',)
+
+           # input - fetch an instance like before
+           europe = Continent.objects.prefetch_related(*relations).get(code='EU')
+
+           with TranslationContext(europe, *relations) as translations:
+               translations.read(lang='de')
+
+               # usage - reset the translations
+               translations.reset()
+
+               # output - use the instance like before
+               print(europe)
+               print(europe.countries.all()[0])
+               print(europe.countries.all()[0].cities.all()[0])
+
+        .. testoutput:: reset
+
+           Europe
+           Germany
+           Cologne
+        """
+        for (ct_id, objs) in self.groups.items():
+            for (obj_id, obj) in objs.items():
+                for (field, value) in obj._default_translatable_fields.items():
+                    setattr(obj, field, value)
