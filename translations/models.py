@@ -128,8 +128,8 @@ class Translatable(models.Model):
     """
     An abstract model which provides custom translation functionalities.
 
-    Marks the subclasses as translatable and creates some default translation
-    configurations for them based on their structure, fields and etc.
+    Marks the subclasses as translatable and creates some default
+    configurations for them based on their structure.
 
     It also adds the :attr:`translations` relation to the model, just in case
     any one wants to work with the translations of an instance manually.
