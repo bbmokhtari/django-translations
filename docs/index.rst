@@ -14,7 +14,7 @@ If you want to know how the inner parts of the app work or you want to
 contribute to the project we recommend you to read the reference.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
    guide/index
