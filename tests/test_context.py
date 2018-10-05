@@ -4736,8 +4736,6 @@ class TranslationContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    # TODO - START
-
     @override_settings(LANGUAGE_CODE='de')
     def test_update_instance_level_0_relation_no_lang(self):
         create_samples(
@@ -7525,8 +7523,6 @@ class TranslationContextTest(TestCase):
             error.exception.args[0],
             'The language code `xx` is not supported.'
         )
-
-    # TODO - END
 
     @override_settings(LANGUAGE_CODE='de')
     def test_delete_instance_level_0_relation_no_lang(self):
