@@ -25,7 +25,7 @@ class TranslationContextTest(TestCase):
         behzad = Person('Behzad')
 
         with self.assertRaises(TypeError) as error:
-            with TranslationContext(behzad) as translations:
+            with TranslationContext(behzad):
                 pass
 
         self.assertEqual(
@@ -44,7 +44,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'wrong') as translations:
+            with TranslationContext(europe, 'wrong'):
                 pass
 
         self.assertEqual(
@@ -64,8 +64,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'countries__wrong') \
-                    as translations:
+            with TranslationContext(europe, 'countries__wrong'):
                 pass
 
         self.assertEqual(
@@ -89,7 +88,7 @@ class TranslationContextTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            with TranslationContext(people) as translations:
+            with TranslationContext(people):
                 pass
 
         self.assertEqual(
@@ -108,7 +107,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'wrong') as translations:
+            with TranslationContext(continents, 'wrong'):
                 pass
 
         self.assertEqual(
@@ -128,8 +127,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'countries__wrong') \
-                    as translations:
+            with TranslationContext(continents, 'countries__wrong'):
                 pass
 
         self.assertEqual(

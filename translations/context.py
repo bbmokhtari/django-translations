@@ -57,7 +57,7 @@ class TranslationContext:
             field = translation.field
             text = translation.text
             obj = self.groups[ct_id][obj_id]
-            if field in [x for x in type(obj)._get_translatable_fields_names()]:
+            if field in type(obj)._get_translatable_fields_names():
                 setattr(obj, field, text)
 
     def update(self, lang=None):
