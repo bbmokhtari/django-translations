@@ -13,4 +13,4 @@ recommend you to read the guide.
 
    models
    admin
-   utilities
+   contexts
