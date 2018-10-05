@@ -17,7 +17,7 @@ This module contains the context managers for the Translations app.
    .. note::
 
        It is **recommended** for the relations of the entity to be
-       prefetched before using :class:`Context`, in order to reach
+       prefetched before initiating a :class:`Context`, in order to reach
        optimal performance.
 
        To do this use
