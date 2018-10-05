@@ -33,7 +33,8 @@ class Context:
             for (obj_id, obj) in objs.items():
                 for field in type(obj)._get_translatable_fields_names():
                     text = getattr(obj, field, None)
-                    if text:
+                    default = obj._default_translatable_fields.get(field, None)
+                    if text and text != default:
                         translations.append(
                             Translation(
                                 content_type_id=ct_id,
