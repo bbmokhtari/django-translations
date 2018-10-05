@@ -1,6 +1,6 @@
-********
-Contexts
-********
+*******
+Context
+*******
 
 This module provides an in depth knowledge of the Translations contexts.
 
