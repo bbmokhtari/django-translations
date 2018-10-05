@@ -7508,7 +7508,7 @@ class TranslationContextTest(TestCase):
 
     def test_update_queryset_invalid_lang(self):
         create_samples(
-            continent_names=['europe', 'asia'],
+            continent_names=['europe'],
             continent_fields=['name', 'denonym'],
             langs=['de', 'tr']
         )
