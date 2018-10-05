@@ -110,7 +110,7 @@ Use the context:
    ...     continents[0].name = 'Europa (changed)'
    ...     continents[0].countries.all()[0].name = 'Deutschland (changed)'
    ...     context.update('de')
-   ...     # reset context
+   ...     # reset the context
    ...     context.reset()
    Europa
    Deutschland

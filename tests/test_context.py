@@ -1,15 +1,15 @@
 from django.test import TestCase, override_settings
 from django.core.exceptions import FieldDoesNotExist
 
-from translations.context import TranslationContext
+from translations.context import Context
 
 from sample.models import Continent
 
 from tests.sample import create_samples
 
 
-class TranslationContextTest(TestCase):
-    """Tests for `TranslationContext`."""
+class ContextTest(TestCase):
+    """Tests for `Context`."""
 
     def test_init_instance_invalid_entity(self):
         class Person:
@@ -25,7 +25,7 @@ class TranslationContextTest(TestCase):
         behzad = Person('Behzad')
 
         with self.assertRaises(TypeError) as error:
-            with TranslationContext(behzad):
+            with Context(behzad):
                 pass
 
         self.assertEqual(
@@ -44,7 +44,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'wrong'):
+            with Context(europe, 'wrong'):
                 pass
 
         self.assertEqual(
@@ -64,7 +64,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(europe, 'countries__wrong'):
+            with Context(europe, 'countries__wrong'):
                 pass
 
         self.assertEqual(
@@ -88,7 +88,7 @@ class TranslationContextTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            with TranslationContext(people):
+            with Context(people):
                 pass
 
         self.assertEqual(
@@ -107,7 +107,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'wrong'):
+            with Context(continents, 'wrong'):
                 pass
 
         self.assertEqual(
@@ -127,7 +127,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            with TranslationContext(continents, 'countries__wrong'):
+            with Context(continents, 'countries__wrong'):
                 pass
 
         self.assertEqual(
@@ -147,7 +147,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -166,7 +166,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -191,7 +191,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -210,7 +210,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -235,7 +235,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -254,7 +254,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -278,7 +278,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -297,7 +297,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -320,7 +320,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -339,7 +339,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -363,7 +363,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -382,7 +382,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -406,7 +406,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -425,7 +425,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -448,7 +448,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -467,7 +467,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -491,7 +491,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -510,7 +510,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -535,7 +535,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -554,7 +554,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -579,7 +579,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -598,7 +598,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -622,7 +622,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -641,7 +641,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -664,7 +664,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -683,7 +683,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -707,7 +707,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -726,7 +726,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -750,7 +750,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -769,7 +769,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -792,7 +792,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -811,7 +811,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'German'
             cologne.name = 'Cologne'
             cologne.denonym = 'Cologner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -832,7 +832,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(europe) as translations:
+            with Context(europe) as translations:
                 translations.create('xx')
 
         self.assertEqual(
@@ -852,7 +852,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -887,7 +887,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -922,7 +922,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -957,7 +957,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -998,7 +998,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1033,7 +1033,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1067,7 +1067,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1102,7 +1102,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1141,7 +1141,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1176,7 +1176,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1210,7 +1210,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1245,7 +1245,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1285,7 +1285,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1320,7 +1320,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1353,7 +1353,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1388,7 +1388,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1428,7 +1428,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1463,7 +1463,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1498,7 +1498,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1533,7 +1533,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1574,7 +1574,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1609,7 +1609,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1643,7 +1643,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1678,7 +1678,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1717,7 +1717,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1752,7 +1752,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1786,7 +1786,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1821,7 +1821,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1861,7 +1861,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1896,7 +1896,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -1929,7 +1929,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -1964,7 +1964,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'South Korean'
             seoul.name = 'Seoul'
             seoul.denonym = 'Seouler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2001,7 +2001,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(continents) as translations:
+            with Context(continents) as translations:
                 translations.create('xx')
 
         self.assertEqual(
@@ -2022,7 +2022,7 @@ class TranslationContextTest(TestCase):
         )
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2050,7 +2050,7 @@ class TranslationContextTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
 
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2077,7 +2077,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2104,7 +2104,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2128,7 +2128,7 @@ class TranslationContextTest(TestCase):
         )
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2154,7 +2154,7 @@ class TranslationContextTest(TestCase):
         lvl_1 = ('countries',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2180,7 +2180,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2206,7 +2206,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2233,7 +2233,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2261,7 +2261,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2289,7 +2289,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2316,7 +2316,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2342,7 +2342,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2369,7 +2369,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2396,7 +2396,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2422,7 +2422,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -2444,7 +2444,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(europe) as translations:
+            with Context(europe) as translations:
                 translations.read('xx')
 
         self.assertEqual(
@@ -2465,7 +2465,7 @@ class TranslationContextTest(TestCase):
         )
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2502,7 +2502,7 @@ class TranslationContextTest(TestCase):
         lvl_1 = ('countries',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2539,7 +2539,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2576,7 +2576,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2610,7 +2610,7 @@ class TranslationContextTest(TestCase):
         )
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2646,7 +2646,7 @@ class TranslationContextTest(TestCase):
         lvl_1 = ('countries',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2682,7 +2682,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2718,7 +2718,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2755,7 +2755,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2793,7 +2793,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2831,7 +2831,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2868,7 +2868,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2904,7 +2904,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2941,7 +2941,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -2978,7 +2978,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -3014,7 +3014,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -3046,7 +3046,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(continents) as translations:
+            with Context(continents) as translations:
                 translations.read('xx')
 
         self.assertEqual(
@@ -3069,7 +3069,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3088,7 +3088,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3116,7 +3116,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3135,7 +3135,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3163,7 +3163,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3182,7 +3182,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3209,7 +3209,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3228,7 +3228,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3254,7 +3254,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3273,7 +3273,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3300,7 +3300,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3319,7 +3319,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3346,7 +3346,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3365,7 +3365,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3391,7 +3391,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3410,7 +3410,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3437,7 +3437,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3456,7 +3456,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3484,7 +3484,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3503,7 +3503,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3531,7 +3531,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3550,7 +3550,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3577,7 +3577,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3596,7 +3596,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3622,7 +3622,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3641,7 +3641,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3668,7 +3668,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3687,7 +3687,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3714,7 +3714,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3733,7 +3733,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3759,7 +3759,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
 
@@ -3778,7 +3778,7 @@ class TranslationContextTest(TestCase):
             germany.denonym = 'Deutsche'
             cologne.name = 'Köln'
             cologne.denonym = 'Kölner'
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3800,7 +3800,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(europe) as translations:
+            with Context(europe) as translations:
                 translations.update('xx')
 
         self.assertEqual(
@@ -3823,7 +3823,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3858,7 +3858,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -3896,7 +3896,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -3931,7 +3931,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -3975,7 +3975,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4010,7 +4010,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4047,7 +4047,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4082,7 +4082,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4124,7 +4124,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4159,7 +4159,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4196,7 +4196,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4231,7 +4231,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4274,7 +4274,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4309,7 +4309,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4345,7 +4345,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4380,7 +4380,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4423,7 +4423,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4458,7 +4458,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4496,7 +4496,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4531,7 +4531,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4575,7 +4575,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4610,7 +4610,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4647,7 +4647,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4682,7 +4682,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4724,7 +4724,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4759,7 +4759,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4796,7 +4796,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4831,7 +4831,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4874,7 +4874,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4909,7 +4909,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -4945,7 +4945,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -4980,7 +4980,7 @@ class TranslationContextTest(TestCase):
             south_korea.denonym = 'Südkoreanisch'
             seoul.name = 'Seül'
             seoul.denonym = 'Seüler'
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5018,7 +5018,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(continents) as translations:
+            with Context(continents) as translations:
                 translations.update('xx')
 
         self.assertEqual(
@@ -5041,9 +5041,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5071,9 +5071,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5101,9 +5101,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5130,9 +5130,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5158,9 +5158,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5187,9 +5187,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5216,9 +5216,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5244,9 +5244,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5273,9 +5273,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5303,9 +5303,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5333,9 +5333,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5362,9 +5362,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.delete()
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5390,9 +5390,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5419,9 +5419,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5448,9 +5448,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5476,9 +5476,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.delete('de')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -5500,7 +5500,7 @@ class TranslationContextTest(TestCase):
         europe = Continent.objects.get(code='EU')
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(europe) as translations:
+            with Context(europe) as translations:
                 translations.update('xx')
 
         self.assertEqual(
@@ -5523,9 +5523,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5563,9 +5563,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5603,9 +5603,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5642,9 +5642,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5680,9 +5680,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5719,9 +5719,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5758,9 +5758,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5796,9 +5796,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5835,9 +5835,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5875,9 +5875,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5915,9 +5915,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5954,9 +5954,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.delete()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -5992,9 +5992,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6031,9 +6031,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6070,9 +6070,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6108,9 +6108,9 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.delete('de')
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6142,7 +6142,7 @@ class TranslationContextTest(TestCase):
         continents = Continent.objects.all()
 
         with self.assertRaises(ValueError) as error:
-            with TranslationContext(continents) as translations:
+            with Context(continents) as translations:
                 translations.update('xx')
 
         self.assertEqual(
@@ -6165,7 +6165,7 @@ class TranslationContextTest(TestCase):
         )
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6194,7 +6194,7 @@ class TranslationContextTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
 
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6222,7 +6222,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6250,7 +6250,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6275,7 +6275,7 @@ class TranslationContextTest(TestCase):
         )
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6302,7 +6302,7 @@ class TranslationContextTest(TestCase):
         lvl_1 = ('countries',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6329,7 +6329,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6356,7 +6356,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6384,7 +6384,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6413,7 +6413,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6442,7 +6442,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6470,7 +6470,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read()
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6497,7 +6497,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe) as translations:
+        with Context(europe) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6525,7 +6525,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1) as translations:
+        with Context(europe, *lvl_1) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6553,7 +6553,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_2) as translations:
+        with Context(europe, *lvl_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6580,7 +6580,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.prefetch_related(*lvl_1_2).get(code='EU')
-        with TranslationContext(europe, *lvl_1_2) as translations:
+        with Context(europe, *lvl_1_2) as translations:
             translations.read('de')
             germany = europe.countries.all()[0]
             cologne = germany.cities.all()[0]
@@ -6606,7 +6606,7 @@ class TranslationContextTest(TestCase):
         )
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6644,7 +6644,7 @@ class TranslationContextTest(TestCase):
         lvl_1 = ('countries',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6682,7 +6682,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6720,7 +6720,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6755,7 +6755,7 @@ class TranslationContextTest(TestCase):
         )
 
         continents = Continent.objects.all()
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6792,7 +6792,7 @@ class TranslationContextTest(TestCase):
         lvl_1 = ('countries',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6829,7 +6829,7 @@ class TranslationContextTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6866,7 +6866,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.all()
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6904,7 +6904,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6943,7 +6943,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -6982,7 +6982,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -7020,7 +7020,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read()
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -7057,7 +7057,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents) as translations:
+        with Context(continents) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -7095,7 +7095,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1) as translations:
+        with Context(continents, *lvl_1) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -7133,7 +7133,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_2) as translations:
+        with Context(continents, *lvl_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]
@@ -7170,7 +7170,7 @@ class TranslationContextTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.prefetch_related(*lvl_1_2)
-        with TranslationContext(continents, *lvl_1_2) as translations:
+        with Context(continents, *lvl_1_2) as translations:
             translations.read('de')
             europe = [x for x in continents if x.code == 'EU'][0]
             germany = europe.countries.all()[0]

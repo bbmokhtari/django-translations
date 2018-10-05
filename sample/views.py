@@ -2,7 +2,7 @@ import json
 
 from django.http import HttpResponse
 
-from translations.context import TranslationContext
+from translations.context import Context
 
 from .models import Continent
 
@@ -19,7 +19,7 @@ def get_continent_list(request):
 
     continents = Continent.objects.prefetch_related(*relations)
 
-    with TranslationContext(continents, *relations) as translations:
+    with Context(continents, *relations) as translations:
         translations.read()
 
         continent_list = []
@@ -52,7 +52,7 @@ def get_continent_detail(request, pk):
 
     continent = Continent.objects.prefetch_related(*relations).get(id=pk)
 
-    with TranslationContext(continent, *relations) as translations:
+    with Context(continent, *relations) as translations:
         translations.read()
 
         continent_detail = _get_json(

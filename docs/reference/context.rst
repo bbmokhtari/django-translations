@@ -6,7 +6,7 @@ Context
 
 This module contains the context managers for the Translations app.
 
-.. class:: TranslationContext
+.. class:: Context
 
    A context manager which provides custom translation functionalities.
 
@@ -17,7 +17,7 @@ This module contains the context managers for the Translations app.
    .. note::
 
        It is **recommended** for the relations of the entity to be
-       prefetched before using :class:`TranslationContext`, in order to reach
+       prefetched before using :class:`Context`, in order to reach
        optimal performance.
 
        To do this use
@@ -27,7 +27,7 @@ This module contains the context managers for the Translations app.
 
    .. method:: __init__(self, entity, *relations)
 
-      Initializes a :class:`~translations.utils.TranslationContext`.
+      Initializes a :class:`~translations.utils.Context`.
 
       :param entity: The entity to use in the context.
       :type entity: ~django.db.models.Model or
@@ -91,7 +91,7 @@ This module contains the context managers for the Translations app.
 
          from django.db.models import prefetch_related_objects
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
@@ -99,7 +99,7 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # usage - create the translations
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
@@ -134,14 +134,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: create_1
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # usage - create the translations
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
@@ -176,14 +176,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: create_2
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with TranslationContext(europe, *relations) as translations:
+         with Context(europe, *relations) as translations:
              # usage - create the translations
              europe.name = 'Europa'
              europe.countries.all()[0].name = 'Deutschland'
@@ -244,7 +244,7 @@ This module contains the context managers for the Translations app.
 
          from django.db.models import prefetch_related_objects
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
@@ -252,7 +252,7 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # usage - read the translations
              translations.read(lang='de')
 
@@ -272,14 +272,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: read
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # usage - read the translations
              translations.read(lang='de')
 
@@ -299,14 +299,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: read
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with TranslationContext(europe, *relations) as translations:
+         with Context(europe, *relations) as translations:
              # usage - read the translations
              translations.read(lang='de')
 
@@ -329,13 +329,13 @@ This module contains the context managers for the Translations app.
          .. testcode:: read
 
             from sample.models import Continent
-            from translations.context import TranslationContext
+            from translations.context import Context
 
             relations = ('countries', 'countries__cities',)
 
             europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-            with TranslationContext(europe, *relations) as translations:
+            with Context(europe, *relations) as translations:
                 translations.read(lang='de')
 
                 print(europe.name)
@@ -356,7 +356,7 @@ This module contains the context managers for the Translations app.
 
             from django.db.models import Prefetch
             from sample.models import Continent, Country
-            from translations.context import TranslationContext
+            from translations.context import Context
 
             relations = ('countries', 'countries__cities',)
 
@@ -368,7 +368,7 @@ This module contains the context managers for the Translations app.
                 'countries__cities',
             ).get(code='EU')
 
-            with TranslationContext(europe, *relations) as translations:
+            with Context(europe, *relations) as translations:
                 translations.read(lang='de')
 
                 print(europe.name)
@@ -432,7 +432,7 @@ This module contains the context managers for the Translations app.
 
          from django.db.models import prefetch_related_objects
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
@@ -440,7 +440,7 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # prepare - set initial value for the context
              translations.read(lang='de')
 
@@ -467,14 +467,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: update
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # prepare - set initial value for the context
              translations.read(lang='de')
 
@@ -501,14 +501,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: update
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with TranslationContext(europe, *relations) as translations:
+         with Context(europe, *relations) as translations:
              # prepare - set initial value for the context
              translations.read(lang='de')
 
@@ -566,7 +566,7 @@ This module contains the context managers for the Translations app.
 
          from django.db.models import prefetch_related_objects
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
@@ -574,7 +574,7 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # usage - delete the translations
              translations.delete(lang='de')
 
@@ -609,14 +609,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: delete_1
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              # usage - delete the translations
              translations.delete(lang='de')
 
@@ -651,14 +651,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: delete_2
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with TranslationContext(europe, *relations) as translations:
+         with Context(europe, *relations) as translations:
              # usage - delete the translations
              translations.delete(lang='de')
 
@@ -702,7 +702,7 @@ This module contains the context managers for the Translations app.
 
          from django.db.models import prefetch_related_objects
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
@@ -710,7 +710,7 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              translations.read(lang='de')
 
              # usage - reset the translations
@@ -732,14 +732,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: reset
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with TranslationContext(continents, *relations) as translations:
+         with Context(continents, *relations) as translations:
              translations.read(lang='de')
 
              # usage - reset the translations
@@ -761,14 +761,14 @@ This module contains the context managers for the Translations app.
       .. testcode:: reset
 
          from sample.models import Continent
-         from translations.context import TranslationContext
+         from translations.context import Context
 
          relations = ('countries', 'countries__cities',)
 
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with TranslationContext(europe, *relations) as translations:
+         with Context(europe, *relations) as translations:
              translations.read(lang='de')
 
              # usage - reset the translations

@@ -8,11 +8,11 @@ from translations.utils import _get_standard_language, \
 __docformat__ = 'restructuredtext'
 
 
-class TranslationContext:
+class Context:
     """A context manager which provides custom translation functionalities."""
 
     def __init__(self, entity, *relations):
-        """Initializes a `TranslationContext`."""
+        """Initializes a `Context`."""
         hierarchy = _get_relations_hierarchy(*relations)
         self.groups = _get_instance_groups(entity, hierarchy)
 
