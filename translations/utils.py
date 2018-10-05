@@ -54,6 +54,7 @@ def _get_standard_language(lang=None):
 
 
 def _get_translation_languages():
+    """Return the translation languages."""
     global _translation_languages_cache
 
     # check cache first
