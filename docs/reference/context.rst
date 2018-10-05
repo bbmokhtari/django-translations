@@ -99,15 +99,15 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # usage - create the translations
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
-             translations.create(lang='de')
+             context.create(lang='de')
 
              # output - use the list of instances like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -141,15 +141,15 @@ This module contains the context managers for the Translations app.
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # usage - create the translations
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
-             translations.create(lang='de')
+             context.create(lang='de')
 
              # output - use the queryset like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -183,15 +183,15 @@ This module contains the context managers for the Translations app.
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with Context(europe, *relations) as translations:
+         with Context(europe, *relations) as context:
              # usage - create the translations
              europe.name = 'Europa'
              europe.countries.all()[0].name = 'Deutschland'
              europe.countries.all()[0].cities.all()[0].name = 'Köln'
-             translations.create(lang='de')
+             context.create(lang='de')
 
              # output - use the list of instances like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(europe)
              print(europe.countries.all()[0])
              print(europe.countries.all()[0].cities.all()[0])
@@ -252,9 +252,9 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # usage - read the translations
-             translations.read(lang='de')
+             context.read(lang='de')
 
              # output - use the list of instances like before
              print(continents[0])
@@ -279,9 +279,9 @@ This module contains the context managers for the Translations app.
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # usage - read the translations
-             translations.read(lang='de')
+             context.read(lang='de')
 
              # output - use the queryset like before
              print(continents[0])
@@ -306,9 +306,9 @@ This module contains the context managers for the Translations app.
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with Context(europe, *relations) as translations:
+         with Context(europe, *relations) as context:
              # usage - read the translations
-             translations.read(lang='de')
+             context.read(lang='de')
 
              # output - use the instance like before
              print(europe)
@@ -335,8 +335,8 @@ This module contains the context managers for the Translations app.
 
             europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-            with Context(europe, *relations) as translations:
-                translations.read(lang='de')
+            with Context(europe, *relations) as context:
+                context.read(lang='de')
 
                 print(europe.name)
                 print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
@@ -368,8 +368,8 @@ This module contains the context managers for the Translations app.
                 'countries__cities',
             ).get(code='EU')
 
-            with Context(europe, *relations) as translations:
-                translations.read(lang='de')
+            with Context(europe, *relations) as context:
+                context.read(lang='de')
 
                 print(europe.name)
                 print(europe.countries.all()[0].name + '  -- Correct')
@@ -440,18 +440,18 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # prepare - set initial value for the context
-             translations.read(lang='de')
+             context.read(lang='de')
 
              # usage - update the translations
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
-             translations.update(lang='de')
+             context.update(lang='de')
 
              # output - use the list of instances like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -474,18 +474,18 @@ This module contains the context managers for the Translations app.
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # prepare - set initial value for the context
-             translations.read(lang='de')
+             context.read(lang='de')
 
              # usage - update the translations
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
-             translations.update(lang='de')
+             context.update(lang='de')
 
              # output - use the queryset like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -508,18 +508,18 @@ This module contains the context managers for the Translations app.
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with Context(europe, *relations) as translations:
+         with Context(europe, *relations) as context:
              # prepare - set initial value for the context
-             translations.read(lang='de')
+             context.read(lang='de')
 
              # usage - update the translations
              europe.name = 'Europa (changed)'
              europe.countries.all()[0].name = 'Deutschland (changed)'
              europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
-             translations.update(lang='de')
+             context.update(lang='de')
 
              # output - use the list of instances like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(europe)
              print(europe.countries.all()[0])
              print(europe.countries.all()[0].cities.all()[0])
@@ -574,12 +574,12 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # usage - delete the translations
-             translations.delete(lang='de')
+             context.delete(lang='de')
 
              # output - use the list of instances like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -616,12 +616,12 @@ This module contains the context managers for the Translations app.
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with Context(continents, *relations) as translations:
+         with Context(continents, *relations) as context:
              # usage - delete the translations
-             translations.delete(lang='de')
+             context.delete(lang='de')
 
              # output - use the queryset like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -658,12 +658,12 @@ This module contains the context managers for the Translations app.
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with Context(europe, *relations) as translations:
+         with Context(europe, *relations) as context:
              # usage - delete the translations
-             translations.delete(lang='de')
+             context.delete(lang='de')
 
              # output - use the list of instances like before
-             translations.read(lang='de')
+             context.read(lang='de')
              print(europe)
              print(europe.countries.all()[0])
              print(europe.countries.all()[0].cities.all()[0])
@@ -710,11 +710,11 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          prefetch_related_objects(continents, *relations)
 
-         with Context(continents, *relations) as translations:
-             translations.read(lang='de')
+         with Context(continents, *relations) as context:
+             context.read(lang='de')
 
              # usage - reset the translations
-             translations.reset()
+             context.reset()
 
              # output - use the list of instances like before
              print(continents[0])
@@ -739,11 +739,11 @@ This module contains the context managers for the Translations app.
          # input - fetch a queryset like before
          continents = Continent.objects.prefetch_related(*relations)
 
-         with Context(continents, *relations) as translations:
-             translations.read(lang='de')
+         with Context(continents, *relations) as context:
+             context.read(lang='de')
 
              # usage - reset the translations
-             translations.reset()
+             context.reset()
 
              # output - use the queryset like before
              print(continents[0])
@@ -768,11 +768,11 @@ This module contains the context managers for the Translations app.
          # input - fetch an instance like before
          europe = Continent.objects.prefetch_related(*relations).get(code='EU')
 
-         with Context(europe, *relations) as translations:
-             translations.read(lang='de')
+         with Context(europe, *relations) as context:
+             context.read(lang='de')
 
              # usage - reset the translations
-             translations.reset()
+             context.reset()
 
              # output - use the instance like before
              print(europe)

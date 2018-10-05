@@ -19,8 +19,8 @@ def get_continent_list(request):
 
     continents = Continent.objects.prefetch_related(*relations)
 
-    with Context(continents, *relations) as translations:
-        translations.read()
+    with Context(continents, *relations) as context:
+        context.read()
 
         continent_list = []
         for continent in continents:
@@ -52,8 +52,8 @@ def get_continent_detail(request, pk):
 
     continent = Continent.objects.prefetch_related(*relations).get(id=pk)
 
-    with Context(continent, *relations) as translations:
-        translations.read()
+    with Context(continent, *relations) as context:
+        context.read()
 
         continent_detail = _get_json(
             continent, 'id', 'code', 'name', 'denonym')
