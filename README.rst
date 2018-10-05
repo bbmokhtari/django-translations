@@ -102,18 +102,22 @@ Use the context:
    ... )
    >>> # 2. work with the translated objects
    >>> with Context(continents, 'countries', 'countries__cities',) as context:
-   ...     # read the context in German
+   ...     # -------------------------------- read the context in German
    ...     context.read('de')
    ...     print(continents[0].name)
    ...     print(continents[0].countries.all()[0].name)
-   ...     # update the context in German
+   ...     # -------------------------------- update the context in German
    ...     continents[0].name = 'Europa (changed)'
    ...     continents[0].countries.all()[0].name = 'Deutschland (changed)'
    ...     context.update('de')
-   ...     # reset the context
+   ...     # -------------------------------- and more capabilties
    ...     context.reset()
+   ...     print(continents[0].name)
+   ...     print(continents[0].countries.all()[0].name)
    Europa
    Deutschland
+   Europe
+   Germany
 
 This does only **One Query** to translate any object (instance, queryset, list)
 plus all its relations (however much nested). Also the same for updating.
