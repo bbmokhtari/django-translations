@@ -2,7 +2,7 @@
 Context
 *******
 
-This module provides an in depth knowledge of the Translations contexts.
+This module provides an in depth knowledge of the Translations context.
 
 What is context
 ===============
@@ -13,15 +13,15 @@ certain language.
 Initiate a context
 ==================
 
-To create a :class:`~translations.context.Context`, first the margin of it
-should be determined, meaning which entity and what relations of that entity
-should it affect. The entity can be a model instance, a queryset or an
-iterable of model instances. All the actions like creating, reading, etc will
-only affect the objects in the defined margin.
+To create a :class:`context <translations.context.Context>` the margin of it
+must be determined, meaning which ``entity`` and what ``*relations`` of that
+entity should it affect.
 
-To create a :class:`~translations.context.Context` for a model instance:
+All the actions like :meth:`reading <translations.context.Context.read>`,
+:meth:`updating <translations.context.Context.update>`, etc only affects the
+objects in the defined margin.
 
-.. testsetup:: guide_init_instance
+.. testsetup:: guide_init
 
    from tests.sample import create_samples
 
@@ -35,7 +35,10 @@ To create a :class:`~translations.context.Context` for a model instance:
        langs=['de']
    )
 
-.. testcode:: guide_init_instance
+To create a :class:`context<translations.context.Context>` for a model
+instance:
+
+.. testcode:: guide_init
 
    from sample.models import Continent
    from translations.context import Context
@@ -47,27 +50,13 @@ To create a :class:`~translations.context.Context` for a model instance:
    with Context(europe, 'countries', 'countries__cities') as context:
        print('Context created!')
 
-.. testoutput:: guide_init_instance
+.. testoutput:: guide_init
 
    Context created!
 
-To create a :class:`~translations.context.Context` for a queryset:
+To create a :class:`context<translations.context.Context>` for a queryset:
 
-.. testsetup:: guide_init_queryset
-
-   from tests.sample import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
-
-.. testcode:: guide_init_queryset
+.. testcode:: guide_init
 
    from sample.models import Continent
    from translations.context import Context
@@ -79,32 +68,14 @@ To create a :class:`~translations.context.Context` for a queryset:
    with Context(continents, 'countries', 'countries__cities') as context:
        print('Context created!')
 
-.. testoutput:: guide_init_queryset
+.. testoutput:: guide_init
 
    Context created!
 
-.. note::
-   Please note that initiating a :class:`~translations.context.Context` with a
-   queryset evaluates the queryset.
-
-To create a :class:`~translations.context.Context` for a list of model
+To create a :class:`context<translations.context.Context>` for a list of model
 instances:
 
-.. testsetup:: guide_init_list
-
-   from tests.sample import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
-
-.. testcode:: guide_init_list
+.. testcode:: guide_init
 
    from sample.models import Continent
    from translations.context import Context
@@ -116,9 +87,19 @@ instances:
    with Context(continents, 'countries', 'countries__cities') as context:
        print('Context created!')
 
-.. testoutput:: guide_init_list
+.. testoutput:: guide_init
 
    Context created!
+
+The ``entity`` must be a model instance, a queryset or a list of model
+instances.
+The model of the ``entity`` must be
+:class:`~translations.models.Translatable`.
+
+The ``*relations`` must be an unpacked list of strings.
+They may be separated by ``__``\ s to represent a deeply nested relation.
+The model of the ``*relations`` must be
+:class:`~translations.models.Translatable`.
 
 .. note::
 
@@ -134,10 +115,17 @@ instances:
 Reading the translations
 ========================
 
-To apply the translations of a :class:`~translations.context.Context` use the
-:meth:`~translations.context.Context.read` method.
+To :meth:`read <translations.context.Context.read>` the translations of a
+:class:`context<translations.context.Context>`, first the language of the
+translation should be determined. Then the entity can be used just like before
 
-.. testsetup:: guide_apply_translations_list_relations
+The ``lang`` parameter is optional. It determines the language to apply the
+translations in. It must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
+will be automatically set to the :term:`active language` code.
+
+
+.. testsetup:: guide_read
 
    from tests.sample import create_samples
 
@@ -151,12 +139,40 @@ To apply the translations of a :class:`~translations.context.Context` use the
        langs=['de']
    )
 
-.. testcode:: guide_apply_translations_list_relations
+To read the translations of a model instance:
+
+.. testcode:: guide_read
 
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a querysets
+   # fetch an instance
+   europe = Continent.objects.get(code='EU')
+
+   # initiate context
+   with Context(europe, 'countries', 'countries__cities') as context:
+       # read the context in German
+       context.read(lang='de')
+
+       # use the instance like before
+       print(europe)
+       print(europe.countries.all()[0])
+       print(europe.countries.all()[0].cities.all()[0])
+
+.. testoutput:: guide_read
+
+   Europa
+   Deutschland
+   Köln
+
+To read the translations of a queryset:
+
+.. testcode:: guide_read
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a queryset
    continents = Continent.objects.all()
 
    # initiate context
@@ -169,30 +185,44 @@ To apply the translations of a :class:`~translations.context.Context` use the
        print(continents[0].countries.all()[0])
        print(continents[0].countries.all()[0].cities.all()[0])
 
-.. testoutput:: guide_apply_translations_list_relations
+.. testoutput:: guide_read
 
    Europa
    Deutschland
    Köln
 
-The ``lang`` parameter is optional. It determines the language to apply the
-translations in. It must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
-will be automatically set to the :term:`active language` code.
+To read the translations of a list of instances:
 
-If successful, :meth:`~translations.context.Context.read` applies the
-translations of the instances and their relations on their
-:attr:`translatable fields \
-<translations.models.Translatable.TranslatableMeta.fields>` and returns
-``None``. If failed, it throws the appropriate error.
+.. testcode:: guide_read
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a list of instances
+   continents = list(Continent.objects.all())
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # read the context in German
+       context.read(lang='de')
+
+       # use the list of instances like before
+       print(continents[0])
+       print(continents[0].countries.all()[0])
+       print(continents[0].countries.all()[0].cities.all()[0])
+
+.. testoutput:: guide_read
+
+   Europa
+   Deutschland
+   Köln
 
 .. note::
 
    If there is no translation for a field in the
    :attr:`translatable fields \
    <translations.models.Translatable.TranslatableMeta.fields>`,
-   the translation of the field falls back to the value of the field
-   in the instance.
+   the value of the field is not changed and remains what it was before.
 
 .. warning::
 
