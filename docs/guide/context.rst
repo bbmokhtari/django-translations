@@ -318,9 +318,6 @@ To update the translations of the defined margin for a model instance:
 
    # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
-       # set initial field values
-       context.read(lang='de')
-
        # change the needed fields
        europe.name = 'Europa (changed)'
        europe.countries.all()[0].name = 'Deutschland (changed)'
@@ -347,9 +344,6 @@ To update the translations of the defined margin for a queryset:
 
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
-       # set initial field values
-       context.read(lang='de')
-
        # change the needed fields
        continents[0].name = 'Europa (changed)'
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
@@ -376,9 +370,6 @@ To update the translations of the defined margin for a list of instances:
 
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
-       # set initial field values
-       context.read(lang='de')
-
        # change the needed fields
        continents[0].name = 'Europa (changed)'
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
