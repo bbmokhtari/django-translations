@@ -13,12 +13,12 @@ certain language.
 Initiate a context
 ==================
 
-To create a :class:`context <translations.context.Context>` the margin of it
-must be defined, meaning which ``entity`` and what ``*relations`` of that
-entity should it affect.
+To initiate a context use the :class:`context <translations.context.Context>`
+class. The context's margin must be defined in the initiation, meaning which
+``entity`` and what ``*relations`` of that entity should it affect.
 
-All the actions like :meth:`reading <translations.context.Context.read>`,
-:meth:`updating <translations.context.Context.update>`, etc only affects the
+All the actions like `reading <reading the translations>`_,
+`updating <updating the translations>`_, etc only affects the
 objects in the defined margin.
 
 .. testsetup:: guide_init
@@ -35,8 +35,7 @@ objects in the defined margin.
        langs=['de']
    )
 
-To create a :class:`context<translations.context.Context>` for a model
-instance:
+To initiate a context for a model instance:
 
 .. testcode:: guide_init
 
@@ -54,7 +53,7 @@ instance:
 
    Context created!
 
-To create a :class:`context<translations.context.Context>` for a queryset:
+To initiate a context for a queryset:
 
 .. testcode:: guide_init
 
@@ -72,8 +71,7 @@ To create a :class:`context<translations.context.Context>` for a queryset:
 
    Context created!
 
-To create a :class:`context<translations.context.Context>` for a list of model
-instances:
+To initiate a context for a list of model instances:
 
 .. testcode:: guide_init
 
@@ -115,10 +113,8 @@ The model of the ``*relations`` must be
 Reading the translations
 ========================
 
-To :meth:`read <translations.context.Context.read>` the translations of the
-defined margin in a language and apply them on the
-:class:`context<translations.context.Context>`, just specify the ``lang`` code
-of the language.
+To read the translations of the defined margin in a language and apply them on
+the context, just specify the ``lang`` code of the language.
 
 .. testsetup:: guide_read
 
@@ -134,8 +130,7 @@ of the language.
        langs=['de']
    )
 
-To :meth:`read <translations.context.Context.read>` the translations of the
-defined margin for a model instance:
+To read the translations of the defined margin for a model instance:
 
 .. testcode:: guide_read
 
@@ -161,8 +156,7 @@ defined margin for a model instance:
    Deutschland
    Köln
 
-To :meth:`read <translations.context.Context.read>` the translations of the
-defined margin for a queryset:
+To read the translations of the defined margin for a queryset:
 
 .. testcode:: guide_read
 
@@ -188,8 +182,7 @@ defined margin for a queryset:
    Deutschland
    Köln
 
-To :meth:`read <translations.context.Context.read>` the translations of the
-defined margin for a list of instances:
+To read the translations of the defined margin for a list of instances:
 
 .. testcode:: guide_read
 
