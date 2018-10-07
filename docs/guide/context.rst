@@ -14,7 +14,7 @@ Initiate a context
 ==================
 
 To create a :class:`context <translations.context.Context>` the margin of it
-must be determined, meaning which ``entity`` and what ``*relations`` of that
+must be defined, meaning which ``entity`` and what ``*relations`` of that
 entity should it affect.
 
 All the actions like :meth:`reading <translations.context.Context.read>`,
@@ -115,15 +115,10 @@ The model of the ``*relations`` must be
 Reading the translations
 ========================
 
-To :meth:`read <translations.context.Context.read>` the translations of a
-:class:`context<translations.context.Context>`, first the language of the
-translation should be determined. Then the entity can be used just like before
-
-The ``lang`` parameter is optional. It determines the language to apply the
-translations in. It must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. If it is not passed in, it
-will be automatically set to the :term:`active language` code.
-
+To :meth:`read <translations.context.Context.read>` the translations of the
+defined margin in a language and apply them on the
+:class:`context<translations.context.Context>`, just specify the ``lang`` code
+of the language.
 
 .. testsetup:: guide_read
 
@@ -139,7 +134,8 @@ will be automatically set to the :term:`active language` code.
        langs=['de']
    )
 
-To read the translations of a model instance:
+To :meth:`read <translations.context.Context.read>` the translations of the
+defined margin for a model instance:
 
 .. testcode:: guide_read
 
@@ -165,7 +161,8 @@ To read the translations of a model instance:
    Deutschland
    Köln
 
-To read the translations of a queryset:
+To :meth:`read <translations.context.Context.read>` the translations of the
+defined margin for a queryset:
 
 .. testcode:: guide_read
 
@@ -191,7 +188,8 @@ To read the translations of a queryset:
    Deutschland
    Köln
 
-To read the translations of a list of instances:
+To :meth:`read <translations.context.Context.read>` the translations of the
+defined margin for a list of instances:
 
 .. testcode:: guide_read
 
@@ -217,6 +215,10 @@ To read the translations of a list of instances:
    Deutschland
    Köln
 
+The ``lang`` must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+not passed in, it is automatically set to the :term:`active language` code.
+
 .. note::
 
    If there is no translation for a field in the
@@ -226,101 +228,62 @@ To read the translations of a list of instances:
 
 .. warning::
 
-   Filtering any queryset after applying the translations will cause
+   Filtering any queryset after reading the translations will cause
    the translations of that queryset to be reset.
 
-   .. testsetup:: guide_apply_translations_list_warning
-   
-      from tests.sample import create_samples
+   .. testcode:: guide_read
 
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
-
-   .. testcode:: guide_apply_translations_list_warning
-
-      from django.db.models import prefetch_related_objects
       from sample.models import Continent
-      from translations.utils import apply_translations
+      from translations.context import Context
 
-      continents = list(Continent.objects.all())
-      prefetch_related_objects(
-          continents,
+      europe = Continent.objects.prefetch_related(
           'countries',
           'countries__cities',
-      )
+      ).get(code='EU')
 
-      apply_translations(
-          continents,
-          'countries',
-          'countries__cities',
-          lang='de',
-      )
+      with Context(europe, 'countries', 'countries__cities') as context:
+          context.read(lang='de')
 
-      for continent in continents:
-          print('Continent: {}'.format(continent))
-          for country in continent.countries.exclude(name=''):  # Wrong
-              print('Country: {}  -- Wrong'.format(country))
-              for city in country.cities.all():
-                  print('City: {}  -- Wrong'.format(city))
+          print(europe.name)
+          print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
+          print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
 
-   .. testoutput:: guide_apply_translations_list_warning
+   .. testoutput:: guide_read
 
-      Continent: Europa
-      Country: Germany  -- Wrong
-      City: Cologne  -- Wrong
-      Continent: Asien
-      Country: South Korea  -- Wrong
-      City: Seoul  -- Wrong
+      Europa
+      Germany  -- Wrong
+      Cologne  -- Wrong
 
-   The solution is to do the filtering before applying the
+   The solution is to do the filtering before reading the
    translations. To do this on the relations use
    :class:`~django.db.models.Prefetch`.
 
-   .. testcode:: guide_apply_translations_list_warning
+   .. testcode:: guide_read
 
-      from django.db.models import Prefetch, prefetch_related_objects
+      from django.db.models import Prefetch
       from sample.models import Continent, Country
-      from translations.utils import apply_translations
+      from translations.context import Context
 
-      continents = list(Continent.objects.all())
-      prefetch_related_objects(
-          continents,
+      europe = Continent.objects.prefetch_related(
           Prefetch(
               'countries',
-              queryset=Country.objects.exclude(name=''),  # Correct
+              queryset=Country.objects.exclude(name=''),
           ),
           'countries__cities',
-      )
+      ).get(code='EU')
 
-      apply_translations(
-          continents,
-          'countries',
-          'countries__cities',
-          lang='de',
-      )
+      with Context(europe, 'countries', 'countries__cities') as context:
+          context.read(lang='de')
 
-      for continent in continents:
-          print('Continent: {}'.format(continent))
-          for country in continent.countries.all():
-              print('Country: {}  -- Correct'.format(country))
-              for city in country.cities.all():
-                  print('City: {}  -- Correct'.format(city))
+          print(europe.name)
+          print(europe.countries.all()[0].name + '  -- Correct')
+          print(europe.countries.all()[0].cities.all()[0].name + '  -- Correct')
 
-   .. testoutput:: guide_apply_translations_list_warning
+   .. testoutput:: guide_read
 
-      Continent: Europa
-      Country: Deutschland  -- Correct
-      City: Köln  -- Correct
-      Continent: Asien
-      Country: Südkorea  -- Correct
-      City: Seül  -- Correct
+      Europa
+      Deutschland  -- Correct
+      Köln  -- Correct
 
 .. Update list of instances translations
    =====================================
