@@ -92,17 +92,17 @@ To initiate a context for a list of model instances:
 The ``entity`` must be a model instance, a queryset or a list of model
 instances.
 The model of the ``entity`` must be
-:class:`~translations.models.Translatable`.
+:ref:`translatable <translatable-models>`.
 
 The ``*relations`` must be an unpacked list of strings.
 They may be separated by ``__``\ s to represent a deeply nested relation.
 The model of the ``*relations`` must be
-:class:`~translations.models.Translatable`.
+:ref:`translatable <translatable-models>`.
 
 .. note::
 
    It is **recommended** for the relations of the entity to be
-   prefetched before initiating a :class:`~translations.context.Context`,
+   prefetched before initiating a context,
    in order to reach optimal performance.
 
    To do this use
@@ -113,8 +113,10 @@ The model of the ``*relations`` must be
 Reading the translations
 ========================
 
-To read the translations of the defined margin in a language and apply them on
-the context, just specify the ``lang`` code of the language.
+To read the translations of the context's margin in a language and apply them
+on the :ref:`translatable fields <specify-fields>` of it use the
+:meth:`~translations.context.Context.read` method. This method takes in a
+``lang`` parameter which determines the language of the translation.
 
 .. testsetup:: guide_read
 
@@ -214,10 +216,8 @@ not passed in, it is automatically set to the :term:`active language` code.
 
 .. note::
 
-   If there is no translation for a field in the
-   :attr:`translatable fields \
-   <translations.models.Translatable.TranslatableMeta.fields>`,
-   the value of the field is not changed and remains what it was before.
+   If there is no translation for a field, the value of the field is not
+   changed and remains what it was before.
 
 .. warning::
 
