@@ -218,8 +218,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 
 .. note::
 
+   Reading only affects the translatable fields that have a translation.
+
    If there is no translation for a field, the value of the field is not
-   changed and remains what it was before.
+   changed. (It remains what it was before)
 
 .. warning::
 
@@ -394,3 +396,10 @@ To update the translations of the defined margin for a list of instances:
 The ``lang`` must be a language code already declared in the
 :data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
+
+.. note::
+
+   Updating only affects the translatable fields that have changed.
+
+   If the value of a field is not changed, the translation for it is not
+   updated. (No need to initialize all the translatable fields beforehand)
