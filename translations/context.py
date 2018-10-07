@@ -1,5 +1,7 @@
 """This module contains the context managers for the Translations app."""
 
+from django.db import models
+
 from translations.models import Translation
 from translations.utils import _get_standard_language, \
     _get_relations_hierarchy, _get_instance_groups, _get_translations
@@ -22,28 +24,30 @@ class Context:
     def __exit__(self, exc_type, exc_value, traceback):
         pass
 
-    def create(self, lang=None):
-        """
-        Create the translations from the context and write them to the
-        database.
-        """
-        lang = _get_standard_language(lang)
-        translations = []
+    def _get_changed_fields(self):
+        """Yield the fields changed in the context."""
         for (ct_id, objs) in self.groups.items():
             for (obj_id, obj) in objs.items():
                 for field in type(obj)._get_translatable_fields_names():
                     text = getattr(obj, field, None)
                     default = obj._default_translatable_fields.get(field, None)
                     if text and text != default:
-                        translations.append(
-                            Translation(
-                                content_type_id=ct_id,
-                                object_id=obj_id,
-                                field=field,
-                                language=lang,
-                                text=text,
-                            )
-                        )
+                        yield ({
+                            'content_type_id': ct_id,
+                            'object_id': obj_id,
+                            'field': field,
+                        }, text)
+
+    def create(self, lang=None):
+        """
+        Create the translations from the context and write them to the
+        database.
+        """
+        lang = _get_standard_language(lang)
+        translations = [
+            Translation(language=lang, text=text, **address)
+            for address, text in self._get_changed_fields()
+        ]
         Translation.objects.bulk_create(translations)
 
     def read(self, lang=None):
@@ -66,8 +70,14 @@ class Context:
         Update the translations from the context and write them to the
         database.
         """
-        self.delete(lang)
-        self.create(lang)
+        lang = _get_standard_language(lang)
+        filters = models.Q()
+        translations = []
+        for address, text in self._get_changed_fields():
+            filters |= models.Q(**address)
+            translations.append(Translation(language=lang, text=text, **address))
+        Translation.objects.filter(language=lang).filter(filters).delete()
+        Translation.objects.bulk_create(translations)
 
     def delete(self, lang=None):
         """
