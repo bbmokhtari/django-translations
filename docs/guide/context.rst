@@ -13,12 +13,12 @@ certain language.
 Initiate a context
 ==================
 
-To initiate a context use the :class:`context <translations.context.Context>`
+To initiate a context use the :class:`~translations.context.Context`
 class. The context's margin must be defined in the initiation, meaning which
 ``entity`` and what ``*relations`` of that entity should it affect.
 
-All the actions like `reading <reading the translations>`_,
-`updating <updating the translations>`_, etc only affects the
+All the actions like `reading the translations`_,
+`updating the translations`_, etc only affects the
 objects in the defined margin.
 
 .. testsetup:: guide_init
