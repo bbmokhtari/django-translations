@@ -751,7 +751,3 @@ To reset the translations of the defined scope for a list of instances:
    Europe
    Germany
    Cologne
-
-The ``lang`` must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
-not passed in, it is automatically set to the :term:`active language` code.
