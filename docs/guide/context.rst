@@ -526,3 +526,122 @@ not passed in, it is automatically set to the :term:`active language` code.
 
    If the value of a field is not changed, the translation for it is not
    updated. (No need to initialize all the translatable fields beforehand)
+
+Deleting the translations
+=========================
+
+To delete the translations of the context's margin in a language use the
+:meth:`~translations.context.Context.delete` method.
+This deletes the translations using the :ref:`translatable fields \
+<specify-fields>` of the context's margin.
+It takes in a ``lang`` parameter which determines the language to
+delete the translation in.
+
+.. testsetup:: guide_delete_0
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: guide_delete_1
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: guide_delete_2
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+To delete the translations of the defined margin for a model instance:
+
+.. testcode:: guide_delete_0
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch an instance
+   europe = Continent.objects.get(code='EU')
+
+   # initiate context
+   with Context(europe, 'countries', 'countries__cities') as context:
+       # delete the translations in German
+       context.delete(lang='de')
+
+   print('Translations deleted!')
+
+.. testoutput:: guide_delete_0
+
+   Translations deleted!
+
+To delete the translations of the defined margin for a queryset:
+
+.. testcode:: guide_delete_1
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a queryset
+   continents = Continent.objects.all()
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # delete the translations in German
+       context.delete(lang='de')
+
+   print('Translations deleted!')
+
+.. testoutput:: guide_delete_1
+
+   Translations deleted!
+
+To delete the translations of the defined margin for a list of instances:
+
+.. testcode:: guide_delete_2
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a list of instances
+   continents = list(Continent.objects.all())
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # delete the translations in German
+       context.delete(lang='de')
+
+   print('Translations deleted!')
+
+.. testoutput:: guide_delete_2
+
+   Translations deleted!
+
+The ``lang`` must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+not passed in, it is automatically set to the :term:`active language` code.
