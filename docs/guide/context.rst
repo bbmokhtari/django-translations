@@ -231,7 +231,7 @@ To create the translations of the defined margin for a list of instances:
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-       # create the context in German
+       # create the translations in German
        context.create(lang='de')
 
    print('Translations created!')
