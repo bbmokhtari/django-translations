@@ -282,9 +282,9 @@ To read the translations of the defined scope for a model instance:
        context.read(lang='de')
 
        # use the instance like before
-       print(europe)
-       print(europe.countries.all()[0])
-       print(europe.countries.all()[0].cities.all()[0])
+       print(europe.name)
+       print(europe.countries.all()[0].name)
+       print(europe.countries.all()[0].cities.all()[0].name)
 
 .. testoutput:: guide_read
 
@@ -308,9 +308,9 @@ To read the translations of the defined scope for a queryset:
        context.read(lang='de')
 
        # use the queryset like before
-       print(continents[0])
-       print(continents[0].countries.all()[0])
-       print(continents[0].countries.all()[0].cities.all()[0])
+       print(continents[0].name)
+       print(continents[0].countries.all()[0].name)
+       print(continents[0].countries.all()[0].cities.all()[0].name)
 
 .. testoutput:: guide_read
 
@@ -334,9 +334,9 @@ To read the translations of the defined scope for a list of instances:
        context.read(lang='de')
 
        # use the list of instances like before
-       print(continents[0])
-       print(continents[0].countries.all()[0])
-       print(continents[0].countries.all()[0].cities.all()[0])
+       print(continents[0].name)
+       print(continents[0].countries.all()[0].name)
+       print(continents[0].countries.all()[0].cities.all()[0].name)
 
 .. testoutput:: guide_read
 
