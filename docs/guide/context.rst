@@ -166,9 +166,9 @@ To create the translations of the defined scope for a model instance:
    # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
        # change the needed fields
-       europe.name = 'Europa (changed)'
-       europe.countries.all()[0].name = 'Deutschland (changed)'
-       europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+       europe.name = 'Europa'
+       europe.countries.all()[0].name = 'Deutschland'
+       europe.countries.all()[0].cities.all()[0].name = 'Köln'
 
        # create the translations in German
        context.create(lang='de')
@@ -192,9 +192,9 @@ To create the translations of the defined scope for a queryset:
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
        # change the needed fields
-       continents[0].name = 'Europa (changed)'
-       continents[0].countries.all()[0].name = 'Deutschland (changed)'
-       continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+       continents[0].name = 'Europa'
+       continents[0].countries.all()[0].name = 'Deutschland'
+       continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
        # create the translations in German
        context.create(lang='de')
@@ -218,9 +218,9 @@ To create the translations of the defined scope for a list of instances:
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
        # change the needed fields
-       continents[0].name = 'Europa (changed)'
-       continents[0].countries.all()[0].name = 'Deutschland (changed)'
-       continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+       continents[0].name = 'Europa'
+       continents[0].countries.all()[0].name = 'Deutschland'
+       continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
        # create the translations in German
        context.create(lang='de')
