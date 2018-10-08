@@ -532,7 +532,7 @@ Deleting the translations
 
 To delete the translations of the context's margin in a language use the
 :meth:`~translations.context.Context.delete` method.
-This deletes the translations using the :ref:`translatable fields \
+This deletes the translations of the :ref:`translatable fields \
 <specify-fields>` of the context's margin.
 It takes in a ``lang`` parameter which determines the language to
 delete the translation in.
