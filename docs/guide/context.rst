@@ -235,6 +235,10 @@ The ``lang`` must be a language code already declared in the
 :data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
+Creating duplicate translations for a field raises
+:exc:`~django.db.utils.IntegrityError`, to update the translations check out
+`updating the translations`_.
+
 .. note::
 
    Creating only affects the translatable fields that have changed.
