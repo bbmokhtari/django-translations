@@ -287,7 +287,7 @@ To read the translations of the defined margin for a model instance:
 
    # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
-       # read the context in German
+       # read the translations in German
        context.read(lang='de')
 
        # use the instance like before
@@ -313,7 +313,7 @@ To read the translations of the defined margin for a queryset:
 
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
-       # read the context in German
+       # read the translations in German
        context.read(lang='de')
 
        # use the queryset like before
@@ -339,7 +339,7 @@ To read the translations of the defined margin for a list of instances:
 
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
-       # read the context in German
+       # read the translations in German
        context.read(lang='de')
 
        # use the list of instances like before
@@ -464,7 +464,7 @@ To update the translations of the defined margin for a model instance:
        europe.countries.all()[0].name = 'Deutschland (changed)'
        europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-       # update the context in German
+       # update the translations in German
        context.update(lang='de')
 
    print('Translations updated!')
@@ -490,7 +490,7 @@ To update the translations of the defined margin for a queryset:
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-       # update the context in German
+       # update the translations in German
        context.update(lang='de')
 
    print('Translations updated!')
@@ -516,7 +516,7 @@ To update the translations of the defined margin for a list of instances:
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-       # update the context in German
+       # update the translations in German
        context.update(lang='de')
 
    print('Translations updated!')
