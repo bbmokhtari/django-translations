@@ -532,7 +532,7 @@ Deleting the translations
 
 To delete the translations of the context's scope in a language use the
 :meth:`~translations.context.Context.delete` method.
-This deletes the translations of the :ref:`translatable fields \
+This deletes the translations for the :ref:`translatable fields \
 <specify-fields>` of the context's scope.
 It takes in a ``lang`` parameter which determines the language to
 delete the translation in.
