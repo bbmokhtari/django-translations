@@ -645,3 +645,113 @@ To delete the translations of the defined margin for a list of instances:
 The ``lang`` must be a language code already declared in the
 :data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
+
+Resetting the translations
+==========================
+
+To reset the translations of the context's margin in a language use the
+:meth:`~translations.context.Context.reset` method.
+This resets the translations on the :ref:`translatable fields \
+<specify-fields>` of the context's margin.
+
+.. testsetup:: guide_reset
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+To reset the translations of the defined margin for a model instance:
+
+.. testcode:: guide_reset
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch an instance
+   europe = Continent.objects.get(code='EU')
+
+   # initiate context
+   with Context(europe, 'countries', 'countries__cities') as context:
+       # changes happened to the fields, create, read, update, delete, etc...
+
+       # reset the translations
+       context.reset()
+
+       # use the instance like before
+       print(europe)
+       print(europe.countries.all()[0])
+       print(europe.countries.all()[0].cities.all()[0])
+
+.. testoutput:: guide_reset
+
+   Europe
+   Germany
+   Cologne
+
+To reset the translations of the defined margin for a queryset:
+
+.. testcode:: guide_reset
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a queryset
+   continents = Continent.objects.all()
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # changes happened to the fields, create, read, update, delete, etc...
+
+       # reset the translations
+       context.reset()
+
+       # use the queryset like before
+       print(continents[0])
+       print(continents[0].countries.all()[0])
+       print(continents[0].countries.all()[0].cities.all()[0])
+
+.. testoutput:: guide_reset
+
+   Europe
+   Germany
+   Cologne
+
+To reset the translations of the defined margin for a list of instances:
+
+.. testcode:: guide_reset
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a list of instances
+   continents = list(Continent.objects.all())
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # changes happened to the fields, create, read, update, delete, etc...
+
+       # reset the translations
+       context.reset()
+
+       # use the list of instances like before
+       print(continents[0])
+       print(continents[0].countries.all()[0])
+       print(continents[0].countries.all()[0].cities.all()[0])
+
+.. testoutput:: guide_reset
+
+   Europe
+   Germany
+   Cologne
+
+The ``lang`` must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+not passed in, it is automatically set to the :term:`active language` code.
