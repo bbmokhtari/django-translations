@@ -110,6 +110,147 @@ The model of the ``*relations`` must be
    :meth:`~django.db.models.query.QuerySet.prefetch_related` or
    :func:`~django.db.models.prefetch_related_objects`.
 
+Creating the translations
+=========================
+
+To create the translations of the context's margin in a language use the
+:meth:`~translations.context.Context.create` method.
+This creates the translations using the :ref:`translatable fields \
+<specify-fields>` of the context's margin.
+It takes in a ``lang`` parameter which determines the language to
+create the translation in.
+
+.. testsetup:: guide_create_0
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: guide_create_1
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: guide_create_2
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+To create the translations of the defined margin for a model instance:
+
+.. testcode:: guide_create_0
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch an instance
+   europe = Continent.objects.get(code='EU')
+
+   # initiate context
+   with Context(europe, 'countries', 'countries__cities') as context:
+       # change the needed fields
+       europe.name = 'Europa (changed)'
+       europe.countries.all()[0].name = 'Deutschland (changed)'
+       europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+
+       # create the translations in German
+       context.create(lang='de')
+
+   print('Translations created!')
+
+.. testoutput:: guide_create_0
+
+   Translations created!
+
+To create the translations of the defined margin for a queryset:
+
+.. testcode:: guide_create_1
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a queryset
+   continents = Continent.objects.all()
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # change the needed fields
+       continents[0].name = 'Europa (changed)'
+       continents[0].countries.all()[0].name = 'Deutschland (changed)'
+       continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+
+       # create the translations in German
+       context.create(lang='de')
+
+   print('Translations created!')
+
+.. testoutput:: guide_create_1
+
+   Translations created!
+
+To create the translations of the defined margin for a list of instances:
+
+.. testcode:: guide_create_2
+
+   from sample.models import Continent
+   from translations.context import Context
+
+   # fetch a list of instances
+   continents = list(Continent.objects.all())
+
+   # initiate context
+   with Context(continents, 'countries', 'countries__cities') as context:
+       # change the needed fields
+       continents[0].name = 'Europa (changed)'
+       continents[0].countries.all()[0].name = 'Deutschland (changed)'
+       continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+
+       # create the context in German
+       context.create(lang='de')
+
+   print('Translations created!')
+
+.. testoutput:: guide_create_2
+
+   Translations created!
+
+The ``lang`` must be a language code already declared in the
+:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+not passed in, it is automatically set to the :term:`active language` code.
+
+.. note::
+
+   Creating only affects the translatable fields that have changed.
+
+   If the value of a field is not changed, the translation for it is not
+   created. (No need to set all the translatable fields beforehand)
+
 Reading the translations
 ========================
 
