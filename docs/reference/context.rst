@@ -19,8 +19,8 @@ This module contains the context managers for the Translations app.
       Initiates a :class:`~translations.context.Context` with an entity and
       some relations of it.
 
-      Processes the entity and the relations of it and defines them as the
-      purview of the :class:`~translations.context.Context`.
+      Processes the entity and the relations of it and defines them as
+      the :class:`~translations.context.Context`\ 's purview.
 
       :param entity: The entity to use in the context.
       :type entity: ~django.db.models.Model or
@@ -119,13 +119,11 @@ This module contains the context managers for the Translations app.
 
    .. method:: create(lang=None)
 
-      Create the translations from the context and write them to the
-      database.
+      Create the translations of the context's purview in a language.
 
-      Creates the translations of the entity and the specified relations
-      of it in a language from their translatable
-      :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-      and writes them to the database.
+      Creates the translations using the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` of the
+      context's purview in a language.
 
       :param lang: The language to create the translations in.
           ``None`` means use the :term:`active language` code.
@@ -135,15 +133,6 @@ This module contains the context managers for the Translations app.
       :raise ~django.db.utils.IntegrityError: If duplicate translations
           are created for a specific field of a unique instance in a
           language.
-
-      .. note::
-
-         The translations get created based on the translatable
-         :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-         even if they are not set in the context, so they better have a
-         proper initial value.
-
-      To create the translations of a list of instances and the relations of it:
 
       .. testsetup:: create_0
 
@@ -156,39 +145,6 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testcode:: create_0
-
-         from django.db.models import prefetch_related_objects
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a list of instances like before
-         continents = list(Continent.objects.all())
-         prefetch_related_objects(continents, *relations)
-
-         with Context(continents, *relations) as context:
-             # usage - create the translations
-             continents[0].name = 'Europa'
-             continents[0].countries.all()[0].name = 'Deutschland'
-             continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
-             context.create(lang='de')
-
-             # output - use the list of instances like before
-             context.read(lang='de')
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: create_0
-
-         Europa
-         Deutschland
-         Köln
-
-      To create the translations of a queryset and the relations of it:
-
       .. testsetup:: create_1
 
          from tests.sample import create_samples
@@ -199,37 +155,6 @@ This module contains the context managers for the Translations app.
              city_names=['cologne', 'seoul'],
              langs=['de']
          )
-
-      .. testcode:: create_1
-
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a queryset like before
-         continents = Continent.objects.prefetch_related(*relations)
-
-         with Context(continents, *relations) as context:
-             # usage - create the translations
-             continents[0].name = 'Europa'
-             continents[0].countries.all()[0].name = 'Deutschland'
-             continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
-             context.create(lang='de')
-
-             # output - use the queryset like before
-             context.read(lang='de')
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: create_1
-
-         Europa
-         Deutschland
-         Köln
-
-      To create the translations of an instance and the relations of it:
 
       .. testsetup:: create_2
 
@@ -242,34 +167,87 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
+      To create the translations of the defined purview for a model instance:
+
+      .. testcode:: create_0
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         europe = Continent.objects.get(code='EU')
+
+         with Context(europe, 'countries', 'countries__cities') as context:
+
+             # change the instance like before
+             europe.name = 'Europa'
+             europe.countries.all()[0].name = 'Deutschland'
+             europe.countries.all()[0].cities.all()[0].name = 'Köln'
+
+             # create the translations in German
+             context.create(lang='de')
+
+             print('Translations created!')
+
+      .. testoutput:: create_0
+
+         Translations created!
+
+      To create the translations of the defined purview for a queryset:
+
+      .. testcode:: create_1
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = Continent.objects.all()
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # change the queryset like before
+             continents[0].name = 'Europa'
+             continents[0].countries.all()[0].name = 'Deutschland'
+             continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
+
+             # create the translations in German
+             context.create(lang='de')
+
+             print('Translations created!')
+
+      .. testoutput:: create_1
+
+         Translations created!
+
+      To create the translations of the defined purview for a list of instances:
+
       .. testcode:: create_2
 
          from sample.models import Continent
          from translations.context import Context
 
-         relations = ('countries', 'countries__cities',)
+         continents = list(Continent.objects.all())
 
-         # input - fetch an instance like before
-         europe = Continent.objects.prefetch_related(*relations).get(code='EU')
+         with Context(continents, 'countries', 'countries__cities') as context:
 
-         with Context(europe, *relations) as context:
-             # usage - create the translations
-             europe.name = 'Europa'
-             europe.countries.all()[0].name = 'Deutschland'
-             europe.countries.all()[0].cities.all()[0].name = 'Köln'
+             # change the list of instances like before
+             continents[0].name = 'Europa'
+             continents[0].countries.all()[0].name = 'Deutschland'
+             continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
+
+             # create the translations in German
              context.create(lang='de')
 
-             # output - use the list of instances like before
-             context.read(lang='de')
-             print(europe)
-             print(europe.countries.all()[0])
-             print(europe.countries.all()[0].cities.all()[0])
+             print('Translations created!')
 
       .. testoutput:: create_2
 
-         Europa
-         Deutschland
-         Köln
+         Translations created!
+
+      .. note::
+
+         Creating only affects the translatable fields that have changed.
+
+         If the value of a field is not changed, the translation for it is not
+         created. (No need to set all the translatable fields beforehand)
 
    .. method:: read(lang=None)
 
