@@ -42,7 +42,6 @@ To initiate a context for a model instance:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch an instance
    europe = Continent.objects.get(code='EU')
 
    # initiate context
@@ -60,7 +59,6 @@ To initiate a context for a queryset:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a queryset
    continents = Continent.objects.all()
 
    # initiate context
@@ -78,7 +76,6 @@ To initiate a context for a list of model instances:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a list of instances
    continents = list(Continent.objects.all())
 
    # initiate context
@@ -160,11 +157,10 @@ To create the translations of the defined purview for a model instance:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch an instance
    europe = Continent.objects.get(code='EU')
 
-   # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
+
        # change the instance like before
        europe.name = 'Europa'
        europe.countries.all()[0].name = 'Deutschland'
@@ -186,11 +182,10 @@ To create the translations of the defined purview for a queryset:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a queryset
    continents = Continent.objects.all()
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # change the queryset like before
        continents[0].name = 'Europa'
        continents[0].countries.all()[0].name = 'Deutschland'
@@ -212,11 +207,10 @@ To create the translations of the defined purview for a list of instances:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a list of instances
    continents = list(Continent.objects.all())
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # change the list of instances like before
        continents[0].name = 'Europa'
        continents[0].countries.all()[0].name = 'Deutschland'
@@ -277,11 +271,10 @@ To read the translations of the defined purview for a model instance:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch an instance
    europe = Continent.objects.get(code='EU')
 
-   # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
+
        # read the translations in German
        context.read(lang='de')
 
@@ -303,11 +296,10 @@ To read the translations of the defined purview for a queryset:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a queryset
    continents = Continent.objects.all()
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # read the translations in German
        context.read(lang='de')
 
@@ -329,11 +321,10 @@ To read the translations of the defined purview for a list of instances:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a list of instances
    continents = list(Continent.objects.all())
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # read the translations in German
        context.read(lang='de')
 
@@ -377,6 +368,7 @@ not passed in, it is automatically set to the :term:`active language` code.
       with Context(europe, 'countries', 'countries__cities') as context:
           context.read(lang='de')
 
+          # Filtering after reading
           print(europe.name)
           print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
           print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
@@ -397,6 +389,7 @@ not passed in, it is automatically set to the :term:`active language` code.
       from sample.models import Continent, Country
       from translations.context import Context
 
+      # Filtering before reading
       europe = Continent.objects.prefetch_related(
           Prefetch(
               'countries',
@@ -449,11 +442,10 @@ To update the translations of the defined purview for a model instance:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch an instance
    europe = Continent.objects.get(code='EU')
 
-   # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
+
        # change the instance like before
        europe.name = 'Europa (changed)'
        europe.countries.all()[0].name = 'Deutschland (changed)'
@@ -475,11 +467,10 @@ To update the translations of the defined purview for a queryset:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a queryset
    continents = Continent.objects.all()
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # change the queryset like before
        continents[0].name = 'Europa (changed)'
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
@@ -501,11 +492,10 @@ To update the translations of the defined purview for a list of instances:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a list of instances
    continents = list(Continent.objects.all())
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # change the list of instances like before
        continents[0].name = 'Europa (changed)'
        continents[0].countries.all()[0].name = 'Deutschland (changed)'
@@ -590,11 +580,10 @@ To delete the translations of the defined purview for a model instance:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch an instance
    europe = Continent.objects.get(code='EU')
 
-   # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
+
        # delete the translations in German
        context.delete(lang='de')
 
@@ -611,11 +600,10 @@ To delete the translations of the defined purview for a queryset:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a queryset
    continents = Continent.objects.all()
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # delete the translations in German
        context.delete(lang='de')
 
@@ -632,11 +620,10 @@ To delete the translations of the defined purview for a list of instances:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a list of instances
    continents = list(Continent.objects.all())
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # delete the translations in German
        context.delete(lang='de')
 
@@ -679,12 +666,12 @@ To reset the translations of the defined purview for a model instance:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch an instance
    europe = Continent.objects.get(code='EU')
 
-   # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
+
        # changes happened to the fields, create, read, update, delete, etc...
+       context.read(lang='de')
 
        # reset the translations
        context.reset()
@@ -707,12 +694,12 @@ To reset the translations of the defined purview for a queryset:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a queryset
    continents = Continent.objects.all()
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # changes happened to the fields, create, read, update, delete, etc...
+       context.read(lang='de')
 
        # reset the translations
        context.reset()
@@ -735,12 +722,12 @@ To reset the translations of the defined purview for a list of instances:
    from sample.models import Continent
    from translations.context import Context
 
-   # fetch a list of instances
    continents = list(Continent.objects.all())
 
-   # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
+
        # changes happened to the fields, create, read, update, delete, etc...
+       context.read(lang='de')
 
        # reset the translations
        context.reset()
