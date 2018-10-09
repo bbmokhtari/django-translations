@@ -12,7 +12,7 @@ This module contains the context managers for the Translations app.
 
    Provides CRUD functionalities like :meth:`create`, :meth:`read`,
    :meth:`update` and :meth:`delete` to work with the translations and also
-   some other functionalities to manage the context.
+   some other functionalities like :meth:`reset` to manage the context.
 
    .. note::
 
