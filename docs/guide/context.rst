@@ -110,8 +110,8 @@ The model of the ``*relations`` must be
 Creating the translations
 =========================
 
-To create the translations of the context's purview in a language use the
-:meth:`~translations.context.Context.create` method.
+To create the translations of the context's purview in a language
+use the :meth:`~translations.context.Context.create` method.
 This creates the translations using the :ref:`translatable fields \
 <specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
@@ -243,8 +243,8 @@ Creating duplicate translations for a field raises
 Reading the translations
 ========================
 
-To read the translations of the context's purview in a language use the
-:meth:`~translations.context.Context.read` method.
+To read the translations of the context's purview in a language
+use the :meth:`~translations.context.Context.read` method.
 This applies the translations on the :ref:`translatable fields \
 <specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
@@ -414,8 +414,8 @@ not passed in, it is automatically set to the :term:`active language` code.
 Updating the translations
 =========================
 
-To update the translations of the context's purview in a language use the
-:meth:`~translations.context.Context.update` method.
+To update the translations of the context's purview in a language
+use the :meth:`~translations.context.Context.update` method.
 This updates the translations using the :ref:`translatable fields \
 <specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
@@ -524,8 +524,8 @@ not passed in, it is automatically set to the :term:`active language` code.
 Deleting the translations
 =========================
 
-To delete the translations of the context's purview in a language use the
-:meth:`~translations.context.Context.delete` method.
+To delete the translations of the context's purview in a language
+use the :meth:`~translations.context.Context.delete` method.
 This deletes the translations for the :ref:`translatable fields \
 <specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
@@ -640,8 +640,8 @@ not passed in, it is automatically set to the :term:`active language` code.
 Resetting the translations
 ==========================
 
-To reset the translations of the context's purview in a language use the
-:meth:`~translations.context.Context.reset` method.
+To reset the translations of the context's purview to original values
+use the :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
 <specify-fields>` of the context's purview.
 
