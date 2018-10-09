@@ -20,8 +20,10 @@ To make a model translatable inherit it from the
    :lines: 1-25
    :emphasize-lines: 1
 
-Since :class:`~translations.models.Translatable` is an abstract model there is
-no need to migrate afterwards.
+.. note::
+
+   Since :class:`~translations.models.Translatable` is an abstract model there
+   is no need to migrate afterwards.
 
 .. warning::
 
