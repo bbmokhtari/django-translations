@@ -76,6 +76,16 @@ This module contains the models for the Translations app.
    It also adds the :attr:`translations` relation to the model, just in case
    any one wants to work with the translations of an instance manually.
 
+   To make a model translatable:
+
+   .. literalinclude:: ../../sample/models.py
+      :lines: 4
+
+   .. literalinclude:: ../../sample/models.py
+      :pyobject: Continent
+      :lines: 1-25
+      :emphasize-lines: 1
+
    .. note::
 
       The :attr:`translations` relation is the reverse relation of the
@@ -98,7 +108,7 @@ This module contains the models for the Translations app.
 
          .. literalinclude:: ../../sample/models.py
             :pyobject: Continent
-            :emphasize-lines: 27-28
+            :emphasize-lines: 1, 27-28
 
    .. classmethod:: get_translatable_fields(cls)
 
@@ -109,12 +119,6 @@ This module contains the models for the Translations app.
 
       :return: The translatable fields of the model.
       :rtype: list(~django.db.models.Field)
-
-      Considering this model:
-
-      .. literalinclude:: ../../sample/models.py
-         :pyobject: Continent
-         :emphasize-lines: 27-28
 
       To get the translatable fields of the mentioned model:
 
@@ -140,12 +144,6 @@ This module contains the models for the Translations app.
       :return: The names of the model's translatable fields.
       :rtype: list(str)
 
-      Considering this model:
-
-      .. literalinclude:: ../../sample/models.py
-         :pyobject: Continent
-         :emphasize-lines: 27-28
-
       To get the names of the mentioned model's translatable fields:
 
       .. testcode:: _get_translatable_fields_names
@@ -169,12 +167,6 @@ This module contains the models for the Translations app.
 
       :return: The choices of the model's translatable fields.
       :rtype: list(tuple(str, str))
-
-      Considering this model:
-
-      .. literalinclude:: ../../sample/models.py
-         :pyobject: Continent
-         :emphasize-lines: 27-28
 
       To get the choices of the mentioned model's translatable fields:
 
