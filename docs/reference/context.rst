@@ -251,7 +251,7 @@ This module contains the context managers for the Translations app.
 
    .. method:: read(lang=None)
 
-      Read the translations of the context's purview in a language
+      Read the translations of the context's purview in a language.
 
       Applies the translations on the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
@@ -422,34 +422,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: update(lang=None)
 
-      Update the translations from the context and write them to the
-      database.
+      Update the translations of the context's purview in a language.
 
-      Updates the translations of the entity and the specified relations
-      of it in a language from their translatable
-      :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-      and writes them to the database.
+      updates the translations using the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` of the
+      context's purview in a language.
 
       :param lang: The language to update the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
-
-      .. note::
-
-         The translations get updated based on the translatable
-         :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-         even if they are not changed in the context, so they better have a
-         proper initial value.
-
-      .. note::
-
-         Since :meth:`update`, first deletes the old translations and then
-         creates the new translations, it may be a good idea to use
-         :func:`atomic transactions <django.db.transaction.atomic>` in order
-         to not lose old translations in case :meth:`update` throws an
-         exception.
 
       .. testsetup:: update
 
@@ -465,109 +448,87 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To update the translations of a list of instances and the relations of it:
-
-      .. testcode:: update
-
-         from django.db.models import prefetch_related_objects
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a list of instances like before
-         continents = list(Continent.objects.all())
-         prefetch_related_objects(continents, *relations)
-
-         with Context(continents, *relations) as context:
-             # prepare - set initial value for the context
-             context.read(lang='de')
-
-             # usage - update the translations
-             continents[0].name = 'Europa (changed)'
-             continents[0].countries.all()[0].name = 'Deutschland (changed)'
-             continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
-             context.update(lang='de')
-
-             # output - use the list of instances like before
-             context.read(lang='de')
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: update
-
-         Europa (changed)
-         Deutschland (changed)
-         Köln (changed)
-
-      To update the translations of a queryset and the relations of it:
+      To update the translations of the defined purview for a model instance:
 
       .. testcode:: update
 
          from sample.models import Continent
          from translations.context import Context
 
-         relations = ('countries', 'countries__cities',)
+         europe = Continent.objects.get(code='EU')
 
-         # input - fetch a queryset like before
-         continents = Continent.objects.prefetch_related(*relations)
+         with Context(europe, 'countries', 'countries__cities') as context:
 
-         with Context(continents, *relations) as context:
-             # prepare - set initial value for the context
-             context.read(lang='de')
-
-             # usage - update the translations
-             continents[0].name = 'Europa (changed)'
-             continents[0].countries.all()[0].name = 'Deutschland (changed)'
-             continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
-             context.update(lang='de')
-
-             # output - use the queryset like before
-             context.read(lang='de')
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: update
-
-         Europa (changed)
-         Deutschland (changed)
-         Köln (changed)
-
-      To update the translations of an instance and the relations of it:
-
-      .. testcode:: update
-
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch an instance like before
-         europe = Continent.objects.prefetch_related(*relations).get(code='EU')
-
-         with Context(europe, *relations) as context:
-             # prepare - set initial value for the context
-             context.read(lang='de')
-
-             # usage - update the translations
+             # change the instance like before
              europe.name = 'Europa (changed)'
              europe.countries.all()[0].name = 'Deutschland (changed)'
              europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+
+             # update the translations in German
              context.update(lang='de')
 
-             # output - use the list of instances like before
-             context.read(lang='de')
-             print(europe)
-             print(europe.countries.all()[0])
-             print(europe.countries.all()[0].cities.all()[0])
+             print('Translations updated!')
 
       .. testoutput:: update
 
-         Europa (changed)
-         Deutschland (changed)
-         Köln (changed)
+         Translations updated!
+
+      To update the translations of the defined purview for a queryset:
+
+      .. testcode:: update
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = Continent.objects.all()
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # change the queryset like before
+             continents[0].name = 'Europa (changed)'
+             continents[0].countries.all()[0].name = 'Deutschland (changed)'
+             continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+
+             # update the translations in German
+             context.update(lang='de')
+
+             print('Translations updated!')
+
+      .. testoutput:: update
+
+         Translations updated!
+
+      To update the translations of the defined purview for a list of instances:
+
+      .. testcode:: update
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = list(Continent.objects.all())
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # change the list of instances like before
+             continents[0].name = 'Europa (changed)'
+             continents[0].countries.all()[0].name = 'Deutschland (changed)'
+             continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
+
+             # update the translations in German
+             context.update(lang='de')
+
+             print('Translations updated!')
+
+      .. testoutput:: update
+
+         Translations updated!
+
+      .. note::
+
+         Updating only affects the translatable fields that have changed.
+
+         If the value of a field is not changed, the translation for it is not
+         updated. (No need to initialize all the translatable fields beforehand)
 
    .. method:: delete(lang=None)
 
