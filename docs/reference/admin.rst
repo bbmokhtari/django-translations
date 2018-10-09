@@ -38,7 +38,7 @@ This module contains the admins for the Translations app.
 
       .. literalinclude:: ../../translations/admin.py
          :pyobject: TranslatableAdmin
-         :emphasize-lines: 11
+         :emphasize-lines: 8
 
       .. note::
 
@@ -56,6 +56,9 @@ This module contains the admins for the Translations app.
    To make an admin translatable:
 
    .. literalinclude:: ../../sample/admin.py
+      :lines: 2
+
+   .. literalinclude:: ../../sample/admin.py
       :pyobject: ContinentAdmin
       :emphasize-lines: 1
 
@@ -66,6 +69,9 @@ This module contains the admins for the Translations app.
    Manages creating, reading, updating and deleting the translation objects.
 
    To add translation inlines to a translatable admin:
+
+   .. literalinclude:: ../../sample/admin.py
+      :lines: 2
 
    .. literalinclude:: ../../sample/admin.py
       :pyobject: ContinentAdmin

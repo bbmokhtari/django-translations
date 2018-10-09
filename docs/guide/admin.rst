@@ -9,9 +9,8 @@ Make admin translatable
 
 To make an admin translatable:
 
-1. :ref:`Make sure its model is translatable <translatable-models>`.
-2. Inherit the admin from the :class:`~translations.admin.TranslatableAdmin`
-   admin.
+1. Make sure its model is :ref:`translatable <translatable-models>`.
+2. Inherit the admin from the :class:`~translations.admin.TranslatableAdmin`.
 
    .. literalinclude:: ../../sample/admin.py
       :lines: 2
