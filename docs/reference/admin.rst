@@ -27,7 +27,7 @@ This module contains the admins for the Translations app.
           prepare.
       :type inlines: list(~django.contrib.admin.InlineModelAdmin)
       :param inline_type: The type of the translation inlines.
-      :type inline_type: type(~django.contrib.contenttypes.admin.\\
+      :type inline_type: type(~django.contrib.contenttypes.admin.\
           GenericStackedInline)
 
       To prepare the translation inlines of a type in some inlines based on

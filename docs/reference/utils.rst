@@ -122,7 +122,7 @@ This module contains the utilities for the Translations app.
        relation points to.
    :type model: type(~django.db.models.Model)
    :param relation: The relation of the model to get the reverse of.
-       It may be composed of many ``related_query_name``\\ s separated by
+       It may be composed of many ``related_query_name``\ s separated by
        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
        represent a deeply nested relation.
    :type relation: str
@@ -159,7 +159,7 @@ This module contains the utilities for the Translations app.
 
    :param relations: The relations to derive the :term:`relations hierarchy`
        out of.
-       Each relation may be composed of many ``related_query_name``\\ s
+       Each relation may be composed of many ``related_query_name``\ s
        separated by :data:`~django.db.models.constants.LOOKUP_SEP`
        (usually ``__``) to represent a deeply nested relation.
    :type relations: list(str)
