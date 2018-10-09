@@ -78,45 +78,49 @@ Inherit ``Translatable`` in any model you want translated:
 
 .. code:: python
 
-   from translations.models import Translatable
-
    class Continent(Translatable):
-       ...
+       code = models.Charfield(...)
+       name = models.Charfield(...)
+       denonym = models.Charfield(...)
 
-   class Country(Translatable):
-       ...
-
-   class City(Translatable):
-       ...
+       class TranslatableMeta:
+           fields = ['name', 'denonym']
 
 **No Migrations** needed afterwards!
 
 Query
 ~~~~~
 
-Use the queryset extensions:
+Use the context:
 
 .. code:: python
 
-   >>> # 1. query the database
+   >>> # 1. query the database like before
    >>> continents = Continent.objects.prefetch_related(
    ...     'countries',
    ...     'countries__cities'
    ... )
-   >>> # 2. apply the translations (in place)
-   >>> continents.apply_translations(
-   ...     'countries',
-   ...     'countries__cities',
-   ...     lang='de'
-   ... )
-   >>> # 3. use it like before
-   >>> continents[0].name
+   >>> # 2. work with the translated objects
+   >>> with Context(continents, 'countries', 'countries__cities',) as context:
+   ...     # -------------------------------- read the context in German
+   ...     context.read('de')
+   ...     print(continents[0].name)
+   ...     print(continents[0].countries.all()[0].name)
+   ...     # -------------------------------- update the context in German
+   ...     continents[0].name = 'Europa (changed)'
+   ...     continents[0].countries.all()[0].name = 'Deutschland (changed)'
+   ...     context.update('de')
+   ...     # -------------------------------- and more capabilties
+   ...     context.reset()
+   ...     print(continents[0].name)
+   ...     print(continents[0].countries.all()[0].name)
    Europa
-   >>> continents[0].countries.all()[0].name
    Deutschland
+   Europe
+   Germany
 
-This does **Only One Query** for the translations of the queryset and the
-specified relations!
+This does only **One Query** to translate any object (instance, queryset, list)
+plus all its relations (however much nested). Also the same for updating.
 
 Admin
 ~~~~~
@@ -124,8 +128,6 @@ Admin
 Use the admin extensions:
 
 .. code:: python
-
-   from translations.admin import TranslatableAdmin, TranslationInline
 
    class ContinentAdmin(TranslatableAdmin):
        inlines = [TranslationInline,]

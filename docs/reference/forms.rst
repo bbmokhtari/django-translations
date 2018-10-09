@@ -2,6 +2,19 @@
 Forms
 *****
 
-.. automodule:: translations.forms
+.. module:: translations.forms
 
-   .. autofunction:: generate_translation_form
+This module contains the forms for the Translations app.
+
+.. function:: generate_translation_form(translatable)
+
+   Return a translation form based on a translatable model.
+
+   Generates the translation form based on the translatable fields of the
+   translatable model and returns it.
+
+   :param translatable: The translatable model to generate the translation
+       form based on.
+   :type translatable: type(~translations.models.Translatable)
+   :return: The translation form generated based on the translatable model.
+   :rtype: type(~django.forms.ModelForm(~translations.models.Translation))
