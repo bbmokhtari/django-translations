@@ -214,12 +214,14 @@ intersphinx_mapping = {
 # -- Options for doctest extension -------------------------------------------
 
 doctest_global_setup = """
+from django.db import connection
 from django.test import TestCase
 from django.db.models.query import QuerySet
 from pprint import pprint
 import builtins
 
 # Turn on the test database for the doctests
+connection.creation.create_test_db(verbosity=0)
 TestCase.setUpClass()
 
 # Beautify `testoutput`
@@ -244,8 +246,10 @@ def print(obj=''):
 """
 
 doctest_global_cleanup = """
+from django.db import connection
 from django.test import TestCase
 
 # Turn off the test database for the doctests
 TestCase.tearDownClass()
+connection.creation.destroy_test_db(verbosity=0)
 """
