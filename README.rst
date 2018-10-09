@@ -78,6 +78,8 @@ Inherit ``Translatable`` in any model you want translated:
 
 .. code:: python
 
+   from translations.models import Translatable
+
    class Continent(Translatable):
        code = models.Charfield(...)
        name = models.Charfield(...)
@@ -86,7 +88,7 @@ Inherit ``Translatable`` in any model you want translated:
        class TranslatableMeta:
            fields = ['name', 'denonym']
 
-**No Migrations** needed afterwards!
+**NO MIGRATIONS** needed afterwards!
 
 Query
 ~~~~~
@@ -95,11 +97,9 @@ Use the context:
 
 .. code:: python
 
+   >>> from translations.context import Context
    >>> # 1. query the database like before
-   >>> continents = Continent.objects.prefetch_related(
-   ...     'countries',
-   ...     'countries__cities'
-   ... )
+   >>> continents = Continent.objects.all()
    >>> # 2. work with the translated objects
    >>> with Context(continents, 'countries', 'countries__cities',) as context:
    ...     # -------------------------------- read the context in German
@@ -119,8 +119,8 @@ Use the context:
    Europe
    Germany
 
-This does only **One Query** to translate any object (instance, queryset, list)
-plus all its relations (however much nested). Also the same for updating.
+This does only **ONE QUERY** to translate any object (instance, queryset, list)
+plus all its relations.
 
 Admin
 ~~~~~
@@ -128,6 +128,8 @@ Admin
 Use the admin extensions:
 
 .. code:: python
+
+   from translations.admin import TranslatableAdmin, TranslationInline
 
    class ContinentAdmin(TranslatableAdmin):
        inlines = [TranslationInline,]
