@@ -173,7 +173,7 @@ To create the translations of the defined purview for a model instance:
        # create the translations in German
        context.create(lang='de')
 
-   print('Translations created!')
+       print('Translations created!')
 
 .. testoutput:: guide_create_0
 
@@ -199,7 +199,7 @@ To create the translations of the defined purview for a queryset:
        # create the translations in German
        context.create(lang='de')
 
-   print('Translations created!')
+       print('Translations created!')
 
 .. testoutput:: guide_create_1
 
@@ -225,7 +225,7 @@ To create the translations of the defined purview for a list of instances:
        # create the translations in German
        context.create(lang='de')
 
-   print('Translations created!')
+       print('Translations created!')
 
 .. testoutput:: guide_create_2
 
@@ -462,7 +462,7 @@ To update the translations of the defined purview for a model instance:
        # update the translations in German
        context.update(lang='de')
 
-   print('Translations updated!')
+       print('Translations updated!')
 
 .. testoutput:: guide_update
 
@@ -488,7 +488,7 @@ To update the translations of the defined purview for a queryset:
        # update the translations in German
        context.update(lang='de')
 
-   print('Translations updated!')
+       print('Translations updated!')
 
 .. testoutput:: guide_update
 
@@ -514,7 +514,7 @@ To update the translations of the defined purview for a list of instances:
        # update the translations in German
        context.update(lang='de')
 
-   print('Translations updated!')
+       print('Translations updated!')
 
 .. testoutput:: guide_update
 
@@ -598,7 +598,7 @@ To delete the translations of the defined purview for a model instance:
        # delete the translations in German
        context.delete(lang='de')
 
-   print('Translations deleted!')
+       print('Translations deleted!')
 
 .. testoutput:: guide_delete_0
 
@@ -619,7 +619,7 @@ To delete the translations of the defined purview for a queryset:
        # delete the translations in German
        context.delete(lang='de')
 
-   print('Translations deleted!')
+       print('Translations deleted!')
 
 .. testoutput:: guide_delete_1
 
@@ -640,7 +640,7 @@ To delete the translations of the defined purview for a list of instances:
        # delete the translations in German
        context.delete(lang='de')
 
-   print('Translations deleted!')
+       print('Translations deleted!')
 
 .. testoutput:: guide_delete_2
 
