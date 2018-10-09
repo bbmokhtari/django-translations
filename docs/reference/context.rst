@@ -41,7 +41,7 @@ This module contains the context managers for the Translations app.
       :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
           pointing to the fields that don't exist.
 
-      .. testsetup:: guide_init
+      .. testsetup:: init
 
          from tests.sample import create_samples
 
@@ -57,7 +57,7 @@ This module contains the context managers for the Translations app.
 
       To initiate a context for a model instance:
 
-      .. testcode:: guide_init
+      .. testcode:: init
 
          from sample.models import Continent
          from translations.context import Context
@@ -68,13 +68,13 @@ This module contains the context managers for the Translations app.
          with Context(europe, 'countries', 'countries__cities') as context:
              print('Context initiated!')
 
-      .. testoutput:: guide_init
+      .. testoutput:: init
 
          Context initiated!
 
       To initiate a context for a queryset:
 
-      .. testcode:: guide_init
+      .. testcode:: init
 
          from sample.models import Continent
          from translations.context import Context
@@ -85,13 +85,13 @@ This module contains the context managers for the Translations app.
          with Context(continents, 'countries', 'countries__cities') as context:
              print('Context initiated!')
 
-      .. testoutput:: guide_init
+      .. testoutput:: init
 
          Context initiated!
 
       To initiate a context for a list of model instances:
 
-      .. testcode:: guide_init
+      .. testcode:: init
 
          from sample.models import Continent
          from translations.context import Context
@@ -102,7 +102,7 @@ This module contains the context managers for the Translations app.
          with Context(continents, 'countries', 'countries__cities') as context:
              print('Context initiated!')
 
-      .. testoutput:: guide_init
+      .. testoutput:: init
 
          Context initiated!
 
@@ -251,25 +251,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: read(lang=None)
 
-      Read the translations from the database and apply them on the context.
+      Read the translations of the context's purview in a language
 
-      Reads the translations of the entity and the specified relations
-      of it in a language from the database and applies them on their
-      translatable
-      :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
+      Applies the translations on the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` of the
+      context's purview.
 
       :param lang: The language to fetch the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
-
-      .. note::
-
-         If there is no translation for a field in translatable
-         :attr:`~translations.models.Translatable.TranslatableMeta.fields`,
-         the translation of the field falls back to the value of the field
-         in the instance.
 
       .. testsetup:: read
 
@@ -285,28 +277,74 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To read the translations of a list of instances and the relations of it:
+      To read the translations of the defined purview for a model instance:
 
       .. testcode:: read
 
-         from django.db.models import prefetch_related_objects
          from sample.models import Continent
          from translations.context import Context
 
-         relations = ('countries', 'countries__cities',)
+         europe = Continent.objects.get(code='EU')
 
-         # input - fetch a list of instances like before
+         with Context(europe, 'countries', 'countries__cities') as context:
+
+             # read the translations in German
+             context.read(lang='de')
+
+             # use the instance like before
+             print(europe.name)
+             print(europe.countries.all()[0].name)
+             print(europe.countries.all()[0].cities.all()[0].name)
+
+      .. testoutput:: read
+
+         Europa
+         Deutschland
+         Köln
+
+      To read the translations of the defined purview for a queryset:
+
+      .. testcode:: read
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = Continent.objects.all()
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # read the translations in German
+             context.read(lang='de')
+
+             # use the queryset like before
+             print(continents[0].name)
+             print(continents[0].countries.all()[0].name)
+             print(continents[0].countries.all()[0].cities.all()[0].name)
+
+      .. testoutput:: read
+
+         Europa
+         Deutschland
+         Köln
+
+      To read the translations of the defined purview for a list of instances:
+
+      .. testcode:: read
+
+         from sample.models import Continent
+         from translations.context import Context
+
          continents = list(Continent.objects.all())
-         prefetch_related_objects(continents, *relations)
 
-         with Context(continents, *relations) as context:
-             # usage - read the translations
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # read the translations in German
              context.read(lang='de')
 
-             # output - use the list of instances like before
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
+             # use the list of instances like before
+             print(continents[0].name)
+             print(continents[0].countries.all()[0].name)
+             print(continents[0].countries.all()[0].cities.all()[0].name)
 
       .. testoutput:: read
 
@@ -314,59 +352,12 @@ This module contains the context managers for the Translations app.
          Deutschland
          Köln
 
-      To read the translations of a queryset and the relations of it:
+      .. note::
 
-      .. testcode:: read
+         Reading only affects the translatable fields that have a translation.
 
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a queryset like before
-         continents = Continent.objects.prefetch_related(*relations)
-
-         with Context(continents, *relations) as context:
-             # usage - read the translations
-             context.read(lang='de')
-
-             # output - use the queryset like before
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: read
-
-         Europa
-         Deutschland
-         Köln
-
-      To read the translations of an instance and the relations of it:
-
-      .. testcode:: read
-
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch an instance like before
-         europe = Continent.objects.prefetch_related(*relations).get(code='EU')
-
-         with Context(europe, *relations) as context:
-             # usage - read the translations
-             context.read(lang='de')
-
-             # output - use the instance like before
-             print(europe)
-             print(europe.countries.all()[0])
-             print(europe.countries.all()[0].cities.all()[0])
-
-      .. testoutput:: read
-
-         Europa
-         Deutschland
-         Köln
+         If there is no translation for a field, the value of the field is not
+         changed. (It remains what it was before)
 
       .. warning::
 
@@ -378,13 +369,15 @@ This module contains the context managers for the Translations app.
             from sample.models import Continent
             from translations.context import Context
 
-            relations = ('countries', 'countries__cities',)
+            europe = Continent.objects.prefetch_related(
+                'countries',
+                'countries__cities',
+            ).get(code='EU')
 
-            europe = Continent.objects.prefetch_related(*relations).get(code='EU')
-
-            with Context(europe, *relations) as context:
+            with Context(europe, 'countries', 'countries__cities') as context:
                 context.read(lang='de')
 
+                # Filtering after reading
                 print(europe.name)
                 print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
                 print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
@@ -405,8 +398,7 @@ This module contains the context managers for the Translations app.
             from sample.models import Continent, Country
             from translations.context import Context
 
-            relations = ('countries', 'countries__cities',)
-
+            # Filtering before reading
             europe = Continent.objects.prefetch_related(
                 Prefetch(
                     'countries',
@@ -415,7 +407,7 @@ This module contains the context managers for the Translations app.
                 'countries__cities',
             ).get(code='EU')
 
-            with Context(europe, *relations) as context:
+            with Context(europe, 'countries', 'countries__cities') as context:
                 context.read(lang='de')
 
                 print(europe.name)
