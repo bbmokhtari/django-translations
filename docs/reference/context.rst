@@ -648,11 +648,11 @@ This module contains the context managers for the Translations app.
 
    .. method:: reset()
 
-      Reset the translations of the context to the original values.
+      Reset the translations of the context's purview to original values.
 
-      Resets the translations of the entity and the specified relations
-      of it on their translatable
-      :attr:`~translations.models.Translatable.TranslatableMeta.fields`.
+      Resets the translations on the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` of the
+      context's purview.
 
       .. testsetup:: reset
 
@@ -668,88 +668,83 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To reset the translations of a list of instances and the relations of it:
-
-      .. testcode:: reset
-
-         from django.db.models import prefetch_related_objects
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a list of instances like before
-         continents = list(Continent.objects.all())
-         prefetch_related_objects(continents, *relations)
-
-         with Context(continents, *relations) as context:
-             context.read(lang='de')
-
-             # usage - reset the translations
-             context.reset()
-
-             # output - use the list of instances like before
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: reset
-
-         Europe
-         Germany
-         Cologne
-
-      To reset the translations of a queryset and the relations of it:
+      To reset the translations of the defined purview for a model instance:
 
       .. testcode:: reset
 
          from sample.models import Continent
          from translations.context import Context
 
-         relations = ('countries', 'countries__cities',)
+         europe = Continent.objects.get(code='EU')
 
-         # input - fetch a queryset like before
-         continents = Continent.objects.prefetch_related(*relations)
+         with Context(europe, 'countries', 'countries__cities') as context:
 
-         with Context(continents, *relations) as context:
+             # changes happened to the fields, create, read, update, delete, etc...
              context.read(lang='de')
 
-             # usage - reset the translations
+             # reset the translations
              context.reset()
 
-             # output - use the queryset like before
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: reset
-
-         Europe
-         Germany
-         Cologne
-
-      To reset the translations of an instance and the relations of it:
-
-      .. testcode:: reset
-
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch an instance like before
-         europe = Continent.objects.prefetch_related(*relations).get(code='EU')
-
-         with Context(europe, *relations) as context:
-             context.read(lang='de')
-
-             # usage - reset the translations
-             context.reset()
-
-             # output - use the instance like before
+             # use the instance like before
              print(europe)
              print(europe.countries.all()[0])
              print(europe.countries.all()[0].cities.all()[0])
+
+      .. testoutput:: reset
+
+         Europe
+         Germany
+         Cologne
+
+      To reset the translations of the defined purview for a queryset:
+
+      .. testcode:: reset
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = Continent.objects.all()
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # changes happened to the fields, create, read, update, delete, etc...
+             context.read(lang='de')
+
+             # reset the translations
+             context.reset()
+
+             # use the queryset like before
+             print(continents[0])
+             print(continents[0].countries.all()[0])
+             print(continents[0].countries.all()[0].cities.all()[0])
+
+      .. testoutput:: reset
+
+         Europe
+         Germany
+         Cologne
+
+      To reset the translations of the defined purview for a list of instances:
+
+      .. testcode:: reset
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = list(Continent.objects.all())
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # changes happened to the fields, create, read, update, delete, etc...
+             context.read(lang='de')
+
+             # reset the translations
+             context.reset()
+
+             # use the list of instances like before
+             print(continents[0])
+             print(continents[0].countries.all()[0])
+             print(continents[0].countries.all()[0].cities.all()[0])
 
       .. testoutput:: reset
 
