@@ -424,7 +424,7 @@ This module contains the context managers for the Translations app.
 
       Update the translations of the context's purview in a language.
 
-      updates the translations using the :attr:`translatable fields \
+      Updates the translations using the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       context's purview in a language.
 
@@ -532,21 +532,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: delete(lang=None)
 
-      Collect the translations from the context and delete them from the
-      database.
+      Delete the translations of the context's purview in a language.
 
-      Collects the translations of the entity and the specified relations
-      of it in a language using their translatable
-      :attr:`~translations.models.Translatable.TranslatableMeta.fields`
-      and deletes them from the database.
+      Deletes the translations for the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` of the
+      context's purview in a language.
 
       :param lang: The language to delete the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
-
-      To delete the translations of a list of instances and the relations of it:
 
       .. testsetup:: delete_0
 
@@ -562,36 +558,6 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testcode:: delete_0
-
-         from django.db.models import prefetch_related_objects
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a list of instances like before
-         continents = list(Continent.objects.all())
-         prefetch_related_objects(continents, *relations)
-
-         with Context(continents, *relations) as context:
-             # usage - delete the translations
-             context.delete(lang='de')
-
-             # output - use the list of instances like before
-             context.read(lang='de')
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: delete_0
-
-         Europe
-         Germany
-         Cologne
-
-      To delete the translations of a queryset and the relations of it:
-
       .. testsetup:: delete_1
 
          from tests.sample import create_samples
@@ -605,34 +571,6 @@ This module contains the context managers for the Translations app.
              city_fields=['name', 'denonym'],
              langs=['de']
          )
-
-      .. testcode:: delete_1
-
-         from sample.models import Continent
-         from translations.context import Context
-
-         relations = ('countries', 'countries__cities',)
-
-         # input - fetch a queryset like before
-         continents = Continent.objects.prefetch_related(*relations)
-
-         with Context(continents, *relations) as context:
-             # usage - delete the translations
-             context.delete(lang='de')
-
-             # output - use the queryset like before
-             context.read(lang='de')
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
-
-      .. testoutput:: delete_1
-
-         Europe
-         Germany
-         Cologne
-
-      To delete the translations of an instance and the relations of it:
 
       .. testsetup:: delete_2
 
@@ -648,31 +586,65 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
+      To delete the translations of the defined purview for a model instance:
+
+      .. testcode:: delete_0
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         europe = Continent.objects.get(code='EU')
+
+         with Context(europe, 'countries', 'countries__cities') as context:
+
+             # delete the translations in German
+             context.delete(lang='de')
+
+             print('Translations deleted!')
+
+      .. testoutput:: delete_0
+
+         Translations deleted!
+
+      To delete the translations of the defined purview for a queryset:
+
+      .. testcode:: delete_1
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = Continent.objects.all()
+
+         with Context(continents, 'countries', 'countries__cities') as context:
+
+             # delete the translations in German
+             context.delete(lang='de')
+
+             print('Translations deleted!')
+
+      .. testoutput:: delete_1
+
+         Translations deleted!
+
+      To delete the translations of the defined purview for a list of instances:
+
       .. testcode:: delete_2
 
          from sample.models import Continent
          from translations.context import Context
 
-         relations = ('countries', 'countries__cities',)
+         continents = list(Continent.objects.all())
 
-         # input - fetch an instance like before
-         europe = Continent.objects.prefetch_related(*relations).get(code='EU')
+         with Context(continents, 'countries', 'countries__cities') as context:
 
-         with Context(europe, *relations) as context:
-             # usage - delete the translations
+             # delete the translations in German
              context.delete(lang='de')
 
-             # output - use the list of instances like before
-             context.read(lang='de')
-             print(europe)
-             print(europe.countries.all()[0])
-             print(europe.countries.all()[0].cities.all()[0])
+             print('Translations deleted!')
 
       .. testoutput:: delete_2
 
-         Europe
-         Germany
-         Cologne
+         Translations deleted!
 
    .. method:: reset()
 
