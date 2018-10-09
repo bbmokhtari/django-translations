@@ -36,18 +36,16 @@ To make a model translatable inherit it from the
 Specify model's translatable fields
 ===================================
 
-To specify the model's :attr:`translatable fields \
-<translations.models.Translatable.TranslatableMeta.fields>` specify the
+To specify the model's translatable fields specify the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 of the :class:`~translations.models.Translatable.TranslatableMeta` class
-declared inside a :class:`~translations.models.Translatable` model.
+declared inside the translatable model.
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Continent
    :emphasize-lines: 1, 27-28
 
-By default the
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute is
+By default the ``fields`` attribute is
 set to ``None``. This means the translation will use the text based fields
 automatically. (like :class:`~django.db.models.CharField` and
 :class:`~django.db.models.TextField` - this does not include
@@ -57,8 +55,7 @@ automatically. (like :class:`~django.db.models.CharField` and
    :pyobject: City
    :emphasize-lines: 1
 
-If needed, the
-:attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
+If needed, the ``fields`` attribute
 can be set to nothing. You can do this by explicitly setting it to ``[]``.
 
 .. literalinclude:: ../../sample/models.py
