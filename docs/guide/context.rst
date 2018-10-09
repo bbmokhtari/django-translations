@@ -47,11 +47,11 @@ To initiate a context for a model instance:
 
    # initiate context
    with Context(europe, 'countries', 'countries__cities') as context:
-       print('Context created!')
+       print('Context initiated!')
 
 .. testoutput:: guide_init
 
-   Context created!
+   Context initiated!
 
 To initiate a context for a queryset:
 
@@ -65,11 +65,11 @@ To initiate a context for a queryset:
 
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
-       print('Context created!')
+       print('Context initiated!')
 
 .. testoutput:: guide_init
 
-   Context created!
+   Context initiated!
 
 To initiate a context for a list of model instances:
 
@@ -83,11 +83,11 @@ To initiate a context for a list of model instances:
 
    # initiate context
    with Context(continents, 'countries', 'countries__cities') as context:
-       print('Context created!')
+       print('Context initiated!')
 
 .. testoutput:: guide_init
 
-   Context created!
+   Context initiated!
 
 The ``entity`` must be a model instance, a queryset or a list of model
 instances.
