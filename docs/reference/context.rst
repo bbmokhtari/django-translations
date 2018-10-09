@@ -14,20 +14,13 @@ This module contains the context managers for the Translations app.
    :meth:`update` and :meth:`delete` to work with the translations and also
    some other functionalities like :meth:`reset` to manage the context.
 
-   .. note::
-
-       It is **recommended** for the relations of the entity to be
-       prefetched before initiating a :class:`~translations.context.Context`,
-       in order to reach optimal performance.
-
-       To do this use
-       :meth:`~django.db.models.query.QuerySet.select_related`,
-       :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-       :func:`~django.db.models.prefetch_related_objects`.
-
    .. method:: __init__(self, entity, *relations)
 
-      Initializes a :class:`~translations.utils.Context`.
+      Initiates a :class:`~translations.context.Context` with an entity and
+      some relations of it.
+
+      Processes the entity and the relations of it and defines them as the
+      purview of the :class:`~translations.context.Context`.
 
       :param entity: The entity to use in the context.
       :type entity: ~django.db.models.Model or
@@ -47,6 +40,82 @@ This module contains the context managers for the Translations app.
 
       :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
           pointing to the fields that don't exist.
+
+      .. testsetup:: guide_init
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      To initiate a context for a model instance:
+
+      .. testcode:: guide_init
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         europe = Continent.objects.get(code='EU')
+
+         # initiate context
+         with Context(europe, 'countries', 'countries__cities') as context:
+             print('Context initiated!')
+
+      .. testoutput:: guide_init
+
+         Context initiated!
+
+      To initiate a context for a queryset:
+
+      .. testcode:: guide_init
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = Continent.objects.all()
+
+         # initiate context
+         with Context(continents, 'countries', 'countries__cities') as context:
+             print('Context initiated!')
+
+      .. testoutput:: guide_init
+
+         Context initiated!
+
+      To initiate a context for a list of model instances:
+
+      .. testcode:: guide_init
+
+         from sample.models import Continent
+         from translations.context import Context
+
+         continents = list(Continent.objects.all())
+
+         # initiate context
+         with Context(continents, 'countries', 'countries__cities') as context:
+             print('Context initiated!')
+
+      .. testoutput:: guide_init
+
+         Context initiated!
+
+      .. note::
+
+         It is **recommended** for the relations of the entity to be
+         prefetched before initiating a :class:`~translations.context.Context`,
+         in order to reach optimal performance.
+
+         To do this use
+         :meth:`~django.db.models.query.QuerySet.select_related`,
+         :meth:`~django.db.models.query.QuerySet.prefetch_related` or
+         :func:`~django.db.models.prefetch_related_objects`.
 
    .. method:: create(lang=None)
 
