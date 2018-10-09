@@ -75,7 +75,9 @@ class Context:
         translations = []
         for address, text in self._get_changed_fields():
             filters |= models.Q(**address)
-            translations.append(Translation(language=lang, text=text, **address))
+            translations.append(
+                Translation(language=lang, text=text, **address)
+            )
         Translation.objects.filter(language=lang).filter(filters).delete()
         Translation.objects.bulk_create(translations)
 
