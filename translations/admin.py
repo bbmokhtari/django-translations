@@ -36,10 +36,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
 
     def get_inline_instances(self, request, obj=None):
         inlines = list(
-            super(TranslatableAdmin, self).get_inline_instances(
-                request,
-                obj
-            )
+            super(TranslatableAdmin, self).get_inline_instances(request, obj)
         )
         self.prepare_translation_inlines(inlines, TranslationInline)
         return inlines
