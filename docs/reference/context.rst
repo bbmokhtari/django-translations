@@ -255,7 +255,7 @@ This module contains the context managers for the Translations app.
 
       Applies the translations on the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      context's purview.
+      context's purview in a language.
 
       :param lang: The language to fetch the translations in.
           ``None`` means use the :term:`active language` code.
