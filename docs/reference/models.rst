@@ -102,9 +102,9 @@ This module contains the models for the Translations app.
 
    .. classmethod:: get_translatable_fields(cls)
 
-      Return the translatable fields of the model.
+      Return the model's translatable fields.
 
-      Returns the translatable fields of the model based on the
+      Returns the model's translatable fields based on the
       field names listed in :attr:`TranslatableMeta.fields`.
 
       :return: The translatable fields of the model.
