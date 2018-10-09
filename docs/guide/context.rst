@@ -14,12 +14,12 @@ Initiate a context
 ==================
 
 To initiate a context use the :class:`~translations.context.Context`
-class. The context's scope must be defined in the initiation, meaning which
+class. The context's purview must be defined in the initiation, meaning which
 ``entity`` and what ``*relations`` of that entity should it affect.
 
 All the actions like `reading the translations`_,
 `updating the translations`_, etc only affects the
-objects in the defined scope.
+objects in the defined purview.
 
 .. testsetup:: guide_init
 
@@ -113,10 +113,10 @@ The model of the ``*relations`` must be
 Creating the translations
 =========================
 
-To create the translations of the context's scope in a language use the
+To create the translations of the context's purview in a language use the
 :meth:`~translations.context.Context.create` method.
 This creates the translations using the :ref:`translatable fields \
-<specify-fields>` of the context's scope.
+<specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
 create the translation in.
 
@@ -153,7 +153,7 @@ create the translation in.
        langs=['de']
    )
 
-To create the translations of the defined scope for a model instance:
+To create the translations of the defined purview for a model instance:
 
 .. testcode:: guide_create_0
 
@@ -179,7 +179,7 @@ To create the translations of the defined scope for a model instance:
 
    Translations created!
 
-To create the translations of the defined scope for a queryset:
+To create the translations of the defined purview for a queryset:
 
 .. testcode:: guide_create_1
 
@@ -205,7 +205,7 @@ To create the translations of the defined scope for a queryset:
 
    Translations created!
 
-To create the translations of the defined scope for a list of instances:
+To create the translations of the defined purview for a list of instances:
 
 .. testcode:: guide_create_2
 
@@ -249,10 +249,10 @@ Creating duplicate translations for a field raises
 Reading the translations
 ========================
 
-To read the translations of the context's scope in a language use the
+To read the translations of the context's purview in a language use the
 :meth:`~translations.context.Context.read` method.
 This applies the translations on the :ref:`translatable fields \
-<specify-fields>` of the context's scope.
+<specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
 read the translation in.
 
@@ -270,7 +270,7 @@ read the translation in.
        langs=['de']
    )
 
-To read the translations of the defined scope for a model instance:
+To read the translations of the defined purview for a model instance:
 
 .. testcode:: guide_read
 
@@ -296,7 +296,7 @@ To read the translations of the defined scope for a model instance:
    Deutschland
    Köln
 
-To read the translations of the defined scope for a queryset:
+To read the translations of the defined purview for a queryset:
 
 .. testcode:: guide_read
 
@@ -322,7 +322,7 @@ To read the translations of the defined scope for a queryset:
    Deutschland
    Köln
 
-To read the translations of the defined scope for a list of instances:
+To read the translations of the defined purview for a list of instances:
 
 .. testcode:: guide_read
 
@@ -421,10 +421,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 Updating the translations
 =========================
 
-To update the translations of the context's scope in a language use the
+To update the translations of the context's purview in a language use the
 :meth:`~translations.context.Context.update` method.
 This updates the translations using the :ref:`translatable fields \
-<specify-fields>` of the context's scope.
+<specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
 update the translation in.
 
@@ -442,7 +442,7 @@ update the translation in.
        langs=['de']
    )
 
-To update the translations of the defined scope for a model instance:
+To update the translations of the defined purview for a model instance:
 
 .. testcode:: guide_update
 
@@ -468,7 +468,7 @@ To update the translations of the defined scope for a model instance:
 
    Translations updated!
 
-To update the translations of the defined scope for a queryset:
+To update the translations of the defined purview for a queryset:
 
 .. testcode:: guide_update
 
@@ -494,7 +494,7 @@ To update the translations of the defined scope for a queryset:
 
    Translations updated!
 
-To update the translations of the defined scope for a list of instances:
+To update the translations of the defined purview for a list of instances:
 
 .. testcode:: guide_update
 
@@ -534,10 +534,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 Deleting the translations
 =========================
 
-To delete the translations of the context's scope in a language use the
+To delete the translations of the context's purview in a language use the
 :meth:`~translations.context.Context.delete` method.
 This deletes the translations for the :ref:`translatable fields \
-<specify-fields>` of the context's scope.
+<specify-fields>` of the context's purview.
 It takes in a ``lang`` parameter which determines the language to
 delete the translation in.
 
@@ -583,7 +583,7 @@ delete the translation in.
        langs=['de']
    )
 
-To delete the translations of the defined scope for a model instance:
+To delete the translations of the defined purview for a model instance:
 
 .. testcode:: guide_delete_0
 
@@ -604,7 +604,7 @@ To delete the translations of the defined scope for a model instance:
 
    Translations deleted!
 
-To delete the translations of the defined scope for a queryset:
+To delete the translations of the defined purview for a queryset:
 
 .. testcode:: guide_delete_1
 
@@ -625,7 +625,7 @@ To delete the translations of the defined scope for a queryset:
 
    Translations deleted!
 
-To delete the translations of the defined scope for a list of instances:
+To delete the translations of the defined purview for a list of instances:
 
 .. testcode:: guide_delete_2
 
@@ -653,10 +653,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 Resetting the translations
 ==========================
 
-To reset the translations of the context's scope in a language use the
+To reset the translations of the context's purview in a language use the
 :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
-<specify-fields>` of the context's scope.
+<specify-fields>` of the context's purview.
 
 .. testsetup:: guide_reset
 
@@ -672,7 +672,7 @@ This resets the translations on the :ref:`translatable fields \
        langs=['de']
    )
 
-To reset the translations of the defined scope for a model instance:
+To reset the translations of the defined purview for a model instance:
 
 .. testcode:: guide_reset
 
@@ -700,7 +700,7 @@ To reset the translations of the defined scope for a model instance:
    Germany
    Cologne
 
-To reset the translations of the defined scope for a queryset:
+To reset the translations of the defined purview for a queryset:
 
 .. testcode:: guide_reset
 
@@ -728,7 +728,7 @@ To reset the translations of the defined scope for a queryset:
    Germany
    Cologne
 
-To reset the translations of the defined scope for a list of instances:
+To reset the translations of the defined purview for a list of instances:
 
 .. testcode:: guide_reset
 
