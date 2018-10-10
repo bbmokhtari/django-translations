@@ -143,7 +143,6 @@ html_theme_options = {
     'github_user': github_user,
     'github_repo': github_repo,
     'github_banner': True,
-    'donate_url': donate_url,
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
