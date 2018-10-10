@@ -114,11 +114,13 @@ This module contains the utilities for the Translations app.
 
    Return the translation languages.
 
-   Returns the list of languages from the settings removing the default
-   language code.
+   Returns the list of languages from the settings removing the
+   default language code.
 
    :return: The translation languages.
    :rtype: list(tuple(str, str))
+   :raise ValueError: If the default language code is not specified in
+       the :data:`~django.conf.settings.LANGUAGES` setting.
 
    Considering this setting:
 
