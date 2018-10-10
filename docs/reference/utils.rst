@@ -110,6 +110,44 @@ This module contains the utilities for the Translations app.
 
       Language code: de
 
+.. function:: _get_translation_languages()
+
+   Return the translation languages.
+
+   Returns the list of languages from the settings removing the default
+   language code.
+
+   :return: The translation languages.
+   :rtype: list(tuple(str, str))
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the translation languages:
+
+   .. testcode:: _get_translation_languages
+
+      from translations.utils import _get_translation_languages
+
+      # usage
+      languages = _get_translation_languages()
+
+      # output
+      print(languages)
+
+   .. testoutput:: _get_translation_languages
+
+      [('en-gb', 'English (Great Britain)'), ('de', 'German'), ('tr', 'Turkish')]
+
 .. function:: _get_reverse_relation(model, relation)
 
    Return the reverse of a model's relation.
