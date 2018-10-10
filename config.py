@@ -8,17 +8,21 @@ import json
 # project
 name = 'Django Translations'
 dist = 'django-translations'
-description = 'A Django app which provides support for model translation.'
+description = \
+    'An easy, efficient and modular way of translating django models.'
 
 # author
 author = 'Behzad B. Mokhtari'
-email = '35877268+perplexionist@users.noreply.github.com'
+email = 'perplexionist.dev@gmail.com'
+
+# donation
+btc = '1JL5mNf2cqpgLCpWUuxYgnUfmzobRVqLhV'
 
 # urls
 source = 'https://github.com/perplexionist/django-translations'
 tracker = 'https://github.com/perplexionist/django-translations/issues'
 documentation = 'https://perplexionist.github.io/django-translations'
-funding = 'https://blockchain.info/address/1FcPBamd6mVrHBNvjB5PqjbnGCBhdY7Rtm'
+funding = 'https://blockchain.info/address/' + btc
 
 # search optimization
 keywords = ['django', 'internationalization']
