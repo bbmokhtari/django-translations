@@ -44,31 +44,38 @@ with open(
 
 
 # project
-project = info['name']
+project = info['project']['name']
+
+# description
+description = info['project']['desc']
+
+# author
+author = info['author']['name']
+
+# The short X.Y version
+version = info['release']['version']
+
+# The full version, including alpha/beta/rc tags
+release = info['release']['name']
+
+# github
+github_user = info['github']['user']
+github_repo = info['github']['repo']
+
+# donation
+donate_url = info['urls']['funding']
+
+# logo
+logo = info['project']['logo']
 
 # documentation
 documentation = '{} {}'.format(project, 'Documentation')
-
-# description
-description = info['description']
-
-# author
-author = info['author']
-
-# The short X.Y version
-version = info['version']
-
-# The full version, including alpha/beta/rc tags
-release = info['release']
 
 # year
 year = datetime.datetime.now().year
 
 # copyright
-copyright = '{year}, {author}'.format(
-    year=year,
-    author=author
-)
+copyright = '{year}, {author}'.format(year=year, author=author)
 
 # -- General configuration ---------------------------------------------------
 
@@ -120,13 +127,24 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-html_theme_options = {}
+html_theme_options = {
+    'note_bg': '#fec',
+    'note_border': '#ffe2a8',
+    'pre_bg': '#f6f6f6',
+    'logo': logo,
+    'logo_name': True,
+    'description': description,
+    'github_user': github_user,
+    'github_repo': github_repo,
+    'github_banner': True,
+    'donate_url': donate_url,
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

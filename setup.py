@@ -10,16 +10,16 @@ with open('config.json', 'r') as fh:
 
 
 setuptools.setup(
-    name=info['dist'],
-    version=info['release'],
-    description=info['description'],
+    name=info['project']['dist'],
+    version=info['release']['name'],
+    description=info['project']['desc'],
     long_description=long_description,
     long_description_content_type='text/x-rst',
-    url=info['source'],
-    author=info['author'],
-    author_email=info['email'],
+    url=info['urls']['source'],
+    author=info['author']['name'],
+    author_email=info['author']['email'],
     classifiers=[
-        'Development Status :: ' + info['verbose_status'],
+        'Development Status :: ' + info['release']['classifier'],
         'Framework :: Django',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
@@ -34,10 +34,10 @@ setuptools.setup(
     ],
     keywords=' '.join(info['keywords']),
     project_urls={
-        'Documentation': info['documentation'],
-        'Funding': info['funding'],
-        'Source': info['source'],
-        'Tracker': info['tracker'],
+        'Documentation': info['urls']['documentation'],
+        'Funding': info['urls']['funding'],
+        'Source': info['urls']['source'],
+        'Tracker': info['urls']['tracker'],
     },
     packages=setuptools.find_packages(
         exclude=[
