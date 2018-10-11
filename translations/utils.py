@@ -3,6 +3,7 @@
 from django.db import models
 from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
+from django.core.exceptions import FieldError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
 from django.conf import settings
@@ -100,6 +101,50 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
+def _get_dissected_lookup(model, relation):
+    dissected = {
+        'relation': [],
+        'field': '',
+        'lookup': '',
+        'translatable': False,
+    }
+
+    def _fill_dissected(model, *relation_parts):
+        root = relation_parts[0]
+        nest = relation_parts[1:]
+
+        try:
+            field = model._meta.get_field(root)
+        except Exception as e:
+            if not dissected['relation'] or nest or dissected['field']:
+                raise e
+            dissected['lookup'] = root
+        else:
+            field_model = field.related_model
+            if field_model:
+                dissected['relation'].append(root)
+                if nest:
+                    _fill_dissected(field_model, *nest)
+            else:
+                dissected['field'] = root
+                if issubclass(model, Translatable):
+                    if root in model._get_translatable_fields_names():
+                        dissected['translatable'] = True
+                if nest:
+                    if len(nest) == 1:
+                        dissected['lookup'] = nest[0]
+                    else:
+                        raise FieldError("Unsupported lookup '{}'".format(nest[0]))
+
+    parts = relation.split(LOOKUP_SEP)
+
+    _fill_dissected(model, *parts)
+
+    dissected['relation'] = LOOKUP_SEP.join(dissected['relation'])
+
+    return dissected
+
+
 def _get_relations_hierarchy(*relations):
     """Return the `relations hierarchy` of some relations."""
     hierarchy = {}
@@ -121,6 +166,7 @@ def _get_relations_hierarchy(*relations):
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
         _fill_hierarchy(hierarchy, *parts)
+
     return hierarchy
 
 
