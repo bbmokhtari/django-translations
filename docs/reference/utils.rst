@@ -193,8 +193,8 @@ This module contains the utilities for the Translations app.
    Return the dissected info of a query lookup.
 
    Dissects the query lookup and returns comprehensive information about it,
-   like which relations did it follow, what field name and lookup did it
-   contain and whether the field was translatable or not.
+   like what relations does it follow, what field name and lookup does it
+   contain and whether the field is translatable or not.
 
    :param model: The model which the query lookup filters.
    :type model: type(~django.db.models.Model)
