@@ -19,6 +19,12 @@ class TranslatableQuerySet(query.QuerySet):
     A queryset which provides custom translation functionalities.
     """
 
+    def all(self):
+        clone = super(TranslatableQuerySet, self).all()
+        if hasattr(self, '_applied_language'):
+            clone._applied_language = self._applied_language
+        return clone
+
     def apply(self, lang=None):
         """
         Applies a language to the queries.
