@@ -119,7 +119,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'monokai'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -136,9 +136,7 @@ html_theme = 'alabaster'
 html_theme_options = {
     'note_bg': '#fec',
     'note_border': '#ffe2a8',
-    'pre_bg': '#f7f7f7',
     'show_relbars': True,
-    'fixed_sidebar': True,
     'logo': logo,
     'touch_icon': logo,
     'logo_name': True,

@@ -10,6 +10,9 @@ table.field-list .field-body {
 }
 
 pre {
-    border: 1px solid #e6e6e6;
+    background: #272822;
+    color: #f8f8f2;
+    border: 1px solid #151613;
+    border-radius: 5px;
     padding: 10px 30px;
 }
