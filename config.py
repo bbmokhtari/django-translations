@@ -37,7 +37,8 @@ urls = {
     'source': 'https://github.com/{user}/{repo}'.format(**github),
     'tracker': 'https://github.com/{user}/{repo}/issues'.format(**github),
     'documentation': 'https://{user}.github.io/{repo}'.format(**github),
-    'funding': 'https://blockchain.info/address/{}'.format(donation['btc']),
+    'funding': 'https://{user}.github.io/{repo}/donation.html'.format(
+        **github),
 }
 
 # search optimization
