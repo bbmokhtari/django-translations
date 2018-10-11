@@ -192,7 +192,9 @@ This module contains the utilities for the Translations app.
 
    Return the dissected info of a query lookup.
 
-   Dissects the query lookup and returns comprehensive information about it.
+   Dissects the query lookup and returns comprehensive information about it,
+   like which relations did it follow, what field name and lookup did it
+   contain and whether the field was translatable or not.
 
    :param model: The model which the query lookup filters.
    :type model: type(~django.db.models.Model)
@@ -202,7 +204,7 @@ This module contains the utilities for the Translations app.
        represent a deeply nested relation.
    :type query: str
    :return: The dissected info of the model's query lookup.
-   :rtype: str
+   :rtype: dict
    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
        pointing to the fields that don't exist.
    :raise ~django.core.exceptions.FieldError: If the query lookup is not
