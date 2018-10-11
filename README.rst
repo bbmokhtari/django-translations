@@ -136,6 +136,8 @@ Use the admin extensions:
 
 This provides specialized translation inlines for the model.
 
+.. image:: https://raw.githubusercontent.com/perplexionist/django-translations/utilities/docs/_static/admin.png
+
 Documentation
 -------------
 
