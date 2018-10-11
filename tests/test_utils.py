@@ -3,6 +3,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_standard_language, \
+    _get_translation_language_choices, \
     _get_reverse_relation,  _get_relations_hierarchy, _get_entity_details, \
     _get_instance_groups, _get_translations
 
@@ -56,6 +57,44 @@ class GetStandardLanguageTest(TestCase):
     def test_invalid_language(self):
         with self.assertRaises(ValueError) as error:
             _get_standard_language('xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
+        )
+
+
+class GetTranslationLanguageChoicesTest(TestCase):
+    """Tests for `_get_translation_language_choices`."""
+
+    @override_settings(LANGUAGE_CODE='en-us')
+    def test_nonexisting_accented_default_language_code(self):
+        self.assertListEqual(
+            _get_translation_language_choices(),
+            [
+                (None, '---------'),
+                ('en-gb', 'English (Great Britain)'),
+                ('de', 'German'),
+                ('tr', 'Turkish')
+            ]
+        )
+
+    @override_settings(LANGUAGE_CODE='en-gb')
+    def test_existing_accented_default_language_code(self):
+        self.assertListEqual(
+            _get_translation_language_choices(),
+            [
+                (None, '---------'),
+                ('en', 'English'),
+                ('de', 'German'),
+                ('tr', 'Turkish')
+            ]
+        )
+
+    @override_settings(LANGUAGE_CODE='xx')
+    def test_invalid_default_language_code(self):
+        with self.assertRaises(ValueError) as error:
+            _get_translation_language_choices()
 
         self.assertEqual(
             error.exception.args[0],

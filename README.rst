@@ -88,7 +88,23 @@ Inherit ``Translatable`` in any model you want translated:
        class TranslatableMeta:
            fields = ['name', 'denonym']
 
-**NO MIGRATIONS** needed afterwards!
+That's it! **NO MIGRATIONS** needed afterwards.
+
+Admin
+~~~~~
+
+Use the admin extensions:
+
+.. code:: python
+
+   from translations.admin import TranslatableAdmin, TranslationInline
+
+   class ContinentAdmin(TranslatableAdmin):
+       inlines = [TranslationInline,]
+
+This provides specialized translation inlines for the model.
+
+.. image:: https://raw.githubusercontent.com/perplexionist/django-translations/master/docs/_static/admin.png
 
 Query
 ~~~~~
@@ -121,20 +137,6 @@ Use the context:
 
 This does only **ONE QUERY** to translate any object (instance, queryset, list)
 plus all its relations.
-
-Admin
-~~~~~
-
-Use the admin extensions:
-
-.. code:: python
-
-   from translations.admin import TranslatableAdmin, TranslationInline
-
-   class ContinentAdmin(TranslatableAdmin):
-       inlines = [TranslationInline,]
-
-This provides specialized translation inlines for the model.
 
 Documentation
 -------------

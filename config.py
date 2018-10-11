@@ -6,60 +6,75 @@ import json
 # ------------------------------------------------------------- Static Content
 
 # project
-name = 'Django Translations'
-dist = 'django-translations'
-description = 'A Django app which provides support for model translation.'
+project = {
+    'name': 'Django Translations',
+    'github': 'django-translations',
+    'dist': 'django-translations',
+    'desc': 'An easy, efficient and modular way of translating django models.',
+    'logo': 'translation.svg',
+}
 
 # author
-author = 'Behzad B. Mokhtari'
-email = '35877268+perplexionist@users.noreply.github.com'
+author = {
+    'name': 'Behzad B. Mokhtari',
+    'email': 'perplexionist.dev@gmail.com',
+    'github': 'perplexionist',
+}
+
+# github
+github = {
+    'user': author['github'],
+    'repo': project['github'],
+}
+
+# donation
+donation = {
+    'btc': '1JL5mNf2cqpgLCpWUuxYgnUfmzobRVqLhV',
+}
 
 # urls
-source = 'https://github.com/perplexionist/django-translations'
-tracker = 'https://github.com/perplexionist/django-translations/issues'
-documentation = 'https://perplexionist.github.io/django-translations'
-funding = 'https://blockchain.info/address/1FcPBamd6mVrHBNvjB5PqjbnGCBhdY7Rtm'
+urls = {
+    'source': 'https://github.com/{user}/{repo}'.format(**github),
+    'tracker': 'https://github.com/{user}/{repo}/issues'.format(**github),
+    'documentation': 'https://{user}.github.io/{repo}'.format(**github),
+    'funding': 'https://{user}.github.io/{repo}/donation.html'.format(
+        **github),
+}
 
 # search optimization
 keywords = ['django', 'internationalization']
 
 # ------------------------------------------------------------ Dynamic Content
 
-# all releases/tags must follow this convention
-release_pattern = re.compile(
-    r'^' +
-    r'(?P<version>\d+\.\d+\.\d+)' +
-    r'(?:(?P<status>a|b|rc|\.dev|\.post)(?P<status_no>\d+))?' +
-    r'$'
-)
+release = {
+    'name': os.environ.get('TRAVIS_TAG', ''),  # e.g. `1.0.0rc2`
+    'version': '',                            # e.g. `1.0.0`
+    'status': '',                             # e.g. `rc`
+    'classifier': '',                         # e.g. `5 - Production/Stable`
+}
 
-# Release, e.g. `1.0.0rc2`
-release = os.environ.get('TRAVIS_TAG', '')
+if release['name']:
+    # all releases must follow this convention
+    pattern = re.compile(
+        r'^' +
+        r'(?P<version>\d+\.\d+\.\d+)' +
+        r'(?:(?P<status>a|b|rc|\.dev|\.post)(?P<status_no>\d+))?' +
+        r'$'
+    )
+    components = pattern.match(release['name']).groupdict()
+    release['version'] = components['version']
+    release['status'] = components['status']
 
-# Semantic Version, e.g. `1.0.0` in case of `1.0.0rc2`
-version = ''
-
-# Status, e.g. `rc` in case of `1.0.0rc2`
-status = ''
-
-# Development Status, e.g. `5 - Production/Stable` in case of `1.0.0rc2`
-verbose_status = ''
-
-if release:
-    release_components = release_pattern.match(release).groupdict()
-    version = release_components['version']
-    status = release_components['status']
-
-    if status == '.dev':
-        verbose_status = '2 - Pre-Alpha'
-    elif status == 'a':
-        verbose_status = '3 - Alpha'
-    elif status == 'b':
-        verbose_status = '4 - Beta'
-    elif status == 'rc':
-        verbose_status = '5 - Production/Stable'
-    elif status is None or status == '.post':
-        verbose_status = '6 - Mature'
+    if release['status'] == '.dev':
+        release['classifier'] = '2 - Pre-Alpha'
+    elif release['status'] == 'a':
+        release['classifier'] = '3 - Alpha'
+    elif release['status'] == 'b':
+        release['classifier'] = '4 - Beta'
+    elif release['status'] == 'rc':
+        release['classifier'] = '5 - Production/Stable'
+    elif release['status'] is None or release['status'] == '.post':
+        release['classifier'] = '6 - Mature'
     else:
         raise Exception('Release must have a development status.')
 
@@ -70,18 +85,10 @@ if release:
 if __name__ == '__main__':
     with open('config.json', 'w') as fh:
         json.dump({
-            'name': name,
-            'dist': dist,
-            'description': description,
+            'project': project,
             'author': author,
-            'email': email,
-            'source': source,
-            'tracker': tracker,
-            'documentation': documentation,
-            'funding': funding,
+            'github': github,
+            'urls': urls,
             'keywords': keywords,
             'release': release,
-            'version': version,
-            'status': status,
-            'verbose_status': verbose_status
         }, fh)

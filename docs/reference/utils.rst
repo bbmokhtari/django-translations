@@ -110,6 +110,46 @@ This module contains the utilities for the Translations app.
 
       Language code: de
 
+.. function:: _get_translation_language_choices()
+
+   Return the translation language choices.
+
+   Returns the list of languages from the settings removing the
+   default language code and adding an empty one.
+
+   :return: The translation language choices.
+   :rtype: list(tuple(str, str))
+   :raise ValueError: If the default language code is not specified in
+       the :data:`~django.conf.settings.LANGUAGES` setting.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the translation language choices:
+
+   .. testcode:: _get_translation_language_choices
+
+      from translations.utils import _get_translation_language_choices
+
+      # usage
+      languages = _get_translation_language_choices()
+
+      # output
+      print(languages)
+
+   .. testoutput:: _get_translation_language_choices
+
+      [(None, '---------'), ('en-gb', 'English (Great Britain)'), ('de', 'German'), ('tr', 'Turkish')]
+
 .. function:: _get_reverse_relation(model, relation)
 
    Return the reverse of a model's relation.

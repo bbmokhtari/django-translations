@@ -21,6 +21,7 @@ contribute to the project we recommend you to read the reference.
    reference/index
    howto/index
    glossary
+   donation
 
 .. rubric:: Indices and tables
 

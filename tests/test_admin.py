@@ -21,7 +21,7 @@ request.user = MockSuperUser()
 class TranslatableAdminMixinTest(TestCase):
     """Tests for `TranslatableAdminMixin`."""
 
-    def test_prepare_translation_inlines_none(self):
+    def test_prepare_translation_inlines_fields_automatic(self):
         admin = CityAdmin(City, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertListEqual(
@@ -29,7 +29,7 @@ class TranslatableAdminMixinTest(TestCase):
             [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
         )
 
-    def test_prepare_translation_inlines_empty(self):
+    def test_prepare_translation_inlines_fields_empty(self):
         admin = TimezoneAdmin(Timezone, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertListEqual(
@@ -37,10 +37,23 @@ class TranslatableAdminMixinTest(TestCase):
             []
         )
 
-    def test_prepare_translation_inlines_explicit(self):
+    def test_prepare_translation_inlines_fields_explicit(self):
         admin = ContinentAdmin(Continent, site)
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertEqual(
             inlines[0].form.base_fields['field'].choices,
             [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+        )
+
+    def test_prepare_translation_inlines_languages(self):
+        admin = ContinentAdmin(City, site)
+        inlines = admin.get_inline_instances(request, obj=None)
+        self.assertListEqual(
+            inlines[0].form.base_fields['language'].choices,
+            [
+                (None, '---------'),
+                ('en-gb', 'English (Great Britain)'),
+                ('de', 'German'),
+                ('tr', 'Turkish')
+            ]
         )
