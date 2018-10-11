@@ -165,7 +165,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'code'),
             {
-                'relation': '',
+                'relation': [],
                 'field': 'code',
                 'lookup': '',
                 'translatable': False,
@@ -176,7 +176,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'name'),
             {
-                'relation': '',
+                'relation': [],
                 'field': 'name',
                 'lookup': '',
                 'translatable': True,
@@ -187,7 +187,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'code__icontains'),
             {
-                'relation': '',
+                'relation': [],
                 'field': 'code',
                 'lookup': 'icontains',
                 'translatable': False,
@@ -198,7 +198,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'name__icontains'),
             {
-                'relation': '',
+                'relation': [],
                 'field': 'name',
                 'lookup': 'icontains',
                 'translatable': True,
@@ -209,7 +209,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries'),
             {
-                'relation': 'countries',
+                'relation': ['countries'],
                 'field': '',
                 'lookup': '',
                 'translatable': False,
@@ -220,7 +220,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__gt'),
             {
-                'relation': 'countries',
+                'relation': ['countries'],
                 'field': '',
                 'lookup': 'gt',
                 'translatable': False,
@@ -231,7 +231,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__code'),
             {
-                'relation': 'countries',
+                'relation': ['countries'],
                 'field': 'code',
                 'lookup': '',
                 'translatable': False,
@@ -242,7 +242,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__name'),
             {
-                'relation': 'countries',
+                'relation': ['countries'],
                 'field': 'name',
                 'lookup': '',
                 'translatable': True,
@@ -253,7 +253,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__code__icontains'),
             {
-                'relation': 'countries',
+                'relation': ['countries'],
                 'field': 'code',
                 'lookup': 'icontains',
                 'translatable': False,
@@ -264,7 +264,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__name__icontains'),
             {
-                'relation': 'countries',
+                'relation': ['countries'],
                 'field': 'name',
                 'lookup': 'icontains',
                 'translatable': True,
@@ -275,7 +275,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__id'),
             {
-                'relation': 'countries__cities',
+                'relation': ['countries', 'cities'],
                 'field': 'id',
                 'lookup': '',
                 'translatable': False,
@@ -286,7 +286,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__name'),
             {
-                'relation': 'countries__cities',
+                'relation': ['countries', 'cities'],
                 'field': 'name',
                 'lookup': '',
                 'translatable': True,
@@ -297,7 +297,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__id__gt'),
             {
-                'relation': 'countries__cities',
+                'relation': ['countries', 'cities'],
                 'field': 'id',
                 'lookup': 'gt',
                 'translatable': False,
@@ -308,7 +308,7 @@ class GetDissectedLookupTest(TestCase):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__name__icontains'),
             {
-                'relation': 'countries__cities',
+                'relation': ['countries', 'cities'],
                 'field': 'name',
                 'lookup': 'icontains',
                 'translatable': True,

@@ -140,8 +140,6 @@ def _get_dissected_lookup(model, relation):
 
     _fill_dissected(model, *parts)
 
-    dissected['relation'] = LOOKUP_SEP.join(dissected['relation'])
-
     return dissected
 
 
