@@ -101,7 +101,8 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
-def _get_dissected_lookup(model, relation):
+def _get_dissected_query(model, query):
+    """Return the dissected info of a query lookup."""
     dissected = {
         'relation': [],
         'field': '',
@@ -134,9 +135,11 @@ def _get_dissected_lookup(model, relation):
                     if len(nest) == 1:
                         dissected['lookup'] = nest[0]
                     else:
-                        raise FieldError("Unsupported lookup '{}'".format(nest[0]))
+                        raise FieldError("Unsupported lookup '{}'".format(
+                            nest[0])
+                        )
 
-    parts = relation.split(LOOKUP_SEP)
+    parts = query.split(LOOKUP_SEP)
 
     _fill_dissected(model, *parts)
 

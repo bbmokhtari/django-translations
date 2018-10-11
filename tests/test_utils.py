@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_standard_language, \
     _get_translation_language_choices, \
-    _get_reverse_relation, _get_dissected_lookup, \
+    _get_reverse_relation, _get_dissected_query, \
     _get_relations_hierarchy, _get_entity_details, \
     _get_instance_groups, _get_translations
 
@@ -158,12 +158,12 @@ class GetReverseRelationTest(TestCase):
         )
 
 
-class GetDissectedLookupTest(TestCase):
-    """Tests for `_get_dissected_lookup`."""
+class GetDissectedQueryTest(TestCase):
+    """Tests for `_get_dissected_query`."""
 
     def test_no_rel_with_field_not_translatable_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'code'),
+            _get_dissected_query(Continent, 'code'),
             {
                 'relation': [],
                 'field': 'code',
@@ -174,7 +174,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_no_rel_with_field_translatable_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'name'),
+            _get_dissected_query(Continent, 'name'),
             {
                 'relation': [],
                 'field': 'name',
@@ -185,7 +185,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_no_rel_with_field_not_translatable_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'code__icontains'),
+            _get_dissected_query(Continent, 'code__icontains'),
             {
                 'relation': [],
                 'field': 'code',
@@ -196,7 +196,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_no_rel_with_field_translatable_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'name__icontains'),
+            _get_dissected_query(Continent, 'name__icontains'),
             {
                 'relation': [],
                 'field': 'name',
@@ -207,7 +207,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_rel_no_field_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries'),
+            _get_dissected_query(Continent, 'countries'),
             {
                 'relation': ['countries'],
                 'field': '',
@@ -218,7 +218,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_rel_no_field_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__gt'),
+            _get_dissected_query(Continent, 'countries__gt'),
             {
                 'relation': ['countries'],
                 'field': '',
@@ -229,7 +229,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_rel_with_field_not_translatable_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__code'),
+            _get_dissected_query(Continent, 'countries__code'),
             {
                 'relation': ['countries'],
                 'field': 'code',
@@ -240,7 +240,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_rel_with_field_translatable_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__name'),
+            _get_dissected_query(Continent, 'countries__name'),
             {
                 'relation': ['countries'],
                 'field': 'name',
@@ -251,7 +251,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_rel_with_field_not_translatable_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__code__icontains'),
+            _get_dissected_query(Continent, 'countries__code__icontains'),
             {
                 'relation': ['countries'],
                 'field': 'code',
@@ -262,7 +262,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_rel_with_field_translatable_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__name__icontains'),
+            _get_dissected_query(Continent, 'countries__name__icontains'),
             {
                 'relation': ['countries'],
                 'field': 'name',
@@ -273,7 +273,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__cities__id'),
+            _get_dissected_query(Continent, 'countries__cities__id'),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'id',
@@ -284,7 +284,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_nested_rel_with_field_translatable_no_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__cities__name'),
+            _get_dissected_query(Continent, 'countries__cities__name'),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'name',
@@ -295,7 +295,7 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__cities__id__gt'),
+            _get_dissected_query(Continent, 'countries__cities__id__gt'),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'id',
@@ -306,7 +306,10 @@ class GetDissectedLookupTest(TestCase):
 
     def test_with_nested_rel_with_field_translatable_with_lookup(self):
         self.assertDictEqual(
-            _get_dissected_lookup(Continent, 'countries__cities__name__icontains'),
+            _get_dissected_query(
+                Continent,
+                'countries__cities__name__icontains'
+            ),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'name',

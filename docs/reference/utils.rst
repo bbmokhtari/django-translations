@@ -188,6 +188,46 @@ This module contains the utilities for the Translations app.
 
       City can be queried with `country__continent`
 
+.. function:: _get_dissected_query(model, query)
+
+   Return the dissected info of a query lookup.
+
+   Dissects the query lookup and returns comprehensive information about it.
+
+   :param model: The model which the query lookup filters.
+   :type model: type(~django.db.models.Model)
+   :param query: The query lookup of the model to get the dissected info of.
+       It may be composed of many ``related_query_name``\ s separated by
+       :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
+       represent a deeply nested relation.
+   :type query: str
+   :return: The dissected info of the model's query lookup.
+   :rtype: str
+   :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+       pointing to the fields that don't exist.
+   :raise ~django.core.exceptions.FieldError: If the query lookup is not
+       supported.
+
+   To get the dissected info of a query lookup:
+
+   .. testcode:: _get_dissected_query
+
+      from sample.models import Continent
+      from translations.utils import _get_dissected_query
+
+      # usage
+      info = _get_dissected_query(Continent, 'countries__name__icontains')
+
+      # output
+      print(info)
+
+   .. testoutput:: _get_dissected_query
+
+      {'field': 'name',
+       'lookup': 'icontains',
+       'relation': ['countries'],
+       'translatable': True}
+
 .. function:: _get_relations_hierarchy(*relations)
 
    Return the :term:`relations hierarchy` of some relations.
@@ -208,7 +248,7 @@ This module contains the utilities for the Translations app.
 
    To get the :term:`relations hierarchy` of a first-level relation:
 
-   .. testcode::
+   .. testcode:: _get_relations_hierarchy
 
       from translations.utils import _get_relations_hierarchy
 
@@ -218,14 +258,14 @@ This module contains the utilities for the Translations app.
       # output
       print(hierarchy)
 
-   .. testoutput::
+   .. testoutput:: _get_relations_hierarchy
 
       {'countries': {'included': True, 'relations': {}}}
 
    To get the :term:`relations hierarchy` of a second-level relation,
    not including the first-level relation:
 
-   .. testcode::
+   .. testcode:: _get_relations_hierarchy
 
       from translations.utils import _get_relations_hierarchy
 
@@ -235,7 +275,7 @@ This module contains the utilities for the Translations app.
       # output
       print(hierarchy)
 
-   .. testoutput::
+   .. testoutput:: _get_relations_hierarchy
 
       {'countries': {'included': False,
                      'relations': {'cities': {'included': True,
@@ -244,7 +284,7 @@ This module contains the utilities for the Translations app.
    To get the :term:`relations hierarchy` of a second-level relation,
    including the first-level relation:
 
-   .. testcode::
+   .. testcode:: _get_relations_hierarchy
 
       from translations.utils import _get_relations_hierarchy
 
@@ -254,7 +294,7 @@ This module contains the utilities for the Translations app.
       # output
       print(hierarchy)
 
-   .. testoutput::
+   .. testoutput:: _get_relations_hierarchy
 
       {'countries': {'included': True,
                      'relations': {'cities': {'included': True,
@@ -262,7 +302,7 @@ This module contains the utilities for the Translations app.
 
    To get the :term:`relations hierarchy` of no relations:
 
-   .. testcode::
+   .. testcode:: _get_relations_hierarchy
 
       from translations.utils import _get_relations_hierarchy
 
@@ -272,7 +312,7 @@ This module contains the utilities for the Translations app.
       # output
       print(hierarchy)
 
-   .. testoutput::
+   .. testoutput:: _get_relations_hierarchy
 
       {}
 
