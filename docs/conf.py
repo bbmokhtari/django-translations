@@ -136,7 +136,8 @@ html_theme = 'alabaster'
 html_theme_options = {
     'note_bg': '#fec',
     'note_border': '#ffe2a8',
-    'pre_bg': '#f6f6f6',
+    'pre_bg': '#f7f7f7',
+    'show_relbars': True,
     'logo': logo,
     'logo_name': True,
     'description': description,
