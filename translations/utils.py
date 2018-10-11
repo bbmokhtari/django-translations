@@ -14,7 +14,7 @@ __docformat__ = 'restructuredtext'
 
 
 _standard_language_cache = {}
-_translation_languages_cache = {}
+_translation_language_choices_cache = {}
 
 
 def _get_standard_language(lang=None):
@@ -53,21 +53,27 @@ def _get_standard_language(lang=None):
     return _standard_language_cache[lang]
 
 
-def _get_translation_languages():
-    """Return the translation languages."""
+def _get_translation_language_choices():
+    """Return the translation language choices."""
     default = _get_standard_language(settings.LANGUAGE_CODE)
 
     # check cache first
     try:
-        return _translation_languages_cache[default]
+        return _translation_language_choices_cache[default]
     except KeyError:
         pass
 
-    _translation_languages_cache[default] = [
-        language for language in settings.LANGUAGES if language[0] != default
+    choices = [
+        (None, '---------'),
     ]
 
-    return _translation_languages_cache[default]
+    for language in settings.LANGUAGES:
+        if language[0] != default:
+            choices.append(language)
+
+    _translation_language_choices_cache[default] = choices
+
+    return _translation_language_choices_cache[default]
 
 
 def _get_reverse_relation(model, relation):
