@@ -65,15 +65,15 @@ if release['name']:
     release['version'] = components['version']
     release['status'] = components['status']
 
-    if status == '.dev':
+    if release['status'] == '.dev':
         release['classifier'] = '2 - Pre-Alpha'
-    elif status == 'a':
+    elif release['status'] == 'a':
         release['classifier'] = '3 - Alpha'
-    elif status == 'b':
+    elif release['status'] == 'b':
         release['classifier'] = '4 - Beta'
-    elif status == 'rc':
+    elif release['status'] == 'rc':
         release['classifier'] = '5 - Production/Stable'
-    elif status is None or status == '.post':
+    elif release['status'] is None or release['status'] == '.post':
         release['classifier'] = '6 - Mature'
     else:
         raise Exception('Release must have a development status.')
