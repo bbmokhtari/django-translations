@@ -1,11 +1,12 @@
 from django.test import TestCase, override_settings
+from django.db.models import Q
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_standard_language, \
     _get_translation_language_choices, \
     _get_reverse_relation, _get_dissected_lookup, \
-    _get_translations_lookup_query, \
+    _get_translations_lookup_query, _get_translations_query, \
     _get_relations_hierarchy, _get_entity_details, \
     _get_instance_groups, _get_translations
 
@@ -468,6 +469,162 @@ class GetTranslationsLookupQueryTest(TestCase):
             dict(_get_translations_lookup_query(
                 Continent, 'countries__cities__name__icontains', 'Kö', 'de'
             ).children),
+            {
+                'countries__cities__translations__field': 'name',
+                'countries__cities__translations__language': 'de',
+                'countries__cities__translations__text__icontains': 'Kö',
+            }
+        )
+
+
+class GetTranslationsQueryTest(TestCase):
+    """Tests for `_get_translations_query`."""
+
+    def test_no_rel_with_field_not_translatable_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(code='EU'), 'de'
+            ).children[0].children),
+            {
+                'code': 'EU',
+            }
+        )
+
+    def test_no_rel_with_field_translatable_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(name='Europa'), 'de'
+            ).children[0].children),
+            {
+                'translations__field': 'name',
+                'translations__language': 'de',
+                'translations__text': 'Europa',
+            }
+        )
+
+    def test_no_rel_with_field_not_translatable_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(code__icontains='EU'), 'de'
+            ).children[0].children),
+            {
+                'code__icontains': 'EU',
+            },
+        )
+
+    def test_no_rel_with_field_translatable_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(name__icontains='Europa'), 'de'
+            ).children[0].children),
+            {
+                'translations__field': 'name',
+                'translations__language': 'de',
+                'translations__text__icontains': 'Europa',
+            }
+        )
+
+    def test_with_rel_no_field_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries=1), 'de'
+            ).children[0].children),
+            {
+                'countries': 1,
+            }
+        )
+
+    def test_with_rel_no_field_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__gt=1), 'de'
+            ).children[0].children),
+            {
+                'countries__gt': 1,
+            }
+        )
+
+    def test_with_rel_with_field_not_translatable_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__code='DE'), 'de'
+            ).children[0].children),
+            {
+                'countries__code': 'DE',
+            }
+        )
+
+    def test_with_rel_with_field_translatable_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__name='Deutschland'), 'de'
+            ).children[0].children),
+            {
+                'countries__translations__field': 'name',
+                'countries__translations__language': 'de',
+                'countries__translations__text': 'Deutschland',
+            }
+        )
+
+    def test_with_rel_with_field_not_translatable_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__code__icontains='DE'), 'de'
+            ).children[0].children),
+            {
+                'countries__code__icontains': 'DE',
+            }
+        )
+
+    def test_with_rel_with_field_translatable_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__name__icontains='Deutsch'), 'de'
+            ).children[0].children),
+            {
+                'countries__translations__field': 'name',
+                'countries__translations__language': 'de',
+                'countries__translations__text__icontains': 'Deutsch',
+            }
+        )
+
+    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__cities__id=1), 'de'
+            ).children[0].children),
+            {
+                'countries__cities__id': 1,
+            }
+        )
+
+    def test_with_nested_rel_with_field_translatable_no_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__cities__name='Köln'), 'de'
+            ).children[0].children),
+            {
+                'countries__cities__translations__field': 'name',
+                'countries__cities__translations__language': 'de',
+                'countries__cities__translations__text': 'Köln',
+            }
+        )
+
+    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__cities__id__gt=1), 'de'
+            ).children[0].children),
+            {
+                'countries__cities__id__gt': 1,
+            }
+        )
+
+    def test_with_nested_rel_with_field_translatable_with_lookup(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(countries__cities__name__icontains='Kö'), 'de'
+            ).children[0].children),
             {
                 'countries__cities__translations__field': 'name',
                 'countries__cities__translations__language': 'de',
