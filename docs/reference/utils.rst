@@ -230,7 +230,7 @@ This module contains the utilities for the Translations app.
        'relation': ['countries'],
        'translatable': True}
 
-.. function:: _get_translations_lookup_query(model, lookup, value, lang)
+.. function:: _get_translations_query_of_lookup(model, lookup, value, lang)
 
    Return the translations query of a lookup.
 
@@ -260,19 +260,19 @@ This module contains the utilities for the Translations app.
 
    To get the translations query of a lookup:
 
-   .. testcode:: _get_translations_lookup_query
+   .. testcode:: _get_translations_query_of_lookup
 
       from sample.models import Continent
-      from translations.utils import _get_translations_lookup_query
+      from translations.utils import _get_translations_query_of_lookup
 
       # usage
-      query = _get_translations_lookup_query(
+      query = _get_translations_query_of_lookup(
           Continent, 'countries__name__icontains', 'Deutsch', 'de')
 
       # output
       print(query)
 
-   .. testoutput:: _get_translations_lookup_query
+   .. testoutput:: _get_translations_query_of_lookup
 
       (AND:
           ('countries__translations__field', 'name')

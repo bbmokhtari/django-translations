@@ -3,7 +3,7 @@
 from django.db.models import query
 
 from translations.utils import _get_standard_language, \
-    _get_translations_lookup_query, _get_translations_query_of_query
+    _get_translations_query_of_lookup, _get_translations_query_of_query
 from translations.context import Context
 
 
@@ -99,7 +99,7 @@ class TranslatableQuerySet(query.QuerySet):
             )
         for key, value in kwargs.items():
             queries.append(
-                _get_translations_lookup_query(
+                _get_translations_query_of_lookup(
                     self.model, key, value, self._translations_lang
                 )
             )

@@ -146,7 +146,7 @@ def _get_dissected_lookup(model, lookup):
     return dissected
 
 
-def _get_translations_lookup_query(model, lookup, value, lang):
+def _get_translations_query_of_lookup(model, lookup, value, lang):
     """Return the translations query of a lookup."""
     dissected = _get_dissected_lookup(model, lookup)
     query_dict = {}
@@ -181,7 +181,7 @@ def _get_translations_query_of_query(model, query, lang):
             )
         elif isinstance(child, tuple):
             children.append(
-                _get_translations_lookup_query(
+                _get_translations_query_of_lookup(
                     model, child[0], child[1], lang
                 )
             )
