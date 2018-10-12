@@ -12,28 +12,22 @@ __docformat__ = 'restructuredtext'
 class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
-    def all(self):
-        """Return all the instances in the queryset."""
-        clone = super(TranslatableQuerySet, self).all()
-        if hasattr(self, '_applied_language'):
-            clone._applied_language = self._applied_language
-        return clone
-
     def apply(self, lang=None):
-        """Applies a language to the queryset.
-
-        :param lang: The language to use in the queries.
-            ``None`` means use the :term:`active language` code.
-        :type lang: str or None
-        :raise ValueError: If the language code is not included in
-            the :data:`~django.conf.settings.LANGUAGES` setting.
-        """
+        """Apply a language to be used in the queryset."""
         lang = _get_standard_language(lang)
         clone = self.all()
         clone._applied_language = lang
         return clone
 
+    def all(self):
+        """Return the queryset."""
+        clone = super(TranslatableQuerySet, self).all()
+        if hasattr(self, '_applied_language'):
+            clone._applied_language = self._applied_language
+        return clone
+
     def filter(self, *args, **kwargs):
+        """Filter the queryset."""
         clone = self.all()
         if hasattr(clone, '_applied_language'):
             queries = []
