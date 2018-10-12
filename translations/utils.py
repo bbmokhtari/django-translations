@@ -171,17 +171,15 @@ def _get_translations_lookup_query(model, lookup, value, lang):
 
 
 def _get_translations_query(model, query, lang):
-    query = deepcopy(query)
-    def _change_query(model, query, lang):
-        for index, child in enumerate(query.children):
-            if isinstance(child, models.Q):
-                _change_query(model, child, lang)
-            elif isinstance(child, tuple):
-                query.children[index] = _get_translations_lookup_query(model, child[0], child[1], lang)
-            else:
-                raise ValueError("Unsupported query {}".format(child))
-    _change_query(model, query, lang)
-    return query
+    children = []
+    for index, child in enumerate(query.children):
+        if isinstance(child, models.Q):
+            children.append(_get_translations_query(model, child, lang))
+        elif isinstance(child, tuple):
+            children.append(_get_translations_lookup_query(model, child[0], child[1], lang))
+        else:
+            raise ValueError("Unsupported query {}".format(child))
+    return models.Q(*children, _connector=query.connector, _negated=query.negated)
 
 
 def _get_relations_hierarchy(*relations):
