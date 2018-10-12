@@ -8,7 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
 from django.conf import settings
 
-from translations.models import Translation, Translatable
+import translations.models
 
 
 __docformat__ = 'restructuredtext'
@@ -128,7 +128,7 @@ def _get_dissected_lookup(model, lookup):
                     _fill_dissected(field_model, *nest)
             else:
                 dissected['field'] = root
-                if issubclass(model, Translatable):
+                if issubclass(model, translations.models.Translatable):
                     if root in model._get_translatable_fields_names():
                         dissected['translatable'] = True
                 if nest:
@@ -171,7 +171,7 @@ def _get_translations_query(model, lookup, value, lang):
 def _change_translations_query(model, query, lang):
     for index, child in enumerate(query.children):
         if isinstance(child, models.Q):
-            _change_translation_query(model, child, lang)
+            _change_translations_query(model, child, lang)
         elif isinstance(child, tuple):
             query.children[index] = _get_translations_query(model, child[0], child[1], lang)
         else:
@@ -246,7 +246,7 @@ def _get_instance_groups(entity, hierarchy):
 
         if included:
             object_groups = groups.setdefault(content_type.id, {})
-            if not issubclass(model, Translatable):
+            if not issubclass(model, translations.models.Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj):
@@ -301,7 +301,7 @@ def _get_translations(groups, lang):
                 object_id=obj_id,
             )
 
-    queryset = Translation.objects.filter(
+    queryset = translations.models.Translation.objects.filter(
         language=lang,
     ).filter(
         filters,
