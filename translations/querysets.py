@@ -9,7 +9,7 @@ following members:
 from django.db.models import query
 
 from translations.utils import _get_standard_language, \
-    _get_translations_lookup_query, _change_translations_query
+    _get_translations_lookup_query, _get_translations_query
 
 
 __docformat__ = 'restructuredtext'
@@ -46,8 +46,7 @@ class TranslatableQuerySet(query.QuerySet):
         if clone._applied_language:
             queries = []
             for arg in args:
-                _change_translations_query(clone.model, arg, clone._applied_language)
-                queries.append(arg)
+                queries.append(_get_translations_query(clone.model, arg, clone._applied_language))
             for key, value in kwargs.items():
                 queries.append(_get_translations_lookup_query(clone.model, key, value, clone._applied_language))
             return super(TranslatableQuerySet, self).filter(*queries)

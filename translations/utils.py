@@ -1,5 +1,7 @@
 """This module contains the utilities for the Translations app."""
 
+from copy import deepcopy
+
 from django.db import models
 from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
@@ -168,14 +170,18 @@ def _get_translations_lookup_query(model, lookup, value, lang):
     return models.Q(**query_dict)
 
 
-def _change_translations_query(model, query, lang):
-    for index, child in enumerate(query.children):
-        if isinstance(child, models.Q):
-            _change_translations_query(model, child, lang)
-        elif isinstance(child, tuple):
-            query.children[index] = _get_translations_lookup_query(model, child[0], child[1], lang)
-        else:
-            raise ValueError("Unsupported query {}".format(child))
+def _get_translations_query(model, query, lang):
+    query = deepcopy(query)
+    def _change_query(model, query, lang):
+        for index, child in enumerate(query.children):
+            if isinstance(child, models.Q):
+                _change_query(model, child, lang)
+            elif isinstance(child, tuple):
+                query.children[index] = _get_translations_lookup_query(model, child[0], child[1], lang)
+            else:
+                raise ValueError("Unsupported query {}".format(child))
+    _change_query(model, query, lang)
+    return query
 
 
 def _get_relations_hierarchy(*relations):
