@@ -244,7 +244,7 @@ connection.creation.create_test_db(verbosity=0)
 TestCase.setUpClass()
 
 # Beautify `testoutput`
-def print(obj='', end='\\n'):
+def print(obj='', start='', end='\\n'):
     if type(obj) == dict:
         pprint(obj, width=72)
     elif type(obj) == QuerySet:
@@ -265,7 +265,7 @@ def print(obj='', end='\\n'):
             print((' ' * 4) + '{}'.format(child))
         print(')')
     else:
-        builtins.print(obj)
+        builtins.print(start + str(obj), end=end)
 
 """
 
