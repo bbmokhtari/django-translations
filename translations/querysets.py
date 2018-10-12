@@ -10,6 +10,7 @@ from django.db.models import query
 
 from translations.utils import _get_standard_language, \
     _get_translations_lookup_query, _get_translations_query
+from translations.context import Context
 
 
 __docformat__ = 'restructuredtext'
@@ -43,7 +44,7 @@ class TranslatableQuerySet(query.QuerySet):
 
     def filter(self, *args, **kwargs):
         clone = self.all()
-        if clone._applied_language:
+        if hasattr(clone, '_applied_language'):
             queries = []
             for arg in args:
                 queries.append(_get_translations_query(clone.model, arg, clone._applied_language))
@@ -52,3 +53,12 @@ class TranslatableQuerySet(query.QuerySet):
             return super(TranslatableQuerySet, self).filter(*queries)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
+
+    def translated(self, *relations):
+        clone = self.all()
+        if hasattr(clone, '_applied_language'):
+            with Context(clone, *relations) as context:
+                context.read(clone._applied_language)
+                return clone
+        else:
+            return clone
