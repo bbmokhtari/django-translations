@@ -24,15 +24,25 @@ class TranslatableQuerySet(query.QuerySet):
         # translations language
         clone._translations_lang = lang
         # whether the translation should happen or not
-        clone._translations_do = cipher
+        clone._translations_cipher = cipher
         # whether the cache is translated
         clone._translations_translated = False
 
         return clone
 
+    def cipher(self):
+        clone = self.all()
+        clone._translations_cipher = True
+        return clone
+
+    def decipher(self):
+        clone = self.all()
+        clone._translations_cipher = False
+        return clone
+
     def filter(self, *args, **kwargs):
         """Filter the queryset."""
-        if hasattr(self, '_translations_lang') and self._translations_do:
+        if hasattr(self, '_translations_lang') and self._translations_cipher:
             queries = []
             for arg in args:
                 queries.append(
@@ -57,8 +67,8 @@ class TranslatableQuerySet(query.QuerySet):
             clone._translations_rels = self._translations_rels
         if hasattr(self, '_translations_lang'):
             clone._translations_lang = self._translations_lang
-        if hasattr(self, '_translations_do'):
-            clone._translations_do = self._translations_do
+        if hasattr(self, '_translations_cipher'):
+            clone._translations_cipher = self._translations_cipher
         if hasattr(self, '_translations_translated'):
             clone._translations_translated = False  # reset the cache
 
@@ -66,7 +76,7 @@ class TranslatableQuerySet(query.QuerySet):
 
     def _fetch_all(self):
         super(TranslatableQuerySet, self)._fetch_all()
-        if hasattr(self, '_translations_lang') and self._translations_do:
+        if hasattr(self, '_translations_lang') and self._translations_cipher:
             if not self._translations_translated:
                 with Context(self._result_cache, *self._translations_rels) as context:
                     context.read(self._translations_lang)
