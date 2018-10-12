@@ -146,7 +146,7 @@ def _get_dissected_lookup(model, lookup):
     return dissected
 
 
-def _get_translations_query(model, lookup, value, lang):
+def _get_translations_lookup_query(model, lookup, value, lang):
     dissected = _get_dissected_lookup(model, lookup)
     query_dict = {}
     if dissected['translatable']:
@@ -173,7 +173,7 @@ def _change_translations_query(model, query, lang):
         if isinstance(child, models.Q):
             _change_translations_query(model, child, lang)
         elif isinstance(child, tuple):
-            query.children[index] = _get_translations_query(model, child[0], child[1], lang)
+            query.children[index] = _get_translations_lookup_query(model, child[0], child[1], lang)
         else:
             raise ValueError("Unsupported query {}".format(child))
 
