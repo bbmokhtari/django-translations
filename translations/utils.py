@@ -101,7 +101,7 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
-def _get_dissected_query(model, query):
+def _get_dissected_query(model, lookup):
     """Return the dissected info of a query lookup."""
     dissected = {
         'relation': [],
@@ -139,7 +139,7 @@ def _get_dissected_query(model, query):
                             nest[0])
                         )
 
-    parts = query.split(LOOKUP_SEP)
+    parts = lookup.split(LOOKUP_SEP)
 
     _fill_dissected(model, *parts)
 

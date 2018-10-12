@@ -188,7 +188,7 @@ This module contains the utilities for the Translations app.
 
       City can be queried with `country__continent`
 
-.. function:: _get_dissected_query(model, query)
+.. function:: _get_dissected_query(model, lookup)
 
    Return the dissected info of a query lookup.
 
@@ -198,11 +198,11 @@ This module contains the utilities for the Translations app.
 
    :param model: The model which the query lookup filters.
    :type model: type(~django.db.models.Model)
-   :param query: The query lookup of the model to get the dissected info of.
+   :param lookup: The query lookup of the model to get the dissected info of.
        It may be composed of many ``related_query_name``\ s separated by
        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
        represent a deeply nested relation.
-   :type query: str
+   :type lookup: str
    :return: The dissected info of the model's query lookup.
    :rtype: dict
    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
