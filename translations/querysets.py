@@ -30,18 +30,6 @@ class TranslatableQuerySet(query.QuerySet):
 
         return clone
 
-    def _chain(self, **kwargs):
-        clone = super(TranslatableQuerySet, self)._chain(**kwargs)
-        if hasattr(self, '_translations_rels'):
-            clone._translations_rels = self._translations_rels
-        if hasattr(self, '_translations_lang'):
-            clone._translations_lang = self._translations_lang
-        if hasattr(self, '_translations_do'):
-            clone._translations_do = self._translations_do
-        if hasattr(self, '_translations_translated'):
-            clone._translations_translated = False  # reset the cache
-        return clone
-
     def filter(self, *args, **kwargs):
         """Filter the queryset."""
         if hasattr(self, '_translations_lang') and self._translations_do:
@@ -62,39 +50,24 @@ class TranslatableQuerySet(query.QuerySet):
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
 
-    def _translations_read(self):
+    def _chain(self, **kwargs):
+        clone = super(TranslatableQuerySet, self)._chain(**kwargs)
+
+        if hasattr(self, '_translations_rels'):
+            clone._translations_rels = self._translations_rels
+        if hasattr(self, '_translations_lang'):
+            clone._translations_lang = self._translations_lang
+        if hasattr(self, '_translations_do'):
+            clone._translations_do = self._translations_do
+        if hasattr(self, '_translations_translated'):
+            clone._translations_translated = False  # reset the cache
+
+        return clone
+
+    def _fetch_all(self):
+        super(TranslatableQuerySet, self)._fetch_all()
         if hasattr(self, '_translations_lang') and self._translations_do:
             if not self._translations_translated:
                 with Context(self._result_cache, *self._translations_rels) as context:
                     context.read(self._translations_lang)
                 self._translations_translated = True
-
-    def __getstate__(self):
-        self._fetch_all()
-        self._translations_read()
-        return super(TranslatableQuerySet, self).__getstate__()
-
-    def __len__(self):
-        self._fetch_all()
-        self._translations_read()
-        return super(TranslatableQuerySet, self).__len__()
-
-    def __iter__(self):
-        self._fetch_all()
-        self._translations_read()
-        return super(TranslatableQuerySet, self).__iter__()
-
-    def __bool__(self):
-        self._fetch_all()
-        self._translations_read()
-        return super(TranslatableQuerySet, self).__bool__()
-
-    def __getitem__(self, k):
-        self._fetch_all()
-        self._translations_read()
-        return super(TranslatableQuerySet, self).__getitem__(k)
-
-    def __repr__(self):
-        self._fetch_all()
-        self._translations_read()
-        return super(TranslatableQuerySet, self).__repr__()
