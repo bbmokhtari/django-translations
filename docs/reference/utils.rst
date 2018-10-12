@@ -298,6 +298,30 @@ This module contains the utilities for the Translations app.
    :raise ~django.core.exceptions.FieldError: If the lookup is not
        supported.
 
+   To get the translations query of a query:
+
+   .. testcode:: _get_translations_query
+
+      from django.db.models import Q
+      from sample.models import Continent
+      from translations.utils import _get_translations_query
+
+      # usage
+      query = _get_translations_query(
+          Continent,
+          Q(countries__name__icontains='Deutsch', code='EU'),
+          'de'
+      )
+
+      # output
+      print(query)
+
+   .. testoutput:: _get_translations_query
+
+      (AND:
+        (AND: ('code', 'EU'))
+        (AND: ('countries__translations__field', 'name'), ('countries__translations__language', 'de'), ('countries__translations__text__icontains', 'Deutsch'))
+
 .. function:: _get_relations_hierarchy(*relations)
 
    Return the :term:`relations hierarchy` of some relations.
