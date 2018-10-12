@@ -14,7 +14,7 @@ class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
     def apply(self, *relations, lang=None):
-        """Apply a language to be used in the queryset."""
+        """Apply some relations and a language to be used in the queryset."""
         lang = _get_standard_language(lang)
 
         clone = self.all()
@@ -32,19 +32,21 @@ class TranslatableQuerySet(query.QuerySet):
         return clone
 
     def cipher(self):
+        """Use the applied language in the queryset."""
         clone = self.all()
         if hasattr(self, '_translations_cipher'):
             clone._translations_cipher = True
         return clone
 
     def decipher(self):
+        """Use the default language in the queryset."""
         clone = self.all()
         if hasattr(self, '_translations_cipher'):
             clone._translations_cipher = False
         return clone
 
     def filter(self, *args, **kwargs):
-        """Filter the queryset."""
+        """Filter the queryset with lookup and queries."""
         if self._should_cipher():
             queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).filter(*queries)
@@ -52,7 +54,7 @@ class TranslatableQuerySet(query.QuerySet):
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
 
     def exclude(self, *args, **kwargs):
-        """Exclude the queryset."""
+        """Exclude the queryset with lookup and queries."""
         if self._should_cipher():
             queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).exclude(*queries)
@@ -60,6 +62,7 @@ class TranslatableQuerySet(query.QuerySet):
             return super(TranslatableQuerySet, self).exclude(*args, **kwargs)
 
     def _chain(self, **kwargs):
+        """Return a chained queryset."""
         clone = super(TranslatableQuerySet, self)._chain(**kwargs)
 
         if hasattr(self, '_translations_rels'):
@@ -74,6 +77,7 @@ class TranslatableQuerySet(query.QuerySet):
         return clone
 
     def _fetch_all(self):
+        """Evaluate the queryset."""
         super(TranslatableQuerySet, self)._fetch_all()
         if self._should_cipher():
             if self._iterable_class is not query.ModelIterable:
@@ -87,9 +91,11 @@ class TranslatableQuerySet(query.QuerySet):
                 self._translations_translated = True
 
     def _should_cipher(self):
+        """Determine whether the queryset should use the applied language."""
         return hasattr(self, '_translations_lang') and self._translations_cipher
 
     def _get_translations_queries(self, *args, **kwargs):
+        """Return the translations queries of lookup and queries."""
         queries = []
         for arg in args:
             queries.append(
