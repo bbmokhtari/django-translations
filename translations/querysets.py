@@ -30,9 +30,8 @@ class TranslatableQuerySet(query.QuerySet):
 
         return clone
 
-    def all(self):
-        """Return the queryset."""
-        clone = super(TranslatableQuerySet, self).all()
+    def _chain(self, **kwargs):
+        clone = super(TranslatableQuerySet, self)._chain(**kwargs)
         if hasattr(self, '_translations_rels'):
             clone._translations_rels = self._translations_rels
         if hasattr(self, '_translations_lang'):
@@ -45,19 +44,18 @@ class TranslatableQuerySet(query.QuerySet):
 
     def filter(self, *args, **kwargs):
         """Filter the queryset."""
-        clone = self.all()
-        if hasattr(clone, '_translations_lang') and clone._translations_do:
+        if hasattr(self, '_translations_lang') and self._translations_do:
             queries = []
             for arg in args:
                 queries.append(
                     _get_translations_query(
-                        clone.model, arg, clone._translations_lang
+                        self.model, arg, self._translations_lang
                     )
                 )
             for key, value in kwargs.items():
                 queries.append(
                     _get_translations_lookup_query(
-                        clone.model, key, value, clone._translations_lang
+                        self.model, key, value, self._translations_lang
                     )
                 )
             return super(TranslatableQuerySet, self).filter(*queries)
