@@ -280,6 +280,24 @@ This module contains the utilities for the Translations app.
           ('countries__translations__text__icontains', 'Deutsch')
       )
 
+.. function:: _get_translations_query(model, query, lang)
+
+   Return the translations query of a query.
+
+   :param model: The model which the query acts on.
+   :type model: type(~django.db.models.Model)
+   :param query: The query of the model to get the translations query
+       of.
+   :type query: ~django.db.models.Q
+   :param lang: The language code of the query.
+   :type lang: str
+   :return: The translations query of the query.
+   :rtype: ~django.db.models.Q
+   :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+       pointing to the fields that don't exist.
+   :raise ~django.core.exceptions.FieldError: If the lookup is not
+       supported.
+
 .. function:: _get_relations_hierarchy(*relations)
 
    Return the :term:`relations hierarchy` of some relations.
