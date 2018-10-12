@@ -264,7 +264,7 @@ def print(obj='', start='', end='\\n'):
         print('({}:'.format(obj.connector), start=indent)
         def sorter(x):
             if type(x) == Q:
-                return 0
+                return ''
             elif type(x) == tuple:
                 return x[0]
         for child in sorted(obj.children, key=sorter):
