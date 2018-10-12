@@ -1,10 +1,4 @@
-"""
-This module contains the querysets for the Translations app. It contains the
-following members:
-
-:class:`TranslatableQuerySet`
-    A queryset which provides custom translation functionalities.
-"""
+"""This module contains the querysets for the Translations app."""
 
 from django.db.models import query
 
@@ -16,19 +10,17 @@ __docformat__ = 'restructuredtext'
 
 
 class TranslatableQuerySet(query.QuerySet):
-    """
-    A queryset which provides custom translation functionalities.
-    """
+    """A queryset which provides custom translation functionalities."""
 
     def all(self):
+        """Return all the instances in the queryset."""
         clone = super(TranslatableQuerySet, self).all()
         if hasattr(self, '_applied_language'):
             clone._applied_language = self._applied_language
         return clone
 
     def apply(self, lang=None):
-        """
-        Applies a language to the queries.
+        """Applies a language to the queryset.
 
         :param lang: The language to use in the queries.
             ``None`` means use the :term:`active language` code.
