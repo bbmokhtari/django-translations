@@ -53,12 +53,3 @@ class TranslatableQuerySet(query.QuerySet):
             return super(TranslatableQuerySet, self).filter(*queries)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
-
-    def translated(self, *relations):
-        clone = self.all()
-        if hasattr(clone, '_applied_language'):
-            with Context(clone, *relations) as context:
-                context.read(clone._applied_language)
-                return clone
-        else:
-            return clone
