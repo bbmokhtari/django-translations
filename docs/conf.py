@@ -235,6 +235,7 @@ doctest_global_setup = """
 from django.db import connection
 from django.test import TestCase
 from django.db.models.query import QuerySet
+from django.db.models.query import Q
 from pprint import pprint
 import builtins
 
@@ -258,6 +259,11 @@ def print(obj=''):
         print(start)
         print(',\\n'.join(items))
         print(end)
+    elif type(obj) == Q:
+        print('({}:'.format(obj.connector))
+        for child in obj.children:
+            print((' ' * 4) + '{}'.format(child))
+        print(')')
     else:
         builtins.print(obj)
 

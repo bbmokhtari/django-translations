@@ -10,7 +10,6 @@ from django.db.models import query
 
 from translations.utils import _get_standard_language, \
     _get_translations_lookup_query, _get_translations_query
-from translations.context import Context
 
 
 __docformat__ = 'restructuredtext'

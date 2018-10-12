@@ -2,7 +2,7 @@
 
 from django.db import models
 
-import translations.models
+from translations.models import Translation
 from translations.utils import _get_standard_language, \
     _get_relations_hierarchy, _get_instance_groups, _get_translations
 
@@ -45,10 +45,10 @@ class Context:
         """
         lang = _get_standard_language(lang)
         translations = [
-            translations.models.Translation(language=lang, text=text, **address)
+            Translation(language=lang, text=text, **address)
             for address, text in self._get_changed_fields()
         ]
-        translations.models.Translation.objects.bulk_create(translations)
+        Translation.objects.bulk_create(translations)
 
     def read(self, lang=None):
         """
@@ -76,10 +76,10 @@ class Context:
         for address, text in self._get_changed_fields():
             filters |= models.Q(**address)
             translations.append(
-                translations.models.Translation(language=lang, text=text, **address)
+                Translation(language=lang, text=text, **address)
             )
-        translations.models.Translation.objects.filter(language=lang).filter(filters).delete()
-        translations.models.Translation.objects.bulk_create(translations)
+        Translation.objects.filter(language=lang).filter(filters).delete()
+        Translation.objects.bulk_create(translations)
 
     def delete(self, lang=None):
         """

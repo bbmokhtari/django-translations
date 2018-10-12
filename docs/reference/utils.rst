@@ -234,6 +234,11 @@ This module contains the utilities for the Translations app.
 
    Return the translations query of a lookup.
 
+   If the lookup is on a :attr:`translatable field \
+   <translations.models.Translatable.TranslatableMeta.fields>` it returns the
+   translations equivalent of the lookup as a query, otherwise it returns
+   the lookup without any change as a query.
+
    :param model: The model which the lookup acts on.
    :type model: type(~django.db.models.Model)
    :param lookup: The lookup of the model to get the translations query
@@ -252,6 +257,28 @@ This module contains the utilities for the Translations app.
        pointing to the fields that don't exist.
    :raise ~django.core.exceptions.FieldError: If the lookup is not
        supported.
+
+   To get the translations query of a lookup:
+
+   .. testcode:: _get_translations_lookup_query
+
+      from sample.models import Continent
+      from translations.utils import _get_translations_lookup_query
+
+      # usage
+      query = _get_translations_lookup_query(
+          Continent, 'countries__name__icontains', 'Deutsch', 'de')
+
+      # output
+      print(query)
+
+   .. testoutput:: _get_translations_lookup_query
+
+      (AND:
+          ('countries__translations__field', 'name')
+          ('countries__translations__language', 'de')
+          ('countries__translations__text__icontains', 'Deutsch')
+      )
 
 .. function:: _get_relations_hierarchy(*relations)
 
