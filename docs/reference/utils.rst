@@ -309,7 +309,7 @@ This module contains the utilities for the Translations app.
       # usage
       query = _get_translations_query(
           Continent,
-          Q(countries__name__icontains='Deutsch', code='EU'),
+          Q(code='EU', countries__name__icontains='Deutsch'),
           'de'
       )
 
@@ -319,8 +319,15 @@ This module contains the utilities for the Translations app.
    .. testoutput:: _get_translations_query
 
       (AND:
-        (AND: ('code', 'EU'))
-        (AND: ('countries__translations__field', 'name'), ('countries__translations__language', 'de'), ('countries__translations__text__icontains', 'Deutsch'))
+          (AND:
+              ('code', 'EU')
+          )
+          (AND:
+              ('countries__translations__field', 'name')
+              ('countries__translations__language', 'de')
+              ('countries__translations__text__icontains', 'Deutsch')
+          )
+      )
 
 .. function:: _get_relations_hierarchy(*relations)
 

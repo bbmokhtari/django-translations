@@ -260,10 +260,11 @@ def print(obj='', start='', end='\\n'):
         print(',\\n'.join(items))
         print(end_str)
     elif type(obj) == Q:
-        print('({}:'.format(obj.connector))
+        indent = len(start) * ' '
+        print('({}:'.format(obj.connector), start=indent)
         for child in obj.children:
-            print((' ' * 4) + '{}'.format(child))
-        print(')')
+            print(child, start=indent + (4 * ' '))
+        print(')', start=indent)
     else:
         builtins.print(start + str(obj), end=end)
 
