@@ -188,7 +188,7 @@ This module contains the utilities for the Translations app.
 
       City can be queried with `country__continent`
 
-.. function:: _get_dissected_query(model, lookup)
+.. function:: _get_dissected_lookup(model, lookup)
 
    Return the dissected info of a query lookup.
 
@@ -212,18 +212,18 @@ This module contains the utilities for the Translations app.
 
    To get the dissected info of a query lookup:
 
-   .. testcode:: _get_dissected_query
+   .. testcode:: _get_dissected_lookup
 
       from sample.models import Continent
-      from translations.utils import _get_dissected_query
+      from translations.utils import _get_dissected_lookup
 
       # usage
-      info = _get_dissected_query(Continent, 'countries__name__icontains')
+      info = _get_dissected_lookup(Continent, 'countries__name__icontains')
 
       # output
       print(info)
 
-   .. testoutput:: _get_dissected_query
+   .. testoutput:: _get_dissected_lookup
 
       {'field': 'name',
        'lookup': 'icontains',

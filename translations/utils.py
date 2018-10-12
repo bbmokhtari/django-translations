@@ -101,7 +101,7 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
-def _get_dissected_query(model, lookup):
+def _get_dissected_lookup(model, lookup):
     """Return the dissected info of a query lookup."""
     dissected = {
         'relation': [],
@@ -147,7 +147,7 @@ def _get_dissected_query(model, lookup):
 
 
 def _get_translations_lookup_query(model, lookup, value, lang):
-    dissected = _get_dissected_query(model, lookup)
+    dissected = _get_dissected_lookup(model, lookup)
     query_dict = {}
     if dissected['translatable']:
         dissected['relation'].append('translations')
