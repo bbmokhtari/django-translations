@@ -262,7 +262,12 @@ def print(obj='', start='', end='\\n'):
     elif type(obj) == Q:
         indent = len(start) * ' '
         print('({}:'.format(obj.connector), start=indent)
-        for child in obj.children:
+        def sorter(x):
+            if type(x) == Q:
+                return 0
+            elif type(x) == tuple:
+                return x[0]
+        for child in sorted(obj.children, key=sorter):
             if type(child) == tuple and child[0] in ['_connector', '_negated']:
                 continue
             print(child, start=indent + (4 * ' '))
