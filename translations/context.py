@@ -2,7 +2,7 @@
 
 from django.db import models
 
-from translations.models import Translation
+import translations.models
 from translations.utils import _get_standard_language, \
     _get_relations_hierarchy, _get_instance_groups, _get_translations
 
@@ -44,19 +44,19 @@ class Context:
         database.
         """
         lang = _get_standard_language(lang)
-        translations = [
-            Translation(language=lang, text=text, **address)
+        _translations = [
+            translations.models.Translation(language=lang, text=text, **address)
             for address, text in self._get_changed_fields()
         ]
-        Translation.objects.bulk_create(translations)
+        translations.models.Translation.objects.bulk_create(_translations)
 
     def read(self, lang=None):
         """
         Read the translations from the database and apply them on the context.
         """
         lang = _get_standard_language(lang)
-        translations = _get_translations(self.groups, lang)
-        for translation in translations:
+        _translations = _get_translations(self.groups, lang)
+        for translation in _translations:
             ct_id = translation.content_type.id
             obj_id = translation.object_id
             field = translation.field
@@ -72,14 +72,14 @@ class Context:
         """
         lang = _get_standard_language(lang)
         filters = models.Q()
-        translations = []
+        _translations = []
         for address, text in self._get_changed_fields():
             filters |= models.Q(**address)
-            translations.append(
-                Translation(language=lang, text=text, **address)
+            _translations.append(
+                translations.models.Translation(language=lang, text=text, **address)
             )
-        Translation.objects.filter(language=lang).filter(filters).delete()
-        Translation.objects.bulk_create(translations)
+        translations.models.Translation.objects.filter(language=lang).filter(filters).delete()
+        translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):
         """
@@ -87,8 +87,8 @@ class Context:
         database.
         """
         lang = _get_standard_language(lang)
-        translations = _get_translations(self.groups, lang)
-        translations.delete()
+        _translations = _get_translations(self.groups, lang)
+        _translations.delete()
 
     def reset(self):
         """
