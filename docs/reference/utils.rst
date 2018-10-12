@@ -280,7 +280,7 @@ This module contains the utilities for the Translations app.
           ('countries__translations__text__icontains', 'Deutsch')
       )
 
-.. function:: _get_translations_query(model, query, lang)
+.. function:: _get_translations_query_of_query(model, query, lang)
 
    Return the translations query of a query.
 
@@ -305,14 +305,14 @@ This module contains the utilities for the Translations app.
 
    To get the translations query of a query:
 
-   .. testcode:: _get_translations_query
+   .. testcode:: _get_translations_query_of_query
 
       from django.db.models import Q
       from sample.models import Continent
-      from translations.utils import _get_translations_query
+      from translations.utils import _get_translations_query_of_query
 
       # usage
-      query = _get_translations_query(
+      query = _get_translations_query_of_query(
           Continent,
           Q(countries__name__icontains='Deutsch'),
           'de'
@@ -321,7 +321,7 @@ This module contains the utilities for the Translations app.
       # output
       print(query)
 
-   .. testoutput:: _get_translations_query
+   .. testoutput:: _get_translations_query_of_query
 
       (AND:
           (AND:

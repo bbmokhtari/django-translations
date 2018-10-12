@@ -169,13 +169,13 @@ def _get_translations_lookup_query(model, lookup, value, lang):
     return models.Q(**query_dict)
 
 
-def _get_translations_query(model, query, lang):
+def _get_translations_query_of_query(model, query, lang):
     """Return the translations query of a query."""
     children = []
     for index, child in enumerate(query.children):
         if isinstance(child, models.Q):
             children.append(
-                _get_translations_query(
+                _get_translations_query_of_query(
                     model, child, lang
                 )
             )
