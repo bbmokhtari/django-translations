@@ -314,7 +314,7 @@ This module contains the utilities for the Translations app.
       # usage
       query = _get_translations_query(
           Continent,
-          Q(code='EU', countries__name__icontains='Deutsch'),
+          Q(countries__name__icontains='Deutsch'),
           'de'
       )
 
@@ -324,9 +324,6 @@ This module contains the utilities for the Translations app.
    .. testoutput:: _get_translations_query
 
       (AND:
-          (AND:
-              ('code', 'EU')
-          )
           (AND:
               ('countries__translations__field', 'name')
               ('countries__translations__language', 'de')
