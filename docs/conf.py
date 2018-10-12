@@ -244,7 +244,7 @@ connection.creation.create_test_db(verbosity=0)
 TestCase.setUpClass()
 
 # Beautify `testoutput`
-def print(obj=''):
+def print(obj='', end='\\n'):
     if type(obj) == dict:
         pprint(obj, width=72)
     elif type(obj) == QuerySet:
@@ -252,13 +252,13 @@ def print(obj=''):
         representation = repr(obj)
         start_index = representation.find('[')
         end_index = representation.rfind(']')
-        start = representation[:(start_index + 1)]
-        center = representation[(start_index + 1): end_index]
-        end = representation[end_index:]
-        items = map(lambda x: (' ' * 4) + x, center.split(', '))
-        print(start)
+        start_str = representation[:(start_index + 1)]
+        center_str = representation[(start_index + 1): end_index]
+        end_str = representation[end_index:]
+        items = map(lambda x: (' ' * 4) + x, center_str.split(', '))
+        print(start_str)
         print(',\\n'.join(items))
-        print(end)
+        print(end_str)
     elif type(obj) == Q:
         print('({}:'.format(obj.connector))
         for child in obj.children:
