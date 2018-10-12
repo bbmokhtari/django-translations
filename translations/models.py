@@ -7,6 +7,8 @@ from django.contrib.contenttypes.fields import GenericForeignKey, \
     GenericRelation
 from django.utils.translation import ugettext_lazy as _
 
+from translations.querysets import TranslatableQuerySet
+
 
 __docformat__ = 'restructuredtext'
 
@@ -60,7 +62,7 @@ class Translation(models.Model):
 
 class Translatable(models.Model):
     """An abstract model which provides custom translation functionalities."""
-
+    objects = TranslatableQuerySet.as_manager()
     translations = GenericRelation(
         Translation,
         content_type_field='content_type',

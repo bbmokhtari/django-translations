@@ -3,11 +3,12 @@
 from django.db import models
 from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
+from django.core.exceptions import FieldError
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
 from django.conf import settings
 
-from translations.models import Translation, Translatable
+import translations.models
 
 
 __docformat__ = 'restructuredtext'
@@ -100,6 +101,99 @@ def _get_reverse_relation(model, relation):
         return reverse_relation
 
 
+def _get_dissected_lookup(model, lookup):
+    """Return the dissected info of a query lookup."""
+    dissected = {
+        'relation': [],
+        'field': '',
+        'lookup': '',
+        'translatable': False,
+    }
+
+    def _fill_dissected(model, *relation_parts):
+        root = relation_parts[0]
+        nest = relation_parts[1:]
+
+        try:
+            field = model._meta.get_field(root)
+        except Exception as e:
+            if not dissected['relation'] or nest or dissected['field']:
+                raise e
+            dissected['lookup'] = root
+        else:
+            field_model = field.related_model
+            if field_model:
+                dissected['relation'].append(root)
+                if nest:
+                    _fill_dissected(field_model, *nest)
+            else:
+                dissected['field'] = root
+                if issubclass(model, translations.models.Translatable):
+                    if root in model._get_translatable_fields_names():
+                        dissected['translatable'] = True
+                if nest:
+                    if len(nest) == 1:
+                        dissected['lookup'] = nest[0]
+                    else:
+                        raise FieldError("Unsupported lookup '{}'".format(
+                            nest[0])
+                        )
+
+    parts = lookup.split(LOOKUP_SEP)
+
+    _fill_dissected(model, *parts)
+
+    return dissected
+
+
+def _get_translations_lookup_query(model, lookup, value, lang):
+    """Return the translations query of a lookup."""
+    dissected = _get_dissected_lookup(model, lookup)
+    query_dict = {}
+    if dissected['translatable']:
+        dissected['relation'].append('translations')
+        relation = LOOKUP_SEP.join(dissected['relation'])
+
+        query_dict['{}__field'.format(relation)] = dissected['field']
+        query_dict['{}__language'.format(relation)] = lang
+        query_dict[
+            '{}__text{}'.format(
+                relation,
+                (LOOKUP_SEP + dissected['lookup'])
+                if dissected['lookup'] else ''
+            )
+        ] = value
+    else:
+        query_dict[lookup] = value
+
+    return models.Q(**query_dict)
+
+
+def _get_translations_query(model, query, lang):
+    """Return the translations query of a query."""
+    children = []
+    for index, child in enumerate(query.children):
+        if isinstance(child, models.Q):
+            children.append(
+                _get_translations_query(
+                    model, child, lang
+                )
+            )
+        elif isinstance(child, tuple):
+            children.append(
+                _get_translations_lookup_query(
+                    model, child[0], child[1], lang
+                )
+            )
+        else:
+            raise ValueError("Unsupported query {}".format(child))
+    return models.Q(
+        *children,
+        _connector=query.connector,
+        _negated=query.negated
+    )
+
+
 def _get_relations_hierarchy(*relations):
     """Return the `relations hierarchy` of some relations."""
     hierarchy = {}
@@ -121,6 +215,7 @@ def _get_relations_hierarchy(*relations):
     for relation in relations:
         parts = relation.split(LOOKUP_SEP)
         _fill_hierarchy(hierarchy, *parts)
+
     return hierarchy
 
 
@@ -167,7 +262,7 @@ def _get_instance_groups(entity, hierarchy):
 
         if included:
             object_groups = groups.setdefault(content_type.id, {})
-            if not issubclass(model, Translatable):
+            if not issubclass(model, translations.models.Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj):
@@ -222,7 +317,7 @@ def _get_translations(groups, lang):
                 object_id=obj_id,
             )
 
-    queryset = Translation.objects.filter(
+    queryset = translations.models.Translation.objects.filter(
         language=lang,
     ).filter(
         filters,

@@ -119,7 +119,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = 'monokai'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -136,8 +136,9 @@ html_theme = 'alabaster'
 html_theme_options = {
     'note_bg': '#fec',
     'note_border': '#ffe2a8',
-    'pre_bg': '#f6f6f6',
+    'show_relbars': True,
     'logo': logo,
+    'touch_icon': logo,
     'logo_name': True,
     'description': description,
     'github_user': github_user,
@@ -234,6 +235,7 @@ doctest_global_setup = """
 from django.db import connection
 from django.test import TestCase
 from django.db.models.query import QuerySet
+from django.db.models.query import Q
 from pprint import pprint
 import builtins
 
@@ -242,7 +244,7 @@ connection.creation.create_test_db(verbosity=0)
 TestCase.setUpClass()
 
 # Beautify `testoutput`
-def print(obj=''):
+def print(obj='', start='', end='\\n'):
     if type(obj) == dict:
         pprint(obj, width=72)
     elif type(obj) == QuerySet:
@@ -250,15 +252,28 @@ def print(obj=''):
         representation = repr(obj)
         start_index = representation.find('[')
         end_index = representation.rfind(']')
-        start = representation[:(start_index + 1)]
-        center = representation[(start_index + 1): end_index]
-        end = representation[end_index:]
-        items = map(lambda x: (' ' * 4) + x, center.split(', '))
-        print(start)
+        start_str = representation[:(start_index + 1)]
+        center_str = representation[(start_index + 1): end_index]
+        end_str = representation[end_index:]
+        items = map(lambda x: (' ' * 4) + x, center_str.split(', '))
+        print(start_str)
         print(',\\n'.join(items))
-        print(end)
+        print(end_str)
+    elif type(obj) == Q:
+        indent = len(start) * ' '
+        print('({}:'.format(obj.connector), start=indent)
+        def sorter(x):
+            if type(x) == Q:
+                return ''
+            elif type(x) == tuple:
+                return x[0]
+        for child in sorted(obj.children, key=sorter):
+            if type(child) == tuple and child[0] in ['_connector', '_negated']:
+                continue
+            print(child, start=indent + (4 * ' '))
+        print(')', start=indent)
     else:
-        builtins.print(obj)
+        builtins.print(start + str(obj), end=end)
 
 """
 
