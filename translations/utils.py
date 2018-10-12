@@ -149,6 +149,7 @@ def _get_dissected_lookup(model, lookup):
 
 
 def _get_translations_lookup_query(model, lookup, value, lang):
+    """Return the translations query of a lookup."""
     dissected = _get_dissected_lookup(model, lookup)
     query_dict = {}
     if dissected['translatable']:
@@ -171,6 +172,7 @@ def _get_translations_lookup_query(model, lookup, value, lang):
 
 
 def _get_translations_query(model, query, lang):
+    """Return the translations query of a query."""
     children = []
     for index, child in enumerate(query.children):
         if isinstance(child, models.Q):

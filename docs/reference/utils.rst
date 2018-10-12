@@ -190,27 +190,27 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_dissected_lookup(model, lookup)
 
-   Return the dissected info of a query lookup.
+   Return the dissected info of a lookup.
 
-   Dissects the query lookup and returns comprehensive information about it,
-   like what relations does it follow, what field name and lookup does it
-   contain and whether the field is translatable or not.
+   Dissects the lookup and returns comprehensive information about it,
+   like what relations does it follow, what field name and field lookup does
+   it contain and whether the field is translatable or not.
 
-   :param model: The model which the query lookup filters.
+   :param model: The model which the lookup acts on.
    :type model: type(~django.db.models.Model)
-   :param lookup: The query lookup of the model to get the dissected info of.
+   :param lookup: The lookup of the model to get the dissected info of.
        It may be composed of many ``related_query_name``\ s separated by
        :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
        represent a deeply nested relation.
    :type lookup: str
-   :return: The dissected info of the model's query lookup.
+   :return: The dissected info of the lookup.
    :rtype: dict
    :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
        pointing to the fields that don't exist.
-   :raise ~django.core.exceptions.FieldError: If the query lookup is not
+   :raise ~django.core.exceptions.FieldError: If the lookup is not
        supported.
 
-   To get the dissected info of a query lookup:
+   To get the dissected info of a lookup:
 
    .. testcode:: _get_dissected_lookup
 
@@ -229,6 +229,29 @@ This module contains the utilities for the Translations app.
        'lookup': 'icontains',
        'relation': ['countries'],
        'translatable': True}
+
+.. function:: _get_translations_lookup_query(model, lookup, value, lang)
+
+   Return the translations query of a lookup.
+
+   :param model: The model which the lookup acts on.
+   :type model: type(~django.db.models.Model)
+   :param lookup: The lookup of the model to get the translations query
+       of.
+       It may be composed of many ``related_query_name``\ s separated by
+       :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
+       represent a deeply nested relation.
+   :type lookup: str
+   :param value: The value of the lookup.
+   :type value: object
+   :param lang: The language code of the lookup.
+   :type lang: str
+   :return: The translations query of the lookup.
+   :rtype: ~django.db.models.Q
+   :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
+       pointing to the fields that don't exist.
+   :raise ~django.core.exceptions.FieldError: If the lookup is not
+       supported.
 
 .. function:: _get_relations_hierarchy(*relations)
 
