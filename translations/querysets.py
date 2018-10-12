@@ -33,33 +33,31 @@ class TranslatableQuerySet(query.QuerySet):
 
     def cipher(self):
         clone = self.all()
-        clone._translations_cipher = True
+        if hasattr(self, '_translations_cipher'):
+            clone._translations_cipher = True
         return clone
 
     def decipher(self):
         clone = self.all()
-        clone._translations_cipher = False
+        if hasattr(self, '_translations_cipher'):
+            clone._translations_cipher = False
         return clone
 
     def filter(self, *args, **kwargs):
         """Filter the queryset."""
         if self._should_cipher():
-            queries = []
-            for arg in args:
-                queries.append(
-                    _get_translations_query(
-                        self.model, arg, self._translations_lang
-                    )
-                )
-            for key, value in kwargs.items():
-                queries.append(
-                    _get_translations_lookup_query(
-                        self.model, key, value, self._translations_lang
-                    )
-                )
+            queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).filter(*queries)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
+
+    def exclude(self, *args, **kwargs):
+        """Exclude the queryset."""
+        if self._should_cipher():
+            queries = self._get_translations_queries(*args, **kwargs)
+            return super(TranslatableQuerySet, self).exclude(*queries)
+        else:
+            return super(TranslatableQuerySet, self).exclude(*args, **kwargs)
 
     def _chain(self, **kwargs):
         clone = super(TranslatableQuerySet, self)._chain(**kwargs)
@@ -78,6 +76,11 @@ class TranslatableQuerySet(query.QuerySet):
     def _fetch_all(self):
         super(TranslatableQuerySet, self)._fetch_all()
         if self._should_cipher():
+            if self._iterable_class is not query.ModelIterable:
+                raise TypeError(
+                    'Translations does not support this queryset.' + ' ' +
+                    'If necessary you can `decipher` and then do it.'
+                )
             if not self._translations_translated:
                 with Context(self._result_cache, *self._translations_rels) as context:
                     context.read(self._translations_lang)
@@ -85,3 +88,19 @@ class TranslatableQuerySet(query.QuerySet):
 
     def _should_cipher(self):
         return hasattr(self, '_translations_lang') and self._translations_cipher
+
+    def _get_translations_queries(self, *args, **kwargs):
+        queries = []
+        for arg in args:
+            queries.append(
+                _get_translations_query(
+                    self.model, arg, self._translations_lang
+                )
+            )
+        for key, value in kwargs.items():
+            queries.append(
+                _get_translations_lookup_query(
+                    self.model, key, value, self._translations_lang
+                )
+            )
+        return queries
