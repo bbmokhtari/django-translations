@@ -632,6 +632,20 @@ class GetTranslationsQueryTest(TestCase):
             }
         )
 
+    def test_nested_query(self):
+        self.assertDictEqual(
+            dict(_get_translations_query(
+                Continent, Q(
+                    Q(countries__cities__name__icontains='Kö'),
+                ), 'de'
+            ).children[0].children[0].children),
+            {
+                'countries__cities__translations__field': 'name',
+                'countries__cities__translations__language': 'de',
+                'countries__cities__translations__text__icontains': 'Kö',
+            }
+        )
+
 
 class GetRelationsHierarchyTest(TestCase):
     """Tests for `_get_relations_hierarchy`."""
