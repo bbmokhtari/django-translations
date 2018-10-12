@@ -45,8 +45,9 @@ class Context:
         """
         lang = _get_standard_language(lang)
         _translations = [
-            translations.models.Translation(language=lang, text=text, **address)
-            for address, text in self._get_changed_fields()
+            translations.models.Translation(
+                language=lang, text=text, **address
+            ) for address, text in self._get_changed_fields()
         ]
         translations.models.Translation.objects.bulk_create(_translations)
 
@@ -76,9 +77,12 @@ class Context:
         for address, text in self._get_changed_fields():
             filters |= models.Q(**address)
             _translations.append(
-                translations.models.Translation(language=lang, text=text, **address)
+                translations.models.Translation(
+                    language=lang, text=text, **address
+                )
             )
-        translations.models.Translation.objects.filter(language=lang).filter(filters).delete()
+        translations.models.Translation.objects.filter(
+            language=lang).filter(filters).delete()
         translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):

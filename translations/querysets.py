@@ -86,13 +86,15 @@ class TranslatableQuerySet(query.QuerySet):
                     'If necessary you can `decipher` and then do it.'
                 )
             if not self._translations_translated:
-                with Context(self._result_cache, *self._translations_rels) as context:
+                with Context(self._result_cache, *self._translations_rels) \
+                        as context:
                     context.read(self._translations_lang)
                 self._translations_translated = True
 
     def _should_cipher(self):
         """Determine whether the queryset should use the applied language."""
-        return hasattr(self, '_translations_lang') and self._translations_cipher
+        return hasattr(self, '_translations_lang') and \
+            hasattr(self, '_translations_cipher') and self._translations_cipher
 
     def _get_translations_queries(self, *args, **kwargs):
         """Return the translations queries of lookup and queries."""
