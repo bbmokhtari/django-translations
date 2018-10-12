@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from translations.utils import _get_standard_language, \
     _get_translation_language_choices, \
     _get_reverse_relation, _get_dissected_lookup, \
+    _get_translations_lookup_query, \
     _get_relations_hierarchy, _get_entity_details, \
     _get_instance_groups, _get_translations
 
@@ -316,6 +317,148 @@ class GetDissectedLookupTest(TestCase):
                 'lookup': 'icontains',
                 'translatable': True,
             }
+        )
+
+
+class GetTranslationsLookupQueryTest(TestCase):
+    """Tests for `_get_translations_lookup_query`."""
+
+    def test_no_rel_with_field_not_translatable_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'code', 'EU', 'de').children,
+            [
+                ('code', 'EU'),
+            ]
+        )
+
+    def test_no_rel_with_field_translatable_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'name', 'Europa', 'de').children,
+            [
+                ('translations__field', 'name'),
+                ('translations__language', 'de'),
+                ('translations__text', 'Europa'),
+            ]
+        )
+
+    def test_no_rel_with_field_not_translatable_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'code__icontains', 'EU', 'de').children,
+            [
+                ('code__icontains', 'EU'),
+            ],
+        )
+
+    def test_no_rel_with_field_translatable_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'name__icontains', 'Europa', 'de').children,
+            [
+                ('translations__field', 'name'),
+                ('translations__language', 'de'),
+                ('translations__text__icontains', 'Europa'),
+            ]
+        )
+
+    def test_with_rel_no_field_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries', 1, 'de').children,
+            [
+                ('countries', 1),
+            ]
+        )
+
+    def test_with_rel_no_field_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__gt', 1, 'de').children,
+            [
+                ('countries__gt', 1),
+            ]
+        )
+
+    def test_with_rel_with_field_not_translatable_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__code', 'DE', 'de').children,
+            [
+                ('countries__code', 'DE'),
+            ]
+        )
+
+    def test_with_rel_with_field_translatable_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__name', 'Deutschland', 'de').children,
+            [
+                ('countries__translations__field', 'name'),
+                ('countries__translations__language', 'de'),
+                ('countries__translations__text', 'Deutschland'),
+            ]
+        )
+
+    def test_with_rel_with_field_not_translatable_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__code__icontains', 'DE', 'de').children,
+            [
+                ('countries__code__icontains', 'DE'),
+            ]
+        )
+
+    def test_with_rel_with_field_translatable_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__name__icontains', 'Deutsch', 'de').children,
+            [
+                ('countries__translations__field', 'name'),
+                ('countries__translations__language', 'de'),
+                ('countries__translations__text__icontains', 'Deutsch'),
+            ]
+        )
+
+    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__cities__id', 1, 'de').children,
+            [
+                ('countries__cities__id', 1),
+            ]
+        )
+
+    def test_with_nested_rel_with_field_translatable_no_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__cities__name', 'Köln', 'de').children,
+            [
+                ('countries__cities__translations__field', 'name'),
+                ('countries__cities__translations__language', 'de'),
+                ('countries__cities__translations__text', 'Köln'),
+            ]
+        )
+
+    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__cities__id__gt', 1, 'de').children,
+            [
+                ('countries__cities__id__gt', 1),
+            ]
+        )
+
+    def test_with_nested_rel_with_field_translatable_with_lookup(self):
+        self.assertListEqual(
+            _get_translations_lookup_query(
+                Continent, 'countries__cities__name__icontains', 'Kö', 'de').children,
+            [
+                ('countries__cities__translations__field', 'name'),
+                ('countries__cities__translations__language', 'de'),
+                ('countries__cities__translations__text__icontains', 'Kö'),
+            ]
         )
 
 
