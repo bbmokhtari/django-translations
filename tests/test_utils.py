@@ -326,7 +326,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_no_rel_with_field_not_translatable_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'code', 'EU', 'de').children,
+                Continent, 'code', 'EU', 'de'
+            ).children,
             [
                 ('code', 'EU'),
             ]
@@ -335,7 +336,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_no_rel_with_field_translatable_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'name', 'Europa', 'de').children,
+                Continent, 'name', 'Europa', 'de'
+            ).children,
             [
                 ('translations__field', 'name'),
                 ('translations__language', 'de'),
@@ -346,7 +348,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_no_rel_with_field_not_translatable_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'code__icontains', 'EU', 'de').children,
+                Continent, 'code__icontains', 'EU', 'de'
+            ).children,
             [
                 ('code__icontains', 'EU'),
             ],
@@ -355,7 +358,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_no_rel_with_field_translatable_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'name__icontains', 'Europa', 'de').children,
+                Continent, 'name__icontains', 'Europa', 'de'
+            ).children,
             [
                 ('translations__field', 'name'),
                 ('translations__language', 'de'),
@@ -366,7 +370,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_rel_no_field_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries', 1, 'de').children,
+                Continent, 'countries', 1, 'de'
+            ).children,
             [
                 ('countries', 1),
             ]
@@ -375,7 +380,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_rel_no_field_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__gt', 1, 'de').children,
+                Continent, 'countries__gt', 1, 'de'
+            ).children,
             [
                 ('countries__gt', 1),
             ]
@@ -384,7 +390,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_rel_with_field_not_translatable_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__code', 'DE', 'de').children,
+                Continent, 'countries__code', 'DE', 'de'
+            ).children,
             [
                 ('countries__code', 'DE'),
             ]
@@ -393,7 +400,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_rel_with_field_translatable_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__name', 'Deutschland', 'de').children,
+                Continent, 'countries__name', 'Deutschland', 'de'
+            ).children,
             [
                 ('countries__translations__field', 'name'),
                 ('countries__translations__language', 'de'),
@@ -404,7 +412,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_rel_with_field_not_translatable_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__code__icontains', 'DE', 'de').children,
+                Continent, 'countries__code__icontains', 'DE', 'de'
+            ).children,
             [
                 ('countries__code__icontains', 'DE'),
             ]
@@ -413,7 +422,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_rel_with_field_translatable_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__name__icontains', 'Deutsch', 'de').children,
+                Continent, 'countries__name__icontains', 'Deutsch', 'de'
+            ).children,
             [
                 ('countries__translations__field', 'name'),
                 ('countries__translations__language', 'de'),
@@ -424,7 +434,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__cities__id', 1, 'de').children,
+                Continent, 'countries__cities__id', 1, 'de'
+            ).children,
             [
                 ('countries__cities__id', 1),
             ]
@@ -433,7 +444,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_nested_rel_with_field_translatable_no_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__cities__name', 'Köln', 'de').children,
+                Continent, 'countries__cities__name', 'Köln', 'de'
+            ).children,
             [
                 ('countries__cities__translations__field', 'name'),
                 ('countries__cities__translations__language', 'de'),
@@ -444,7 +456,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__cities__id__gt', 1, 'de').children,
+                Continent, 'countries__cities__id__gt', 1, 'de'
+            ).children,
             [
                 ('countries__cities__id__gt', 1),
             ]
@@ -453,7 +466,8 @@ class GetTranslationsLookupQueryTest(TestCase):
     def test_with_nested_rel_with_field_translatable_with_lookup(self):
         self.assertListEqual(
             _get_translations_lookup_query(
-                Continent, 'countries__cities__name__icontains', 'Kö', 'de').children,
+                Continent, 'countries__cities__name__icontains', 'Kö', 'de'
+            ).children,
             [
                 ('countries__cities__translations__field', 'name'),
                 ('countries__cities__translations__language', 'de'),

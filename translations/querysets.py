@@ -46,9 +46,17 @@ class TranslatableQuerySet(query.QuerySet):
         if hasattr(clone, '_applied_language'):
             queries = []
             for arg in args:
-                queries.append(_get_translations_query(clone.model, arg, clone._applied_language))
+                queries.append(
+                    _get_translations_query(
+                        clone.model, arg, clone._applied_language
+                    )
+                )
             for key, value in kwargs.items():
-                queries.append(_get_translations_lookup_query(clone.model, key, value, clone._applied_language))
+                queries.append(
+                    _get_translations_lookup_query(
+                        clone.model, key, value, clone._applied_language
+                    )
+                )
             return super(TranslatableQuerySet, self).filter(*queries)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
