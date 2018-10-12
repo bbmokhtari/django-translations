@@ -263,6 +263,8 @@ def print(obj='', start='', end='\\n'):
         indent = len(start) * ' '
         print('({}:'.format(obj.connector), start=indent)
         for child in obj.children:
+            if type(child) == tuple and child[0] in ['_connector', '_negated']:
+                continue
             print(child, start=indent + (4 * ' '))
         print(')', start=indent)
     else:
