@@ -12,17 +12,20 @@ This module contains the querysets for the Translations app.
 
    .. method:: apply(self, *relations, lang=None)
 
-      Apply a language to be used in the queryset and some of its relations.
+      Apply a language to be used on the queryset and some of its relations.
 
-      :param lang: The language to be used in the queryset.
+      Causes the queryset and its specified relations to work with the
+      translated values in a language. e.g. filtering, getting, etc.
+
+      :param lang: The language to be used on the queryset.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :param relations: The relations of the queryset to use the language in.
+      :param relations: The relations of the queryset to use the language on.
       :type relations: list(str)
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      To apply a language to be used in the queryset and some of its relations:
+      To apply a language to be used on the queryset and some of its relations:
 
       .. testsetup:: apply
 
@@ -130,10 +133,6 @@ This module contains the querysets for the Translations app.
             Europa
             Deutschland  -- Correct
             Köln  -- Correct
-
-   .. method:: all(self)
-
-      Return the queryset.
 
    .. method:: filter(self, *args, **kwargs)
 
