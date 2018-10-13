@@ -39,16 +39,16 @@ class TranslatableQuerySet(query.QuerySet):
 
     def filter(self, *args, **kwargs):
         """Filter the queryset with lookups and queries."""
-        if self._trans_lang and self._trans_cipher:
-            queries = self._get_translations_queries(*args, **kwargs)
+        queries = self._get_translations_queries(*args, **kwargs)
+        if queries:
             return super(TranslatableQuerySet, self).filter(*queries)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
 
     def exclude(self, *args, **kwargs):
         """Exclude the queryset with lookups and queries."""
-        if self._trans_lang and self._trans_cipher:
-            queries = self._get_translations_queries(*args, **kwargs)
+        queries = self._get_translations_queries(*args, **kwargs)
+        if queries:
             return super(TranslatableQuerySet, self).exclude(*queries)
         else:
             return super(TranslatableQuerySet, self).exclude(*args, **kwargs)
@@ -68,32 +68,40 @@ class TranslatableQuerySet(query.QuerySet):
     def _fetch_all(self):
         """Evaluate the queryset."""
         super(TranslatableQuerySet, self)._fetch_all()
-        if self._trans_lang and self._trans_cipher:
-            if self._iterable_class is not query.ModelIterable:
-                raise TypeError(
-                    'Translations does not support custom iteration (yet). ' +
-                    'e.g. values, values_list, etc. ' +
-                    'If necessary you can `decipher` and then do it.'
-                )
-            if not self._trans_cache:
-                with Context(self._result_cache, *self._trans_rels) \
-                        as context:
-                    context.read(self._trans_lang)
-                self._trans_cache = True
+
+        if not (self._trans_lang and self._trans_cipher):
+            return
+
+        if self._iterable_class is not query.ModelIterable:
+            raise TypeError(
+                'Translations does not support custom iteration (yet). ' +
+                'e.g. values, values_list, etc. ' +
+                'If necessary you can `decipher` and then do it.'
+            )
+
+        if not self._trans_cache:
+            with Context(self._result_cache, *self._trans_rels) \
+                    as context:
+                context.read(self._trans_lang)
+            self._trans_cache = True
 
     def _get_translations_queries(self, *args, **kwargs):
         """Return the translations queries of lookups and queries."""
+        if not (self._trans_lang and self._trans_cipher):
+            return []
+
         queries = []
+
         for arg in args:
             queries.append(
                 _get_translations_query_of_query(
-                    self.model, arg, self._trans_lang
-                )
+                    self.model, arg, self._trans_lang)
             )
+
         for key, value in kwargs.items():
             queries.append(
                 _get_translations_query_of_lookup(
-                    self.model, key, value, self._trans_lang
-                )
+                    self.model, key, value, self._trans_lang)
             )
+
         return queries
