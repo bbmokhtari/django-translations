@@ -25,6 +25,26 @@ class TranslatableQuerySet(query.QuerySet):
 
         return clone
 
+    def _fetch_all(self):
+        """Evaluate the queryset."""
+        super(TranslatableQuerySet, self)._fetch_all()
+
+        if not (self._trans_lang and self._trans_cipher):
+            return
+
+        if self._iterable_class is not query.ModelIterable:
+            raise TypeError(
+                'Translations does not support custom iteration (yet). ' +
+                'e.g. values, values_list, etc. ' +
+                'If necessary you can `decipher` and then do it.'
+            )
+
+        if not self._trans_cache:
+            with Context(self._result_cache, *self._trans_rels) \
+                    as context:
+                context.read(self._trans_lang)
+            self._trans_cache = True
+
     def _get_translations_queries(self, *args, **kwargs):
         """Return the translations queries of lookups and queries."""
         if not (self._trans_lang and self._trans_cipher):
@@ -45,26 +65,6 @@ class TranslatableQuerySet(query.QuerySet):
             )
 
         return queries
-
-    def _fetch_all(self):
-        """Evaluate the queryset."""
-        super(TranslatableQuerySet, self)._fetch_all()
-
-        if not (self._trans_lang and self._trans_cipher):
-            return
-
-        if self._iterable_class is not query.ModelIterable:
-            raise TypeError(
-                'Translations does not support custom iteration (yet). ' +
-                'e.g. values, values_list, etc. ' +
-                'If necessary you can `decipher` and then do it.'
-            )
-
-        if not self._trans_cache:
-            with Context(self._result_cache, *self._trans_rels) \
-                    as context:
-                context.read(self._trans_lang)
-            self._trans_cache = True
 
     def apply(self, lang=None):
         """Apply a language to be used in the queryset."""
