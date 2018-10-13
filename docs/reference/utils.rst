@@ -234,10 +234,10 @@ This module contains the utilities for the Translations app.
 
    Return the translations query of a lookup.
 
-   If the lookup is on a :attr:`translatable field \
-   <translations.models.Translatable.TranslatableMeta.fields>` it returns the
-   translations equivalent of the lookup as a query, otherwise it returns
-   the lookup without any change as a query.
+   If the lookups is on a :attr:`translatable field \
+   <translations.models.Translatable.TranslatableMeta.fields>` it returns
+   the translations equivalent of the lookup as a new query,
+   otherwise it returns the lookup without any change.
 
    :param model: The model which the lookup acts on.
    :type model: type(~django.db.models.Model)
@@ -284,10 +284,10 @@ This module contains the utilities for the Translations app.
 
    Return the translations query of a query.
 
-   If the query is on a :attr:`translatable field \
-   <translations.models.Translatable.TranslatableMeta.fields>` it returns the
-   translations equivalent of the query as a new query, otherwise it returns
-   the query without any change as a new query.
+   If the query is on the :attr:`translatable fields \
+   <translations.models.Translatable.TranslatableMeta.fields>` it returns
+   the translations equivalent of the query as a new query,
+   otherwise it returns the query without any change.
 
    :param model: The model which the query acts on.
    :type model: type(~django.db.models.Model)

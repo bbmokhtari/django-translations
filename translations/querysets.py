@@ -57,26 +57,23 @@ class TranslatableQuerySet(query.QuerySet):
                 context.read(self._trans_lang)
             self._trans_cache = True
 
-    def _get_translations_queries(self, *args, **kwargs):
+    def _get_translations_queries(self, *queries, **lookup):
         """Return the translations queries of lookups and queries."""
-        if not self._translate_mode():
-            return []
+        translations_queries = []
 
-        queries = []
-
-        for arg in args:
-            queries.append(
+        for query in queries:
+            translations_queries.append(
                 _get_translations_query_of_query(
-                    self.model, arg, self._trans_lang)
+                    self.model, query, self._trans_lang)
             )
 
-        for key, value in kwargs.items():
-            queries.append(
+        for key, value in lookup.items():
+            translations_queries.append(
                 _get_translations_query_of_lookup(
                     self.model, key, value, self._trans_lang)
             )
 
-        return queries
+        return translations_queries
 
     def apply(self, lang=None):
         """Apply a language on the queryset."""
@@ -104,16 +101,16 @@ class TranslatableQuerySet(query.QuerySet):
 
     def filter(self, *args, **kwargs):
         """Filter the queryset with lookups and queries."""
-        queries = self._get_translations_queries(*args, **kwargs)
-        if queries:
+        if self._translate_mode():
+            queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).filter(*queries)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
 
     def exclude(self, *args, **kwargs):
         """Exclude the queryset with lookups and queries."""
-        queries = self._get_translations_queries(*args, **kwargs)
-        if queries:
+        if self._translate_mode():
+            queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).exclude(*queries)
         else:
             return super(TranslatableQuerySet, self).exclude(*args, **kwargs)

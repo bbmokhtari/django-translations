@@ -212,6 +212,38 @@ This module contains the querysets for the Translations app.
 
          <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
 
+   .. method:: _get_translations_queries(self, *queries, **lookup)
+
+      Return the translations queries of some lookups and queries.
+
+      If the lookups or the queries are on the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` it returns
+      the translations equivalent of the lookup or the query as a new query,
+      otherwise it returns the lookup or the query without any change.
+
+      :param queries: The queries to get the translations queries of.
+      :type queries: list
+      :param lookup: The lookups to get the translations queries of.
+      :type lookup: dict
+      :return: The translations queries of lookups and queries.
+      :rtype: list(~django.db.models.Q)
+
+      To get the translations queries of some lookups and queries:
+
+      .. testcode:: _get_translations_queries
+
+         from sample.models import Continent
+
+         queries = Continent.objects.all()._get_translations_queries(
+             countries__name__icontains='Deutsch')
+
+         # output
+         print(queries)
+   
+      .. testoutput:: _get_translations_queries
+   
+         [<Q: (AND: ('countries__translations__field', 'name'), ('countries__translations__language', None), ('countries__translations__text__icontains', 'Deutsch'))>]
+
    .. method:: apply(self, lang=None)
 
       Apply a language on the queryset.
