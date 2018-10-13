@@ -25,7 +25,38 @@ This module contains the querysets for the Translations app.
       :return: The chained queryset.
       :rtype: TranslatableQuerySet
 
-   .. method:: apply(self, *relations, lang=None)
+      To get a translatable chained queryset:
+
+      .. testsetup:: _chain
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: _chain
+
+         from sample.models import Continent
+
+         # get translatable chained queryset
+         continents = Continent.objects.all()._chain()
+
+         # use the queryset like before
+         print(continents)
+
+      .. testoutput:: _chain
+
+         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+
+   .. 
+      method:: apply(self, *relations, lang=None)
 
       Apply a language to be used on the queryset and some of its relations.
 

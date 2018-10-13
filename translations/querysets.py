@@ -13,14 +13,21 @@ __docformat__ = 'restructuredtext'
 class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
+    def __init__(self, model=None, query=None, using=None, hints=None):
+        super(TranslatableQuerySet, self).__init__(model, query, using, hints)
+        self._trans_lang = None
+        self._trans_rels = ()
+        self._trans_cipher = True
+        self._trans_cache = False
+
     def _chain(self, **kwargs):
         """Return a translatable chained queryset."""
         clone = super(TranslatableQuerySet, self)._chain(**kwargs)
 
         # default values for all
-        clone._trans_lang = getattr(self, '_trans_lang', None)
-        clone._trans_rels = getattr(self, '_trans_rels', ())
-        clone._trans_cipher = getattr(self, '_trans_cipher', True)
+        clone._trans_lang = getattr(self, '_trans_lang')
+        clone._trans_rels = getattr(self, '_trans_rels')
+        clone._trans_cipher = getattr(self, '_trans_cipher')
         clone._trans_cache = False
 
         return clone
