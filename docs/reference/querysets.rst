@@ -113,9 +113,9 @@ This module contains the querysets for the Translations app.
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
       :meth:`~django.db.models.query._fetch_all` method.
       It translates the instances of the queryset and their specified
-      relations in the evaluation.
+      relations in the evaluation if the queryset is in translate mode.
 
-      To evaluate the queryset:
+      To evaluate the queryset in normal mode:
 
       .. testsetup:: _fetch_all
 
@@ -143,6 +143,35 @@ This module contains the querysets for the Translations app.
       .. testoutput:: _fetch_all
 
          <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+
+      To evaluate the queryset in translate mode:
+
+      .. testsetup:: _fetch_all
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: _fetch_all
+
+         from sample.models import Continent
+
+         continents = Continent.objects.apply('de')
+
+         # evaluate the queryset
+         print(continents)
+
+      .. testoutput:: _fetch_all
+
+         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
 
    .. method:: apply(self, lang=None)
 
