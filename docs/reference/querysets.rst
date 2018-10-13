@@ -188,10 +188,10 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # translate some relations of the queryset
-         continents = Continent.objects.apply(lang='de').translate_related(
+         continents = Continent.objects.translate_related(
              'countries',
              'countries__cities',
-         )
+         ).apply(lang='de')
 
          print(continents)
          print(continents[0].countries.all())
@@ -223,11 +223,11 @@ This module contains the querysets for the Translations app.
 
             from sample.models import Continent
 
-            continents = Continent.objects.apply('de').prefetch_related(
+            continents = Continent.objects.prefetch_related(
                 'countries', 'countries__cities',
             ).translate_related(
                 'countries', 'countries__cities',
-            )
+            ).apply('de')
 
             # Filtering after applying
             print(continents)
@@ -250,7 +250,7 @@ This module contains the querysets for the Translations app.
             from sample.models import Continent, Country
 
             # Filtering before applying
-            continents = Continent.objects.apply('de').prefetch_related(
+            continents = Continent.objects.prefetch_related(
                 Prefetch(
                     'countries',
                     queryset=Country.objects.exclude(name=''),
@@ -258,7 +258,7 @@ This module contains the querysets for the Translations app.
                 'countries__cities',
             ).translate_related(
                 'countries', 'countries__cities',
-            )
+            ).apply('de')
 
             print(continents)
             print(continents[0].countries.all())
