@@ -10,22 +10,73 @@ This module contains the querysets for the Translations app.
 
    A queryset which provides custom translation functionalities.
 
-   .. method:: _chain(self, **kwargs)
+   .. method:: __init__(*args, **kwargs)
 
-      Return a translatable chained queryset.
+      Initialize a queryset with custom translation configurations.
 
       This is an overriden version of
-      the default :class:`~django.db.models.query.QuerySet`\ 's
-      :meth:`~django.db.models.query._chain` method. It copies custom
-      translation configurations from the queryset to the chained queryset.
+      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      :meth:`~django.db.models.query.__init__` method. It defines
+      custom translation configurations on the queryset.
 
-      :param kwargs: the default :class:`~django.db.models.query.QuerySet`\
-          's :meth:`~django.db.models.query._chain` method keyword arguments.
+      :param args: The arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query.__init__` method.
+      :type args: list
+      :param kwargs: The keyword arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query.__init__` method.
+      :type kwargs: dict
+
+      To get the queryset's custom translation configurations:
+
+      .. testsetup:: __init__
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: __init__
+
+         from sample.models import Continent
+
+         continents = Continent.objects.all()
+
+         # access the ``_trans_*`` attributes of the queryset
+         print(continents._trans_lang)
+         print(continents._trans_rels)
+
+      .. testoutput:: __init__
+
+         None
+         ()
+
+   .. method:: _chain(self, **kwargs)
+
+      Return a chained queryset.
+
+      This is an overriden version of
+      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      :meth:`~django.db.models.query._chain` method. It copies
+      custom translation configurations from the queryset to the
+      chained queryset.
+
+      :param kwargs: The keyword arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query._chain` method.
       :type kwargs: dict
       :return: The chained queryset.
       :rtype: TranslatableQuerySet
 
-      To get a translatable chained queryset:
+      To get a chained queryset:
 
       .. testsetup:: _chain
 
@@ -45,7 +96,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # get translatable chained queryset
+         # get chained queryset
          continents = Continent.objects.all()._chain()
 
          # use the queryset like before
