@@ -14,7 +14,7 @@ class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
     def __init__(self, *args, **kwargs):
-        """Initialize a queryset with custom translation configurations."""
+        """Initialize the queryset with custom translation configurations."""
         super(TranslatableQuerySet, self).__init__(*args, **kwargs)
         self._trans_lang = None
         self._trans_rels = ()
@@ -22,7 +22,7 @@ class TranslatableQuerySet(query.QuerySet):
         self._trans_cache = False
 
     def _chain(self, **kwargs):
-        """Return a chained queryset."""
+        """Return a chained queryset of the queryset."""
         clone = super(TranslatableQuerySet, self)._chain(**kwargs)
 
         # default values for all
@@ -75,12 +75,12 @@ class TranslatableQuerySet(query.QuerySet):
         return queries
 
     def apply(self, lang=None):
-        """Apply a language to be used in the queryset."""
+        """Apply a language on the queryset."""
         clone = self.all()
         clone._trans_lang = _get_standard_language(lang)
         return clone
 
-    def translate_related(*fields):
+    def translate_related(self, *fields):
         """Translate some relations of the queryset."""
         clone = self.all()
         clone._trans_rels = () if fields == (None,) else fields

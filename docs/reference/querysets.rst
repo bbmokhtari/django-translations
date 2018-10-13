@@ -12,7 +12,7 @@ This module contains the querysets for the Translations app.
 
    .. method:: __init__(*args, **kwargs)
 
-      Initialize a queryset with custom translation configurations.
+      Initialize the queryset with custom translation configurations.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
@@ -61,7 +61,7 @@ This module contains the querysets for the Translations app.
 
    .. method:: _chain(self, **kwargs)
 
-      Return a chained queryset.
+      Return a chained queryset of the queryset.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
@@ -76,7 +76,7 @@ This module contains the querysets for the Translations app.
       :return: The chained queryset.
       :rtype: TranslatableQuerySet
 
-      To get a chained queryset:
+      To get a chained queryset of the queryset:
 
       .. testsetup:: _chain
 
@@ -96,7 +96,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # fetch chained queryset
+         # get a chained queryset of the queryset
          continents = Continent.objects.all()._chain()
 
          print(continents)
@@ -105,26 +105,22 @@ This module contains the querysets for the Translations app.
 
          <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
 
-   .. 
-      method:: apply(self, *relations, lang=None)
+   .. method:: apply(self, *relations, lang=None)
 
-      Apply a language to be used on the queryset and some of its relations.
+      Apply a language on the queryset.
 
-      Causes the queryset to work with the translated values in the
-      specified language while querying the database.
+      Causes the queryset to query the translated values in the
+      specified language.
 
-      Causes the queryset's specified relations to be translated in the
-      specified language while evaluating the queryset.
-
-      :param lang: The language to be used on the queryset.
+      :param lang: The language to apply on the queryset.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :param relations: The relations of the queryset to use the language on.
-      :type relations: list(str)
+      :return: The queryset which the language is applied on.
+      :rtype: TranslatableQuerySet
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      To apply a language to be used on the queryset and some of its relations:
+      To apply a language on the queryset:
 
       .. testsetup:: apply
 
@@ -144,21 +140,14 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         relations = ('countries', 'countries__cities',)
+         # apply `German` on the queryset
+         continents = Continent.objects.apply(lang='de')
 
-         # apply German on the queryset and its specified relations
-         continents = Continent.objects.apply(*relations, lang='de')
-
-         # use the queryset like before
-         print(continents[0].name)
-         print(continents[0].countries.all()[0].name)
-         print(continents[0].countries.all()[0].cities.all()[0].name)
+         print(continents)
 
       .. testoutput:: apply
 
-         Europa
-         Deutschland
-         Köln
+         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
 
       .. note::
 
@@ -166,10 +155,58 @@ This module contains the querysets for the Translations app.
          <translations.models.Translatable.TranslatableMeta.fields>` that have
          a translation.
 
+   .. method:: translate_related(*fields)
+
+      Translate some relations of the queryset.
+
+      Causes the queryset's specified relations to be translated while
+      evaluating the queryset.
+
+      :param relations: The relations of the queryset to translate.
+      :type relations: list(str)
+      :return: The queryset which the relations of are translated.
+      :rtype: TranslatableQuerySet
+
+      To translate some relations of the queryset:
+
+      .. testsetup:: translate_related
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: translate_related
+
+         from sample.models import Continent
+
+         # translate some relations of the queryset
+         continents = Continent.objects.apply(lang='de').translate_related(
+             'countries',
+             'countries__cities',
+         )
+
+         print(continents)
+         print(continents[0].countries.all())
+         print(continents[0].countries.all()[0].cities.all())
+
+      .. testoutput:: translate_related
+
+         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+         <TranslatableQuerySet [<Country: Deutschland>]>
+         <TranslatableQuerySet [<City: Köln>]>
+
       .. note::
 
          It is **recommended** for the relations of the queryset to be
-         prefetched before applying a language on them,
+         prefetched before translating them,
          in order to reach optimal performance.
 
          To do this use
@@ -179,59 +216,59 @@ This module contains the querysets for the Translations app.
 
       .. warning::
 
-         Filtering the relations after applying the translations will cause
+         Filtering the relations after the translation will cause
          the translations of that relation to be reset.
 
-         .. testcode:: apply
+         .. testcode:: translate_related
 
             from sample.models import Continent
 
-            relations = ('countries', 'countries__cities',)
-
-            europe = Continent.objects.prefetch_related(
-                *relations
-            ).apply(*relations, lang='de').get(code='EU')
+            continents = Continent.objects.apply('de').prefetch_related(
+                'countries', 'countries__cities',
+            ).translate_related(
+                'countries', 'countries__cities',
+            )
 
             # Filtering after applying
-            print(europe.name)
-            print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
-            print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
+            print(continents)
+            print(continents[0].countries.exclude(name=''))
+            print(continents[0].countries.exclude(name='')[0].cities.all())
 
-         .. testoutput:: apply
+         .. testoutput:: translate_related
 
-            Europa
-            Germany  -- Wrong
-            Cologne  -- Wrong
+            <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+            <TranslatableQuerySet [<Country: Germany>]>
+            <TranslatableQuerySet [<City: Cologne>]>
 
          The solution is to do the filtering before applying the translations.
 
          To do this use :class:`~django.db.models.Prefetch`.
 
-         .. testcode:: apply
+         .. testcode:: translate_related
 
             from django.db.models import Prefetch
             from sample.models import Continent, Country
 
-            relations = ('countries', 'countries__cities',)
-
             # Filtering before applying
-            europe = Continent.objects.prefetch_related(
+            continents = Continent.objects.apply('de').prefetch_related(
                 Prefetch(
                     'countries',
                     queryset=Country.objects.exclude(name=''),
                 ),
                 'countries__cities',
-            ).apply(*relations, lang='de').get(code='EU')
+            ).translate_related(
+                'countries', 'countries__cities',
+            )
 
-            print(europe.name)
-            print(europe.countries.all()[0].name + '  -- Correct')
-            print(europe.countries.all()[0].cities.all()[0].name + '  -- Correct')
+            print(continents)
+            print(continents[0].countries.all())
+            print(continents[0].countries.all()[0].cities.all())
 
-         .. testoutput:: apply
+         .. testoutput:: translate_related
 
-            Europa
-            Deutschland  -- Correct
-            Köln  -- Correct
+            <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+            <TranslatableQuerySet [<Country: Deutschland>]>
+            <TranslatableQuerySet [<City: Köln>]>
 
    .. method:: cipher(self)
 
