@@ -14,8 +14,11 @@ This module contains the querysets for the Translations app.
 
       Apply a language to be used on the queryset and some of its relations.
 
-      Causes the queryset and its specified relations to work with the
-      translated values in a language. e.g. filtering, getting, etc.
+      Causes the queryset to work with the translated values in the
+      specified language while querying the database.
+
+      Causes the queryset's specified relations to be translated in the
+      specified language while evaluating the queryset.
 
       :param lang: The language to be used on the queryset.
           ``None`` means use the :term:`active language` code.
