@@ -22,7 +22,7 @@ class TranslatableQuerySet(query.QuerySet):
         self._trans_cache = False
 
     def _chain(self, **kwargs):
-        """Return a chained queryset of the queryset."""
+        """Return a copy of the current queryset."""
         clone = super(TranslatableQuerySet, self)._chain(**kwargs)
 
         # default values for all

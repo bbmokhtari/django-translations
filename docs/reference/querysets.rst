@@ -61,12 +61,12 @@ This module contains the querysets for the Translations app.
 
    .. method:: _chain(self, **kwargs)
 
-      Return a chained queryset of the queryset.
+      Return a copy of the current queryset.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
       :meth:`~django.db.models.query._chain` method. It copies
-      custom translation configurations from the queryset to the
+      custom translation configurations from the current queryset to the
       chained queryset.
 
       :param kwargs: The keyword arguments of
@@ -76,7 +76,7 @@ This module contains the querysets for the Translations app.
       :return: The chained queryset.
       :rtype: TranslatableQuerySet
 
-      To get a chained queryset of the queryset:
+      To get a copy of the current queryset:
 
       .. testsetup:: _chain
 
@@ -96,7 +96,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # get a chained queryset of the queryset
+         # get a copy of the current queryset
          continents = Continent.objects.all()._chain()
 
          print(continents)
