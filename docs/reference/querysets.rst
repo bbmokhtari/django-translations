@@ -10,6 +10,21 @@ This module contains the querysets for the Translations app.
 
    A queryset which provides custom translation functionalities.
 
+   .. method:: _chain(self, **kwargs)
+
+      Return a translatable chained queryset.
+
+      This is an overriden version of
+      the default :class:`~django.db.models.query.QuerySet`\ 's
+      :meth:`~django.db.models.query._chain` method. It provides custom
+      translation configurations on the chained queryset.
+
+      :param kwargs: the default :class:`~django.db.models.query.QuerySet`\
+          's :meth:`~django.db.models.query._chain` method keyword arguments.
+      :type kwargs: dict
+      :return: The chained queryset.
+      :rtype: TranslatableQuerySet
+
    .. method:: apply(self, *relations, lang=None)
 
       Apply a language to be used on the queryset and some of its relations.

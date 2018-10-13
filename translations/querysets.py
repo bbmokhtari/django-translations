@@ -14,7 +14,7 @@ class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
     def _chain(self, **kwargs):
-        """Return a chained queryset."""
+        """Return a translatable chained queryset."""
         clone = super(TranslatableQuerySet, self)._chain(**kwargs)
 
         # default values for all
