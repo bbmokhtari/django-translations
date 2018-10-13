@@ -14,7 +14,7 @@ class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
     def __init__(self, *args, **kwargs):
-        """Initialize the queryset with custom translation configurations."""
+        """Initialize the queryset."""
         super(TranslatableQuerySet, self).__init__(*args, **kwargs)
         self._trans_lang = None
         self._trans_rels = ()

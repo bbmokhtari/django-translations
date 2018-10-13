@@ -12,7 +12,7 @@ This module contains the querysets for the Translations app.
 
    .. method:: __init__(*args, **kwargs)
 
-      Initialize the queryset with custom translation configurations.
+      Initialize the queryset.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
@@ -111,6 +111,9 @@ This module contains the querysets for the Translations app.
 
       Checks whether a language is applied on the queryset and also if the
       queryset is in cipher mode.
+
+      :return: whether the queryset is in translate mode.
+      :rtype: bool
 
       To check if the queryset is in translate mode:
 
