@@ -16,8 +16,8 @@ This module contains the querysets for the Translations app.
 
       This is an overriden version of
       the default :class:`~django.db.models.query.QuerySet`\ 's
-      :meth:`~django.db.models.query._chain` method. It provides custom
-      translation configurations on the chained queryset.
+      :meth:`~django.db.models.query._chain` method. It copies custom
+      translation configurations from the queryset to the chained queryset.
 
       :param kwargs: the default :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query._chain` method keyword arguments.
