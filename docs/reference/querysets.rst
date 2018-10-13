@@ -96,10 +96,9 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # get chained queryset
+         # fetch chained queryset
          continents = Continent.objects.all()._chain()
 
-         # use the queryset like before
          print(continents)
 
       .. testoutput:: _chain
