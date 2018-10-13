@@ -14,7 +14,9 @@ class TranslatableQuerySet(query.QuerySet):
     """A queryset which provides custom translation functionalities."""
 
     def apply(self, *relations, lang=None):
-        """Apply some relations and a language to be used in the queryset."""
+        """
+        Apply a language to be used in the queryset and some of its relations.
+        """
         lang = _get_standard_language(lang)
 
         clone = self.all()
@@ -46,7 +48,7 @@ class TranslatableQuerySet(query.QuerySet):
         return clone
 
     def filter(self, *args, **kwargs):
-        """Filter the queryset with lookup and queries."""
+        """Filter the queryset with lookups and queries."""
         if self._should_cipher():
             queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).filter(*queries)
@@ -54,7 +56,7 @@ class TranslatableQuerySet(query.QuerySet):
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
 
     def exclude(self, *args, **kwargs):
-        """Exclude the queryset with lookup and queries."""
+        """Exclude the queryset with lookups and queries."""
         if self._should_cipher():
             queries = self._get_translations_queries(*args, **kwargs)
             return super(TranslatableQuerySet, self).exclude(*queries)
@@ -82,7 +84,8 @@ class TranslatableQuerySet(query.QuerySet):
         if self._should_cipher():
             if self._iterable_class is not query.ModelIterable:
                 raise TypeError(
-                    'Translations does not support this queryset.' + ' ' +
+                    'Translations does not support custom iteration (yet). ' +
+                    'e.g. values, values_list, etc. ' +
                     'If necessary you can `decipher` and then do it.'
                 )
             if not self._translations_translated:
@@ -97,7 +100,7 @@ class TranslatableQuerySet(query.QuerySet):
             hasattr(self, '_translations_cipher') and self._translations_cipher
 
     def _get_translations_queries(self, *args, **kwargs):
-        """Return the translations queries of lookup and queries."""
+        """Return the translations queries of lookups and queries."""
         queries = []
         for arg in args:
             queries.append(
