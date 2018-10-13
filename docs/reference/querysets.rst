@@ -134,7 +134,7 @@ This module contains the querysets for the Translations app.
 
          continents = Continent.objects.apply('de').decipher()
 
-         # evaluate the queryset
+         # check if the queryset is in translate mode
          print(continents._translate_mode())
 
       .. testoutput:: _translate_mode
