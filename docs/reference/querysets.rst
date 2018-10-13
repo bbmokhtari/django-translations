@@ -16,8 +16,8 @@ This module contains the querysets for the Translations app.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
-      :meth:`~django.db.models.query.__init__` method. It defines
-      custom translation configurations on the queryset.
+      :meth:`~django.db.models.query.__init__` method.
+      It defines custom translation configurations on the queryset.
 
       :param args: The arguments of
           the :class:`default queryset <django.db.models.query.QuerySet>`\
@@ -65,9 +65,9 @@ This module contains the querysets for the Translations app.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
-      :meth:`~django.db.models.query._chain` method. It copies
-      custom translation configurations from the current queryset to the
-      chained queryset.
+      :meth:`~django.db.models.query._chain` method.
+      It copies custom translation configurations from the current queryset
+      to the chained queryset.
 
       :param kwargs: The keyword arguments of
           the :class:`default queryset <django.db.models.query.QuerySet>`\
@@ -105,7 +105,46 @@ This module contains the querysets for the Translations app.
 
          <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
 
-   .. method:: apply(self, *relations, lang=None)
+   .. method:: _fetch_all(self)
+
+      Evaluate the queryset.
+
+      This is an overriden version of
+      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      :meth:`~django.db.models.query._fetch_all` method.
+      It translates the instances of the queryset and their specified
+      relations in the evaluation.
+
+      To evaluate the queryset:
+
+      .. testsetup:: _fetch_all
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: _fetch_all
+
+         from sample.models import Continent
+
+         continents = Continent.objects.all()
+
+         # evaluate the queryset
+         print(continents)
+
+      .. testoutput:: _fetch_all
+
+         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+
+   .. method:: apply(self, lang=None)
 
       Apply a language on the queryset.
 
