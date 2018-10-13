@@ -361,8 +361,8 @@ This module contains the context managers for the Translations app.
 
       .. warning::
 
-         Filtering any queryset after reading the translations will cause
-         the translations of that queryset to be reset.
+         Filtering the relations after reading the translations will cause
+         the translations of that relation to be reset.
 
          .. testcode:: read
 
@@ -388,9 +388,9 @@ This module contains the context managers for the Translations app.
             Germany  -- Wrong
             Cologne  -- Wrong
 
-         The solution is to do the filtering before reading the
-         translations. To do this on the relations use
-         :class:`~django.db.models.Prefetch`.
+         The solution is to do the filtering before reading the translations.
+
+         To do this use :class:`~django.db.models.Prefetch`.
 
          .. testcode:: read
 
