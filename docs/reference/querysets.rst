@@ -105,6 +105,42 @@ This module contains the querysets for the Translations app.
 
          <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
 
+   .. method:: _translate_mode(self)
+
+      Return whether the queryset is in translate mode.
+
+      Checks whether a language is applied on the queryset and also if the
+      queryset is in cipher mode.
+
+      To check if the queryset is in translate mode:
+
+      .. testsetup:: _translate_mode
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: _translate_mode
+
+         from sample.models import Continent
+
+         continents = Continent.objects.apply('de).decipher()
+
+         # evaluate the queryset
+         print(continents._translate_mode())
+
+      .. testoutput:: _translate_mode
+
+         False
+
    .. method:: _fetch_all(self)
 
       Evaluate the queryset.

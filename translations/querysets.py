@@ -33,11 +33,15 @@ class TranslatableQuerySet(query.QuerySet):
 
         return clone
 
+    def _translate_mode(self):
+        """Return whether the queryset is in translate mode."""
+        return self._trans_lang and self._trans_cipher
+
     def _fetch_all(self):
         """Evaluate the queryset."""
         super(TranslatableQuerySet, self)._fetch_all()
 
-        if not (self._trans_lang and self._trans_cipher):
+        if not self._translate_mode():
             return
 
         if self._iterable_class is not query.ModelIterable:
@@ -55,7 +59,7 @@ class TranslatableQuerySet(query.QuerySet):
 
     def _get_translations_queries(self, *args, **kwargs):
         """Return the translations queries of lookups and queries."""
-        if not (self._trans_lang and self._trans_cipher):
+        if not self._translate_mode():
             return []
 
         queries = []
