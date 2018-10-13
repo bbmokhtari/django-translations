@@ -132,7 +132,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         continents = Continent.objects.apply('de).decipher()
+         continents = Continent.objects.apply('de').decipher()
 
          # evaluate the queryset
          print(continents._translate_mode())
