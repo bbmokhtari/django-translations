@@ -137,6 +137,86 @@ This module contains the querysets for the Translations app.
             Deutschland  -- Correct
             Köln  -- Correct
 
+   .. method:: cipher(self)
+
+      Use the applied language in the queryset.
+
+      Causes the queryset to use the applied language from there on.
+
+      To use the applied language in the queryset:
+
+      .. testsetup:: cipher
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: cipher
+
+         from sample.models import Continent
+
+         # apply German on the queryset
+         continents = Continent.objects.apply(lang='de')
+
+         # decipher
+         print(continents.decipher())  # use the default language
+
+         # cipher
+         print(continents.cipher())    # use the applied language
+
+      .. testoutput:: cipher
+
+         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+
+   .. method:: decipher(self)
+
+      Use the default language in the queryset.
+
+      Causes the queryset to use the default language from there on.
+
+      To use the default language in the queryset:
+
+      .. testsetup:: decipher
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: decipher
+
+         from sample.models import Continent
+
+         # apply German on the queryset
+         continents = Continent.objects.apply(lang='de')
+
+         # decipher
+         print(continents.decipher())  # use the default language
+
+         # cipher
+         print(continents.cipher())    # use the applied language
+
+      .. testoutput:: decipher
+
+         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+
    .. method:: filter(self, *args, **kwargs)
 
       Filter the queryset.
