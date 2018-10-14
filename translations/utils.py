@@ -246,10 +246,7 @@ def _get_entity_details(entity):
 
 
 def _get_purview(entity, hierarchy):
-    """
-    Return the `purview` of an entity and a `relations hierarchy` of
-    it.
-    """
+    """Return the `purview` of an entity and a `relations hierarchy` of it."""
     groups = {}
 
     def _fill_entity(entity, hierarchy, included=True):
