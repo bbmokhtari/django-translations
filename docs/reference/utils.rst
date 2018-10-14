@@ -148,7 +148,12 @@ This module contains the utilities for the Translations app.
 
    .. testoutput:: _get_translation_language_choices
 
-      [(None, '---------'), ('en-gb', 'English (Great Britain)'), ('de', 'German'), ('tr', 'Turkish')]
+      [
+          (None, '---------'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      ]
 
 .. function:: _get_reverse_relation(model, relation)
 
@@ -225,10 +230,14 @@ This module contains the utilities for the Translations app.
 
    .. testoutput:: _get_dissected_lookup
 
-      {'field': 'name',
-       'lookup': 'icontains',
-       'relation': ['countries'],
-       'translatable': True}
+      {
+          'field': 'name',
+          'lookup': 'icontains',
+          'relation': [
+              'countries',
+          ],
+          'translatable': True,
+      }
 
 .. function:: _get_translations_query_of_lookup(model, lookup, value, lang)
 
@@ -275,9 +284,9 @@ This module contains the utilities for the Translations app.
    .. testoutput:: _get_translations_query_of_lookup
 
       (AND:
-          ('countries__translations__field', 'name')
-          ('countries__translations__language', 'de')
-          ('countries__translations__text__icontains', 'Deutsch')
+          ('countries__translations__field', 'name'),
+          ('countries__translations__language', 'de'),
+          ('countries__translations__text__icontains', 'Deutsch'),
       )
 
 .. function:: _get_translations_query_of_query(model, query, lang)
@@ -325,10 +334,10 @@ This module contains the utilities for the Translations app.
 
       (AND:
           (AND:
-              ('countries__translations__field', 'name')
-              ('countries__translations__language', 'de')
-              ('countries__translations__text__icontains', 'Deutsch')
-          )
+              ('countries__translations__field', 'name'),
+              ('countries__translations__language', 'de'),
+              ('countries__translations__text__icontains', 'Deutsch'),
+          ),
       )
 
 .. function:: _get_relations_hierarchy(*relations)
@@ -363,7 +372,12 @@ This module contains the utilities for the Translations app.
 
    .. testoutput:: _get_relations_hierarchy
 
-      {'countries': {'included': True, 'relations': {}}}
+      {
+          'countries': {
+              'included': True,
+              'relations': {},
+          },
+      }
 
    To get the :term:`relations hierarchy` of a second-level relation,
    not including the first-level relation:
@@ -380,9 +394,17 @@ This module contains the utilities for the Translations app.
 
    .. testoutput:: _get_relations_hierarchy
 
-      {'countries': {'included': False,
-                     'relations': {'cities': {'included': True,
-                                              'relations': {}}}}}
+      {
+          'countries': {
+              'included': False,
+              'relations': {
+                  'cities': {
+                      'included': True,
+                      'relations': {},
+                  },
+              },
+          },
+      }
 
    To get the :term:`relations hierarchy` of a second-level relation,
    including the first-level relation:
@@ -399,9 +421,17 @@ This module contains the utilities for the Translations app.
 
    .. testoutput:: _get_relations_hierarchy
 
-      {'countries': {'included': True,
-                     'relations': {'cities': {'included': True,
-                                              'relations': {}}}}}
+      {
+          'countries': {
+              'included': True,
+              'relations': {
+                  'cities': {
+                      'included': True,
+                      'relations': {},
+                  },
+              },
+          },
+      }
 
    To get the :term:`relations hierarchy` of no relations:
 
@@ -696,5 +726,5 @@ This module contains the utilities for the Translations app.
           <Translation: South Korea: Südkorea>,
           <Translation: South Korean: Südkoreanisch>,
           <Translation: Seoul: Seül>,
-          <Translation: Seouler: Seüler>
+          <Translation: Seouler: Seüler>,
       ]>

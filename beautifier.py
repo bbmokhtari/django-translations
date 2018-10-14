@@ -65,19 +65,18 @@ def queryset_iterator(obj, beautifier):
     return [beautifier(value) for value in obj]
 
 def beautify_iter(obj, base, first, opener, closer, iterator):
-    result = []
-
-    # opener
-    result.append((base + opener) if first else opener)
+    indent = base + (4 * ' ')
 
     # items
-    indent = base + (4 * ' ')
+    items = []
     def beautifier(value, representation=True):
         return beautify_any(value, indent, False, representation)
     for item in iterator(obj, beautifier):
-        result.append(indent + item + ',')
+        items.append(indent + item + ',')
 
-    # closer
-    result.append(base + closer)
-
-    return '\n'.join(result)
+    base_opener = (base + opener) if first else opener
+    if len(items) > 0:
+        base_closer = base + closer
+        return '{}\n{}\n{}'.format(base_opener, '\n'.join(items), base_closer)
+    else:
+        return '{}{}'.format(base_opener, closer)

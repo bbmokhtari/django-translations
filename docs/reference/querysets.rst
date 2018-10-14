@@ -103,7 +103,10 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: _chain
 
-         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
 
    .. method:: _translate_mode(self)
 
@@ -181,7 +184,10 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: _fetch_all
 
-         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
 
       To evaluate the queryset in translate mode:
 
@@ -210,7 +216,10 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: _fetch_all
 
-         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]>
 
    .. method:: _get_translations_queries(self, *queries, **lookup)
 
@@ -242,7 +251,13 @@ This module contains the querysets for the Translations app.
    
       .. testoutput:: _get_translations_queries
    
-         [<Q: (AND: ('countries__translations__field', 'name'), ('countries__translations__language', None), ('countries__translations__text__icontains', 'Deutsch'))>]
+         [
+             <Q: (AND:
+                 ('countries__translations__field', 'name'),
+                 ('countries__translations__language', None),
+                 ('countries__translations__text__icontains', 'Deutsch'),
+             )>,
+         ]
 
    .. method:: apply(self, lang=None)
 
@@ -286,7 +301,10 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: apply
 
-         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]>
 
       .. note::
 
@@ -338,9 +356,16 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: translate_related
 
-         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
-         <TranslatableQuerySet [<Country: Deutschland>]>
-         <TranslatableQuerySet [<City: Köln>]>
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]>
+         <TranslatableQuerySet [
+             <Country: Deutschland>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Köln>,
+         ]>
 
       .. note::
 
@@ -375,9 +400,16 @@ This module contains the querysets for the Translations app.
 
          .. testoutput:: translate_related
 
-            <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
-            <TranslatableQuerySet [<Country: Germany>]>
-            <TranslatableQuerySet [<City: Cologne>]>
+            <TranslatableQuerySet [
+                <Continent: Europa>,
+                <Continent: Asien>,
+            ]>
+            <TranslatableQuerySet [
+                <Country: Germany>,
+            ]>
+            <TranslatableQuerySet [
+                <City: Cologne>,
+            ]>
 
          The solution is to do the filtering before applying the translations.
 
@@ -405,9 +437,16 @@ This module contains the querysets for the Translations app.
 
          .. testoutput:: translate_related
 
-            <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
-            <TranslatableQuerySet [<Country: Deutschland>]>
-            <TranslatableQuerySet [<City: Köln>]>
+            <TranslatableQuerySet [
+                <Continent: Europa>,
+                <Continent: Asien>,
+            ]>
+            <TranslatableQuerySet [
+                <Country: Deutschland>,
+            ]>
+            <TranslatableQuerySet [
+                <City: Köln>,
+            ]>
 
    .. method:: cipher(self)
 
@@ -446,8 +485,14 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: cipher
 
-         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
-         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]>
 
    .. method:: decipher(self)
 
@@ -486,8 +531,14 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: decipher
 
-         <TranslatableQuerySet [<Continent: Europe>, <Continent: Asia>]>
-         <TranslatableQuerySet [<Continent: Europa>, <Continent: Asien>]>
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]>
 
    .. method:: filter(self, *args, **kwargs)
 
