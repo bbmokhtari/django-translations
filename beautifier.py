@@ -61,8 +61,7 @@ def q_iterator(obj, beautifier):
     ])
 
 def queryset_iterator(obj, beautifier):
-    obj = obj.order_by('pk')
-    return [beautifier(value) for value in obj]
+    return [beautifier(value) for value in sorted(obj, key=lambda x: x.pk)]
 
 def beautify_iter(obj, base, first, opener, closer, iterator):
     indent = base + (4 * ' ')
