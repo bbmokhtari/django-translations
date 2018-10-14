@@ -263,8 +263,7 @@ This module contains the querysets for the Translations app.
 
       Apply a language on the queryset.
 
-      Causes the queryset to query the translated values in the
-      specified language.
+      Causes the queryset to query the database in the specified language.
 
       :param lang: The language to apply on the queryset.
           ``None`` means use the :term:`active language` code.
@@ -380,72 +379,68 @@ This module contains the querysets for the Translations app.
 
       .. warning::
 
-         Filtering the relations after the translation will cause
-         the translations of that relation to be reset.
+         Any subsequent chained methods on the relations which imply a
+         different database query will reset previously translated results:
 
          .. testcode:: translate_related
 
             from sample.models import Continent
 
-            continents = Continent.objects.prefetch_related(
-                'countries', 'countries__cities',
-            ).translate_related(
-                'countries', 'countries__cities',
+            continents = Continent.objects.translate_related(
+                'countries',
             ).apply('de')
 
-            # Filtering after applying
-            print(continents)
+            # Querying after translation
             print(continents[0].countries.exclude(name=''))
-            print(continents[0].countries.exclude(name='')[0].cities.all())
 
          .. testoutput:: translate_related
 
             <TranslatableQuerySet [
-                <Continent: Europa>,
-                <Continent: Asien>,
-            ]>
-            <TranslatableQuerySet [
                 <Country: Germany>,
             ]>
-            <TranslatableQuerySet [
-                <City: Cologne>,
-            ]>
 
-         The solution is to do the filtering before applying the translations.
-
-         To do this use :class:`~django.db.models.Prefetch`.
+         In some cases the querying can be done before the translation:
 
          .. testcode:: translate_related
 
             from django.db.models import Prefetch
             from sample.models import Continent, Country
 
-            # Filtering before applying
+            # Querying before translation
             continents = Continent.objects.prefetch_related(
                 Prefetch(
                     'countries',
                     queryset=Country.objects.exclude(name=''),
                 ),
-                'countries__cities',
             ).translate_related(
-                'countries', 'countries__cities',
+                'countries',
             ).apply('de')
 
-            print(continents)
             print(continents[0].countries.all())
-            print(continents[0].countries.all()[0].cities.all())
 
          .. testoutput:: translate_related
 
             <TranslatableQuerySet [
-                <Continent: Europa>,
-                <Continent: Asien>,
-            ]>
-            <TranslatableQuerySet [
                 <Country: Deutschland>,
             ]>
+
+         And in some cases the querying must be done anyway, in these cases:
+
+         .. testcode:: translate_related
+
+            from sample.models import Continent
+
+            continents = Continent.objects.translate_related(
+                'countries',
+            ).apply('de')
+
+            # Just `apply` on the relation again after querying
+            print(continents[0].countries.exclude(name='').apply('de'))
+
+         .. testoutput:: translate_related
+
             <TranslatableQuerySet [
-                <City: Köln>,
+                <Country: Deutschland>,
             ]>
 
    .. method:: cipher(self)
