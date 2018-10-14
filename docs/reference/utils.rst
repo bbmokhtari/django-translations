@@ -577,23 +577,23 @@ This module contains the utilities for the Translations app.
       Iterable: True
       Model: None
 
-.. function:: _get_instance_groups(entity, hierarchy)
+.. function:: _get_purview(entity, hierarchy)
 
-   Return the :term:`instance groups` of an entity and
+   Return the :term:`purview` of an entity and
    a :term:`relations hierarchy` of it.
 
-   Creates the :term:`instance groups`, loops through the entity and the
-   :term:`relations hierarchy` of it and fills the :term:`instance groups`
+   Creates the :term:`purview`, loops through the entity and the
+   :term:`relations hierarchy` of it and fills the :term:`purview`
    with each instance under a certain content type. When all the instances
-   are processes returns the :term:`instance groups`.
+   are processes returns the :term:`purview`.
 
-   :param entity: the entity to derive the :term:`instance groups` out of.
+   :param entity: the entity to derive the :term:`purview` out of.
    :type entity: ~django.db.models.Model or
        ~collections.Iterable(~django.db.models.Model)
    :param hierarchy: The :term:`relations hierarchy` of the entity to derive
-       the :term:`instance groups` out of.
+       the :term:`purview` out of.
    :type hierarchy: dict(str, dict)
-   :return: The :term:`instance groups` derived out of the entity and
+   :return: The :term:`purview` derived out of the entity and
        the :term:`relations hierarchy` of it.
    :rtype: dict(int, dict(str, ~django.db.models.Model))
    :raise TypeError:
@@ -610,7 +610,7 @@ This module contains the utilities for the Translations app.
    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
        pointing to the fields that don't exist.
 
-   .. testsetup:: _get_instance_groups
+   .. testsetup:: _get_purview
 
       from tests.sample import create_samples
 
@@ -624,22 +624,22 @@ This module contains the utilities for the Translations app.
           langs=['de']
       )
 
-   To get the :term:`instance groups` of an entity and
+   To get the :term:`purview` of an entity and
    the :term:`relations hierarchy` of it:
 
-   .. testcode:: _get_instance_groups
+   .. testcode:: _get_purview
 
       from django.contrib.contenttypes.models import ContentType
       from sample.models import Continent, Country, City
       from translations.utils import _get_relations_hierarchy
-      from translations.utils import _get_instance_groups
+      from translations.utils import _get_purview
 
       # input
       continents = Continent.objects.all()
       hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
 
       # usage
-      groups = _get_instance_groups(continents, hierarchy)
+      groups = _get_purview(continents, hierarchy)
 
       # output
       europe = continents[0]
@@ -654,7 +654,7 @@ This module contains the utilities for the Translations app.
       print('Country: `{}`'.format(groups[country.id][str(germany.id)]))
       print('City: `{}`'.format(groups[city.id][str(cologne.id)]))
 
-   .. testoutput:: _get_instance_groups
+   .. testoutput:: _get_purview
 
       Continent: `Europe`
       Country: `Germany`
@@ -662,20 +662,20 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_translations(groups, lang)
 
-   Return the translations of some :term:`instance groups` in a language.
+   Return the translations of some :term:`purview` in a language.
 
-   Loops through the :term:`instance groups` and collects the parameters
+   Loops through the :term:`purview` and collects the parameters
    that can be used to query the translations of each instance. When all
    the instances are processed it queries the
    :class:`~translations.models.Translation` model using the gathered
    parameters and returns the queryset.
 
-   :param groups: The :term:`instance groups` to fetch the translations of.
+   :param groups: The :term:`purview` to fetch the translations of.
    :type groups: dict(int, dict(str, ~django.db.models.Model))
    :param lang: The language to fetch the translations in.
        ``None`` means use the :term:`active language` code.
    :type lang: str or None
-   :return: The translations of the :term:`instance groups`.
+   :return: The translations of the :term:`purview`.
    :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
 
    .. testsetup:: _get_translations
@@ -692,19 +692,19 @@ This module contains the utilities for the Translations app.
           langs=['de']
       )
 
-   To get the translations of some :term:`instance groups`:
+   To get the translations of some :term:`purview`:
 
    .. testcode:: _get_translations
 
       from sample.models import Continent
       from translations.utils import _get_relations_hierarchy
-      from translations.utils import _get_instance_groups
+      from translations.utils import _get_purview
       from translations.utils import _get_translations
 
       # input
       continents = list(Continent.objects.all())
       hierarchy = _get_relations_hierarchy('countries','countries__cities',)
-      groups = _get_instance_groups(continents, hierarchy)
+      groups = _get_purview(continents, hierarchy)
 
       # usage
       translations = _get_translations(groups, lang='de')

@@ -245,9 +245,9 @@ def _get_entity_details(entity):
     return (iterable, model)
 
 
-def _get_instance_groups(entity, hierarchy):
+def _get_purview(entity, hierarchy):
     """
-    Return the `instance groups` of an entity and a `relations hierarchy` of
+    Return the `purview` of an entity and a `relations hierarchy` of
     it.
     """
     groups = {}
@@ -308,7 +308,7 @@ def _get_instance_groups(entity, hierarchy):
 
 
 def _get_translations(groups, lang):
-    """Return the translations of some `instance groups` in a language."""
+    """Return the translations of some `purview` in a language."""
     filters = models.Q()
     for (ct_id, objs) in groups.items():
         for obj_id in objs:

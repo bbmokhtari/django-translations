@@ -42,8 +42,8 @@ The terms you might see in the documentation:
      the ``nested_relation`` represents the second-level relation of the
      model and so on.
 
-   instance groups
-     The instance groups are a group of instances divided into groups based on
+   purview
+     The purview are a group of instances divided into groups based on
      their content types.
 
      example::

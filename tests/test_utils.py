@@ -8,7 +8,7 @@ from translations.utils import _get_standard_language, \
     _get_reverse_relation, _get_dissected_lookup, \
     _get_translations_query_of_lookup, _get_translations_query_of_query, \
     _get_relations_hierarchy, _get_entity_details, \
-    _get_instance_groups, _get_translations
+    _get_purview, _get_translations
 
 from sample.models import Continent, Country, City
 
@@ -1002,8 +1002,8 @@ class GetEntityDetailsTest(TestCase):
         )
 
 
-class GetInstanceGroupsTest(TestCase):
-    """Tests for `_get_instance_groups`."""
+class GetPurviewTest(TestCase):
+    """Tests for `_get_purview`."""
 
     def test_instance_level_0_relation(self):
         create_samples(
@@ -1019,7 +1019,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
 
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            _get_purview(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1047,7 +1047,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
 
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            _get_purview(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1081,7 +1081,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            _get_purview(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1116,7 +1116,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            _get_purview(europe, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1148,7 +1148,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
 
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            _get_purview(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1182,7 +1182,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
 
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            _get_purview(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1224,7 +1224,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            _get_purview(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1267,7 +1267,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            _get_purview(continents, hierarchy),
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1298,7 +1298,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 europe,
                 hierarchy,
             ),
@@ -1329,7 +1329,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 europe,
                 hierarchy,
             ),
@@ -1366,7 +1366,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 europe,
                 hierarchy,
             ),
@@ -1404,7 +1404,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 europe,
                 hierarchy,
             ),
@@ -1439,7 +1439,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 continents,
                 hierarchy,
             ),
@@ -1476,7 +1476,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 continents,
                 hierarchy,
             ),
@@ -1521,7 +1521,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 continents,
                 hierarchy,
             ),
@@ -1567,7 +1567,7 @@ class GetInstanceGroupsTest(TestCase):
         ct_city = ContentType.objects.get_for_model(City)
 
         self.assertDictEqual(
-            _get_instance_groups(
+            _get_purview(
                 continents,
                 hierarchy,
             ),
@@ -1601,7 +1601,7 @@ class GetInstanceGroupsTest(TestCase):
         behzad = Person('Behzad')
 
         with self.assertRaises(TypeError) as error:
-            _get_instance_groups(
+            _get_purview(
                 behzad,
                 {}
             )
@@ -1628,7 +1628,7 @@ class GetInstanceGroupsTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            _get_instance_groups(
+            _get_purview(
                 people,
                 {}
             )
@@ -1651,7 +1651,7 @@ class GetInstanceGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(
+            _get_purview(
                 europe,
                 hierarchy
             )
@@ -1675,7 +1675,7 @@ class GetInstanceGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries__wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(
+            _get_purview(
                 europe,
                 hierarchy
             )
@@ -1702,7 +1702,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
-        groups = _get_instance_groups(europe, hierarchy)
+        groups = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1727,7 +1727,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1)
-        groups = _get_instance_groups(europe, hierarchy)
+        groups = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1754,7 +1754,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_2)
-        groups = _get_instance_groups(europe, hierarchy)
+        groups = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1781,7 +1781,7 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
-        groups = _get_instance_groups(europe, hierarchy)
+        groups = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1808,7 +1808,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
-        groups = _get_instance_groups(continents, hierarchy)
+        groups = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1835,7 +1835,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1)
-        groups = _get_instance_groups(continents, hierarchy)
+        groups = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1866,7 +1866,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_2)
-        groups = _get_instance_groups(continents, hierarchy)
+        groups = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),
@@ -1897,7 +1897,7 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
-        groups = _get_instance_groups(continents, hierarchy)
+        groups = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
             _get_translations(groups, lang='de').order_by('id'),

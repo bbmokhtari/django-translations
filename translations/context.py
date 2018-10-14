@@ -4,7 +4,7 @@ from django.db import models
 
 import translations.models
 from translations.utils import _get_standard_language, \
-    _get_relations_hierarchy, _get_instance_groups, _get_translations
+    _get_relations_hierarchy, _get_purview, _get_translations
 
 
 __docformat__ = 'restructuredtext'
@@ -16,7 +16,7 @@ class Context:
     def __init__(self, entity, *relations):
         """Initializes a `Context`."""
         hierarchy = _get_relations_hierarchy(*relations)
-        self.groups = _get_instance_groups(entity, hierarchy)
+        self.groups = _get_purview(entity, hierarchy)
 
     def __enter__(self):
         return self
