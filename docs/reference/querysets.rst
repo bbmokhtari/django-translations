@@ -16,16 +16,16 @@ This module contains the querysets for the Translations app.
 
       This is an overriden version of
       the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
-      :meth:`~django.db.models.query.__init__` method.
+      :meth:`~django.db.models.query.QuerySet.__init__` method.
       It defines custom translation configurations on the queryset.
 
       :param args: The arguments of
           the :class:`default queryset <django.db.models.query.QuerySet>`\
-          's :meth:`~django.db.models.query.__init__` method.
+          's :meth:`~django.db.models.query.QuerySet.__init__` method.
       :type args: list
       :param kwargs: The keyword arguments of
           the :class:`default queryset <django.db.models.query.QuerySet>`\
-          's :meth:`~django.db.models.query.__init__` method.
+          's :meth:`~django.db.models.query.QuerySet.__init__` method.
       :type kwargs: dict
 
       To get the queryset's custom translation configurations:
@@ -530,3 +530,82 @@ This module contains the querysets for the Translations app.
    .. method:: filter(self, *args, **kwargs)
 
       Filter the queryset with lookups and queries.
+
+      This is an overriden version of
+      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      :meth:`~django.db.models.query.QuerySet.filter` method.
+      It filters the queryset in the specified language if the queryset is in
+      translate mode.
+
+      :param args: The arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query.QuerySet.filter` method.
+      :type args: list
+      :param kwargs: The keyword arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query.QuerySet.filter` method.
+      :type kwargs: dict
+
+      To filter the queryset in normal mode:
+
+      .. testsetup:: filter
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: filter
+
+         from sample.models import Continent
+
+         # filter the queryset
+         continents = Continent.objects.filter(
+            countries__name__icontains='Ger')
+
+         print(continents)
+
+      .. testoutput:: filter
+
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+         ]>
+
+      To filter the queryset in translate mode:
+
+      .. testsetup:: filter
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: filter
+
+         from sample.models import Continent
+
+         # filter the queryset
+         continents = Continent.objects.apply('de').filter(
+            countries__name__icontains='Deutsch')
+
+         print(continents)
+
+      .. testoutput:: filter
+
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+         ]>
