@@ -609,3 +609,86 @@ This module contains the querysets for the Translations app.
          <TranslatableQuerySet [
              <Continent: Europa>,
          ]>
+
+   .. method:: exclude(self, *args, **kwargs)
+
+      Exclude the queryset with lookups and queries.
+
+      This is an overriden version of
+      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      :meth:`~django.db.models.query.QuerySet.exclude` method.
+      It excludes the queryset in the specified language if the queryset is in
+      translate mode.
+
+      :param args: The arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query.QuerySet.exclude` method.
+      :type args: list
+      :param kwargs: The keyword arguments of
+          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          's :meth:`~django.db.models.query.QuerySet.exclude` method.
+      :type kwargs: dict
+
+      To exclude the queryset in normal mode:
+
+      .. testsetup:: exclude
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: exclude
+
+         from sample.models import Continent
+
+         # exclude the queryset
+         continents = Continent.objects.exclude(
+            countries__name__icontains='Ger')
+
+         print(continents)
+
+      .. testoutput:: exclude
+
+         <TranslatableQuerySet [
+             <Continent: Asia>,
+         ]>
+
+      To exclude the queryset in translate mode:
+
+      .. testsetup:: exclude
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: exclude
+
+         from sample.models import Continent
+
+         # exclude the queryset
+         continents = Continent.objects.apply('de').exclude(
+            countries__name__icontains='Deutsch')
+
+         print(continents)
+
+      .. testoutput:: exclude
+
+         <TranslatableQuerySet [
+             <Continent: Asien>,
+         ]>
