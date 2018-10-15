@@ -529,4 +529,4 @@ This module contains the querysets for the Translations app.
 
    .. method:: filter(self, *args, **kwargs)
 
-      Filter the queryset.
+      Filter the queryset with lookups and queries.
