@@ -449,6 +449,9 @@ This module contains the querysets for the Translations app.
 
       Causes the queryset to use the applied language from there on.
 
+      :return: The queryset which uses the applied language.
+      :rtype: TranslatableQuerySet
+
       To use the applied language in the queryset:
 
       .. testsetup:: cipher
@@ -472,18 +475,11 @@ This module contains the querysets for the Translations app.
          # apply German on the queryset
          continents = Continent.objects.apply(lang='de')
 
-         # decipher
-         print(continents.decipher())  # use the default language
-
-         # cipher
-         print(continents.cipher())    # use the applied language
+         # use the applied language
+         print(continents.cipher())
 
       .. testoutput:: cipher
 
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-             <Continent: Asia>,
-         ]>
          <TranslatableQuerySet [
              <Continent: Europa>,
              <Continent: Asien>,
@@ -494,6 +490,9 @@ This module contains the querysets for the Translations app.
       Use the default language in the queryset.
 
       Causes the queryset to use the default language from there on.
+
+      :return: The queryset which uses the default language.
+      :rtype: TranslatableQuerySet
 
       To use the default language in the queryset:
 
@@ -518,21 +517,14 @@ This module contains the querysets for the Translations app.
          # apply German on the queryset
          continents = Continent.objects.apply(lang='de')
 
-         # decipher
-         print(continents.decipher())  # use the default language
-
-         # cipher
-         print(continents.cipher())    # use the applied language
+         # use the default language
+         print(continents.decipher())
 
       .. testoutput:: decipher
 
          <TranslatableQuerySet [
              <Continent: Europe>,
              <Continent: Asia>,
-         ]>
-         <TranslatableQuerySet [
-             <Continent: Europa>,
-             <Continent: Asien>,
          ]>
 
    .. method:: filter(self, *args, **kwargs)
