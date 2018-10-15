@@ -29,13 +29,15 @@ class TranslatableQuerySet(query.QuerySet):
         clone._trans_lang = getattr(self, '_trans_lang')
         clone._trans_rels = getattr(self, '_trans_rels')
         clone._trans_cipher = getattr(self, '_trans_cipher')
+
+        # reset cache on chaining
         clone._trans_cache = False
 
         return clone
 
     def _translate_mode(self):
         """Return whether the queryset is in translate mode."""
-        return self._trans_lang and self._trans_cipher
+        return self._trans_lang is not None and self._trans_cipher
 
     def _fetch_all(self):
         """Evaluate the queryset."""
