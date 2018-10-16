@@ -88,3 +88,171 @@ class TranslatableQuerySetTest(TestCase):
 
         self.assertEqual(continents[0].name, 'Europa')
         self.assertEqual(continents[0].denonym, 'Europäisch')
+
+    # TODO: MORE _fetch_all tests
+
+    def test_get_translations_queries_nrel_yfield_ntranslatable_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(code='EU')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'code': 'EU',
+            }
+        )
+
+    def test_get_translations_queries_nrel_yfield_ytranslatable_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(name='Europa')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'translations__field': 'name',
+                'translations__language': 'de',
+                'translations__text': 'Europa',
+            }
+        )
+
+    def test_get_translations_queries_nrel_yfield_ntranslatable_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(code__icontains='EU')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'code__icontains': 'EU',
+            },
+        )
+
+    def test_get_translations_queries_nrel_yfield_ytranslatable_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(name__icontains='Europa')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'translations__field': 'name',
+                'translations__language': 'de',
+                'translations__text__icontains': 'Europa',
+            }
+        )
+
+    def test_get_translations_queries_yrel_nfield_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries=1)
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries': 1,
+            }
+        )
+
+    def test_get_translations_queries_yrel_nfield_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__gt=1)
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__gt': 1,
+            }
+        )
+
+    def test_get_translations_queries_yrel_yfield_ntranslatable_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__code='DE')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__code': 'DE',
+            }
+        )
+
+    def test_get_translations_queries_yrel_yfield_ytranslatable_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__name='Deutschland')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__translations__field': 'name',
+                'countries__translations__language': 'de',
+                'countries__translations__text': 'Deutschland',
+            }
+        )
+
+    def test_get_translations_queries_yrel_yfield_ntranslatable_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__code__icontains='DE')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__code__icontains': 'DE',
+            }
+        )
+
+    def test_get_translations_queries_yrel_yfield_ytranslatable_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__name__icontains='Deutsch')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__translations__field': 'name',
+                'countries__translations__language': 'de',
+                'countries__translations__text__icontains': 'Deutsch',
+            }
+        )
+
+    def test_get_translations_queries_ynestedrel_yfield_ntranslatable_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__cities__id=1)
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__cities__id': 1,
+            }
+        )
+
+    def test_get_translations_queries_ynestedrel_yfield_ytranslatable_nlookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__cities__name='Köln')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__cities__translations__field': 'name',
+                'countries__cities__translations__language': 'de',
+                'countries__cities__translations__text': 'Köln',
+            }
+        )
+
+    def test_get_translations_queries_ynestedrel_yfield_ntranslatable_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__cities__id__gt=1)
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__cities__id__gt': 1,
+            }
+        )
+
+    def test_get_translations_queries_ynestedrel_yfield_ytranslatable_ylookup(self):
+        continents = Continent.objects.apply(
+            'de')._get_translations_queries(countries__cities__name__icontains='Kö')
+
+        self.assertDictEqual(
+            dict(continents[0].children),
+            {
+                'countries__cities__translations__field': 'name',
+                'countries__cities__translations__language': 'de',
+                'countries__cities__translations__text__icontains': 'Kö',
+            }
+        )

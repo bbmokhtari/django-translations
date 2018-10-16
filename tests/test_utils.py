@@ -163,7 +163,7 @@ class GetReverseRelationTest(TestCase):
 class GetDissectedLookupTest(TestCase):
     """Tests for `_get_dissected_lookup`."""
 
-    def test_no_rel_with_field_not_translatable_no_lookup(self):
+    def test_nrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'code'),
             {
@@ -174,7 +174,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_translatable_no_lookup(self):
+    def test_nrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'name'),
             {
@@ -185,7 +185,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_not_translatable_with_lookup(self):
+    def test_nrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'code__icontains'),
             {
@@ -196,7 +196,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_translatable_with_lookup(self):
+    def test_nrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'name__icontains'),
             {
@@ -207,7 +207,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_no_field_no_lookup(self):
+    def test_yrel_nfield_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries'),
             {
@@ -218,7 +218,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_no_field_with_lookup(self):
+    def test_yrel_nfield_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__gt'),
             {
@@ -229,7 +229,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_not_translatable_no_lookup(self):
+    def test_yrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__code'),
             {
@@ -240,7 +240,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_translatable_no_lookup(self):
+    def test_yrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__name'),
             {
@@ -251,7 +251,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_not_translatable_with_lookup(self):
+    def test_yrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__code__icontains'),
             {
@@ -262,7 +262,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_translatable_with_lookup(self):
+    def test_yrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__name__icontains'),
             {
@@ -273,7 +273,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__id'),
             {
@@ -284,7 +284,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__name'),
             {
@@ -295,7 +295,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__id__gt'),
             {
@@ -306,7 +306,7 @@ class GetDissectedLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(
                 Continent,
@@ -324,7 +324,7 @@ class GetDissectedLookupTest(TestCase):
 class GetTranslationsQueryOfLookupTest(TestCase):
     """Tests for `_get_translations_query_of_lookup`."""
 
-    def test_no_rel_with_field_not_translatable_no_lookup(self):
+    def test_nrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'code', 'EU', 'de'
@@ -334,7 +334,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_translatable_no_lookup(self):
+    def test_nrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'name', 'Europa', 'de'
@@ -346,7 +346,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_not_translatable_with_lookup(self):
+    def test_nrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'code__icontains', 'EU', 'de'
@@ -356,7 +356,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             },
         )
 
-    def test_no_rel_with_field_translatable_with_lookup(self):
+    def test_nrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'name__icontains', 'Europa', 'de'
@@ -368,7 +368,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_no_field_no_lookup(self):
+    def test_yrel_nfield_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries', 1, 'de'
@@ -378,7 +378,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_no_field_with_lookup(self):
+    def test_yrel_nfield_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__gt', 1, 'de'
@@ -388,7 +388,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_not_translatable_no_lookup(self):
+    def test_yrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__code', 'DE', 'de'
@@ -398,7 +398,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_translatable_no_lookup(self):
+    def test_yrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__name', 'Deutschland', 'de'
@@ -410,7 +410,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_not_translatable_with_lookup(self):
+    def test_yrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__code__icontains', 'DE', 'de'
@@ -420,7 +420,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_translatable_with_lookup(self):
+    def test_yrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__name__icontains', 'Deutsch', 'de'
@@ -432,7 +432,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__cities__id', 1, 'de'
@@ -442,7 +442,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__cities__name', 'Köln', 'de'
@@ -454,7 +454,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__cities__id__gt', 1, 'de'
@@ -464,7 +464,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_lookup(
                 Continent, 'countries__cities__name__icontains', 'Kö', 'de'
@@ -480,7 +480,7 @@ class GetTranslationsQueryOfLookupTest(TestCase):
 class GetTranslationsQueryOfQueryTest(TestCase):
     """Tests for `_get_translations_query_of_query`."""
 
-    def test_no_rel_with_field_not_translatable_no_lookup(self):
+    def test_nrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(code='EU'), 'de'
@@ -490,7 +490,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_translatable_no_lookup(self):
+    def test_nrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(name='Europa'), 'de'
@@ -502,7 +502,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_no_rel_with_field_not_translatable_with_lookup(self):
+    def test_nrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(code__icontains='EU'), 'de'
@@ -512,7 +512,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             },
         )
 
-    def test_no_rel_with_field_translatable_with_lookup(self):
+    def test_nrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(name__icontains='Europa'), 'de'
@@ -524,7 +524,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_rel_no_field_no_lookup(self):
+    def test_yrel_nfield_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries=1), 'de'
@@ -534,7 +534,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_rel_no_field_with_lookup(self):
+    def test_yrel_nfield_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__gt=1), 'de'
@@ -544,7 +544,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_not_translatable_no_lookup(self):
+    def test_yrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__code='DE'), 'de'
@@ -554,7 +554,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_translatable_no_lookup(self):
+    def test_yrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__name='Deutschland'), 'de'
@@ -566,7 +566,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_not_translatable_with_lookup(self):
+    def test_yrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__code__icontains='DE'), 'de'
@@ -576,7 +576,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_rel_with_field_translatable_with_lookup(self):
+    def test_yrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__name__icontains='Deutsch'), 'de'
@@ -588,7 +588,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__cities__id=1), 'de'
@@ -598,7 +598,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__cities__name='Köln'), 'de'
@@ -610,7 +610,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__cities__id__gt=1), 'de'
@@ -620,7 +620,7 @@ class GetTranslationsQueryOfQueryTest(TestCase):
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             dict(_get_translations_query_of_query(
                 Continent, Q(countries__cities__name__icontains='Kö'), 'de'
