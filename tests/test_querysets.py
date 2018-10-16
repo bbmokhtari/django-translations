@@ -91,7 +91,7 @@ class TranslatableQuerySetTest(TestCase):
 
     # TODO: MORE _fetch_all tests
 
-    def test_get_translations_queries_nrel_yfield_ntranslatable_nlookup(self):
+    def test_get_translations_queries_lookup_nr_yf_nt_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(code='EU')
 
@@ -102,7 +102,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_nrel_yfield_ytranslatable_nlookup(self):
+    def test_get_translations_queries_lookup_nr_yf_yt_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(name='Europa')
 
@@ -115,7 +115,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_nrel_yfield_ntranslatable_ylookup(self):
+    def test_get_translations_queries_lookup_nr_yf_nt_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(code__icontains='EU')
 
@@ -126,7 +126,7 @@ class TranslatableQuerySetTest(TestCase):
             },
         )
 
-    def test_get_translations_queries_nrel_yfield_ytranslatable_ylookup(self):
+    def test_get_translations_queries_lookup_nr_yf_yt_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(name__icontains='Europa')
 
@@ -139,7 +139,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_yrel_nfield_nlookup(self):
+    def test_get_translations_queries_lookup_yr_nf_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries=1)
 
@@ -150,7 +150,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_yrel_nfield_ylookup(self):
+    def test_get_translations_queries_lookup_yr_nf_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__gt=1)
 
@@ -161,7 +161,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_yrel_yfield_ntranslatable_nlookup(self):
+    def test_get_translations_queries_lookup_yr_yf_nt_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__code='DE')
 
@@ -172,7 +172,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_yrel_yfield_ytranslatable_nlookup(self):
+    def test_get_translations_queries_lookup_yr_yf_yt_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__name='Deutschland')
 
@@ -185,7 +185,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_yrel_yfield_ntranslatable_ylookup(self):
+    def test_get_translations_queries_lookup_yr_yf_nt_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__code__icontains='DE')
 
@@ -196,7 +196,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_yrel_yfield_ytranslatable_ylookup(self):
+    def test_get_translations_queries_lookup_yr_yf_yt_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__name__icontains='Deutsch')
 
@@ -209,7 +209,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_ynestedrel_yfield_ntranslatable_nlookup(self):
+    def test_get_translations_queries_lookup_yrnested_yf_nt_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__cities__id=1)
 
@@ -220,7 +220,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_ynestedrel_yfield_ytranslatable_nlookup(self):
+    def test_get_translations_queries_lookup_yrnested_yf_yt_nl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__cities__name='Köln')
 
@@ -233,7 +233,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_ynestedrel_yfield_ntranslatable_ylookup(self):
+    def test_get_translations_queries_lookup_yrnested_yf_nt_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__cities__id__gt=1)
 
@@ -244,7 +244,7 @@ class TranslatableQuerySetTest(TestCase):
             }
         )
 
-    def test_get_translations_queries_ynestedrel_yfield_ytranslatable_ylookup(self):
+    def test_get_translations_queries_lookup_yrnested_yf_yt_yl(self):
         continents = Continent.objects.apply(
             'de')._get_translations_queries(countries__cities__name__icontains='Kö')
 
