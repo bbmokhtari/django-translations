@@ -465,3 +465,27 @@ class TranslatableQuerySetTest(TestCase):
                 'countries__cities__translations__text__icontains': 'Kö',
             }
         )
+
+    def test_apply(self):
+        continents = Continent.objects.apply('de')
+
+        self.assertEqual(continents._trans_lang, 'de')
+
+    def test_translate_related(self):
+        continents = Continent.objects.translate_related(
+            'countries', 'countries__cities')
+
+        self.assertTupleEqual(
+            continents._trans_rels,
+            ('countries', 'countries__cities',)
+        )
+
+    def test_cipher(self):
+        continents = Continent.objects.cipher()
+
+        self.assertEqual(continents._trans_cipher, True)
+
+    def test_decipher(self):
+        continents = Continent.objects.decipher()
+
+        self.assertEqual(continents._trans_cipher, False)
