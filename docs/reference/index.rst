@@ -13,7 +13,7 @@ contribute to the project we recommend you to read the reference.
 
    models
    admin
-   context
    querysets
+   context
    forms
    utils
