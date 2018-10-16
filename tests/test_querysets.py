@@ -94,7 +94,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_nr_yf_nt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(code='EU')
+            'de')._get_translations_queries(
+                code='EU')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -105,7 +106,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_nr_yf_yt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(name='Europa')
+            'de')._get_translations_queries(
+                name='Europa')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -118,7 +120,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_nr_yf_nt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(code__icontains='EU')
+            'de')._get_translations_queries(
+                code__icontains='EU')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -129,7 +132,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_nr_yf_yt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(name__icontains='Europa')
+            'de')._get_translations_queries(
+                name__icontains='Europa')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -142,7 +146,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yr_nf_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries=1)
+            'de')._get_translations_queries(
+                countries=1)
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -153,7 +158,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yr_nf_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__gt=1)
+            'de')._get_translations_queries(
+                countries__gt=1)
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -164,7 +170,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yr_yf_nt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__code='DE')
+            'de')._get_translations_queries(
+                countries__code='DE')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -175,7 +182,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yr_yf_yt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__name='Deutschland')
+            'de')._get_translations_queries(
+                countries__name='Deutschland')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -188,7 +196,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yr_yf_nt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__code__icontains='DE')
+            'de')._get_translations_queries(
+                countries__code__icontains='DE')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -199,7 +208,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yr_yf_yt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__name__icontains='Deutsch')
+            'de')._get_translations_queries(
+                countries__name__icontains='Deutsch')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -212,7 +222,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yrnested_yf_nt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__cities__id=1)
+            'de')._get_translations_queries(
+                countries__cities__id=1)
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -223,7 +234,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yrnested_yf_yt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__cities__name='Köln')
+            'de')._get_translations_queries(
+                countries__cities__name='Köln')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -236,7 +248,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yrnested_yf_nt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__cities__id__gt=1)
+            'de')._get_translations_queries(
+                countries__cities__id__gt=1)
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -247,7 +260,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_lookup_yrnested_yf_yt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(countries__cities__name__icontains='Kö')
+            'de')._get_translations_queries(
+                countries__cities__name__icontains='Kö')
 
         self.assertDictEqual(
             dict(continents[0].children),
@@ -260,7 +274,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_nr_yf_nt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(code='EU'))
+            'de')._get_translations_queries(
+                Q(code='EU'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -271,7 +286,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_nr_yf_yt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(name='Europa'))
+            'de')._get_translations_queries(
+                Q(name='Europa'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -284,7 +300,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_nr_yf_nt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(code__icontains='EU'))
+            'de')._get_translations_queries(
+                Q(code__icontains='EU'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -295,7 +312,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_nr_yf_yt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(name__icontains='Europa'))
+            'de')._get_translations_queries(
+                Q(name__icontains='Europa'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -308,7 +326,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yr_nf_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries=1))
+            'de')._get_translations_queries(
+                Q(countries=1))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -319,7 +338,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yr_nf_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__gt=1))
+            'de')._get_translations_queries(
+                Q(countries__gt=1))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -330,7 +350,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yr_yf_nt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__code='DE'))
+            'de')._get_translations_queries(
+                Q(countries__code='DE'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -341,7 +362,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yr_yf_yt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__name='Deutschland'))
+            'de')._get_translations_queries(
+                Q(countries__name='Deutschland'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -354,7 +376,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yr_yf_nt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__code__icontains='DE'))
+            'de')._get_translations_queries(
+                Q(countries__code__icontains='DE'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -365,7 +388,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yr_yf_yt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__name__icontains='Deutsch'))
+            'de')._get_translations_queries(
+                Q(countries__name__icontains='Deutsch'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -378,7 +402,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yrnested_yf_nt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__cities__id=1))
+            'de')._get_translations_queries(
+                Q(countries__cities__id=1))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -389,7 +414,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yrnested_yf_yt_nl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__cities__name='Köln'))
+            'de')._get_translations_queries(
+                Q(countries__cities__name='Köln'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -402,7 +428,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yrnested_yf_nt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__cities__id__gt=1))
+            'de')._get_translations_queries(
+                Q(countries__cities__id__gt=1))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -413,7 +440,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_yrnested_yf_yt_yl(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__cities__name__icontains='Kö'))
+            'de')._get_translations_queries(
+                Q(countries__cities__name__icontains='Kö'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
@@ -426,7 +454,8 @@ class TranslatableQuerySetTest(TestCase):
 
     def test_get_translations_queries_query_nested_query(self):
         continents = Continent.objects.apply(
-            'de')._get_translations_queries(Q(countries__cities__name__icontains='Kö'))
+            'de')._get_translations_queries(
+                Q(countries__cities__name__icontains='Kö'))
 
         self.assertDictEqual(
             dict(continents[0].children[0].children),
