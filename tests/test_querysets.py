@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.db.models import Q
 
 from translations.querysets import TranslatableQuerySet
@@ -78,19 +78,9 @@ class TranslatableQuerySetTest(TestCase):
         self.assertEqual(continents[0].name, 'Europe')
         self.assertEqual(continents[0].denonym, 'European')
 
-    def test_fetch_all_translate_mode(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
+    # TODO: MORE _fetch_all tests - START
 
-        continents = Continent.objects.all().apply('de')
-
-        self.assertEqual(continents[0].name, 'Europa')
-        self.assertEqual(continents[0].denonym, 'Europäisch')
-
-    # TODO: MORE _fetch_all tests
+    # TODO: MORE _fetch_all tests - END
 
     def test_get_translations_queries_lookup_nr_yf_nt_nl(self):
         continents = Continent.objects.apply(
@@ -470,6 +460,21 @@ class TranslatableQuerySetTest(TestCase):
         continents = Continent.objects.apply('de')
 
         self.assertEqual(continents._trans_lang, 'de')
+
+    @override_settings(LANGUAGE_CODE='de')
+    def test_apply_no_lang(self):
+        continents = Continent.objects.apply()
+
+        self.assertEqual(continents._trans_lang, 'de')
+
+    def test_apply_invalid_lang(self):
+        with self.assertRaises(ValueError) as error:
+            continents = Continent.objects.apply('xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
+        )
 
     def test_translate_related(self):
         continents = Continent.objects.translate_related(
