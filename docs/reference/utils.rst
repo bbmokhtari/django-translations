@@ -152,7 +152,7 @@ This module contains the utilities for the Translations app.
 
    .. testoutput:: _get_default_language
 
-      'en'
+      en
 
 .. function:: _get_translation_language_choices()
 
