@@ -54,9 +54,14 @@ def _get_standard_language(lang=None):
     return _standard_language_cache[lang]
 
 
+def _get_default_language():
+    """Return the default language code."""
+    return _get_standard_language(settings.LANGUAGE_CODE)
+
+
 def _get_translation_language_choices():
     """Return the translation language choices."""
-    default = _get_standard_language(settings.LANGUAGE_CODE)
+    default = _get_default_language()
 
     # check cache first
     try:

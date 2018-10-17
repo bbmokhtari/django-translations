@@ -110,6 +110,50 @@ This module contains the utilities for the Translations app.
 
       Language code: de
 
+.. function:: _get_default_language()
+
+   Return the default language code.
+
+   Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
+   the default language code, if the exact default language code is found, it
+   returns it, otherwise searches for the unaccented form of the default
+   language code, if the unaccented form of the default language code is
+   found, it returns it, otherwise it throws an error stating there is no
+   such language supported in the settings.
+
+   :return: The default language code.
+   :rtype: str
+   :raise ValueError: If the default language code is not specified in
+       the :data:`~django.conf.settings.LANGUAGES` setting.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the default language code:
+
+   .. testcode:: _get_default_language
+
+      from translations.utils import _get_default_language
+
+      # usage
+      default = _get_default_language()
+
+      # output
+      print(default)
+
+   .. testoutput:: _get_default_language
+
+      'en'
+
 .. function:: _get_translation_language_choices()
 
    Return the translation language choices.

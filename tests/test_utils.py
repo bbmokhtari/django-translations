@@ -4,7 +4,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 
 from translations.utils import _get_standard_language, \
-    _get_translation_language_choices, \
+    _get_default_language, _get_translation_language_choices, \
     _get_reverse_relation, _get_dissected_lookup, \
     _get_translations_query_of_lookup, _get_translations_query_of_query, \
     _get_relations_hierarchy, _get_entity_details, \
@@ -60,6 +60,34 @@ class GetStandardLanguageTest(TestCase):
     def test_invalid_language(self):
         with self.assertRaises(ValueError) as error:
             _get_standard_language('xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
+        )
+
+
+class GetDefaultLanguageTest(TestCase):
+    """Tests for `_get_default_language`."""
+
+    @override_settings(LANGUAGE_CODE='en-us')
+    def test_nonexisting_accented_default_language_code(self):
+        self.assertEqual(
+            _get_default_language(),
+            'en'
+        )
+
+    @override_settings(LANGUAGE_CODE='en-gb')
+    def test_existing_accented_default_language_code(self):
+        self.assertEqual(
+            _get_default_language(),
+            'en-gb'
+        )
+
+    @override_settings(LANGUAGE_CODE='xx')
+    def test_invalid_default_language_code(self):
+        with self.assertRaises(ValueError) as error:
+            _get_default_language()
 
         self.assertEqual(
             error.exception.args[0],
