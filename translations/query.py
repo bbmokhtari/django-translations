@@ -1,4 +1,4 @@
-from django.db import models
+from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
 from translations.utils import _get_dissected_lookup
@@ -11,7 +11,7 @@ def _get_translations_query_fetcher(model, lang):
         connector = kwargs.pop('_connector', None)
         negated = kwargs.pop('_negated', False)
 
-        query = models.Q(_connector=connector)
+        query = Q(_connector=connector)
         connector = query.connector
 
         children = list(args) + sorted(kwargs.items())
@@ -24,27 +24,17 @@ def _get_translations_query_fetcher(model, lang):
                         dissected['relation'] + ['translations'])
                     supplement = (LOOKUP_SEP + dissected['supplement']) \
                         if dissected['supplement'] else ''
-                    q = models.Q(**{
+                    q = Q(**{
                             '{}__field'.format(relation): dissected['field'],
                             '{}__language'.format(relation): lang,
                             '{}__text{}'.format(relation, supplement): child[1]
                         }
                     )
                 else:
-                    q = models.Q(**{child[0]: child[1]})
-            elif isinstance(child, models.Q):
-                queries = []
-                lookups = []
-                for index, nested in enumerate(child.children):
-                    if isinstance(nested, models.Q):
-                        queries.append(nested)
-                    elif isinstance(nested, tuple):
-                        lookups.append(nested)
-                    else:
-                        raise ValueError("Unsupported query {}".format(child))
+                    q = Q(**{child[0]: child[1]})
+            elif isinstance(child, Q):
                 q = _get_translations_query(
-                    *queries,
-                    *lookups,
+                    *child.children,
                     _connector=child.connector,
                     _negated=child.negated
                 )
@@ -57,3 +47,30 @@ def _get_translations_query_fetcher(model, lang):
         return query
 
     return _get_translations_query
+
+
+class TQ(Q):
+
+    def __init__(self, *args, **kwargs):
+        lang = kwargs.pop('_lang', None)
+        super(TQ, self).__init__(*args, **kwargs)
+        self.lang = lang
+
+    def __deepcopy__(self, memodict):
+        obj = super(TQ, self).__deepcopy__(memodict)
+        obj.lang = self.lang
+        return obj
+
+    def _combine(self, other, conn):
+        if not isinstance(other, Q):
+            raise TypeError(other)
+
+        # If the other Q() is empty, ignore it and just use `self`.
+        if not other:
+            return copy.deepcopy(self)
+        # Or if this Q is empty, ignore it and just use `other`.
+        elif not self:
+            return copy.deepcopy(other)
+
+        obj = Q(self, other, _connector=conn)
+        return obj
