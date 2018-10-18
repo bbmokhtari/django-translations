@@ -8,12 +8,10 @@ from translations.utils import _get_standard_language, _get_default_language, \
 def _get_translations_query_fetcher(model, lang=None):
     """Return the translations query."""
     default = _get_default_language()
-    if isinstance(lang, str):
-        lang = _get_standard_language(lang)
-    elif hasattr(lang, '__iter__'):
-        lang = [_get_standard_language(l) for l in lang]
 
     def _get_translations_query(*args, **kwargs):
+        nonlocal lang
+
         connector = kwargs.pop('_connector', None)
         negated = kwargs.pop('_negated', False)
 
@@ -32,13 +30,15 @@ def _get_translations_query_fetcher(model, lang=None):
                         query_default = True
                         query_languages = _get_all_languages()
                     elif isinstance(lang, str):
+                        lang = _get_standard_language(lang)
                         if lang == default:
                             query_default = True
                             query_languages = None
                         else:
                             query_default = False
                             query_languages = lang
-                    elif hasattr(lang, '__iter__'):
+                    elif isinstance(lang, (list, tuple)):
+                        lang = [_get_standard_language(l) for l in lang]
                         query_languages = []
                         for l in lang:
                             if default == l:
@@ -57,7 +57,7 @@ def _get_translations_query_fetcher(model, lang=None):
                         field_supp = (LOOKUP_SEP + dissected['supplement']) \
                             if dissected['supplement'] else ''
                         lang_supp = (LOOKUP_SEP + 'in') \
-                            if hasattr(query_languages, '__iter__') else ''
+                            if isinstance(query_languages, (list, tuple)) else ''
 
                         q |= Q(**{
                             '{}__field'.format(relation): 
