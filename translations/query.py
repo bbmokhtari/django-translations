@@ -69,6 +69,16 @@ def _get_translations_query_fetcher(model, lang=None):
                         })
                 else:
                     q = Q(**{child[0]: child[1]})
+                query = query._combine(q, connector)
+            elif isinstance(child, TQ):
+                fetch = _get_translations_query_fetcher(model, child.lang)
+                q = fetch(
+                    *child.children,
+                    _connector=child.connector,
+                    _negated=child.negated
+                )
+
+                query = query._combine(q, connector)
             elif isinstance(child, Q):
                 q = _get_translations_query(
                     *child.children,
