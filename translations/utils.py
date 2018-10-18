@@ -83,6 +83,7 @@ def _get_translation_language_choices():
 
 
 def _get_all_languages():
+    """Return all the language codes."""
     return [_get_standard_language(language[0]) for language in settings.LANGUAGES]
 
 
