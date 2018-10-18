@@ -1,7 +1,11 @@
+from django.db import models
+from django.db.models.constants import LOOKUP_SEP
+
+from translations.utils import _get_dissected_lookup
 
 
 def _get_translations_query(model, lang):
-    """Return the translations query of a query."""
+    """Return the translations query."""
 
     def _get_lookups(**kwargs):
         connector = kwargs.pop('_connector', None)
