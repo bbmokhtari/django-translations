@@ -17,6 +17,8 @@ class Context:
         """Initializes a `Context`."""
         hierarchy = _get_relations_hierarchy(*relations)
         self.mapping, self.query = _get_purview(entity, hierarchy)
+        print(self.mapping)
+        print(self.query)
 
     def __enter__(self):
         return self
@@ -81,8 +83,9 @@ class Context:
                     language=lang, text=text, **address
                 )
             )
-        translations.models.Translation.objects.filter(
-            language=lang).filter(query).delete()
+        if query:
+            translations.models.Translation.objects.filter(
+                language=lang).filter(query).delete()
         translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):

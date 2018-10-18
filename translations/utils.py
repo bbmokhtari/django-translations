@@ -322,10 +322,13 @@ def _get_purview(entity, hierarchy):
 
 def _get_translations(query, lang):
     """Return the translations of some `purview` in a language."""
-    queryset = translations.models.Translation.objects.filter(
-        language=lang,
-    ).filter(
-        query,
-    ).select_related('content_type')
+    if (query):
+        queryset = translations.models.Translation.objects.filter(
+            language=lang,
+        ).filter(
+            query,
+        ).select_related('content_type')
 
-    return queryset
+        return queryset
+    else:
+        return translations.models.Translation.objects.none()
