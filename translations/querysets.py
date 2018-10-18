@@ -2,8 +2,8 @@
 
 from django.db.models import query
 
-from translations.utils import _get_standard_language, \
-    _get_translations_query_of_lookup, _get_translations_query_of_query
+from translations.utils import _get_standard_language
+from translations.query import _get_translations_query_fetcher
 from translations.context import Context
 
 
@@ -59,24 +59,6 @@ class TranslatableQuerySet(query.QuerySet):
                 context.read(self._trans_lang)
             self._trans_cache = True
 
-    def _get_translations_queries(self, *queries, **lookup):
-        """Return the translations queries of lookups and queries."""
-        translations_queries = []
-
-        for query in queries:
-            translations_queries.append(
-                _get_translations_query_of_query(
-                    self.model, query, self._trans_lang)
-            )
-
-        for key, value in lookup.items():
-            translations_queries.append(
-                _get_translations_query_of_lookup(
-                    self.model, key, value, self._trans_lang)
-            )
-
-        return translations_queries
-
     def apply(self, lang=None):
         """Apply a language on the queryset."""
         clone = self.all()
@@ -104,15 +86,15 @@ class TranslatableQuerySet(query.QuerySet):
     def filter(self, *args, **kwargs):
         """Filter the queryset with lookups and queries."""
         if self._translate_mode():
-            queries = self._get_translations_queries(*args, **kwargs)
-            return super(TranslatableQuerySet, self).filter(*queries)
+            query = _get_translations_query_fetcher(self.model, self._trans_lang)(*args, **kwargs)
+            return super(TranslatableQuerySet, self).filter(query)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
 
     def exclude(self, *args, **kwargs):
         """Exclude the queryset with lookups and queries."""
         if self._translate_mode():
-            queries = self._get_translations_queries(*args, **kwargs)
-            return super(TranslatableQuerySet, self).exclude(*queries)
+            query = _get_translations_query_fetcher(self.model, self._trans_lang)(*args, **kwargs)
+            return super(TranslatableQuerySet, self).exclude(query)
         else:
             return super(TranslatableQuerySet, self).exclude(*args, **kwargs)
