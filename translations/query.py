@@ -7,11 +7,13 @@ from translations.utils import _get_dissected_lookup
 def _get_translations_query(model, lang):
     """Return the translations query."""
 
-    def _get_lookups(**kwargs):
+    def _get_lookups_and_queries(*args, **kwargs):
         connector = kwargs.pop('_connector', None)
         negated = kwargs.pop('_negated', False)
 
-        children = []
+        query = models.Q(_connector=connector)
+        connector = query.connector
+
         for lookup, value in kwargs.items():
             dissected = _get_dissected_lookup(model, lookup)
             if dissected['translatable']:
@@ -19,27 +21,17 @@ def _get_translations_query(model, lang):
                     dissected['relation'] + ['translations'])
                 supplement = (LOOKUP_SEP + dissected['supplement']) \
                     if dissected['supplement'] else ''
-                children.append(
-                    models.Q(**{
-                            '{}__field'.format(relation): dissected['field'],
-                            '{}__language'.format(relation): lang,
-                            '{}__text{}'.format(relation, supplement): value
-                        }
-                    )
+                q = models.Q(**{
+                        '{}__field'.format(relation): dissected['field'],
+                        '{}__language'.format(relation): lang,
+                        '{}__text{}'.format(relation, supplement): value
+                    }
                 )
             else:
-                children.append((lookup, value))
-        return models.Q(
-            *children,
-            _connector=connector,
-            _negated=negated
-        )
+                q = models.Q(**{lookup: value})
 
-    def _get_queries(*args, **kwargs):
-        connector = kwargs.pop('_connector', None)
-        negated = kwargs.pop('_negated', False)
+            query = query._combine(q, connector)
 
-        children = []
         for arg in args:
             queries = []
             lookups = []
@@ -50,41 +42,18 @@ def _get_translations_query(model, lang):
                     lookups.append(child)
                 else:
                     raise ValueError("Unsupported query {}".format(child))
-            children.append(
-                _get_lookups_and_queries(
-                    *queries,
-                    **dict(lookups),
-                    _connector=arg.connector,
-                    _negated=arg.negated
-                )
+            q = _get_lookups_and_queries(
+                *queries,
+                **dict(lookups),
+                _connector=arg.connector,
+                _negated=arg.negated
             )
-        return models.Q(
-            *children,
-            _connector=connector,
-            _negated=negated
-        )
 
-    def _get_lookups_and_queries(*args, **kwargs):
-        connector = kwargs.pop('_connector', None)
-        negated = kwargs.pop('_negated', False)
+            query = query._combine(q, connector)
 
-        children = [
-            _get_queries(
-                *args,
-                _connector=connector,
-                _negated=negated
-            ),
-            _get_lookups(
-                **kwargs,
-                _connector=connector,
-                _negated=negated
-            )
-        ]
+        if negated:
+            query = ~query
 
-        return models.Q(
-            *children,
-            _connector=connector,
-            _negated=negated
-        )
+        return query
 
     return _get_lookups_and_queries
