@@ -43,7 +43,10 @@ The terms you might see in the documentation:
      model and so on.
 
    purview
-     The purview are a group of instances divided into groups based on
+     The purview is simply an area of effect, it defines the instances to be
+     affected and some information about them, so it consists of two parts.
+
+     The first part is a mapping of instances divided into groups based on
      their content types.
 
      example::
@@ -58,3 +61,6 @@ The terms you might see in the documentation:
 
      The first level keys are content types, the second level keys are object
      ids and the values of the object id keys are the instances.
+
+     The second part is the query that can be used to fetch the translations
+     of all the instances in the purview.
