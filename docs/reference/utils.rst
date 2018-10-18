@@ -622,7 +622,8 @@ This module contains the utilities for the Translations app.
 
       # input
       continents = Continent.objects.all()
-      hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+      hierarchy = _get_relations_hierarchy('countries',
+                                           'countries__cities')
 
       # usage
       mapping, query = _get_purview(continents, hierarchy)
@@ -636,9 +637,12 @@ This module contains the utilities for the Translations app.
       country = ContentType.objects.get_for_model(Country)
       city = ContentType.objects.get_for_model(City)
 
-      print('Continent: `{}`'.format(mapping[continent.id][str(europe.id)]))
-      print('Country: `{}`'.format(mapping[country.id][str(germany.id)]))
-      print('City: `{}`'.format(mapping[city.id][str(cologne.id)]))
+      print('Continent: `{}`'.format(
+                mapping[continent.id][str(europe.id)]))
+      print('Country: `{}`'.format(
+                mapping[country.id][str(germany.id)]))
+      print('City: `{}`'.format(
+                mapping[city.id][str(cologne.id)]))
 
    .. testoutput:: _get_purview
 
@@ -686,7 +690,8 @@ This module contains the utilities for the Translations app.
 
       # input
       continents = list(Continent.objects.all())
-      hierarchy = _get_relations_hierarchy('countries','countries__cities',)
+      hierarchy = _get_relations_hierarchy('countries',
+                                           'countries__cities',)
       mapping, query = _get_purview(continents, hierarchy)
 
       # usage
