@@ -2,11 +2,11 @@ from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
 from translations.utils import _get_standard_language, _get_default_language, \
-    _get_all_languages, _get_dissected_lookup
+    _get_dissected_lookup
 
 
-def _get_translations_query_fetcher(model, lang=None):
-    """Return the translations query."""
+def _get_translations_query_fetcher(model, lang):
+    """Return the translations query fetcher."""
     default = _get_default_language()
 
     def _get_translations_query(*args, **kwargs):
@@ -26,10 +26,7 @@ def _get_translations_query_fetcher(model, lang=None):
                 if dissected['translatable']:
                     query_default = False
                     query_languages = None
-                    if lang is None:
-                        query_default = True
-                        query_languages = _get_all_languages()
-                    elif isinstance(lang, str):
+                    if isinstance(lang, str):
                         lang = _get_standard_language(lang)
                         if lang == default:
                             query_default = True
@@ -45,6 +42,12 @@ def _get_translations_query_fetcher(model, lang=None):
                                 query_default = True
                             else:
                                 query_languages.append(l)
+                    else:
+                        raise TypeError(
+                            '`lang` must be a str or a list of strs.'.format(
+                                lang
+                            )
+                        )
 
                     q = Q()
 
@@ -99,7 +102,7 @@ def _get_translations_query_fetcher(model, lang=None):
 class TQ(Q):
 
     def __init__(self, *args, **kwargs):
-        lang = kwargs.pop('_lang', None)
+        lang = kwargs.pop('_lang', _get_standard_language())
         super(TQ, self).__init__(*args, **kwargs)
         self.lang = lang
 

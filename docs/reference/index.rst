@@ -14,6 +14,7 @@ contribute to the project we recommend you to read the reference.
    models
    admin
    querysets
+   query
    context
    forms
    utils
