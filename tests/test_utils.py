@@ -1046,8 +1046,10 @@ class GetPurviewTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1074,8 +1076,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1108,8 +1112,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1143,8 +1149,10 @@ class GetPurviewTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1175,8 +1183,10 @@ class GetPurviewTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1209,8 +1219,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1251,8 +1263,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1294,8 +1308,10 @@ class GetPurviewTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1325,11 +1341,10 @@ class GetPurviewTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1356,11 +1371,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1393,11 +1407,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1431,11 +1444,10 @@ class GetPurviewTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1466,11 +1478,10 @@ class GetPurviewTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1503,11 +1514,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1548,11 +1558,10 @@ class GetPurviewTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1594,11 +1603,10 @@ class GetPurviewTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_purview(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1629,10 +1637,7 @@ class GetPurviewTest(TestCase):
         behzad = Person('Behzad')
 
         with self.assertRaises(TypeError) as error:
-            _get_purview(
-                behzad,
-                {}
-            )
+            _get_purview(behzad, {})
 
         self.assertEqual(
             error.exception.args[0],
@@ -1656,10 +1661,7 @@ class GetPurviewTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            _get_purview(
-                people,
-                {}
-            )
+            _get_purview(people, {})
 
         self.assertEqual(
             error.exception.args[0],
@@ -1679,10 +1681,7 @@ class GetPurviewTest(TestCase):
         hierarchy = _get_relations_hierarchy('wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_purview(
-                europe,
-                hierarchy
-            )
+            _get_purview(europe, hierarchy)
 
         self.assertEqual(
             error.exception.args[0],
@@ -1703,10 +1702,7 @@ class GetPurviewTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries__wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_purview(
-                europe,
-                hierarchy
-            )
+            _get_purview(europe, hierarchy)
 
         self.assertEqual(
             error.exception.args[0],
@@ -1730,10 +1726,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
-        groups = _get_purview(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1755,10 +1751,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1)
-        groups = _get_purview(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1782,10 +1778,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_2)
-        groups = _get_purview(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1809,10 +1805,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
-        groups = _get_purview(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1836,10 +1832,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
-        groups = _get_purview(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1863,10 +1859,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1)
-        groups = _get_purview(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1894,10 +1890,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_2)
-        groups = _get_purview(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1925,10 +1921,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
-        groups = _get_purview(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, lang='de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
