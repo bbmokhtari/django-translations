@@ -82,6 +82,10 @@ def _get_translation_language_choices():
     return _translation_language_choices_cache[default]
 
 
+def _get_all_languages():
+    return [_get_standard_language(language[0]) for language in settings.LANGUAGES]
+
+
 def _get_reverse_relation(model, relation):
     """Return the reverse of a model's relation."""
     parts = relation.split(LOOKUP_SEP)
