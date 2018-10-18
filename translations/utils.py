@@ -111,7 +111,7 @@ def _get_dissected_lookup(model, lookup):
     dissected = {
         'relation': [],
         'field': '',
-        'lookup': '',
+        'supplement': '',
         'translatable': False,
     }
 
@@ -124,7 +124,7 @@ def _get_dissected_lookup(model, lookup):
         except Exception as e:
             if not dissected['relation'] or nest or dissected['field']:
                 raise e
-            dissected['lookup'] = root
+            dissected['supplement'] = root
         else:
             field_model = field.related_model
             if field_model:
@@ -138,7 +138,7 @@ def _get_dissected_lookup(model, lookup):
                         dissected['translatable'] = True
                 if nest:
                     if len(nest) == 1:
-                        dissected['lookup'] = nest[0]
+                        dissected['supplement'] = nest[0]
                     else:
                         raise FieldError("Unsupported lookup '{}'".format(
                             nest[0])
@@ -164,8 +164,8 @@ def _get_translations_query_of_lookup(model, lookup, value, lang):
         query_dict[
             '{}__text{}'.format(
                 relation,
-                (LOOKUP_SEP + dissected['lookup'])
-                if dissected['lookup'] else ''
+                (LOOKUP_SEP + dissected['supplement'])
+                if dissected['supplement'] else ''
             )
         ] = value
     else:

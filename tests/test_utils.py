@@ -197,7 +197,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': [],
                 'field': 'code',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
@@ -208,7 +208,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': [],
                 'field': 'name',
-                'lookup': '',
+                'supplement': '',
                 'translatable': True,
             }
         )
@@ -219,7 +219,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': [],
                 'field': 'code',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': False,
             }
         )
@@ -230,7 +230,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': [],
                 'field': 'name',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': True,
             }
         )
@@ -241,7 +241,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries'],
                 'field': '',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
@@ -252,7 +252,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries'],
                 'field': '',
-                'lookup': 'gt',
+                'supplement': 'gt',
                 'translatable': False,
             }
         )
@@ -263,7 +263,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries'],
                 'field': 'code',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
@@ -274,7 +274,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries'],
                 'field': 'name',
-                'lookup': '',
+                'supplement': '',
                 'translatable': True,
             }
         )
@@ -285,7 +285,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries'],
                 'field': 'code',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': False,
             }
         )
@@ -296,7 +296,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries'],
                 'field': 'name',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': True,
             }
         )
@@ -307,7 +307,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries', 'cities'],
                 'field': 'id',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
@@ -318,7 +318,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries', 'cities'],
                 'field': 'name',
-                'lookup': '',
+                'supplement': '',
                 'translatable': True,
             }
         )
@@ -329,7 +329,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries', 'cities'],
                 'field': 'id',
-                'lookup': 'gt',
+                'supplement': 'gt',
                 'translatable': False,
             }
         )
@@ -343,7 +343,7 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries', 'cities'],
                 'field': 'name',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': True,
             }
         )

@@ -276,10 +276,10 @@ This module contains the utilities for the Translations app.
 
       {
           'field': 'name',
-          'lookup': 'icontains',
           'relation': [
               'countries',
           ],
+          'supplement': 'icontains',
           'translatable': True,
       }
 
