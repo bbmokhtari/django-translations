@@ -400,7 +400,8 @@ This module contains the utilities for the Translations app.
       from translations.utils import _get_relations_hierarchy
 
       # usage
-      hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
+      hierarchy = _get_relations_hierarchy('countries',
+                                           'countries__cities')
 
       # output
       print(hierarchy)
