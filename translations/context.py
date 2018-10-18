@@ -16,7 +16,7 @@ class Context:
     def __init__(self, entity, *relations):
         """Initializes a `Context`."""
         hierarchy = _get_relations_hierarchy(*relations)
-        self.groups = _get_purview(entity, hierarchy)
+        self.mapping, self.query = _get_purview(entity, hierarchy)
 
     def __enter__(self):
         return self
@@ -26,7 +26,7 @@ class Context:
 
     def _get_changed_fields(self):
         """Yield the fields changed in the context."""
-        for (ct_id, objs) in self.groups.items():
+        for (ct_id, objs) in self.mapping.items():
             for (obj_id, obj) in objs.items():
                 for field in type(obj)._get_translatable_fields_names():
                     text = getattr(obj, field, None)
@@ -56,13 +56,13 @@ class Context:
         Read the translations from the database and apply them on the context.
         """
         lang = _get_standard_language(lang)
-        _translations = _get_translations(self.groups, lang)
+        _translations = _get_translations(self.query, lang)
         for translation in _translations:
             ct_id = translation.content_type.id
             obj_id = translation.object_id
             field = translation.field
             text = translation.text
-            obj = self.groups[ct_id][obj_id]
+            obj = self.mapping[ct_id][obj_id]
             if field in type(obj)._get_translatable_fields_names():
                 setattr(obj, field, text)
 
@@ -72,17 +72,17 @@ class Context:
         database.
         """
         lang = _get_standard_language(lang)
-        filters = models.Q()
+        query = models.Q()
         _translations = []
         for address, text in self._get_changed_fields():
-            filters |= models.Q(**address)
+            query |= models.Q(**address)
             _translations.append(
                 translations.models.Translation(
                     language=lang, text=text, **address
                 )
             )
         translations.models.Translation.objects.filter(
-            language=lang).filter(filters).delete()
+            language=lang).filter(query).delete()
         translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):
@@ -91,14 +91,14 @@ class Context:
         database.
         """
         lang = _get_standard_language(lang)
-        _translations = _get_translations(self.groups, lang)
+        _translations = _get_translations(self.query, lang)
         _translations.delete()
 
     def reset(self):
         """
         Reset the translations of the context to the original values.
         """
-        for (ct_id, objs) in self.groups.items():
+        for (ct_id, objs) in self.mapping.items():
             for (obj_id, obj) in objs.items():
                 for (field, value) in obj._default_translatable_fields.items():
                     setattr(obj, field, value)

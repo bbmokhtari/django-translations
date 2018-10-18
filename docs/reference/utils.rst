@@ -626,10 +626,8 @@ This module contains the utilities for the Translations app.
    Return the :term:`purview` of an entity and
    a :term:`relations hierarchy` of it.
 
-   Creates the :term:`purview`, loops through the entity and the
-   :term:`relations hierarchy` of it and fills the :term:`purview`
-   with each instance under a certain content type. When all the instances
-   are processes returns the :term:`purview`.
+   Returns the mapping of the instances specified by the entity and its
+   relations, and the query to fetch their translations.
 
    :param entity: the entity to derive the :term:`purview` out of.
    :type entity: ~django.db.models.Model or
@@ -639,7 +637,8 @@ This module contains the utilities for the Translations app.
    :type hierarchy: dict(str, dict)
    :return: The :term:`purview` derived out of the entity and
        the :term:`relations hierarchy` of it.
-   :rtype: dict(int, dict(str, ~django.db.models.Model))
+   :rtype: tuple(dict(int, dict(str, ~django.db.models.Model)), \
+       list(~django.db.models.Q))
    :raise TypeError:
 
        - If the entity is neither a model instance nor
@@ -683,7 +682,7 @@ This module contains the utilities for the Translations app.
       hierarchy = _get_relations_hierarchy('countries', 'countries__cities')
 
       # usage
-      groups = _get_purview(continents, hierarchy)
+      mapping, query = _get_purview(continents, hierarchy)
 
       # output
       europe = continents[0]
@@ -694,9 +693,9 @@ This module contains the utilities for the Translations app.
       country = ContentType.objects.get_for_model(Country)
       city = ContentType.objects.get_for_model(City)
 
-      print('Continent: `{}`'.format(groups[continent.id][str(europe.id)]))
-      print('Country: `{}`'.format(groups[country.id][str(germany.id)]))
-      print('City: `{}`'.format(groups[city.id][str(cologne.id)]))
+      print('Continent: `{}`'.format(mapping[continent.id][str(europe.id)]))
+      print('Country: `{}`'.format(mapping[country.id][str(germany.id)]))
+      print('City: `{}`'.format(mapping[city.id][str(cologne.id)]))
 
    .. testoutput:: _get_purview
 
@@ -704,22 +703,19 @@ This module contains the utilities for the Translations app.
       Country: `Germany`
       City: `Cologne`
 
-.. function:: _get_translations(groups, lang)
+.. function:: _get_translations(query, lang)
 
-   Return the translations of some :term:`purview` in a language.
+   Return the translations in a language using a query.
 
-   Loops through the :term:`purview` and collects the parameters
-   that can be used to query the translations of each instance. When all
-   the instances are processed it queries the
-   :class:`~translations.models.Translation` model using the gathered
-   parameters and returns the queryset.
+   Queries the :class:`~translations.models.Translation` model in a language
+   using the provided query and returns the queryset.
 
-   :param groups: The :term:`purview` to fetch the translations of.
-   :type groups: dict(int, dict(str, ~django.db.models.Model))
+   :param query: The query to use to fetch the translations.
+   :type query: list(~django.db.models.Q)
    :param lang: The language to fetch the translations in.
        ``None`` means use the :term:`active language` code.
    :type lang: str or None
-   :return: The translations of the :term:`purview`.
+   :return: The translations in the language using the query.
    :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
 
    .. testsetup:: _get_translations
@@ -748,10 +744,10 @@ This module contains the utilities for the Translations app.
       # input
       continents = list(Continent.objects.all())
       hierarchy = _get_relations_hierarchy('countries','countries__cities',)
-      groups = _get_purview(continents, hierarchy)
+      mapping, query = _get_purview(continents, hierarchy)
 
       # usage
-      translations = _get_translations(groups, lang='de')
+      translations = _get_translations(query, lang='de')
 
       # output
       print(translations)

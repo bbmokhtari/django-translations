@@ -252,7 +252,8 @@ def _get_entity_details(entity):
 
 def _get_purview(entity, hierarchy):
     """Return the `purview` of an entity and a `relations hierarchy` of it."""
-    groups = {}
+    mapping = {}
+    query = models.Q()
 
     def _fill_entity(entity, hierarchy, included=True):
         iterable, model = _get_entity_details(entity)
@@ -260,10 +261,10 @@ def _get_purview(entity, hierarchy):
         if model is None:
             return
 
-        content_type = ContentType.objects.get_for_model(model)
+        content_type_id = ContentType.objects.get_for_model(model).id
 
         if included:
-            object_groups = groups.setdefault(content_type.id, {})
+            instances = mapping.setdefault(content_type_id, {})
             if not issubclass(model, translations.models.Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
@@ -273,7 +274,13 @@ def _get_purview(entity, hierarchy):
                     field: getattr(obj, field) for field in
                     type(obj)._get_translatable_fields_names()
                 }
-                object_groups[str(obj.id)] = obj
+                object_id = str(obj.id)
+                instances[object_id] = obj
+                nonlocal query
+                query |= models.Q(
+                    content_type__id=content_type_id,
+                    object_id=object_id,
+                )
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
@@ -306,23 +313,15 @@ def _get_purview(entity, hierarchy):
 
     _fill_entity(entity, hierarchy)
 
-    return groups
+    return mapping, query
 
 
-def _get_translations(groups, lang):
+def _get_translations(query, lang):
     """Return the translations of some `purview` in a language."""
-    filters = models.Q()
-    for (ct_id, objs) in groups.items():
-        for obj_id in objs:
-            filters |= models.Q(
-                content_type__id=ct_id,
-                object_id=obj_id,
-            )
-
     queryset = translations.models.Translation.objects.filter(
         language=lang,
     ).filter(
-        filters,
+        query,
     ).select_related('content_type')
 
     return queryset
