@@ -17,8 +17,6 @@ class Context:
         """Initializes a `Context`."""
         hierarchy = _get_relations_hierarchy(*relations)
         self.mapping, self.query = _get_purview(entity, hierarchy)
-        print(self.mapping)
-        print(self.query)
 
     def __enter__(self):
         return self

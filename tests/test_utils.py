@@ -2,6 +2,7 @@ from django.test import TestCase, override_settings
 from django.db.models import Q
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import override
 
 from translations.utils import _get_standard_language, \
     _get_default_language, _get_translation_language_choices, \
@@ -18,7 +19,7 @@ from tests.sample import create_samples
 class GetStandardLanguageTest(TestCase):
     """Tests for `_get_standard_language`."""
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_active_unaccented_language(self):
         self.assertEqual(
             _get_standard_language(),
@@ -31,7 +32,7 @@ class GetStandardLanguageTest(TestCase):
             'de'
         )
 
-    @override_settings(LANGUAGE_CODE='de-at')
+    @override(language='de-at', deactivate=True)
     def test_active_nonexisting_accented_language(self):
         self.assertEqual(
             _get_standard_language(),
@@ -44,7 +45,7 @@ class GetStandardLanguageTest(TestCase):
             'de'
         )
 
-    @override_settings(LANGUAGE_CODE='en-gb')
+    @override(language='en-gb', deactivate=True)
     def test_active_existing_accented_language(self):
         self.assertEqual(
             _get_standard_language(),

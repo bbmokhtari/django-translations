@@ -1,5 +1,6 @@
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.core.exceptions import FieldDoesNotExist
+from django.utils.translation import override
 
 from translations.context import Context
 
@@ -135,7 +136,7 @@ class ContextTest(TestCase):
             "Country has no field named 'wrong'"
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -178,7 +179,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -222,7 +223,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -266,7 +267,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne Name')
         self.assertEqual(cologne.denonym, 'Cologne Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -479,7 +480,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne Name')
         self.assertEqual(cologne.denonym, 'Cologne Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -522,7 +523,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -566,7 +567,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -610,7 +611,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne Name')
         self.assertEqual(cologne.denonym, 'Cologne Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -840,7 +841,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -909,7 +910,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -985,7 +986,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1055,7 +1056,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul Name')
         self.assertEqual(seoul.denonym, 'Seoul Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1416,7 +1417,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul Name')
         self.assertEqual(seoul.denonym, 'Seoul Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1485,7 +1486,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1561,7 +1562,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1631,7 +1632,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul Name')
         self.assertEqual(seoul.denonym, 'Seoul Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_create_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2009,7 +2010,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2034,7 +2035,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2062,7 +2063,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2089,7 +2090,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2218,7 +2219,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2245,7 +2246,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2273,7 +2274,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2301,7 +2302,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -2452,7 +2453,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2487,7 +2488,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2524,7 +2525,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2561,7 +2562,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2740,7 +2741,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2777,7 +2778,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2815,7 +2816,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -2853,7 +2854,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_read_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3054,7 +3055,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3100,7 +3101,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3147,7 +3148,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3194,7 +3195,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne Name')
         self.assertEqual(cologne.denonym, 'Cologne Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3422,7 +3423,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne Name')
         self.assertEqual(cologne.denonym, 'Cologne Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3468,7 +3469,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3515,7 +3516,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3562,7 +3563,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne Name')
         self.assertEqual(cologne.denonym, 'Cologne Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -3808,7 +3809,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3880,7 +3881,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -3959,7 +3960,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4032,7 +4033,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul Name')
         self.assertEqual(seoul.denonym, 'Seoul Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4408,7 +4409,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul Name')
         self.assertEqual(seoul.denonym, 'Seoul Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4480,7 +4481,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4559,7 +4560,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -4632,7 +4633,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul Name')
         self.assertEqual(seoul.denonym, 'Seoul Denonym')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_update_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5026,7 +5027,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5055,7 +5056,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5085,7 +5086,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5115,7 +5116,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5258,7 +5259,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5287,7 +5288,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5317,7 +5318,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Köln')
         self.assertEqual(cologne.denonym, 'Kölner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5347,7 +5348,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -5508,7 +5509,7 @@ class ContextTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5547,7 +5548,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5587,7 +5588,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5627,7 +5628,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5820,7 +5821,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5859,7 +5860,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5899,7 +5900,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seül')
         self.assertEqual(seoul.denonym, 'Seüler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -5939,7 +5940,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_delete_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6152,7 +6153,7 @@ class ContextTest(TestCase):
 
     # TODO
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6178,7 +6179,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6207,7 +6208,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6235,7 +6236,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6369,7 +6370,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_instance_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6397,7 +6398,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_instance_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6426,7 +6427,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_instance_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6455,7 +6456,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_instance_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe'],
@@ -6593,7 +6594,7 @@ class ContextTest(TestCase):
         self.assertEqual(cologne.name, 'Cologne')
         self.assertEqual(cologne.denonym, 'Cologner')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6629,7 +6630,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6667,7 +6668,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6705,7 +6706,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6889,7 +6890,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_queryset_level_0_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6927,7 +6928,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_queryset_level_1_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -6966,7 +6967,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_queryset_level_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -7005,7 +7006,7 @@ class ContextTest(TestCase):
         self.assertEqual(seoul.name, 'Seoul')
         self.assertEqual(seoul.denonym, 'Seouler')
 
-    @override_settings(LANGUAGE_CODE='de')
+    @override(language='de', deactivate=True)
     def test_reset_prefetched_queryset_level_1_2_relation_no_lang(self):
         create_samples(
             continent_names=['europe', 'asia'],
