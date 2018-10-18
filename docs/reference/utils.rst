@@ -269,7 +269,8 @@ This module contains the utilities for the Translations app.
       from translations.utils import _get_reverse_relation
 
       # usage
-      reverse_relation = _get_reverse_relation(Continent, 'countries__cities')
+      reverse_relation = _get_reverse_relation(Continent,
+                                               'countries__cities')
 
       # output
       print('City can be queried with `{}`'.format(reverse_relation))
@@ -308,7 +309,8 @@ This module contains the utilities for the Translations app.
       from translations.utils import _get_dissected_lookup
 
       # usage
-      info = _get_dissected_lookup(Continent, 'countries__name__icontains')
+      info = _get_dissected_lookup(Continent,
+                                   'countries__name__icontains')
 
       # output
       print(info)
@@ -323,107 +325,6 @@ This module contains the utilities for the Translations app.
           'supplement': 'icontains',
           'translatable': True,
       }
-
-.. function:: _get_translations_query_of_lookup(model, lookup, value, lang)
-
-   Return the translations query of a lookup.
-
-   If the lookups is on a :attr:`translatable field \
-   <translations.models.Translatable.TranslatableMeta.fields>` it returns
-   the translations equivalent of the lookup as a new query,
-   otherwise it returns the lookup without any change.
-
-   :param model: The model which the lookup acts on.
-   :type model: type(~django.db.models.Model)
-   :param lookup: The lookup of the model to get the translations query
-       of.
-       It may be composed of many ``related_query_name``\ s separated by
-       :data:`~django.db.models.constants.LOOKUP_SEP` (usually ``__``) to
-       represent a deeply nested relation.
-   :type lookup: str
-   :param value: The value of the lookup.
-   :type value: object
-   :param lang: The language code of the lookup.
-   :type lang: str
-   :return: The translations query of the lookup.
-   :rtype: ~django.db.models.Q
-   :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
-       pointing to the fields that don't exist.
-   :raise ~django.core.exceptions.FieldError: If the lookup is not
-       supported.
-
-   To get the translations query of a lookup:
-
-   .. testcode:: _get_translations_query_of_lookup
-
-      from sample.models import Continent
-      from translations.utils import _get_translations_query_of_lookup
-
-      # usage
-      query = _get_translations_query_of_lookup(
-          Continent, 'countries__name__icontains', 'Deutsch', 'de')
-
-      # output
-      print(query)
-
-   .. testoutput:: _get_translations_query_of_lookup
-
-      (AND:
-          ('countries__translations__field', 'name'),
-          ('countries__translations__language', 'de'),
-          ('countries__translations__text__icontains', 'Deutsch'),
-      )
-
-.. function:: _get_translations_query_of_query(model, query, lang)
-
-   Return the translations query of a query.
-
-   If the query is on the :attr:`translatable fields \
-   <translations.models.Translatable.TranslatableMeta.fields>` it returns
-   the translations equivalent of the query as a new query,
-   otherwise it returns the query without any change.
-
-   :param model: The model which the query acts on.
-   :type model: type(~django.db.models.Model)
-   :param query: The query of the model to get the translations query
-       of.
-   :type query: ~django.db.models.Q
-   :param lang: The language code of the query.
-   :type lang: str
-   :return: The translations query of the query.
-   :rtype: ~django.db.models.Q
-   :raise ~django.core.exceptions.FieldDoesNotExist: If the relation is
-       pointing to the fields that don't exist.
-   :raise ~django.core.exceptions.FieldError: If the lookup is not
-       supported.
-
-   To get the translations query of a query:
-
-   .. testcode:: _get_translations_query_of_query
-
-      from django.db.models import Q
-      from sample.models import Continent
-      from translations.utils import _get_translations_query_of_query
-
-      # usage
-      query = _get_translations_query_of_query(
-          Continent,
-          Q(countries__name__icontains='Deutsch'),
-          'de'
-      )
-
-      # output
-      print(query)
-
-   .. testoutput:: _get_translations_query_of_query
-
-      (AND:
-          (AND:
-              ('countries__translations__field', 'name'),
-              ('countries__translations__language', 'de'),
-              ('countries__translations__text__icontains', 'Deutsch'),
-          ),
-      )
 
 .. function:: _get_relations_hierarchy(*relations)
 

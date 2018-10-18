@@ -156,54 +156,6 @@ def _get_dissected_lookup(model, lookup):
     return dissected
 
 
-def _get_translations_query_of_lookup(model, lookup, value, lang):
-    """Return the translations query of a lookup."""
-    dissected = _get_dissected_lookup(model, lookup)
-    query_dict = {}
-    if dissected['translatable']:
-        dissected['relation'].append('translations')
-        relation = LOOKUP_SEP.join(dissected['relation'])
-
-        query_dict['{}__field'.format(relation)] = dissected['field']
-        query_dict['{}__language'.format(relation)] = lang
-        query_dict[
-            '{}__text{}'.format(
-                relation,
-                (LOOKUP_SEP + dissected['supplement'])
-                if dissected['supplement'] else ''
-            )
-        ] = value
-    else:
-        query_dict[lookup] = value
-
-    return models.Q(**query_dict)
-
-
-def _get_translations_query_of_query(model, query, lang):
-    """Return the translations query of a query."""
-    children = []
-    for index, child in enumerate(query.children):
-        if isinstance(child, models.Q):
-            children.append(
-                _get_translations_query_of_query(
-                    model, child, lang
-                )
-            )
-        elif isinstance(child, tuple):
-            children.append(
-                _get_translations_query_of_lookup(
-                    model, child[0], child[1], lang
-                )
-            )
-        else:
-            raise ValueError("Unsupported query {}".format(child))
-    return models.Q(
-        *children,
-        _connector=query.connector,
-        _negated=query.negated
-    )
-
-
 def _get_relations_hierarchy(*relations):
     """Return the `relations hierarchy` of some relations."""
     hierarchy = {}
