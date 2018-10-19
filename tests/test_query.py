@@ -9,7 +9,7 @@ from sample.models import Continent
 class FetchTranslationsQueryGetter(TestCase):
     """Tests for `_fetch_translations_query_getter`."""
 
-    def test_get_translations_queries_lookup_nr_yf_nt_nl(self):
+    def test_lookup_nrel_yfield_ntrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -19,7 +19,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_nr_yf_yt_nl(self):
+    def test_lookup_nrel_yfield_ytrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -31,7 +31,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_nr_yf_nt_yl(self):
+    def test_lookup_nrel_yfield_ntrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -41,7 +41,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_nr_yf_yt_yl(self):
+    def test_lookup_nrel_yfield_ytrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -53,7 +53,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yr_nf_nl(self):
+    def test_lookup_yrel_nfield_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -63,7 +63,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yr_nf_yl(self):
+    def test_lookup_yrel_nfield_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -73,7 +73,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yr_yf_nt_nl(self):
+    def test_lookup_yrel_yfield_ntrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -83,7 +83,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yr_yf_yt_nl(self):
+    def test_lookup_yrel_yfield_ytrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -95,7 +95,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yr_yf_nt_yl(self):
+    def test_lookup_yrel_yfield_ntrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -105,7 +105,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yr_yf_yt_yl(self):
+    def test_lookup_yrel_yfield_ytrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -117,7 +117,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yrnested_yf_nt_nl(self):
+    def test_lookup_yrelnested_yfield_ntrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -127,7 +127,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yrnested_yf_yt_nl(self):
+    def test_lookup_yrelnested_yfield_ytrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -139,7 +139,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yrnested_yf_nt_yl(self):
+    def test_lookup_yrelnested_yfield_ntrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -149,7 +149,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_lookup_yrnested_yf_yt_yl(self):
+    def test_lookup_yrelnested_yfield_ytrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -161,7 +161,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_nr_yf_nt_nl(self):
+    def test_query_nrel_yfield_ntrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -171,7 +171,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_nr_yf_yt_nl(self):
+    def test_query_nrel_yfield_ytrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -183,7 +183,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_nr_yf_nt_yl(self):
+    def test_query_nrel_yfield_ntrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -193,7 +193,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_nr_yf_yt_yl(self):
+    def test_query_nrel_yfield_ytrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -205,7 +205,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yr_nf_nl(self):
+    def test_query_yrel_nfield_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -215,7 +215,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yr_nf_yl(self):
+    def test_query_yrel_nfield_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -225,7 +225,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yr_yf_nt_nl(self):
+    def test_query_yrel_yfield_ntrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -235,7 +235,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yr_yf_yt_nl(self):
+    def test_query_yrel_yfield_ytrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -247,7 +247,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yr_yf_nt_yl(self):
+    def test_query_yrel_yfield_ntrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -257,7 +257,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yr_yf_yt_yl(self):
+    def test_query_yrel_yfield_ytrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -269,7 +269,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yrnested_yf_nt_nl(self):
+    def test_query_yrelnested_yfield_ntrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -279,7 +279,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yrnested_yf_yt_nl(self):
+    def test_query_yrelnested_yfield_ytrans_nsupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -291,7 +291,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yrnested_yf_nt_yl(self):
+    def test_query_yrelnested_yfield_ntrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
@@ -301,19 +301,7 @@ class FetchTranslationsQueryGetter(TestCase):
             ]
         )
 
-    def test_get_translations_queries_query_yrnested_yf_yt_yl(self):
-        getter = _fetch_translations_query_getter(Continent, 'de')
-
-        self.assertListEqual(
-            getter(Q(countries__cities__name__icontains='Kö')).children,
-            [
-                ('countries__cities__translations__field', 'name'),
-                ('countries__cities__translations__language', 'de'),
-                ('countries__cities__translations__text__icontains', 'Kö'),
-            ]
-        )
-
-    def test_get_translations_queries_query_nested_query(self):
+    def test_query_yrelnested_yfield_ytrans_ysupp(self):
         getter = _fetch_translations_query_getter(Continent, 'de')
 
         self.assertListEqual(
