@@ -661,9 +661,9 @@ class FetchTranslationsQueryGetter(TestCase):
         getter = _fetch_translations_query_getter(Continent, ['de', 'tr'])
 
         self.assertListEqual(
-            getter(countries__code=['de', 'tr']).children,
+            getter(countries__code='de').children,
             [
-                ('countries__code', ['de', 'tr']),
+                ('countries__code', 'de'),
             ]
         )
 
@@ -813,9 +813,9 @@ class FetchTranslationsQueryGetter(TestCase):
         getter = _fetch_translations_query_getter(Continent, ['de', 'tr'])
 
         self.assertListEqual(
-            getter(Q(countries__code=['de', 'tr'])).children,
+            getter(Q(countries__code='de')).children,
             [
-                ('countries__code', ['de', 'tr']),
+                ('countries__code', 'de'),
             ]
         )
 
@@ -894,5 +894,345 @@ class FetchTranslationsQueryGetter(TestCase):
                 ('countries__cities__translations__field', 'name'),
                 ('countries__cities__translations__language__in', ['de', 'tr']),
                 ('countries__cities__translations__text__icontains', 'Kö'),
+            ]
+        )
+
+    def test_lookup_nrel_yfield_ntrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(code='EU').children,
+            [
+                ('code', 'EU'),
+            ]
+        )
+
+    def test_lookup_nrel_yfield_ytrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(name='Europa').children,
+            [
+                ('name', 'Europa'),
+                Q(
+                    ('translations__field', 'name'),
+                    ('translations__language__in', ['de']),
+                    ('translations__text', 'Europa'),
+                ),
+            ]
+        )
+
+    def test_lookup_nrel_yfield_ntrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(code__icontains='EU').children,
+            [
+                ('code__icontains', 'EU'),
+            ]
+        )
+
+    def test_lookup_nrel_yfield_ytrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(name__icontains='Europa').children,
+            [
+                ('name__icontains', 'Europa'),
+                Q(
+                    ('translations__field', 'name'),
+                    ('translations__language__in', ['de']),
+                    ('translations__text__icontains', 'Europa'),
+                ),
+            ]
+        )
+
+    def test_lookup_yrel_nfield_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries=1).children,
+            [
+                ('countries', 1),
+            ]
+        )
+
+    def test_lookup_yrel_nfield_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__gt=1).children,
+            [
+                ('countries__gt', 1),
+            ]
+        )
+
+    def test_lookup_yrel_yfield_ntrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__code='de').children,
+            [
+                ('countries__code', 'de'),
+            ]
+        )
+
+    def test_lookup_yrel_yfield_ytrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__name='Deutschland').children,
+            [
+                ('countries__name', 'Deutschland'),
+                Q(
+                    ('countries__translations__field', 'name'),
+                    ('countries__translations__language__in', ['de']),
+                    ('countries__translations__text', 'Deutschland'),
+                ),
+            ]
+        )
+
+    def test_lookup_yrel_yfield_ntrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__code__icontains=['de']).children,
+            [
+                ('countries__code__icontains', ['de']),
+            ]
+        )
+
+    def test_lookup_yrel_yfield_ytrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__name__icontains='Deutsch').children,
+            [
+                ('countries__name__icontains', 'Deutsch'),
+                Q(
+                    ('countries__translations__field', 'name'),
+                    ('countries__translations__language__in', ['de']),
+                    ('countries__translations__text__icontains', 'Deutsch'),
+                ),
+            ]
+        )
+
+    def test_lookup_yrelnested_yfield_ntrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__cities__id=1).children,
+            [
+                ('countries__cities__id', 1),
+            ]
+        )
+
+    def test_lookup_yrelnested_yfield_ytrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__cities__name='Köln').children,
+            [
+                ('countries__cities__name', 'Köln'),
+                Q(
+                    ('countries__cities__translations__field', 'name'),
+                    ('countries__cities__translations__language__in', ['de']),
+                    ('countries__cities__translations__text', 'Köln'),
+                ),
+            ]
+        )
+
+    def test_lookup_yrelnested_yfield_ntrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__cities__id__gt=1).children,
+            [
+                ('countries__cities__id__gt', 1),
+            ]
+        )
+
+    def test_lookup_yrelnested_yfield_ytrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(countries__cities__name__icontains='Kö').children,
+            [
+                ('countries__cities__name__icontains', 'Kö'),
+                Q(
+                    ('countries__cities__translations__field', 'name'),
+                    ('countries__cities__translations__language__in', ['de']),
+                    ('countries__cities__translations__text__icontains', 'Kö'),
+                ),
+            ]
+        )
+
+    def test_query_nrel_yfield_ntrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(code='EU')).children,
+            [
+                ('code', 'EU'),
+            ]
+        )
+
+    def test_query_nrel_yfield_ytrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(name='Europa')).children,
+            [
+                ('name', 'Europa'),
+                Q(
+                    ('translations__field', 'name'),
+                    ('translations__language__in', ['de']),
+                    ('translations__text', 'Europa'),
+                ),
+            ]
+        )
+
+    def test_query_nrel_yfield_ntrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(code__icontains='EU')).children,
+            [
+                ('code__icontains', 'EU'),
+            ]
+        )
+
+    def test_query_nrel_yfield_ytrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(name__icontains='Europa')).children,
+            [
+                ('name__icontains', 'Europa'),
+                Q(
+                    ('translations__field', 'name'),
+                    ('translations__language__in', ['de']),
+                    ('translations__text__icontains', 'Europa'),
+                ),
+            ]
+        )
+
+    def test_query_yrel_nfield_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries=1)).children,
+            [
+                ('countries', 1),
+            ]
+        )
+
+    def test_query_yrel_nfield_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__gt=1)).children,
+            [
+                ('countries__gt', 1),
+            ]
+        )
+
+    def test_query_yrel_yfield_ntrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__code=['de'])).children,
+            [
+                ('countries__code', ['de']),
+            ]
+        )
+
+    def test_query_yrel_yfield_ytrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__name='Deutschland')).children,
+            [
+                ('countries__name', 'Deutschland'),
+                Q(
+                    ('countries__translations__field', 'name'),
+                    ('countries__translations__language__in', ['de']),
+                    ('countries__translations__text', 'Deutschland'),
+                ),
+            ]
+        )
+
+    def test_query_yrel_yfield_ntrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__code__icontains=['de'])).children,
+            [
+                ('countries__code__icontains', ['de']),
+            ]
+        )
+
+    def test_query_yrel_yfield_ytrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__name__icontains='Deutsch')).children,
+            [
+                ('countries__name__icontains', 'Deutsch'),
+                Q(
+                    ('countries__translations__field', 'name'),
+                    ('countries__translations__language__in', ['de']),
+                    ('countries__translations__text__icontains', 'Deutsch'),
+                )
+            ]
+        )
+
+    def test_query_yrelnested_yfield_ntrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__cities__id=1)).children,
+            [
+                ('countries__cities__id', 1),
+            ]
+        )
+
+    def test_query_yrelnested_yfield_ytrans_nsupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__cities__name='Köln')).children,
+            [
+                ('countries__cities__name', 'Köln'),
+                Q(
+                    ('countries__cities__translations__field', 'name'),
+                    ('countries__cities__translations__language__in', ['de']),
+                    ('countries__cities__translations__text', 'Köln'),
+                )
+            ]
+        )
+
+    def test_query_yrelnested_yfield_ntrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__cities__id__gt=1)).children,
+            [
+                ('countries__cities__id__gt', 1),
+            ]
+        )
+
+    def test_query_yrelnested_yfield_ytrans_ysupp_listlangdef(self):
+        getter = _fetch_translations_query_getter(Continent, ['en', 'de'])
+
+        self.assertListEqual(
+            getter(Q(countries__cities__name__icontains='Kö')).children,
+            [
+                ('countries__cities__name__icontains', 'Kö'),
+                Q(
+                    ('countries__cities__translations__field', 'name'),
+                    ('countries__cities__translations__language__in', ['de']),
+                    ('countries__cities__translations__text__icontains', 'Kö'),
+                )
             ]
         )
