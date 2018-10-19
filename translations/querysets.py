@@ -3,7 +3,7 @@
 from django.db.models import query
 
 from translations.utils import _get_standard_language
-from translations.query import _get_translations_query_fetcher
+from translations.query import _fetch_translations_query_getter
 from translations.context import Context
 
 
@@ -86,7 +86,7 @@ class TranslatableQuerySet(query.QuerySet):
     def filter(self, *args, **kwargs):
         """Filter the queryset with lookups and queries."""
         if self._translate_mode():
-            query = _get_translations_query_fetcher(self.model, self._trans_lang)(*args, **kwargs)
+            query = _fetch_translations_query_getter(self.model, self._trans_lang)(*args, **kwargs)
             return super(TranslatableQuerySet, self).filter(query)
         else:
             return super(TranslatableQuerySet, self).filter(*args, **kwargs)
@@ -94,7 +94,7 @@ class TranslatableQuerySet(query.QuerySet):
     def exclude(self, *args, **kwargs):
         """Exclude the queryset with lookups and queries."""
         if self._translate_mode():
-            query = _get_translations_query_fetcher(self.model, self._trans_lang)(*args, **kwargs)
+            query = _fetch_translations_query_getter(self.model, self._trans_lang)(*args, **kwargs)
             return super(TranslatableQuerySet, self).exclude(query)
         else:
             return super(TranslatableQuerySet, self).exclude(*args, **kwargs)

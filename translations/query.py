@@ -5,7 +5,7 @@ from translations.utils import _get_standard_language, _get_default_language, \
     _get_dissected_lookup
 
 
-def _get_translations_query_fetcher(model, lang):
+def _fetch_translations_query_getter(model, lang):
     """
     Return the translations query getter specialized for a model and some
     language.
@@ -77,8 +77,8 @@ def _get_translations_query_fetcher(model, lang):
                     q = Q(**{child[0]: child[1]})
                 query = query._combine(q, connector)
             elif isinstance(child, TQ):
-                fetch = _get_translations_query_fetcher(model, child.lang)
-                q = fetch(
+                getter = _fetch_translations_query_getter(model, child.lang)
+                q = getter(
                     *child.children,
                     _connector=child.connector,
                     _negated=child.negated

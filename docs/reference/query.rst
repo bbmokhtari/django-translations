@@ -6,7 +6,7 @@ Query
 
 This module contains the quereis for the Translations app.
 
-.. function:: _get_translations_query_fetcher(model, lang)
+.. function:: _fetch_translations_query_getter(model, lang)
 
    Return the translations query getter specialized for a model and some
    language.
@@ -28,19 +28,19 @@ This module contains the quereis for the Translations app.
    To fetch the translations query getter specialized for a model and some
    language:
 
-   .. testcode:: _get_translations_query_fetcher
+   .. testcode:: _fetch_translations_query_getter
 
       from sample.models import Continent
-      from translations.query import _get_translations_query_fetcher
+      from translations.query import _fetch_translations_query_getter
 
-      getter = _get_translations_query_fetcher(Continent, 'de')
+      getter = _fetch_translations_query_getter(Continent, 'de')
       
       query = getter(countries__name__icontains='Deutsch')
 
       # output
       print(query)
 
-   .. testoutput:: _get_translations_query_fetcher
+   .. testoutput:: _fetch_translations_query_getter
 
       (AND:
           ('countries__translations__field', 'name'),
