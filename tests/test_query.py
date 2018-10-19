@@ -1,3 +1,5 @@
+import copy
+
 from django.test import TestCase
 from django.db.models import Q
 from django.utils.translation import override
@@ -1875,5 +1877,8 @@ class TQTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    def test_(self):
-        pass
+    def test_deepcopy(self):
+        tq = TQ(_lang='de')
+        tq_copy = copy.deepcopy(tq)
+
+        self.assertEqual(tq_copy.lang, 'de')
