@@ -6,7 +6,10 @@ from translations.utils import _get_standard_language, _get_default_language, \
 
 
 def _get_translations_query_fetcher(model, lang):
-    """Return the translations query fetcher."""
+    """
+    Return the translations query getter specialized for a model and some
+    language.
+    """
     default = _get_default_language()
 
     def _get_translations_query(*args, **kwargs):
