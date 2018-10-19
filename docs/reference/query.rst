@@ -34,7 +34,6 @@ This module contains the quereis for the Translations app.
       from translations.query import _fetch_translations_query_getter
 
       getter = _fetch_translations_query_getter(Continent, 'de')
-      
       query = getter(countries__name__icontains='Deutsch')
 
       # output
