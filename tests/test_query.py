@@ -1,12 +1,13 @@
 from django.test import TestCase
 from django.db.models import Q
+from django.utils.translation import override
 
 from translations.query import _fetch_translations_query_getter, TQ
 
 from sample.models import Continent
 
 
-class FetchTranslationsQueryGetter(TestCase):
+class FetchTranslationsQueryGetterTest(TestCase):
     """Tests for `_fetch_translations_query_getter`."""
 
     def test_lookup_nrel_yfield_ntrans_nsupp_strlang(self):
@@ -1850,3 +1851,29 @@ class FetchTranslationsQueryGetter(TestCase):
                 )
             ]
         )
+
+class TQTest(TestCase):
+    """Tests for `_fetch_translations_query_getter`."""
+
+    def test_init(self):
+        tq = TQ(_lang='de')
+
+        self.assertEqual(tq.lang, 'de')
+
+    @override(language='de', deactivate=True)
+    def test_init_no_lang(self):
+        tq = TQ()
+
+        self.assertEqual(tq.lang, 'de')
+
+    def test_init_invalid_lang(self):
+        with self.assertRaises(ValueError) as error:
+            tq = TQ(_lang='xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
+        )
+
+    def test_(self):
+        pass

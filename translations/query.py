@@ -13,13 +13,11 @@ def _fetch_translations_query_getter(model, lang):
     default = _get_default_language()
 
     def _get_translations_query(*args, **kwargs):
-        nonlocal lang
-
         connector = kwargs.pop('_connector', None)
         negated = kwargs.pop('_negated', False)
 
         query = Q(_connector=connector)
-        connector = query.connector
+        connector = query.connector  # let default connector to be set in Q
 
         children = list(args) + sorted(kwargs.items())
 
@@ -30,7 +28,6 @@ def _fetch_translations_query_getter(model, lang):
                     query_default = False
                     query_languages = None
                     if isinstance(lang, str):
-                        lang = _get_standard_language(lang)
                         if lang == default:
                             query_default = True
                             query_languages = None
@@ -38,7 +35,6 @@ def _fetch_translations_query_getter(model, lang):
                             query_default = False
                             query_languages = lang
                     elif isinstance(lang, (list, tuple)):
-                        lang = [_get_standard_language(l) for l in lang]
                         query_languages = []
                         for l in lang:
                             if default == l:
@@ -105,9 +101,12 @@ def _fetch_translations_query_getter(model, lang):
 class TQ(Q):
 
     def __init__(self, *args, **kwargs):
-        lang = kwargs.pop('_lang', _get_standard_language())
+        lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
-        self.lang = lang
+        if isinstance(lang, (list, tuple)):
+            self.lang = [_get_standard_language(l) for l in lang]
+        else:
+            self.lang = _get_standard_language(lang)
 
     def __deepcopy__(self, memodict):
         obj = super(TQ, self).__deepcopy__(memodict)
