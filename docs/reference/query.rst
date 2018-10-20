@@ -9,11 +9,11 @@ This module contains the quereis for the Translations app.
 .. function:: _fetch_translations_query_getter(model, lang)
 
    Return the translations query getter specialized for a model and some
-   language.
+   language(s).
 
-   Returns a function that can be used to convert lookups and queries of a
+   Returns the function that can be used to convert lookups and queries of the
    model to their equivalent for searching the translations of that lookup or
-   query in a language.
+   query in the specified language(s).
 
    :param model: The model which the translations query getter is specialized
        for.
