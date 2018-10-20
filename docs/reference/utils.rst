@@ -199,6 +199,47 @@ This module contains the utilities for the Translations app.
 
       en
 
+.. function:: _get_all_languages()
+
+   Return all the language codes.
+
+   Returns the list of language codes from the settings.
+
+   :return: The language codes.
+   :rtype: list(str)
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get all the language codes:
+
+   .. testcode:: _get_all_languages
+
+      from translations.utils import _get_all_languages
+
+      # usage
+      languages = _get_all_languages()
+
+      # output
+      print(languages)
+
+   .. testoutput:: _get_all_languages
+
+      [
+          'en',
+          'en-gb',
+          'de',
+          'tr',
+      ]
+
 .. function:: _get_translation_language_choices()
 
    Return the translation language choices.
@@ -242,47 +283,6 @@ This module contains the utilities for the Translations app.
           ('en-gb', 'English (Great Britain)'),
           ('de', 'German'),
           ('tr', 'Turkish'),
-      ]
-
-.. function:: _get_all_languages()
-
-   Return all the language codes.
-
-   Returns the list of language codes from the settings.
-
-   :return: The language codes.
-   :rtype: list(str)
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
-   To get all the language codes:
-
-   .. testcode:: _get_all_languages
-
-      from translations.utils import _get_all_languages
-
-      # usage
-      languages = _get_all_languages()
-
-      # output
-      print(languages)
-
-   .. testoutput:: _get_all_languages
-
-      [
-          'en',
-          'en-gb',
-          'de',
-          'tr',
       ]
 
 .. function:: _get_reverse_relation(model, relation)

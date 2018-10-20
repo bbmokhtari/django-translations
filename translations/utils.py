@@ -70,6 +70,11 @@ def _get_preferred_language(lang=None):
         return _get_standard_language(lang)
 
 
+def _get_all_languages():
+    """Return all the language codes."""
+    return [_get_standard_language(language[0]) for language in settings.LANGUAGES]
+
+
 def _get_translation_language_choices():
     """Return the translation language choices."""
     default = _get_default_language()
@@ -91,11 +96,6 @@ def _get_translation_language_choices():
     _translation_language_choices_cache[default] = choices
 
     return _translation_language_choices_cache[default]
-
-
-def _get_all_languages():
-    """Return all the language codes."""
-    return [_get_standard_language(language[0]) for language in settings.LANGUAGES]
 
 
 def _get_reverse_relation(model, relation):
