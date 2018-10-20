@@ -6,7 +6,7 @@ Utilities
 
 This module contains the utilities for the Translations app.
 
-.. function:: _get_standard_language(lang=None)
+.. function:: _get_standard_language(lang)
 
    Return the standard language code of a custom language code.
 
@@ -19,19 +19,12 @@ This module contains the utilities for the Translations app.
 
    :param lang: The custom language code to derive the standard language code
        out of.
-       ``None`` means use the :term:`active language` code.
-   :type lang: str or None
+   :type lang: str
    :return: The standard language code derived out of the custom language
        code.
    :rtype: str
    :raise ValueError: If the language code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
-
-   .. testsetup:: _get_standard_language
-
-      from django.utils.translation import activate
-
-      activate('en')
 
    Considering this setting:
 
@@ -45,73 +38,56 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the standard language code of the :term:`active language` code:
+   To get the standard language code of an unaccented language code:
 
    .. testcode:: _get_standard_language
 
       from translations.utils import _get_standard_language
 
-      # get the standard active language code
-      lang = _get_standard_language()
+      # get the standard custom language code
+      custom = _get_standard_language('en')
 
-      print(lang)
+      print(custom)
 
    .. testoutput:: _get_standard_language
 
       en
 
-   To get the standard language code of an unaccented custom language code:
+   To get the standard language code of an existing accented language code:
 
    .. testcode:: _get_standard_language
 
       from translations.utils import _get_standard_language
 
       # get the standard custom language code
-      lang = _get_standard_language('de')
+      custom = _get_standard_language('en-gb')
 
-      print(lang)
-
-   .. testoutput:: _get_standard_language
-
-      de
-
-   To get the standard language code of an existing accented custom
-   language code:
-
-   .. testcode:: _get_standard_language
-
-      from translations.utils import _get_standard_language
-
-      # get the standard custom language code
-      lang = _get_standard_language('en-gb')
-
-      print(lang)
+      print(custom)
 
    .. testoutput:: _get_standard_language
 
       en-gb
 
-   To get the standard language code of a non-existing accented custom
-   language code:
+   To get the standard language code of a non-existing accented language code:
 
    .. testcode:: _get_standard_language
 
       from translations.utils import _get_standard_language
 
       # get the standard custom language code
-      lang = _get_standard_language('de-at')
+      custom = _get_standard_language('en-us')
 
-      print(lang)
+      print(custom)
 
    .. testoutput:: _get_standard_language
 
-      de
+      en
 
 .. function:: _get_default_language()
 
    Return the standard language code of the default language code.
 
-   :return: The standard default language code.
+   :return: The standard language code of the default language code.
    :rtype: str
    :raise ValueError: If the default language code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
@@ -128,19 +104,98 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the default language code:
+   To get the standard language code of the default language code:
 
    .. testcode:: _get_default_language
 
       from translations.utils import _get_default_language
 
-      # usage
+      # get the standard default language code
       default = _get_default_language()
 
-      # output
       print(default)
 
    .. testoutput:: _get_default_language
+
+      en
+
+.. function:: _get_active_language()
+
+   Return the standard language code of the active language code.
+
+   :return: The standard language code of the active language code.
+   :rtype: str
+   :raise ValueError: If the active language code is not specified in
+       the :data:`~django.conf.settings.LANGUAGES` setting.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the standard language code of the active language code:
+
+   .. testcode:: _get_active_language
+
+      from translations.utils import _get_active_language
+
+      # get the standard active language code
+      active = _get_active_language()
+
+      print(active)
+
+   .. testoutput:: _get_active_language
+
+      en
+
+.. function:: _get_preferred_language(lang=None)
+
+   Return the standard language code of a preferred language code.
+
+   If the preferred language code is passed in, it returns the standard language
+   code of it, otherwise it returns the standard language code of the active
+   language code.
+
+   :param lang: The preferred language code to derive the standard language code
+       out of.
+       ``None`` means use the :term:`active language` code.
+   :type lang: str or None
+   :return: The standard language code of the preferred language code.
+   :rtype: str
+   :raise ValueError: If the preferred language code is not specified in
+       the :data:`~django.conf.settings.LANGUAGES` setting.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the standard language code of the preferred language code:
+
+   .. testcode:: _get_preferred_language
+
+      from translations.utils import _get_preferred_language
+
+      # get the standard preferred language code
+      preferred = _get_preferred_language()
+
+      print(preferred)
+
+   .. testoutput:: _get_preferred_language
 
       en
 
@@ -650,7 +705,6 @@ This module contains the utilities for the Translations app.
    :param query: The query to use to fetch the translations.
    :type query: list(~django.db.models.Q)
    :param lang: The language to fetch the translations in.
-       ``None`` means use the :term:`active language` code.
    :type lang: str or None
    :return: The translations in the language using the query.
    :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)

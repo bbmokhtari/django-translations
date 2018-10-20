@@ -63,7 +63,7 @@ def _get_active_language():
 
 
 def _get_preferred_language(lang=None):
-    """Return the preferred language code based on a language."""
+    """Return the standard language code of a preferred language code."""
     if lang is None:
         return _get_active_language()
     else:
