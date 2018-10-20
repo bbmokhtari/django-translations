@@ -1857,20 +1857,34 @@ class FetchTranslationsQueryGetterTest(TestCase):
 class TQTest(TestCase):
     """Tests for `_fetch_translations_query_getter`."""
 
-    def test_init(self):
-        tq = TQ(_lang='de')
-
-        self.assertEqual(tq.lang, 'de')
-
     @override(language='de', deactivate=True)
     def test_init_no_lang(self):
         tq = TQ()
 
         self.assertEqual(tq.lang, 'de')
 
-    def test_init_invalid_lang(self):
+    def test_init_str_lang(self):
+        tq = TQ(_lang='de')
+
+        self.assertEqual(tq.lang, 'de')
+
+    def test_init_str_invalid_lang(self):
         with self.assertRaises(ValueError) as error:
             tq = TQ(_lang='xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            'The language code `xx` is not supported.'
+        )
+
+    def test_init_list_lang(self):
+        tq = TQ(_lang=['de', 'tr'])
+
+        self.assertEqual(tq.lang, ['de', 'tr'])
+
+    def test_init_list_invalid_lang(self):
+        with self.assertRaises(ValueError) as error:
+            tq = TQ(_lang=['de', 'tr', 'xx'])
 
         self.assertEqual(
             error.exception.args[0],
