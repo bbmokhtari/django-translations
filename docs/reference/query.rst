@@ -25,7 +25,7 @@ This module contains the quereis for the Translations app.
        language.
    :rtype: function
 
-   To fetch the translations query getter specialized for a model and some
+   To fetch the translations query getter specialized for a model and a
    language:
 
    .. testcode:: _fetch_translations_query_getter
@@ -44,5 +44,27 @@ This module contains the quereis for the Translations app.
       (AND:
           ('countries__translations__field', 'name'),
           ('countries__translations__language', 'de'),
+          ('countries__translations__text__icontains', 'Deutsch'),
+      )
+
+   To fetch the translations query getter specialized for a model and some
+   languages:
+
+   .. testcode:: _fetch_translations_query_getter
+
+      from sample.models import Continent
+      from translations.query import _fetch_translations_query_getter
+
+      getter = _fetch_translations_query_getter(Continent, ['de', 'tr'])
+      query = getter(countries__name__icontains='Deutsch')
+
+      # output
+      print(query)
+
+   .. testoutput:: _fetch_translations_query_getter
+
+      (AND:
+          ('countries__translations__field', 'name'),
+          ('countries__translations__language__in', ['de', 'tr']),
           ('countries__translations__text__icontains', 'Deutsch'),
       )
