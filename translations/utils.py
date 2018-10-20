@@ -4,9 +4,9 @@ from django.db import models
 from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
 from django.core.exceptions import FieldError
-from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import get_language
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 
 import translations.models
 
@@ -55,7 +55,7 @@ def _get_standard_language(lang=None):
 
 
 def _get_default_language():
-    """Return the default language code."""
+    """Return the standard language code of the default language code."""
     return _get_standard_language(settings.LANGUAGE_CODE)
 
 

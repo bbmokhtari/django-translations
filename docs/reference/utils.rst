@@ -37,6 +37,7 @@ This module contains the utilities for the Translations app.
 
    .. code-block:: python
 
+      LANGUAGE_CODE = 'en-us'
       LANGUAGES = (
           ('en', 'English'),
           ('en-gb', 'English (Great Britain)'),
@@ -50,15 +51,14 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_standard_language
 
-      # usage
-      active = _get_standard_language()
+      # get the standard active language code
+      lang = _get_standard_language()
 
-      # output
-      print('Language code: {}'.format(active))
+      print(lang)
 
    .. testoutput:: _get_standard_language
 
-      Language code: en
+      en
 
    To get the standard language code of an unaccented custom language code:
 
@@ -66,15 +66,14 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_standard_language
 
-      # usage
-      custom = _get_standard_language('de')
+      # get the standard custom language code
+      lang = _get_standard_language('de')
 
-      # output
-      print('Language code: {}'.format(custom))
+      print(lang)
 
    .. testoutput:: _get_standard_language
 
-      Language code: de
+      de
 
    To get the standard language code of an existing accented custom
    language code:
@@ -83,15 +82,14 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_standard_language
 
-      # usage
-      custom = _get_standard_language('en-gb')
+      # get the standard custom language code
+      lang = _get_standard_language('en-gb')
 
-      # output
-      print('Language code: {}'.format(custom))
+      print(lang)
 
    .. testoutput:: _get_standard_language
 
-      Language code: en-gb
+      en-gb
 
    To get the standard language code of a non-existing accented custom
    language code:
@@ -100,28 +98,20 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_standard_language
 
-      # usage
-      custom = _get_standard_language('de-at')
+      # get the standard custom language code
+      lang = _get_standard_language('de-at')
 
-      # output
-      print('Language code: {}'.format(custom))
+      print(lang)
 
    .. testoutput:: _get_standard_language
 
-      Language code: de
+      de
 
 .. function:: _get_default_language()
 
-   Return the default language code.
+   Return the standard language code of the default language code.
 
-   Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
-   the default language code, if the exact default language code is found, it
-   returns it, otherwise searches for the unaccented form of the default
-   language code, if the unaccented form of the default language code is
-   found, it returns it, otherwise it throws an error stating there is no
-   such language supported in the settings.
-
-   :return: The default language code.
+   :return: The standard default language code.
    :rtype: str
    :raise ValueError: If the default language code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
