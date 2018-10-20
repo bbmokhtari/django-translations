@@ -108,45 +108,6 @@ This module contains the querysets for the Translations app.
              <Continent: Asia>,
          ]>
 
-   .. method:: _translate_mode(self)
-
-      Return whether the queryset is in translate mode.
-
-      Checks whether a language is applied on the queryset and also if the
-      queryset is in cipher mode.
-
-      :return: whether the queryset is in translate mode.
-      :rtype: bool
-
-      To check if the queryset is in translate mode:
-
-      .. testsetup:: _translate_mode
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      .. testcode:: _translate_mode
-
-         from sample.models import Continent
-
-         continents = Continent.objects.apply('de').decipher()
-
-         # check if the queryset is in translate mode
-         print(continents._translate_mode())
-
-      .. testoutput:: _translate_mode
-
-         False
-
    .. method:: _fetch_all(self)
 
       Evaluate the queryset.
@@ -404,90 +365,6 @@ This module contains the querysets for the Translations app.
             <TranslatableQuerySet [
                 <Country: Deutschland>,
             ]>
-
-   .. method:: cipher(self)
-
-      Use the applied language in the queryset.
-
-      Causes the queryset to use the applied language from there on.
-
-      :return: The queryset which uses the applied language.
-      :rtype: TranslatableQuerySet
-
-      To use the applied language in the queryset:
-
-      .. testsetup:: cipher
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      .. testcode:: cipher
-
-         from sample.models import Continent
-
-         # apply German on the queryset
-         continents = Continent.objects.apply(lang='de')
-
-         # use the applied language
-         print(continents.cipher())
-
-      .. testoutput:: cipher
-
-         <TranslatableQuerySet [
-             <Continent: Europa>,
-             <Continent: Asien>,
-         ]>
-
-   .. method:: decipher(self)
-
-      Use the default language in the queryset.
-
-      Causes the queryset to use the default language from there on.
-
-      :return: The queryset which uses the default language.
-      :rtype: TranslatableQuerySet
-
-      To use the default language in the queryset:
-
-      .. testsetup:: decipher
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      .. testcode:: decipher
-
-         from sample.models import Continent
-
-         # apply German on the queryset
-         continents = Continent.objects.apply(lang='de')
-
-         # use the default language
-         print(continents.decipher())
-
-      .. testoutput:: decipher
-
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-             <Continent: Asia>,
-         ]>
 
    .. method:: filter(self, *args, **kwargs)
 
