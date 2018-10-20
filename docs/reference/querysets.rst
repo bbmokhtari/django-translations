@@ -56,7 +56,7 @@ This module contains the querysets for the Translations app.
 
       .. testoutput:: __init__
 
-         None
+         en
          ()
 
    .. method:: _chain(self, **kwargs)

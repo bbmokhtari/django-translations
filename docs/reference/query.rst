@@ -122,5 +122,5 @@ This module contains the quereis for the Translations app.
       .. testoutput:: init
 
          <TranslatableQuerySet [
-             <Continent: Europa>,
+             <Continent: Europe>,
          ]>
