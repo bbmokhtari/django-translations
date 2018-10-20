@@ -14,7 +14,7 @@ class Context:
     """A context manager which provides custom translation functionalities."""
 
     def __init__(self, entity, *relations):
-        """Initializes a `Context`."""
+        """Initialize a `Context`."""
         hierarchy = _get_relations_hierarchy(*relations)
         self.mapping, self.query = _get_purview(entity, hierarchy)
 

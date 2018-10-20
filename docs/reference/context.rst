@@ -16,7 +16,7 @@ This module contains the context managers for the Translations app.
 
    .. method:: __init__(self, entity, *relations)
 
-      Initiates a :class:`~translations.context.Context` with an entity and
+      Initialize a :class:`~translations.context.Context` with an entity and
       some relations of it.
 
       Processes the entity and the relations of it and defines them as
@@ -55,7 +55,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To initiate a context for a model instance:
+      To Initialize a context for a model instance:
 
       .. testcode:: init
 
@@ -64,15 +64,15 @@ This module contains the context managers for the Translations app.
 
          europe = Continent.objects.get(code='EU')
 
-         # initiate context
+         # Initialize context
          with Context(europe, 'countries', 'countries__cities') as context:
-             print('Context initiated!')
+             print('Context Initialized!')
 
       .. testoutput:: init
 
-         Context initiated!
+         Context Initialized!
 
-      To initiate a context for a queryset:
+      To Initialize a context for a queryset:
 
       .. testcode:: init
 
@@ -81,15 +81,15 @@ This module contains the context managers for the Translations app.
 
          continents = Continent.objects.all()
 
-         # initiate context
+         # Initialize context
          with Context(continents, 'countries', 'countries__cities') as context:
-             print('Context initiated!')
+             print('Context Initialized!')
 
       .. testoutput:: init
 
-         Context initiated!
+         Context Initialized!
 
-      To initiate a context for a list of model instances:
+      To Initialize a context for a list of model instances:
 
       .. testcode:: init
 
@@ -98,13 +98,13 @@ This module contains the context managers for the Translations app.
 
          continents = list(Continent.objects.all())
 
-         # initiate context
+         # Initialize context
          with Context(continents, 'countries', 'countries__cities') as context:
-             print('Context initiated!')
+             print('Context Initialized!')
 
       .. testoutput:: init
 
-         Context initiated!
+         Context Initialized!
 
       .. note::
 

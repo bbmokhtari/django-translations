@@ -101,8 +101,13 @@ def _fetch_translations_query_getter(model, lang):
 
 
 class TQ(Q):
+    """
+    Encapsulate translation filters as objects that can then be combined
+    logically (using `&` and `|`).
+    """
 
     def __init__(self, *args, **kwargs):
+        """Initialize a `TQ`."""
         lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
         if isinstance(lang, (list, tuple)):
@@ -111,11 +116,13 @@ class TQ(Q):
             self.lang = _get_standard_language(lang)
 
     def __deepcopy__(self, memodict):
+        """Return a copy of the `TQ` object."""
         obj = super(TQ, self).__deepcopy__(memodict)
         obj.lang = self.lang
         return obj
 
     def _combine(self, other, conn):
+        """Return the result of logical combination with another `Q`."""
         if not isinstance(other, Q):
             raise TypeError(other)
 

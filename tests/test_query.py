@@ -1877,11 +1877,17 @@ class TQTest(TestCase):
             'The language code `xx` is not supported.'
         )
 
-    def test_deepcopy(self):
+    def test_deepcopy_lang(self):
         tq = TQ(_lang='de')
         tq_copy = copy.deepcopy(tq)
 
         self.assertEqual(tq_copy.lang, 'de')
+
+    def test_deepcopy_type(self):
+        tq = TQ(_lang='de')
+        tq_copy = copy.deepcopy(tq)
+
+        self.assertIs(type(tq_copy), TQ)
 
     def test_combine_self_and_wrong_type(self):
         tq = TQ()
