@@ -3,7 +3,8 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.utils import _get_standard_language, _get_default_language, \
+from translations.utils import \
+    _get_standard_language, _get_default_language, _get_preferred_language, \
     _get_dissected_lookup
 
 
@@ -113,7 +114,7 @@ class TQ(Q):
         if isinstance(lang, (list, tuple)):
             self.lang = [_get_standard_language(l) for l in lang]
         else:
-            self.lang = _get_standard_language(lang)
+            self.lang = _get_preferred_language(lang)
 
     def __deepcopy__(self, memodict):
         """Return a copy of the `TQ` object."""

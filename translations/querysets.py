@@ -2,7 +2,7 @@
 
 from django.db.models import query
 
-from translations.utils import _get_standard_language, _get_default_language
+from translations.utils import _get_default_language, _get_preferred_language
 from translations.query import _fetch_translations_query_getter
 from translations.context import Context
 
@@ -56,7 +56,7 @@ class TranslatableQuerySet(query.QuerySet):
     def apply(self, lang=None):
         """Apply a language on the queryset."""
         clone = self.all()
-        clone._trans_lang = _get_standard_language(lang)
+        clone._trans_lang = _get_preferred_language(lang)
         return clone
 
     def translate_related(self, *fields):

@@ -18,10 +18,8 @@ _standard_language_cache = {}
 _translation_language_choices_cache = {}
 
 
-def _get_standard_language(lang=None):
+def _get_standard_language(lang):
     """Return the standard language code of a custom language code."""
-    lang = lang if lang else get_language()
-
     # check cache first
     try:
         return _standard_language_cache[lang]
@@ -57,6 +55,19 @@ def _get_standard_language(lang=None):
 def _get_default_language():
     """Return the standard language code of the default language code."""
     return _get_standard_language(settings.LANGUAGE_CODE)
+
+
+def _get_active_language():
+    """Return the standard language code of the active language code."""
+    return _get_standard_language(get_language())
+
+
+def _get_preferred_language(lang=None):
+    """Return the preferred language code based on a language."""
+    if lang is None:
+        return _get_active_language()
+    else:
+        return _get_standard_language(lang)
 
 
 def _get_translation_language_choices():

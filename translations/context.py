@@ -3,7 +3,7 @@
 from django.db import models
 
 import translations.models
-from translations.utils import _get_standard_language, \
+from translations.utils import _get_preferred_language, \
     _get_relations_hierarchy, _get_purview, _get_translations
 
 
@@ -43,7 +43,7 @@ class Context:
         Create the translations from the context and write them to the
         database.
         """
-        lang = _get_standard_language(lang)
+        lang = _get_preferred_language(lang)
         _translations = [
             translations.models.Translation(
                 language=lang, text=text, **address
@@ -55,7 +55,7 @@ class Context:
         """
         Read the translations from the database and apply them on the context.
         """
-        lang = _get_standard_language(lang)
+        lang = _get_preferred_language(lang)
         _translations = _get_translations(self.query, lang)
         for translation in _translations:
             ct_id = translation.content_type.id
@@ -71,7 +71,7 @@ class Context:
         Update the translations from the context and write them to the
         database.
         """
-        lang = _get_standard_language(lang)
+        lang = _get_preferred_language(lang)
         query = models.Q()
         _translations = []
         for address, text in self._get_changed_fields():
@@ -91,7 +91,7 @@ class Context:
         Collect the translations from the context and delete them from the
         database.
         """
-        lang = _get_standard_language(lang)
+        lang = _get_preferred_language(lang)
         _translations = _get_translations(self.query, lang)
         _translations.delete()
 
