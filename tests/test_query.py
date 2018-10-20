@@ -1882,3 +1882,133 @@ class TQTest(TestCase):
         tq_copy = copy.deepcopy(tq)
 
         self.assertEqual(tq_copy.lang, 'de')
+
+    def test_combine_self_and_wrong_type(self):
+        tq = TQ()
+
+        with self.assertRaises(TypeError) as error:
+            tq & 2
+
+        self.assertEqual(
+            error.exception.args[0],
+            2
+        )
+
+    def test_combine_self_or_wrong_type(self):
+        tq = TQ()
+
+        with self.assertRaises(TypeError) as error:
+            tq | 2
+
+        self.assertEqual(
+            error.exception.args[0],
+            2
+        )
+
+    def test_combine_self_and_empty_other_q(self):
+        tq = TQ(countries__name='Deutschland')
+        other = Q()
+
+        self.assertEqual(
+            tq & other,
+            tq
+        )
+
+    def test_combine_self_or_empty_other_q(self):
+        tq = TQ(countries__name='Deutschland')
+        other = Q()
+
+        self.assertEqual(
+            tq | other,
+            tq
+        )
+
+    def test_combine_self_and_empty_other_tq(self):
+        tq = TQ(countries__name='Deutschland')
+        other = TQ()
+
+        self.assertEqual(
+            tq & other,
+            tq
+        )
+
+    def test_combine_self_or_empty_other_tq(self):
+        tq = TQ(countries__name='Deutschland')
+        other = TQ()
+
+        self.assertEqual(
+            tq | other,
+            tq
+        )
+
+    def test_combine_empty_self_and_other_q(self):
+        tq = TQ()
+        other = Q(countries__name='Deutschland')
+
+        self.assertEqual(
+            tq & other,
+            other
+        )
+
+    def test_combine_empty_self_or_other_q(self):
+        tq = TQ()
+        other = Q(countries__name='Deutschland')
+
+        self.assertEqual(
+            tq | other,
+            other
+        )
+
+    def test_combine_empty_self_and_other_tq(self):
+        tq = TQ()
+        other = TQ(countries__name='Deutschland')
+
+        self.assertEqual(
+            tq & other,
+            other
+        )
+
+    def test_combine_empty_self_or_other_tq(self):
+        tq = TQ()
+        other = TQ(countries__name='Deutschland')
+
+        self.assertEqual(
+            tq | other,
+            other
+        )
+
+    def test_combine_self_and_other_q(self):
+        tq = TQ(countries__name='Deutschland')
+        other = Q(countries__name='Germany')
+
+        self.assertEqual(
+            tq & other,
+            Q(tq, other, _connector=Q.AND)
+        )
+
+    def test_combine_self_or_other_q(self):
+        tq = TQ(countries__name='Deutschland')
+        other = Q(countries__name='Germany')
+
+        self.assertEqual(
+            tq | other,
+            Q(tq, other, _connector=Q.OR)
+        )
+
+    def test_combine_self_and_other_tq(self):
+        tq = TQ(countries__name='Deutschland')
+        other = TQ(countries__name='Germany')
+
+        self.assertEqual(
+            tq & other,
+            Q(tq, other, _connector=Q.AND)
+        )
+
+    def test_combine_self_or_other_tq(self):
+        tq = TQ(countries__name='Deutschland')
+        other = TQ(countries__name='Germany')
+
+        self.assertEqual(
+            tq | other,
+            Q(tq, other, _connector=Q.OR)
+        )

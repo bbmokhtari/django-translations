@@ -1,3 +1,5 @@
+import copy
+
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
