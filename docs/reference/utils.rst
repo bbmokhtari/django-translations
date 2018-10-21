@@ -684,7 +684,7 @@ This module contains the utilities for the Translations app.
    the provided query in a language and returns the queryset.
 
    :param query: The query to fetch the translations of.
-   :type query: list(~django.db.models.Q)
+   :type query: ~django.db.models.Q
    :param lang: The language to fetch the translations in.
    :type lang: str
    :return: The translations of the query in the language.
