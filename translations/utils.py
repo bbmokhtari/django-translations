@@ -123,7 +123,7 @@ def _get_reverse_relation(model, relation):
 
 
 def _get_dissected_lookup(model, lookup):
-    """Return the dissected info of a query lookup."""
+    """Return the dissected info of a lookup."""
     dissected = {
         'relation': [],
         'field': '',
@@ -285,7 +285,7 @@ def _get_purview(entity, hierarchy):
 
 
 def _get_translations(query, lang):
-    """Return the translations of some `purview` in a language."""
+    """Return the translations in a language using a query."""
     if (query):
         queryset = translations.models.Translation.objects.filter(
             language=lang,
