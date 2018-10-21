@@ -677,11 +677,12 @@ This module contains the context managers for the Translations app.
 
    .. method:: reset()
 
-      Reset the translations of the context's purview to original values.
+      Reset the translations of the :class:`Context`\ 's :term:`purview` to
+      the original language.
 
       Resets the translations on the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      context's purview.
+      :class:`Context`\ 's :term:`purview` to the original language.
 
       .. testsetup:: reset
 
@@ -697,7 +698,8 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To reset the translations of the defined purview for a model instance:
+      To reset the translations of the :class:`Context`\ 's :term:`purview`
+      (an instance and some relations of it):
 
       .. testcode:: reset
 
@@ -705,16 +707,17 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
+         relations = ('countries', 'countries__cities',)
 
-         with Context(europe, 'countries', 'countries__cities') as context:
+         with Context(europe, *relations) as context:
 
-             # changes happened to the fields, create, read, update, delete, etc...
+             # changes happened to the fields...
              context.read(lang='de')
 
              # reset the translations
              context.reset()
 
-             # use the instance like before
+             # use the field values
              print(europe)
              print(europe.countries.all()[0])
              print(europe.countries.all()[0].cities.all()[0])
@@ -725,7 +728,8 @@ This module contains the context managers for the Translations app.
          Germany
          Cologne
 
-      To reset the translations of the defined purview for a queryset:
+      To reset the translations of the :class:`Context`\ 's :term:`purview`
+      (a queryset and some relations of it):
 
       .. testcode:: reset
 
@@ -733,16 +737,17 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = Continent.objects.all()
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # changes happened to the fields, create, read, update, delete, etc...
+             # changes happened to the fields...
              context.read(lang='de')
 
              # reset the translations
              context.reset()
 
-             # use the queryset like before
+             # use the field values
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
@@ -753,7 +758,8 @@ This module contains the context managers for the Translations app.
          Germany
          Cologne
 
-      To reset the translations of the defined purview for a list of instances:
+      To reset the translations of the :class:`Context`\ 's :term:`purview`
+      (a list of instances and some relations of it):
 
       .. testcode:: reset
 
@@ -761,16 +767,17 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = list(Continent.objects.all())
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # changes happened to the fields, create, read, update, delete, etc...
+             # changes happened to the fields...
              context.read(lang='de')
 
              # reset the translations
              context.reset()
 
-             # use the list of instances like before
+             # use the field values
              print(continents[0])
              print(continents[0].countries.all()[0])
              print(continents[0].countries.all()[0].cities.all()[0])
