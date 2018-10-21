@@ -71,7 +71,7 @@ def _get_preferred_language(lang=None):
 
 
 def _get_all_languages():
-    """Return all the language codes."""
+    """Return the standard language code of all the supported language codes."""
     return [_get_standard_language(language[0]) for language in settings.LANGUAGES]
 
 

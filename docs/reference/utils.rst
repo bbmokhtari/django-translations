@@ -85,11 +85,11 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_default_language()
 
-   Return the standard language code of the default language code.
+   Return the standard language code of the :term:`default language` code.
 
-   :return: The standard language code of the default language code.
+   :return: The standard language code of the :term:`default language` code.
    :rtype: str
-   :raise ValueError: If the default language code is not specified in
+   :raise ValueError: If the :term:`default language` code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
 
    Considering this setting:
@@ -104,7 +104,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the standard language code of the default language code:
+   To get the standard language code of the :term:`default language` code:
 
    .. testcode:: _get_default_language
 
@@ -121,11 +121,11 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_active_language()
 
-   Return the standard language code of the active language code.
+   Return the standard language code of the :term:`active language` code.
 
-   :return: The standard language code of the active language code.
+   :return: The standard language code of the :term:`active language` code.
    :rtype: str
-   :raise ValueError: If the active language code is not specified in
+   :raise ValueError: If the :term:`active language` code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
 
    Considering this setting:
@@ -140,7 +140,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the standard language code of the active language code:
+   To get the standard language code of the :term:`active language` code:
 
    .. testcode:: _get_active_language
 
@@ -160,8 +160,8 @@ This module contains the utilities for the Translations app.
    Return the standard language code of a preferred language code.
 
    If the preferred language code is passed in, it returns the standard language
-   code of it, otherwise it returns the standard language code of the active
-   language code.
+   code of it, otherwise it returns the standard language code of the
+   :term:`active language` code.
 
    :param lang: The preferred language code to derive the standard language code
        out of.
