@@ -247,8 +247,8 @@ This module contains the utilities for the Translations app.
 
    Return the :term:`translation language` choices.
 
-   Returns the list of languages from the settings removing the
-   :term:`default language` code and adding an empty one.
+   Returns the :term:`supported language` choices removing the
+   :term:`default language` choice and adding an empty choice.
 
    :return: The :term:`translation language` choices.
    :rtype: list(tuple(str, str))
@@ -354,7 +354,7 @@ This module contains the utilities for the Translations app.
       from sample.models import Continent
       from translations.utils import _get_dissected_lookup
 
-      # get the dissected info of a lookup
+      # get the dissected info of the lookup
       info = _get_dissected_lookup(Continent,
                                    'countries__name__icontains')
 

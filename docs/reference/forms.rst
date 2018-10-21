@@ -34,7 +34,8 @@ This module contains the forms for the Translations app.
       from translations.forms import generate_translation_form
       from sample.models import Continent
 
-      # get the translation form based on the translatable model 
+      # get the translation form based on the translatable model
+      # and the translation language
       form = generate_translation_form(Continent)
 
       print(form.declared_fields['field'].choices)
