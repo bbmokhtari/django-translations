@@ -173,7 +173,7 @@ This module contains the context managers for the Translations app.
          )
 
       To create the translations of the :class:`Context`\ 's :term:`purview`
-      (an instance):
+      (an instance and some relations of it):
 
       .. testcode:: create_0
 
@@ -200,7 +200,7 @@ This module contains the context managers for the Translations app.
          Translations created!
 
       To create the translations of the :class:`Context`\ 's :term:`purview`
-      (a queryset):
+      (a queryset and some relations of it):
 
       .. testcode:: create_1
 
@@ -227,7 +227,7 @@ This module contains the context managers for the Translations app.
          Translations created!
 
       To create the translations of the :class:`Context`\ 's :term:`purview`
-      (a list of instances):
+      (a list of instances and some relations of it):
 
       .. testcode:: create_2
 
@@ -262,17 +262,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: read(lang=None)
 
-      Read the translations of the context's purview in a language.
+      Read the translations of the :class:`Context`\ 's :term:`purview` in
+      a language.
 
       Applies the translations on the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      context's purview in a language.
+      :class:`Context`\ 's :term:`purview` in a language.
 
       :param lang: The language to fetch the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :raise ValueError: If the language code is not included in
-          the :data:`~django.conf.settings.LANGUAGES` setting.
+      :raise ValueError: If the language code is not supported.
 
       .. testsetup:: read
 
@@ -288,7 +288,8 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To read the translations of the defined purview for a model instance:
+      To read the translations of the :class:`Context`\ 's :term:`purview`
+      (an instance and some relations of it):
 
       .. testcode:: read
 
@@ -296,13 +297,14 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
+         relations = ('countries', 'countries__cities',)
 
-         with Context(europe, 'countries', 'countries__cities') as context:
+         with Context(europe, *relations) as context:
 
-             # read the translations in German
+             # read the translations
              context.read(lang='de')
 
-             # use the instance like before
+             # use the field values
              print(europe.name)
              print(europe.countries.all()[0].name)
              print(europe.countries.all()[0].cities.all()[0].name)
@@ -313,7 +315,8 @@ This module contains the context managers for the Translations app.
          Deutschland
          Köln
 
-      To read the translations of the defined purview for a queryset:
+      To read the translations of the :class:`Context`\ 's :term:`purview`
+      (a queryset and some relations of it):
 
       .. testcode:: read
 
@@ -321,13 +324,14 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = Continent.objects.all()
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # read the translations in German
+             # read the translations
              context.read(lang='de')
 
-             # use the queryset like before
+             # use the field values
              print(continents[0].name)
              print(continents[0].countries.all()[0].name)
              print(continents[0].countries.all()[0].cities.all()[0].name)
@@ -338,7 +342,8 @@ This module contains the context managers for the Translations app.
          Deutschland
          Köln
 
-      To read the translations of the defined purview for a list of instances:
+      To read the translations of the :class:`Context`\ 's :term:`purview`
+      (a list of instances and some relations of it):
 
       .. testcode:: read
 
@@ -346,13 +351,14 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = list(Continent.objects.all())
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # read the translations in German
+             # read the translations
              context.read(lang='de')
 
-             # use the list of instances like before
+             # use the field values
              print(continents[0].name)
              print(continents[0].countries.all()[0].name)
              print(continents[0].countries.all()[0].cities.all()[0].name)
