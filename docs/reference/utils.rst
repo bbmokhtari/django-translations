@@ -311,8 +311,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_reverse_relation
 
-      from sample.models import Continent
       from translations.utils import _get_reverse_relation
+      from sample.models import Continent
 
       # get the reverse of the model's relation
       reverse_relation = _get_reverse_relation(Continent,
@@ -351,8 +351,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_dissected_lookup
 
-      from sample.models import Continent
       from translations.utils import _get_dissected_lookup
+      from sample.models import Continent
 
       # get the dissected info of the lookup
       info = _get_dissected_lookup(Continent,
@@ -521,8 +521,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_entity_details
 
-      from sample.models import Continent
       from translations.utils import _get_entity_details
+      from sample.models import Continent
 
       continents = list(Continent.objects.all())
 
@@ -541,8 +541,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_entity_details
 
-      from sample.models import Continent
       from translations.utils import _get_entity_details
+      from sample.models import Continent
 
       continents = Continent.objects.all()
 
@@ -561,8 +561,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_entity_details
 
-      from sample.models import Continent
       from translations.utils import _get_entity_details
+      from sample.models import Continent
 
       europe = Continent.objects.get(code='EU')
 
@@ -581,8 +581,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_entity_details
 
-      from sample.models import Continent
       from translations.utils import _get_entity_details
+      from sample.models import Continent
 
       empty = []
 
@@ -649,9 +649,8 @@ This module contains the utilities for the Translations app.
    .. testcode:: _get_purview
 
       from django.contrib.contenttypes.models import ContentType
+      from translations.utils import _get_relations_hierarchy, _get_purview
       from sample.models import Continent, Country, City
-      from translations.utils import _get_relations_hierarchy
-      from translations.utils import _get_purview
 
       continents = Continent.objects.all()
       hierarchy = _get_relations_hierarchy('countries',
@@ -718,10 +717,8 @@ This module contains the utilities for the Translations app.
 
    .. testcode:: _get_translations
 
+      from translations.utils import _get_relations_hierarchy, _get_purview, _get_translations
       from sample.models import Continent
-      from translations.utils import _get_relations_hierarchy
-      from translations.utils import _get_purview
-      from translations.utils import _get_translations
 
       continents = list(Continent.objects.all())
       hierarchy = _get_relations_hierarchy('countries',

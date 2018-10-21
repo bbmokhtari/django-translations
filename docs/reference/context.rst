@@ -12,20 +12,19 @@ This module contains the context managers for the Translations app.
 
    Provides CRUD functionalities like :meth:`create`, :meth:`read`,
    :meth:`update` and :meth:`delete` to work with the translations and also
-   some other functionalities like :meth:`reset` to manage the context.
+   some other functionalities like :meth:`reset` to manage the :class:`Context`.
 
    .. method:: __init__(self, entity, *relations)
 
-      Initialize a :class:`~translations.context.Context` with an entity and
-      some relations of it.
+      Initialize a :class:`Context` with an entity and some relations of it.
 
-      Processes the entity and the relations of it and defines them as
-      the :class:`~translations.context.Context`\ 's purview.
+      Defines the entity and the relations of it as
+      the :class:`Context`\ 's :term:`purview`.
 
-      :param entity: The entity to use in the context.
+      :param entity: The entity to use in the :class:`Context`.
       :type entity: ~django.db.models.Model or
           ~collections.Iterable(~django.db.models.Model)
-      :param relations: The relations of the entity to use in the context.
+      :param relations: The relations of the entity to use in the :class:`Context`.
       :type relations: list(str)
       :raise TypeError:
 
@@ -55,51 +54,54 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To Initialize a context for a model instance:
+      To Initialize a :class:`Context` for a model instance:
 
       .. testcode:: init
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
+         relations = ('countries', 'countries__cities',)
 
          # Initialize context
-         with Context(europe, 'countries', 'countries__cities') as context:
+         with Context(europe, *relations) as context:
              print('Context Initialized!')
 
       .. testoutput:: init
 
          Context Initialized!
 
-      To Initialize a context for a queryset:
+      To Initialize a :class:`Context` for a queryset:
 
       .. testcode:: init
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = Continent.objects.all()
+         relations = ('countries', 'countries__cities',)
 
          # Initialize context
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
              print('Context Initialized!')
 
       .. testoutput:: init
 
          Context Initialized!
 
-      To Initialize a context for a list of model instances:
+      To Initialize a :class:`Context` for a list of model instances:
 
       .. testcode:: init
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = list(Continent.objects.all())
+         relations = ('countries', 'countries__cities',)
 
          # Initialize context
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
              print('Context Initialized!')
 
       .. testoutput:: init
@@ -109,7 +111,7 @@ This module contains the context managers for the Translations app.
       .. note::
 
          It is **recommended** for the relations of the entity to be
-         prefetched before initiating a :class:`~translations.context.Context`,
+         prefetched before initializing a :class:`Context`,
          in order to reach optimal performance.
 
          To do this use
