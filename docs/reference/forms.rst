@@ -4,7 +4,7 @@ Forms
 
 .. module:: translations.forms
 
-This module contains the forms for the Translations app.
+This module contains the form utilities for the Translations app.
 
 .. function:: generate_translation_form(translatable)
 

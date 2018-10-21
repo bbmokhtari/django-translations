@@ -1,4 +1,4 @@
-"""This module contains the forms for the Translations app."""
+"""This module contains the form utilities for the Translations app."""
 
 from django import forms
 
@@ -11,7 +11,7 @@ __docformat__ = 'restructuredtext'
 
 def generate_translation_form(translatable):
     """
-    Return a `translation` form based on a `translatable` model and
+    Return a `Translation` form based on a `Translatable` model and
     the `translations langauges`.
     """
     fields = translatable._get_translatable_fields_choices()
