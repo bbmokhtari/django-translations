@@ -3,7 +3,7 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.utils import _get_standard_language, \
+from translations.utils import _get_supported_language, \
     _get_default_language, _get_active_language, _get_preferred_language, \
     _get_all_languages, _get_dissected_lookup
 
@@ -126,7 +126,7 @@ class TQ(Q):
         elif lang == self.LANG.ALL:
             lang = _get_all_languages()
         elif isinstance(lang, (list, tuple)):
-            lang = [_get_standard_language(l) for l in lang]
+            lang = [_get_supported_language(l) for l in lang]
         else:
             lang = _get_preferred_language(lang)
         self.lang = lang

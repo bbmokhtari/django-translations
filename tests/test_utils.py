@@ -4,7 +4,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import override
 
-from translations.utils import _get_standard_language, _get_default_language, \
+from translations.utils import _get_supported_language, _get_default_language, \
     _get_active_language, _get_preferred_language, _get_all_languages, \
     _get_translation_language_choices, \
     _get_reverse_relation, _get_dissected_lookup, \
@@ -16,30 +16,30 @@ from sample.models import Continent, Country, City
 from tests.sample import create_samples
 
 
-class GetStandardLanguageTest(TestCase):
-    """Tests for `_get_standard_language`."""
+class GetsupportedLanguageTest(TestCase):
+    """Tests for `_get_supported_language`."""
 
     def test_unaccented(self):
         self.assertEqual(
-            _get_standard_language('en'),
+            _get_supported_language('en'),
             'en'
         )
 
     def test_nonexisting_accented(self):
         self.assertEqual(
-            _get_standard_language('en-us'),
+            _get_supported_language('en-us'),
             'en'
         )
 
     def test_existing_accented(self):
         self.assertEqual(
-            _get_standard_language('en-gb'),
+            _get_supported_language('en-gb'),
             'en-gb'
         )
 
     def test_invalid(self):
         with self.assertRaises(ValueError) as error:
-            _get_standard_language('xx')
+            _get_supported_language('xx')
 
         self.assertEqual(
             error.exception.args[0],

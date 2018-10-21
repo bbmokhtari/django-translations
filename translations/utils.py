@@ -14,15 +14,15 @@ import translations.models
 __docformat__ = 'restructuredtext'
 
 
-_standard_language_cache = {}
+_supported_language_cache = {}
 _translation_language_choices_cache = {}
 
 
-def _get_standard_language(lang):
-    """Return the standard language code of a custom language code."""
+def _get_supported_language(lang):
+    """Return the supported language code of a custom language code."""
     # check cache first
     try:
-        return _standard_language_cache[lang]
+        return _supported_language_cache[lang]
     except KeyError:
         pass
 
@@ -41,38 +41,38 @@ def _get_standard_language(lang):
             code_exists = True
 
     if lang_exists:
-        _standard_language_cache[lang] = lang
+        _supported_language_cache[lang] = lang
     elif code_exists:
-        _standard_language_cache[lang] = code
+        _supported_language_cache[lang] = code
     else:
         raise ValueError(
             'The language code `{}` is not supported.'.format(lang)
         )
 
-    return _standard_language_cache[lang]
+    return _supported_language_cache[lang]
 
 
 def _get_default_language():
-    """Return the standard language code of the default language code."""
-    return _get_standard_language(settings.LANGUAGE_CODE)
+    """Return the supported language code of the default language code."""
+    return _get_supported_language(settings.LANGUAGE_CODE)
 
 
 def _get_active_language():
-    """Return the standard language code of the active language code."""
-    return _get_standard_language(get_language())
+    """Return the supported language code of the active language code."""
+    return _get_supported_language(get_language())
 
 
 def _get_preferred_language(lang=None):
-    """Return the standard language code of a preferred language code."""
+    """Return the supported language code of a preferred language code."""
     if lang is None:
         return _get_active_language()
     else:
-        return _get_standard_language(lang)
+        return _get_supported_language(lang)
 
 
 def _get_all_languages():
-    """Return the standard language code of all the supported language codes."""
-    return [_get_standard_language(language[0]) for language in settings.LANGUAGES]
+    """Return all the supported language codes."""
+    return [language[0] for language in settings.LANGUAGES]
 
 
 def _get_translation_language_choices():
