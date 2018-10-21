@@ -285,7 +285,7 @@ def _get_purview(entity, hierarchy):
 
 
 def _get_translations(query, lang):
-    """Return the translations in a language using a query."""
+    """Return the `Translation` queryset of a query in a language."""
     if (query):
         queryset = translations.models.Translation.objects.filter(
             language=lang,

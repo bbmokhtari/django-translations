@@ -678,16 +678,20 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_translations(query, lang)
 
-   Return the translations of a query in a language.
+   Return the :class:`~translations.models.Translation` queryset of a query in
+   a language.
 
    Queries the :class:`~translations.models.Translation` model using
    the provided query in a language and returns the queryset.
 
-   :param query: The query to fetch the translations of.
+   :param query: The query to fetch
+       the :class:`~translations.models.Translation` queryset of.
    :type query: ~django.db.models.Q
-   :param lang: The language to fetch the translations in.
+   :param lang: The language to fetch
+       the :class:`~translations.models.Translation` queryset in.
    :type lang: str
-   :return: The translations of the query in the language.
+   :return: The :class:`~translations.models.Translation` queryset of the
+       query in the language.
    :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
 
    .. testsetup:: _get_translations
@@ -704,7 +708,8 @@ This module contains the utilities for the Translations app.
           langs=['de']
       )
 
-   To get the translations of a query in a language:
+   To get the :class:`~translations.models.Translation` queryset of a query in
+   a language:
 
    .. testcode:: _get_translations
 
@@ -718,7 +723,7 @@ This module contains the utilities for the Translations app.
                                            'countries__cities',)
       mapping, query = _get_purview(continents, hierarchy)
 
-      # get the translations of the query in the language
+      # get the `Translation` queryset of the query in the language
       translations = _get_translations(query, lang='de')
 
       print(translations)
