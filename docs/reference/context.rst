@@ -439,17 +439,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: update(lang=None)
 
-      Update the translations of the context's purview in a language.
+      Update the translations of the :class:`Context`\ 's :term:`purview` in
+      a language.
 
       Updates the translations using the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      context's purview in a language.
+      :class:`Context`\ 's :term:`purview` in a language.
 
       :param lang: The language to update the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :raise ValueError: If the language code is not included in
-          the :data:`~django.conf.settings.LANGUAGES` setting.
+      :raise ValueError: If the language code is not supported.
 
       .. testsetup:: update
 
@@ -465,7 +465,8 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To update the translations of the defined purview for a model instance:
+      To update the translations of the :class:`Context`\ 's :term:`purview`
+      (an instance and some relations of it):
 
       .. testcode:: update
 
@@ -473,15 +474,16 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
+         relations = ('countries', 'countries__cities',)
 
-         with Context(europe, 'countries', 'countries__cities') as context:
+         with Context(europe, *relations) as context:
 
-             # change the instance like before
+             # change the field values
              europe.name = 'Europa (changed)'
              europe.countries.all()[0].name = 'Deutschland (changed)'
              europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-             # update the translations in German
+             # update the translations
              context.update(lang='de')
 
              print('Translations updated!')
@@ -490,7 +492,8 @@ This module contains the context managers for the Translations app.
 
          Translations updated!
 
-      To update the translations of the defined purview for a queryset:
+      To update the translations of the :class:`Context`\ 's :term:`purview`
+      (a queryset and some relations of it):
 
       .. testcode:: update
 
@@ -498,15 +501,16 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = Continent.objects.all()
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # change the queryset like before
+             # change the field values
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-             # update the translations in German
+             # update the translations
              context.update(lang='de')
 
              print('Translations updated!')
@@ -515,7 +519,8 @@ This module contains the context managers for the Translations app.
 
          Translations updated!
 
-      To update the translations of the defined purview for a list of instances:
+      To update the translations of the :class:`Context`\ 's :term:`purview`
+      (a list of instances and some relations of it):
 
       .. testcode:: update
 
@@ -523,15 +528,16 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = list(Continent.objects.all())
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # change the list of instances like before
+             # change the field values
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-             # update the translations in German
+             # update the translations
              context.update(lang='de')
 
              print('Translations updated!')
