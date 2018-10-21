@@ -1,3 +1,4 @@
+"""This module contains the query utilities for the Translations app."""
 import copy
 
 from django.db.models import Q
@@ -6,6 +7,9 @@ from django.db.models.constants import LOOKUP_SEP
 from translations.utils import _get_supported_language, \
     _get_default_language, _get_active_language, _get_preferred_language, \
     _get_all_languages, _get_dissected_lookup
+
+
+__docformat__ = 'restructuredtext'
 
 
 def _fetch_translations_query_getter(model, lang):

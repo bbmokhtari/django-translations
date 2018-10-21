@@ -4,7 +4,7 @@ Query
 
 .. module:: translations.query
 
-This module contains the quereis for the Translations app.
+This module contains the query utilities for the Translations app.
 
 .. function:: _fetch_translations_query_getter(model, lang)
 
