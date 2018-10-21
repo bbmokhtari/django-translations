@@ -555,17 +555,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: delete(lang=None)
 
-      Delete the translations of the context's purview in a language.
+      Delete the translations of the :class:`Context`\ 's :term:`purview` in
+      a language.
 
       Deletes the translations for the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      context's purview in a language.
+      :class:`Context`\ 's :term:`purview` in a language.
 
       :param lang: The language to delete the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :raise ValueError: If the language code is not included in
-          the :data:`~django.conf.settings.LANGUAGES` setting.
+      :raise ValueError: If the language code is not supported.
 
       .. testsetup:: delete_0
 
@@ -609,7 +609,8 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To delete the translations of the defined purview for a model instance:
+      To delete the translations of the :class:`Context`\ 's :term:`purview`
+      (an instance and some relations of it):
 
       .. testcode:: delete_0
 
@@ -617,10 +618,11 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
+         relations = ('countries', 'countries__cities',)
 
-         with Context(europe, 'countries', 'countries__cities') as context:
+         with Context(europe, *relations) as context:
 
-             # delete the translations in German
+             # delete the translations
              context.delete(lang='de')
 
              print('Translations deleted!')
@@ -629,7 +631,8 @@ This module contains the context managers for the Translations app.
 
          Translations deleted!
 
-      To delete the translations of the defined purview for a queryset:
+      To delete the translations of the :class:`Context`\ 's :term:`purview`
+      (a queryset and some relations of it):
 
       .. testcode:: delete_1
 
@@ -637,10 +640,11 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = Continent.objects.all()
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # delete the translations in German
+             # delete the translations
              context.delete(lang='de')
 
              print('Translations deleted!')
@@ -649,7 +653,8 @@ This module contains the context managers for the Translations app.
 
          Translations deleted!
 
-      To delete the translations of the defined purview for a list of instances:
+      To delete the translations of the :class:`Context`\ 's :term:`purview`
+      (a list of instances and some relations of it):
 
       .. testcode:: delete_2
 
@@ -657,10 +662,11 @@ This module contains the context managers for the Translations app.
          from sample.models import Continent
 
          continents = list(Continent.objects.all())
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # delete the translations in German
+             # delete the translations
              context.delete(lang='de')
 
              print('Translations deleted!')
