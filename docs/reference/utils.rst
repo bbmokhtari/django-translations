@@ -163,8 +163,8 @@ This module contains the utilities for the Translations app.
    code of it, otherwise it returns the supported language code of the
    :term:`active language` code.
 
-   :param lang: The preferred language code to derive the supported language code
-       out of.
+   :param lang: The preferred language code to get the supported language code
+       of.
        ``None`` means use the :term:`active language` code.
    :type lang: str or None
    :return: The supported language code of the preferred language code.
