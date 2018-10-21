@@ -40,8 +40,7 @@ class Context:
 
     def create(self, lang=None):
         """
-        Create the translations from the context and write them to the
-        database.
+        Create the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_preferred_language(lang)
         _translations = [

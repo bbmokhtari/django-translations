@@ -54,7 +54,8 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To Initialize a :class:`Context` for a model instance:
+      To Initialize a :class:`Context` with an entity (an instance)
+      and some relations of it:
 
       .. testcode:: init
 
@@ -72,7 +73,8 @@ This module contains the context managers for the Translations app.
 
          Context Initialized!
 
-      To Initialize a :class:`Context` for a queryset:
+      To Initialize a :class:`Context` with an entity (a queryset)
+      and some relations of it:
 
       .. testcode:: init
 
@@ -90,7 +92,8 @@ This module contains the context managers for the Translations app.
 
          Context Initialized!
 
-      To Initialize a :class:`Context` for a list of model instances:
+      To Initialize a :class:`Context` with an entity (a list of instances)
+      and some relations of it:
 
       .. testcode:: init
 
@@ -121,17 +124,17 @@ This module contains the context managers for the Translations app.
 
    .. method:: create(lang=None)
 
-      Create the translations of the context's purview in a language.
+      Create the translations of the :class:`Context`\ 's :term:`purview` in
+      a language.
 
       Creates the translations using the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      context's purview in a language.
+      :class:`Context`\ 's :term:`purview` in a language.
 
       :param lang: The language to create the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :raise ValueError: If the language code is not included in
-          the :data:`~django.conf.settings.LANGUAGES` setting.
+      :raise ValueError: If the language code is not supported.
       :raise ~django.db.utils.IntegrityError: If duplicate translations
           are created for a specific field of a unique instance in a
           language.
@@ -169,23 +172,25 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To create the translations of the defined purview for a model instance:
+      To create the translations of the :class:`Context`\ 's :term:`purview`
+      (an instance):
 
       .. testcode:: create_0
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
+         relations = ('countries', 'countries__cities',)
 
-         with Context(europe, 'countries', 'countries__cities') as context:
+         with Context(europe, *relations) as context:
 
-             # change the instance like before
+             # change the field values
              europe.name = 'Europa'
              europe.countries.all()[0].name = 'Deutschland'
              europe.countries.all()[0].cities.all()[0].name = 'Köln'
 
-             # create the translations in German
+             # create the translations
              context.create(lang='de')
 
              print('Translations created!')
@@ -194,23 +199,25 @@ This module contains the context managers for the Translations app.
 
          Translations created!
 
-      To create the translations of the defined purview for a queryset:
+      To create the translations of the :class:`Context`\ 's :term:`purview`
+      (a queryset):
 
       .. testcode:: create_1
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = Continent.objects.all()
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # change the queryset like before
+             # change the field values
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
-             # create the translations in German
+             # create the translations
              context.create(lang='de')
 
              print('Translations created!')
@@ -219,23 +226,25 @@ This module contains the context managers for the Translations app.
 
          Translations created!
 
-      To create the translations of the defined purview for a list of instances:
+      To create the translations of the :class:`Context`\ 's :term:`purview`
+      (a list of instances):
 
       .. testcode:: create_2
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = list(Continent.objects.all())
+         relations = ('countries', 'countries__cities',)
 
-         with Context(continents, 'countries', 'countries__cities') as context:
+         with Context(continents, *relations) as context:
 
-             # change the list of instances like before
+             # change the field values
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
-             # create the translations in German
+             # create the translations
              context.create(lang='de')
 
              print('Translations created!')
@@ -283,8 +292,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: read
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
 
@@ -308,8 +317,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: read
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = Continent.objects.all()
 
@@ -333,8 +342,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: read
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = list(Continent.objects.all())
 
@@ -368,8 +377,8 @@ This module contains the context managers for the Translations app.
 
          .. testcode:: read
 
-            from sample.models import Continent
             from translations.context import Context
+            from sample.models import Continent
 
             europe = Continent.objects.prefetch_related(
                 'countries',
@@ -397,8 +406,8 @@ This module contains the context managers for the Translations app.
          .. testcode:: read
 
             from django.db.models import Prefetch
-            from sample.models import Continent, Country
             from translations.context import Context
+            from sample.models import Continent, Country
 
             # Filtering before reading
             europe = Continent.objects.prefetch_related(
@@ -454,8 +463,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: update
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
 
@@ -479,8 +488,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: update
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = Continent.objects.all()
 
@@ -504,8 +513,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: update
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = list(Continent.objects.all())
 
@@ -592,8 +601,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: delete_0
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
 
@@ -612,8 +621,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: delete_1
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = Continent.objects.all()
 
@@ -632,8 +641,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: delete_2
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = list(Continent.objects.all())
 
@@ -674,8 +683,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: reset
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          europe = Continent.objects.get(code='EU')
 
@@ -702,8 +711,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: reset
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = Continent.objects.all()
 
@@ -730,8 +739,8 @@ This module contains the context managers for the Translations app.
 
       .. testcode:: reset
 
-         from sample.models import Continent
          from translations.context import Context
+         from sample.models import Continent
 
          continents = list(Continent.objects.all())
 

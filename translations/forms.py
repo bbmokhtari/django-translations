@@ -12,7 +12,7 @@ __docformat__ = 'restructuredtext'
 def generate_translation_form(translatable):
     """
     Return a `Translation` form based on a `Translatable` model and
-    the `translations langauges`.
+    the `translation language`\ s.
     """
     fields = translatable._get_translatable_fields_choices()
     languages = _get_translation_language_choices()
