@@ -609,7 +609,7 @@ This module contains the utilities for the Translations app.
    :return: The :term:`purview` derived out of the entity and
        the :term:`relations hierarchy` of it.
    :rtype: tuple(dict(int, dict(str, ~django.db.models.Model)), \
-       list(~django.db.models.Q))
+       ~django.db.models.Q)
    :raise TypeError:
 
        - If the entity is neither a model instance nor
