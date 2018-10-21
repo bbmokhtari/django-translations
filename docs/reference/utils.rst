@@ -184,7 +184,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the standard language code of the preferred language code:
+   To get the standard language code of a preferred language code:
 
    .. testcode:: _get_preferred_language
 
@@ -201,17 +201,16 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_all_languages()
 
-   Return all the language codes.
+   Return the standard language code of all the supported language codes.
 
-   Returns the list of language codes from the settings.
-
-   :return: The language codes.
+   :return: The standard language code of all the supported language codes.
    :rtype: list(str)
 
    Considering this setting:
 
    .. code-block:: python
 
+      LANGUAGE_CODE = 'en-us'
       LANGUAGES = (
           ('en', 'English'),
           ('en-gb', 'English (Great Britain)'),
@@ -219,17 +218,16 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get all the language codes:
+   To get the standard language code of all the supported language codes:
 
    .. testcode:: _get_all_languages
 
       from translations.utils import _get_all_languages
 
-      # usage
-      languages = _get_all_languages()
+      # get the standard language codes
+      all = _get_all_languages()
 
-      # output
-      print(languages)
+      print(all)
 
    .. testoutput:: _get_all_languages
 
