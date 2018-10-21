@@ -8,7 +8,7 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_supported_language(lang)
 
-   Return the supported language code of a custom language code.
+   Return the :term:`supported language` code of a custom language code.
 
    Searches the :data:`~django.conf.settings.LANGUAGES` in the settings for
    the custom language code, if the exact custom language code is found, it
@@ -17,11 +17,11 @@ This module contains the utilities for the Translations app.
    found, it returns it, otherwise it throws an error stating there is no
    such language supported in the settings.
 
-   :param lang: The custom language code to derive the supported language code
-       out of.
+   :param lang: The custom language code to derive
+       the :term:`supported language` code out of.
    :type lang: str
-   :return: The supported language code derived out of the custom language
-       code.
+   :return: The :term:`supported language` code derived out of
+       the custom language code.
    :rtype: str
    :raise ValueError: If the language code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
@@ -38,7 +38,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the supported language code of an unaccented language code:
+   To get the :term:`supported language` code of an unaccented language code:
 
    .. testcode:: _get_supported_language
 
@@ -53,7 +53,8 @@ This module contains the utilities for the Translations app.
 
       en
 
-   To get the supported language code of an existing accented language code:
+   To get the :term:`supported language` code of an existing accented
+   language code:
 
    .. testcode:: _get_supported_language
 
@@ -68,7 +69,8 @@ This module contains the utilities for the Translations app.
 
       en-gb
 
-   To get the supported language code of a non-existing accented language code:
+   To get the :term:`supported language` code of a non-existing accented
+   language code:
 
    .. testcode:: _get_supported_language
 
@@ -85,12 +87,13 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_default_language()
 
-   Return the supported language code of the :term:`default language` code.
+   Return the :term:`supported language` code of the :term:`default language`
+   code.
 
-   :return: The supported language code of the :term:`default language` code.
+   :return: The :term:`supported language` code of
+       the :term:`default language` code.
    :rtype: str
-   :raise ValueError: If the :term:`default language` code is not specified in
-       the :data:`~django.conf.settings.LANGUAGES` setting.
+   :raise ValueError: If the :term:`default language` code is not supported.
 
    Considering this setting:
 
@@ -104,7 +107,8 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the supported language code of the :term:`default language` code:
+   To get the :term:`supported language` code of the :term:`default language`
+   code:
 
    .. testcode:: _get_default_language
 
@@ -121,12 +125,13 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_active_language()
 
-   Return the supported language code of the :term:`active language` code.
+   Return the :term:`supported language` code of the :term:`active language`
+   code.
 
-   :return: The supported language code of the :term:`active language` code.
+   :return: The :term:`supported language` code of
+       the :term:`active language` code.
    :rtype: str
-   :raise ValueError: If the :term:`active language` code is not specified in
-       the :data:`~django.conf.settings.LANGUAGES` setting.
+   :raise ValueError: If the :term:`active language` code is not supported.
 
    Considering this setting:
 
@@ -140,7 +145,8 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the supported language code of the :term:`active language` code:
+   To get the :term:`supported language` code of the :term:`active language`
+   code:
 
    .. testcode:: _get_active_language
 
@@ -157,20 +163,19 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_preferred_language(lang=None)
 
-   Return the supported language code of a preferred language code.
+   Return the :term:`supported language` code of a preferred language code.
 
-   If the preferred language code is passed in, it returns the supported language
-   code of it, otherwise it returns the supported language code of the
-   :term:`active language` code.
+   If the preferred language code is passed in, it returns
+   the :term:`supported language` code of it, otherwise it returns
+   the :term:`supported language` code of the :term:`active language` code.
 
-   :param lang: The preferred language code to get the supported language code
-       of.
+   :param lang: The preferred language code to get
+       the :term:`supported language` code of.
        ``None`` means use the :term:`active language` code.
    :type lang: str or None
-   :return: The supported language code of the preferred language code.
+   :return: The :term:`supported language` code of the preferred language code.
    :rtype: str
-   :raise ValueError: If the preferred language code is not specified in
-       the :data:`~django.conf.settings.LANGUAGES` setting.
+   :raise ValueError: If the preferred language code is not supported.
 
    Considering this setting:
 
@@ -184,7 +189,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the supported language code of a preferred language code:
+   To get the :term:`supported language` code of a preferred language code:
 
    .. testcode:: _get_preferred_language
 
@@ -201,9 +206,9 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_all_languages()
 
-   Return all the supported language codes.
+   Return all the :term:`supported language` codes.
 
-   :return: The supported language codes.
+   :return: The :term:`supported language` codes.
    :rtype: list(str)
 
    Considering this setting:
@@ -218,7 +223,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get all the supported language codes:
+   To get all the :term:`supported language` codes:
 
    .. testcode:: _get_all_languages
 
@@ -240,15 +245,14 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_translation_language_choices()
 
-   Return the translation language choices.
+   Return the :term:`translation language` choices.
 
    Returns the list of languages from the settings removing the
    :term:`default language` code and adding an empty one.
 
-   :return: The translation language choices.
+   :return: The :term:`translation language` choices.
    :rtype: list(tuple(str, str))
-   :raise ValueError: If the :term:`default language` code is not specified in
-       the :data:`~django.conf.settings.LANGUAGES` setting.
+   :raise ValueError: If the :term:`default language` code is not supported.
 
    Considering this setting:
 
@@ -262,7 +266,7 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the translation language choices:
+   To get the :term:`translation language` choices:
 
    .. testcode:: _get_translation_language_choices
 
@@ -325,8 +329,9 @@ This module contains the utilities for the Translations app.
    Return the dissected info of a lookup.
 
    Dissects the lookup and returns comprehensive information about it,
-   like what relations does it follow, what field name and field lookup does
-   it contain and whether the field is translatable or not.
+   like what relations does it follow, what field name and
+   supplementary lookup does it contain and whether the field is translatable
+   or not.
 
    :param model: The model which the lookup acts on.
    :type model: type(~django.db.models.Model)

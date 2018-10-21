@@ -19,7 +19,7 @@ _translation_language_choices_cache = {}
 
 
 def _get_supported_language(lang):
-    """Return the supported language code of a custom language code."""
+    """Return the `supported language` code of a custom language code."""
     # check cache first
     try:
         return _supported_language_cache[lang]
@@ -53,17 +53,17 @@ def _get_supported_language(lang):
 
 
 def _get_default_language():
-    """Return the supported language code of the default language code."""
+    """Return the `supported language` code of the `default language` code."""
     return _get_supported_language(settings.LANGUAGE_CODE)
 
 
 def _get_active_language():
-    """Return the supported language code of the active language code."""
+    """Return the `supported language` code of the `active language` code."""
     return _get_supported_language(get_language())
 
 
 def _get_preferred_language(lang=None):
-    """Return the supported language code of a preferred language code."""
+    """Return the `supported language` code of a preferred language code."""
     if lang is None:
         return _get_active_language()
     else:
@@ -71,12 +71,12 @@ def _get_preferred_language(lang=None):
 
 
 def _get_all_languages():
-    """Return all the supported language codes."""
+    """Return all the `supported language` codes."""
     return [language[0] for language in settings.LANGUAGES]
 
 
 def _get_translation_language_choices():
-    """Return the translation language choices."""
+    """Return the `translation language` choices."""
     default = _get_default_language()
 
     # check cache first
