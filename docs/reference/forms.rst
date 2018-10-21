@@ -11,13 +11,15 @@ This module contains the forms for the Translations app.
    Return a translation form based on a translatable model.
 
    Generates the translation form based on the translatable fields of the
-   translatable model and returns it.
+   translatable model and the translation language choices and returns it.
 
    :param translatable: The translatable model to generate the translation
        form based on.
    :type translatable: type(~translations.models.Translatable)
    :return: The translation form generated based on the translatable model.
    :rtype: type(~django.forms.ModelForm(~translations.models.Translation))
+   :raise ValueError: If the :term:`default language` code is not specified in
+       the :data:`~django.conf.settings.LANGUAGES` setting.
 
    To get a translation form based on a translatable model:
 
