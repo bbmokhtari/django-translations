@@ -81,9 +81,7 @@ class Context:
                     language=lang, text=text, **address
                 )
             )
-        if query:
-            translations.models.Translation.objects.filter(
-                language=lang).filter(query).delete()
+        _get_translations(query, lang).delete()
         translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):
@@ -92,8 +90,7 @@ class Context:
         database.
         """
         lang = _get_preferred_language(lang)
-        _translations = _get_translations(self.query, lang)
-        _translations.delete()
+        _get_translations(self.query, lang).delete()
 
     def reset(self):
         """
