@@ -65,7 +65,7 @@ This module contains the context managers for the Translations app.
          europe = Continent.objects.get(code='EU')
          relations = ('countries', 'countries__cities',)
 
-         # Initialize context
+         # initialize context
          with Context(europe, *relations) as context:
              print('Context Initialized!')
 
@@ -84,7 +84,7 @@ This module contains the context managers for the Translations app.
          continents = Continent.objects.all()
          relations = ('countries', 'countries__cities',)
 
-         # Initialize context
+         # initialize context
          with Context(continents, *relations) as context:
              print('Context Initialized!')
 
@@ -103,7 +103,7 @@ This module contains the context managers for the Translations app.
          continents = list(Continent.objects.all())
          relations = ('countries', 'countries__cities',)
 
-         # Initialize context
+         # initialize context
          with Context(continents, *relations) as context:
              print('Context Initialized!')
 
@@ -386,7 +386,7 @@ This module contains the context managers for the Translations app.
 
             with Context(continents, 'countries') as context:
                 context.read(lang='de')
-                # Querying after translation
+                # querying after translation
                 print(continents[0].countries.exclude(name=''))
 
          .. testoutput:: read
@@ -403,7 +403,7 @@ This module contains the context managers for the Translations app.
             from translations.context import Context
             from sample.models import Continent, Country
 
-            # Querying before translation
+            # querying before translation
             continents = Continent.objects.prefetch_related(
                 Prefetch(
                     'countries',

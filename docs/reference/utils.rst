@@ -45,7 +45,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_supported_language
 
-      # get the supported custom language code
+      # get the supported language
       custom = _get_supported_language('en')
 
       print(custom)
@@ -61,7 +61,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_supported_language
 
-      # get the supported custom language code
+      # get the supported language
       custom = _get_supported_language('en-gb')
 
       print(custom)
@@ -77,7 +77,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_supported_language
 
-      # get the supported custom language code
+      # get the supported language
       custom = _get_supported_language('en-us')
 
       print(custom)
@@ -115,7 +115,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_default_language
 
-      # get the supported default language code
+      # get the default language
       default = _get_default_language()
 
       print(default)
@@ -153,7 +153,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_active_language
 
-      # get the supported active language code
+      # get the active language
       active = _get_active_language()
 
       print(active)
@@ -197,7 +197,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_preferred_language
 
-      # get the supported preferred language code
+      # get the preferred language
       preferred = _get_preferred_language()
 
       print(preferred)
@@ -213,7 +213,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_preferred_language
 
-      # get the supported preferred language code
+      # get the preferred language
       preferred = _get_preferred_language('en-us')
 
       print(preferred)
@@ -247,7 +247,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_all_languages
 
-      # get the supported language codes
+      # get the supported languages
       languages = _get_all_languages()
 
       print(languages)
@@ -332,7 +332,7 @@ This module contains the utilities for the Translations app.
       from translations.utils import _get_reverse_relation
       from sample.models import Continent
 
-      # get the reverse of the model's relation
+      # get the reverse relation
       reverse_relation = _get_reverse_relation(Continent,
                                                'countries__cities')
 
@@ -372,7 +372,7 @@ This module contains the utilities for the Translations app.
       from translations.utils import _get_dissected_lookup
       from sample.models import Continent
 
-      # get the dissected info of the lookup
+      # get the dissected lookup
       info = _get_dissected_lookup(Continent,
                                    'countries__name__icontains')
 
@@ -414,7 +414,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_relations_hierarchy
 
-      # get the relations hierarchy of the relations
+      # get the relations hierarchy
       hierarchy = _get_relations_hierarchy('countries')
 
       print(hierarchy)
@@ -435,7 +435,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_relations_hierarchy
 
-      # get the relations hierarchy of the relations
+      # get the relations hierarchy
       hierarchy = _get_relations_hierarchy('countries__cities')
 
       print(hierarchy)
@@ -461,7 +461,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_relations_hierarchy
 
-      # get the relations hierarchy of the relations
+      # get the relations hierarchy
       hierarchy = _get_relations_hierarchy('countries',
                                            'countries__cities')
 
@@ -488,7 +488,7 @@ This module contains the utilities for the Translations app.
 
       from translations.utils import _get_relations_hierarchy
 
-      # get the relations hierarchy of the relations
+      # get the relations hierarchy
       hierarchy = _get_relations_hierarchy()
 
       print(hierarchy)
@@ -547,7 +547,7 @@ This module contains the utilities for the Translations app.
 
       continents = list(Continent.objects.all())
 
-      # get the iteration and type details of the entity
+      # get the entity details
       details = _get_entity_details(continents)
 
       print('Iterable: {}'.format(details[0]))
@@ -568,7 +568,7 @@ This module contains the utilities for the Translations app.
 
       continents = Continent.objects.all()
 
-      # get the iteration and type details of the entity
+      # get the entity details
       details = _get_entity_details(continents)
 
       print('Iterable: {}'.format(details[0]))
@@ -589,7 +589,7 @@ This module contains the utilities for the Translations app.
 
       europe = Continent.objects.get(code='EU')
 
-      # get the iteration and type details of the entity
+      # get the entity details
       details = _get_entity_details(europe)
 
       print('Iterable: {}'.format(details[0]))
@@ -610,7 +610,7 @@ This module contains the utilities for the Translations app.
 
       empty = []
 
-      # get the iteration and type details of the entity
+      # get the entity details
       details = _get_entity_details(empty)
 
       print('Iterable: {}'.format(details[0]))
@@ -680,7 +680,7 @@ This module contains the utilities for the Translations app.
       hierarchy = _get_relations_hierarchy('countries',
                                            'countries__cities')
 
-      # get the purview of the entity and the relations hierarchy of it
+      # get the purview
       mapping, query = _get_purview(continents, hierarchy)
 
       europe = continents[0]
@@ -749,7 +749,7 @@ This module contains the utilities for the Translations app.
                                            'countries__cities',)
       mapping, query = _get_purview(continents, hierarchy)
 
-      # get the `Translation` queryset of the query in the language
+      # get the translations
       translations = _get_translations(query, lang='de')
 
       print(translations)
