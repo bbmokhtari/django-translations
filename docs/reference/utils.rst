@@ -38,7 +38,8 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the :term:`supported language` code of an unaccented language code:
+   To get the :term:`supported language` code of a custom language code
+   (an unaccented language code):
 
    .. testcode:: _get_supported_language
 
@@ -53,8 +54,8 @@ This module contains the utilities for the Translations app.
 
       en
 
-   To get the :term:`supported language` code of an existing accented
-   language code:
+   To get the :term:`supported language` code of a custom language code
+   (an existing accented language code):
 
    .. testcode:: _get_supported_language
 
@@ -69,8 +70,8 @@ This module contains the utilities for the Translations app.
 
       en-gb
 
-   To get the :term:`supported language` code of a non-existing accented
-   language code:
+   To get the :term:`supported language` code of a custom language code
+   (a non-existing accented language code):
 
    .. testcode:: _get_supported_language
 
@@ -189,7 +190,8 @@ This module contains the utilities for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the :term:`supported language` code of a preferred language code:
+   To get the :term:`supported language` code of a preferred language code
+   (no language code):
 
    .. testcode:: _get_preferred_language
 
@@ -197,6 +199,22 @@ This module contains the utilities for the Translations app.
 
       # get the supported preferred language code
       preferred = _get_preferred_language()
+
+      print(preferred)
+
+   .. testoutput:: _get_preferred_language
+
+      en
+
+   To get the :term:`supported language` code of a preferred language code
+   (a custom language code):
+
+   .. testcode:: _get_preferred_language
+
+      from translations.utils import _get_preferred_language
+
+      # get the supported preferred language code
+      preferred = _get_preferred_language('en-us')
 
       print(preferred)
 
@@ -389,7 +407,8 @@ This module contains the utilities for the Translations app.
    :return: The :term:`relations hierarchy` derived out of the relations.
    :rtype: dict(str, dict)
 
-   To get the :term:`relations hierarchy` of a first-level relation:
+   To get the :term:`relations hierarchy` of some relations
+   (a first-level relation):
 
    .. testcode:: _get_relations_hierarchy
 
@@ -409,8 +428,8 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of a second-level relation,
-   not including the first-level relation:
+   To get the :term:`relations hierarchy` of some relations
+   (a second-level relation not including the first-level relation):
 
    .. testcode:: _get_relations_hierarchy
 
@@ -435,8 +454,8 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of a second-level relation,
-   including the first-level relation:
+   To get the :term:`relations hierarchy` of some relations
+   (a second-level relation including the first-level relation):
 
    .. testcode:: _get_relations_hierarchy
 
@@ -462,7 +481,8 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of no relations:
+   To get the :term:`relations hierarchy` of some relations
+   (no relations):
 
    .. testcode:: _get_relations_hierarchy
 
@@ -517,7 +537,8 @@ This module contains the utilities for the Translations app.
           langs=['de']
       )
 
-   To get the details of a list of instances:
+   To get the iteration and type details of an entity
+   (a list of instances):
 
    .. testcode:: _get_entity_details
 
@@ -537,7 +558,8 @@ This module contains the utilities for the Translations app.
       Iterable: True
       Model: <class 'sample.models.Continent'>
 
-   To get the details of a queryset:
+   To get the iteration and type details of an entity
+   (a queryset):
 
    .. testcode:: _get_entity_details
 
@@ -557,7 +579,8 @@ This module contains the utilities for the Translations app.
       Iterable: True
       Model: <class 'sample.models.Continent'>
 
-   To get the details of an instance:
+   To get the iteration and type details of an entity
+   (an instance):
 
    .. testcode:: _get_entity_details
 
@@ -577,7 +600,8 @@ This module contains the utilities for the Translations app.
       Iterable: False
       Model: <class 'sample.models.Continent'>
 
-   To get the details of an empty list:
+   To get the iteration and type details of an entity
+   (an empty list):
 
    .. testcode:: _get_entity_details
 
@@ -644,7 +668,7 @@ This module contains the utilities for the Translations app.
       )
 
    To get the :term:`purview` of an entity and
-   the :term:`relations hierarchy` of it:
+   a :term:`relations hierarchy` of it:
 
    .. testcode:: _get_purview
 
