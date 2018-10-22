@@ -302,8 +302,8 @@ This module contains the querysets for the Translations app.
 
       .. warning::
 
-         Any subsequent chained methods on the relations which imply a
-         different database query will reset previously translated results:
+         Any subsequent chained methods on the relations queryset which imply
+         a database query will reset previously translated results:
 
          .. testcode:: translate_related
 

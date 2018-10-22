@@ -184,7 +184,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-
              # change the field values
              europe.name = 'Europa'
              europe.countries.all()[0].name = 'Deutschland'
@@ -211,7 +210,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # change the field values
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
@@ -238,7 +236,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # change the field values
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
@@ -300,7 +297,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-
              # read the translations
              context.read(lang='de')
 
@@ -327,7 +323,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # read the translations
              context.read(lang='de')
 
@@ -354,7 +349,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # read the translations
              context.read(lang='de')
 
@@ -378,36 +372,30 @@ This module contains the context managers for the Translations app.
 
       .. warning::
 
-         Filtering the relations after reading the translations will cause
-         the translations of that relation to be reset.
+         Any methods on the relations queryset which imply
+         a database query will reset previously translated results:
 
          .. testcode:: read
 
             from translations.context import Context
             from sample.models import Continent
 
-            europe = Continent.objects.prefetch_related(
+            continents = Continent.objects.prefetch_related(
                 'countries',
-                'countries__cities',
-            ).get(code='EU')
+            )
 
-            with Context(europe, 'countries', 'countries__cities') as context:
+            with Context(continents, 'countries') as context:
                 context.read(lang='de')
-
-                # Filtering after reading
-                print(europe.name)
-                print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
-                print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
+                # Querying after translation
+                print(continents[0].countries.exclude(name=''))
 
          .. testoutput:: read
 
-            Europa
-            Germany  -- Wrong
-            Cologne  -- Wrong
+            <TranslatableQuerySet [
+                <Country: Germany>,
+            ]>
 
-         The solution is to do the filtering before reading the translations.
-
-         To do this use :class:`~django.db.models.Prefetch`.
+         In some cases the querying can be done before the translation:
 
          .. testcode:: read
 
@@ -415,27 +403,23 @@ This module contains the context managers for the Translations app.
             from translations.context import Context
             from sample.models import Continent, Country
 
-            # Filtering before reading
-            europe = Continent.objects.prefetch_related(
+            # Querying before translation
+            continents = Continent.objects.prefetch_related(
                 Prefetch(
                     'countries',
                     queryset=Country.objects.exclude(name=''),
                 ),
-                'countries__cities',
-            ).get(code='EU')
+            )
 
-            with Context(europe, 'countries', 'countries__cities') as context:
+            with Context(europe, 'countries') as context:
                 context.read(lang='de')
-
-                print(europe.name)
-                print(europe.countries.all()[0].name + '  -- Correct')
-                print(europe.countries.all()[0].cities.all()[0].name + '  -- Correct')
+                print(continents[0].countries.all())
 
          .. testoutput:: read
 
-            Europa
-            Deutschland  -- Correct
-            Köln  -- Correct
+            <TranslatableQuerySet [
+                <Country: Deutschland>,
+            ]>
 
    .. method:: update(lang=None)
 
@@ -477,7 +461,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-
              # change the field values
              europe.name = 'Europa (changed)'
              europe.countries.all()[0].name = 'Deutschland (changed)'
@@ -504,7 +487,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # change the field values
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
@@ -531,7 +513,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # change the field values
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
@@ -621,7 +602,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-
              # delete the translations
              context.delete(lang='de')
 
@@ -643,7 +623,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # delete the translations
              context.delete(lang='de')
 
@@ -665,7 +644,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # delete the translations
              context.delete(lang='de')
 
@@ -710,7 +688,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-
              # changes happened to the fields...
              context.read(lang='de')
 
@@ -740,7 +717,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # changes happened to the fields...
              context.read(lang='de')
 
@@ -770,7 +746,6 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-
              # changes happened to the fields...
              context.read(lang='de')
 
