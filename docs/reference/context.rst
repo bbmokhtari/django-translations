@@ -411,7 +411,7 @@ This module contains the context managers for the Translations app.
                 ),
             )
 
-            with Context(europe, 'countries') as context:
+            with Context(continents, 'countries') as context:
                 context.read(lang='de')
                 print(continents[0].countries.all())
 
