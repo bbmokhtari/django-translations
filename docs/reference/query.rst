@@ -42,9 +42,11 @@ This module contains the query utilities for the Translations app.
    .. testoutput:: _fetch_translations_query_getter
 
       (AND:
-          ('countries__translations__field', 'name'),
-          ('countries__translations__language', 'de'),
-          ('countries__translations__text__icontains', 'Deutsch'),
+          (AND:
+              ('countries__translations__field', 'name'),
+              ('countries__translations__language', 'de'),
+              ('countries__translations__text__icontains', 'Deutsch'),
+          ),
       )
 
    To fetch the translations query getter specialized for a model and some
@@ -63,9 +65,11 @@ This module contains the query utilities for the Translations app.
    .. testoutput:: _fetch_translations_query_getter
 
       (AND:
-          ('countries__translations__field', 'name'),
-          ('countries__translations__language__in', ['de', 'tr']),
-          ('countries__translations__text__icontains', 'Deutsch'),
+          (AND:
+              ('countries__translations__field', 'name'),
+              ('countries__translations__language__in', ['de', 'tr']),
+              ('countries__translations__text__icontains', 'Deutsch'),
+          ),
       )
 
 .. class:: TQ(~django.db.models.Q)
