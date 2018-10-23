@@ -23,12 +23,9 @@ def _fetch_translations_query_getter(model, lang):
         connector = kwargs.pop('_connector', None)
         negated = kwargs.pop('_negated', False)
 
-        query = Q(_connector=connector)
-        connector = query.connector  # let default connector to be set in Q
-
         children = list(args) + sorted(kwargs.items())
 
-        for child in children:
+        for index, child in enumerate(children):
             if isinstance(child, tuple):
                 dissected = _get_dissected_lookup(model, child[0])
                 if dissected['translatable']:
@@ -78,7 +75,6 @@ def _fetch_translations_query_getter(model, lang):
                         })
                 else:
                     q = Q(**{child[0]: child[1]})
-                query = query._combine(q, connector)
             elif isinstance(child, TQ):
                 getter = _fetch_translations_query_getter(model, child.lang)
                 q = getter(
@@ -86,19 +82,15 @@ def _fetch_translations_query_getter(model, lang):
                     _connector=child.connector,
                     _negated=child.negated
                 )
-
-                query = query._combine(q, connector)
             elif isinstance(child, Q):
                 q = _get_translations_query(
                     *child.children,
                     _connector=child.connector,
                     _negated=child.negated
                 )
+            children[index] = q
 
-                query = query._combine(q, connector)
-
-        if negated:
-            query = ~query
+        query = Q(*children, _connector=connector, _negated=negated)
 
         return query
 
