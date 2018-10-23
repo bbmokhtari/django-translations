@@ -710,7 +710,7 @@ This module contains the utilities for the Translations app.
    a language.
 
    Queries the :class:`~translations.models.Translation` model using
-   the provided query in a language and returns the queryset.
+   the provided query in the specified language and returns the queryset.
 
    :param query: The query to fetch
        the :class:`~translations.models.Translation` queryset of.
