@@ -14,7 +14,7 @@ This module contains the context managers for the Translations app.
    :meth:`update` and :meth:`delete` to work with the translations and also
    some other functionalities like :meth:`reset` to manage the :class:`Context`.
 
-   .. method:: __init__(self, entity, *relations)
+   .. method:: __init__(entity, *relations)
 
       Initialize a :class:`Context` with an entity and some relations of it.
 
@@ -122,7 +122,7 @@ This module contains the context managers for the Translations app.
          :meth:`~django.db.models.query.QuerySet.prefetch_related` or
          :func:`~django.db.models.prefetch_related_objects`.
 
-   .. method:: _get_changed_fields(self)
+   .. method:: _get_changed_fields()
 
       Yield the info about the changed fields in
       the :class:`Context`\ 's :term:`purview`.
@@ -175,7 +175,7 @@ This module contains the context managers for the Translations app.
              'Europäisch',
          ]
 
-   .. method:: create(self, lang=None)
+   .. method:: create(lang=None)
 
       Create the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -310,7 +310,7 @@ This module contains the context managers for the Translations app.
          If the value of a field is not changed, the translation for it is not
          created. (No need to set all the translatable fields beforehand)
 
-   .. method:: read(self, lang=None)
+   .. method:: read(lang=None)
 
       Read the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -474,7 +474,7 @@ This module contains the context managers for the Translations app.
                 <Country: Deutschland>,
             ]>
 
-   .. method:: update(self, lang=None)
+   .. method:: update(lang=None)
 
       Update the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -587,7 +587,7 @@ This module contains the context managers for the Translations app.
          If the value of a field is not changed, the translation for it is not
          updated. (No need to initialize all the translatable fields beforehand)
 
-   .. method:: delete(self, lang=None)
+   .. method:: delete(lang=None)
 
       Delete the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -706,7 +706,7 @@ This module contains the context managers for the Translations app.
 
          Translations deleted!
 
-   .. method:: reset(self)
+   .. method:: reset()
 
       Reset the translations of the :class:`Context`\ 's :term:`purview` to
       the original language.
