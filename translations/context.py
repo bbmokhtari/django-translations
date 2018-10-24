@@ -25,7 +25,9 @@ class Context:
         pass
 
     def _get_changed_fields(self):
-        """Yield the fields changed in the context."""
+        """
+        Yield the info about the changed fields in the `Context`\ 's `purview`.
+        """
         for (ct_id, objs) in self.mapping.items():
             for (obj_id, obj) in objs.items():
                 for field in type(obj)._get_translatable_fields_names():

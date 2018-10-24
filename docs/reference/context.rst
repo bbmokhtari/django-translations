@@ -122,7 +122,60 @@ This module contains the context managers for the Translations app.
          :meth:`~django.db.models.query.QuerySet.prefetch_related` or
          :func:`~django.db.models.prefetch_related_objects`.
 
-   .. method:: create(lang=None)
+   .. method:: _get_changed_fields(self)
+
+      Yield the info about the changed fields in
+      the :class:`Context`\ 's :term:`purview`.
+
+      Yields the info about the changed fields using
+      the :attr:`translatable fields \
+      <translations.models.Translatable.TranslatableMeta.fields>` of the
+      :class:`Context`\ 's :term:`purview`.
+
+      :return: The info about the changed fields in
+          the :class:`Context`\ 's :term:`purview`.
+      :rtype: ~collections.Iterable(tuple(dict, str))
+
+      To get the info about the changed fields in
+      the :class:`Context`\ 's :term:`purview`:
+
+      .. testsetup:: _get_changed_fields
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             langs=['de']
+         )
+
+      .. testcode:: _get_changed_fields
+
+         from translations.context import Context
+         from sample.models import Continent
+
+         europe = Continent.objects.get(code='EU')
+
+         with Context(europe) as context:
+             # change the field values
+             europe.name = 'Europa'
+             europe.denonym = 'Europäisch'
+
+             # get the change fields
+             changed = [info[1]
+                        for info in context._get_changed_fields()]
+
+             print(changed)
+
+      .. testoutput:: _get_changed_fields
+
+         [
+             'Europa',
+             'Europäisch',
+         ]
+
+   .. method:: create(self, lang=None)
 
       Create the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -257,7 +310,7 @@ This module contains the context managers for the Translations app.
          If the value of a field is not changed, the translation for it is not
          created. (No need to set all the translatable fields beforehand)
 
-   .. method:: read(lang=None)
+   .. method:: read(self, lang=None)
 
       Read the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -421,7 +474,7 @@ This module contains the context managers for the Translations app.
                 <Country: Deutschland>,
             ]>
 
-   .. method:: update(lang=None)
+   .. method:: update(self, lang=None)
 
       Update the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -534,7 +587,7 @@ This module contains the context managers for the Translations app.
          If the value of a field is not changed, the translation for it is not
          updated. (No need to initialize all the translatable fields beforehand)
 
-   .. method:: delete(lang=None)
+   .. method:: delete(self, lang=None)
 
       Delete the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
@@ -653,7 +706,7 @@ This module contains the context managers for the Translations app.
 
          Translations deleted!
 
-   .. method:: reset()
+   .. method:: reset(self)
 
       Reset the translations of the :class:`Context`\ 's :term:`purview` to
       the original language.
