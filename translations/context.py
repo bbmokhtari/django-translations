@@ -52,7 +52,7 @@ class Context:
 
     def read(self, lang=None):
         """
-        Read the translations from the database and apply them on the context.
+        Read the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_preferred_language(lang)
         _translations = _get_translations(self.query, lang)
@@ -67,8 +67,7 @@ class Context:
 
     def update(self, lang=None):
         """
-        Update the translations from the context and write them to the
-        database.
+        Update the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_preferred_language(lang)
         query = models.Q()
@@ -85,15 +84,15 @@ class Context:
 
     def delete(self, lang=None):
         """
-        Collect the translations from the context and delete them from the
-        database.
+        Delete the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_preferred_language(lang)
         _get_translations(self.query, lang).delete()
 
     def reset(self):
         """
-        Reset the translations of the context to the original values.
+        Reset the translations of the `Context`\ 's `purview` to
+        the original language.
         """
         for (ct_id, objs) in self.mapping.items():
             for (obj_id, obj) in objs.items():
