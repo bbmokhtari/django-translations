@@ -8,7 +8,7 @@ This module contains the form utilities for the Translations app.
 
 .. function:: generate_translation_form(translatable)
 
-   Return a :class:`~translations.models.Translation` form based on
+   Return the :class:`~translations.models.Translation` form based on
    a :class:`~translations.models.Translatable` model and
    the :term:`translation language`\ s.
 
@@ -25,7 +25,7 @@ This module contains the form utilities for the Translations app.
    :rtype: type(~django.forms.ModelForm(~translations.models.Translation))
    :raise ValueError: If the :term:`default language` code is not supported.
 
-   To get a :class:`~translations.models.Translation` form based on
+   To get the :class:`~translations.models.Translation` form based on
    a :class:`~translations.models.Translatable` model and
    the :term:`translation language`\ s:
 
