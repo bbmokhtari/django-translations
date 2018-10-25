@@ -2,8 +2,8 @@
 
 from django.db.models import query
 
-from translations.utils import _get_default_language, _get_preferred_language
-from translations.lang import _get_lang_intention
+from translations.utils import _get_supported_language, \
+    _get_default_language, _get_preferred_language
 from translations.query import _fetch_translations_query_getter
 from translations.context import Context
 
@@ -71,7 +71,10 @@ class TranslatableQuerySet(query.QuerySet):
     def query_in(self, lang=None):
         """Query the `TranslatableQuerySet` in a language."""
         clone = self.all()
-        clone._trans_quer = _get_lang_intention(lang)
+        if isinstance(lang, (list, tuple)):
+            clone._trans_quer = [_get_supported_language(l) for l in lang]
+        else:
+            clone._trans_quer = _get_preferred_language(lang)
         return clone
 
     def filter(self, *args, **kwargs):

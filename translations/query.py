@@ -4,8 +4,8 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.utils import _get_default_language, _get_dissected_lookup
-from translations.lang import _get_lang_intention
+from translations.utils import _get_supported_language, \
+    _get_default_language, _get_preferred_language, _get_dissected_lookup
 
 
 __docformat__ = 'restructuredtext'
@@ -106,7 +106,11 @@ class TQ(Q):
         """Initialize a `TQ`."""
         lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
-        self.lang = _get_lang_intention(lang)
+        if isinstance(lang, (list, tuple)):
+            lang = [_get_supported_language(l) for l in lang]
+        else:
+            lang = _get_preferred_language(lang)
+        self.lang = lang
 
     def __deepcopy__(self, memodict):
         """Return a copy of the `TQ` object."""
