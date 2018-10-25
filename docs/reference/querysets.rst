@@ -12,10 +12,10 @@ This module contains the querysets for the Translations app.
 
    Provides functionalities like
    :meth:`translate` and :meth:`translate_related`
-   to evaluate the :class:`TranslatableQuerySet` in a specific language
+   to evaluate the :class:`TranslatableQuerySet`
    and also some other functionalities like
    :meth:`query_in`, :meth:`filter` and :meth:`exclude`
-   to filter the :class:`TranslatableQuerySet` in a specific language.
+   to query the :class:`TranslatableQuerySet`.
 
    .. method:: __init__(*args, **kwargs)
 
@@ -83,7 +83,7 @@ This module contains the querysets for the Translations app.
           the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query._chain` method.
       :type kwargs: dict
-      :return: The chained :class:`TranslatableQuerySet`.
+      :return: The copy of the current :class:`TranslatableQuerySet`.
       :rtype: TranslatableQuerySet
 
       To get a copy of the current :class:`TranslatableQuerySet`:
@@ -126,7 +126,7 @@ This module contains the querysets for the Translations app.
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._fetch_all` method.
       It translates the :class:`TranslatableQuerySet`
-      and some of its relations
+      and some relations of it
       (specified using the :meth:`translate_related` method)
       in a language
       (specified using the :meth:`translate` method).
@@ -165,7 +165,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To evaluate the :class:`TranslatableQuerySet`
-      (using the applied language):
+      (using a translation language):
 
       .. testcode:: _fetch_all
 
@@ -200,7 +200,7 @@ This module contains the querysets for the Translations app.
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      To translate :class:`TranslatableQuerySet` in a language:
+      To translate the :class:`TranslatableQuerySet` in a language:
 
       .. testsetup:: translate
 
@@ -234,7 +234,7 @@ This module contains the querysets for the Translations app.
 
       .. note::
 
-         Applying only affects the :attr:`translatable fields \
+         Translating only affects the :attr:`translatable fields \
          <translations.models.Translatable.TranslatableMeta.fields>` that have
          a translation.
 
