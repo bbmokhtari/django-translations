@@ -18,7 +18,7 @@ class TranslatableQuerySet(query.QuerySet):
         """Initialize a `TranslatableQuerySet`."""
         super(TranslatableQuerySet, self).__init__(*args, **kwargs)
         self._trans_lang = _get_default_language()
-        self._trans_inqr = _get_default_language()
+        self._trans_prob = _get_default_language()
         self._trans_rels = ()
         self._trans_cache = False
 
@@ -28,7 +28,7 @@ class TranslatableQuerySet(query.QuerySet):
 
         # default values for all
         clone._trans_lang = getattr(self, '_trans_lang')
-        clone._trans_inqr = getattr(self, '_trans_inqr')
+        clone._trans_prob = getattr(self, '_trans_prob')
         clone._trans_rels = getattr(self, '_trans_rels')
 
         # reset cache on chaining
@@ -72,17 +72,17 @@ class TranslatableQuerySet(query.QuerySet):
         """Probe the `TranslatableQuerySet` in a language."""
         clone = self.all()
         if isinstance(lang, (list, tuple)):
-            clone._trans_inqr = [_get_supported_language(l) for l in lang]
+            clone._trans_prob = [_get_supported_language(l) for l in lang]
         else:
-            clone._trans_inqr = _get_preferred_language(lang)
+            clone._trans_prob = _get_preferred_language(lang)
         return clone
 
     def filter(self, *args, **kwargs):
         """Filter the `TranslatableQuerySet`."""
-        query = _fetch_translations_query_getter(self.model, self._trans_inqr)(*args, **kwargs)
+        query = _fetch_translations_query_getter(self.model, self._trans_prob)(*args, **kwargs)
         return super(TranslatableQuerySet, self).filter(query)
 
     def exclude(self, *args, **kwargs):
         """Exclude the `TranslatableQuerySet`."""
-        query = _fetch_translations_query_getter(self.model, self._trans_inqr)(*args, **kwargs)
+        query = _fetch_translations_query_getter(self.model, self._trans_prob)(*args, **kwargs)
         return super(TranslatableQuerySet, self).exclude(query)
