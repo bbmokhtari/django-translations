@@ -4,7 +4,7 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.languages import _get_default_language, _get_probe_language
+from translations.languages import _get_probe_language
 from translations.utils import _get_dissected_lookup
 
 
