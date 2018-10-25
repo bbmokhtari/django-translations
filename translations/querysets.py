@@ -17,6 +17,7 @@ class TranslatableQuerySet(query.QuerySet):
         """Initialize a `TranslatableQuerySet`."""
         super(TranslatableQuerySet, self).__init__(*args, **kwargs)
         self._trans_lang = _get_default_language()
+        self._trans_quer = _get_default_language()
         self._trans_rels = ()
         self._trans_cache = False
 
@@ -26,6 +27,7 @@ class TranslatableQuerySet(query.QuerySet):
 
         # default values for all
         clone._trans_lang = getattr(self, '_trans_lang')
+        clone._trans_quer = getattr(self, '_trans_quer')
         clone._trans_rels = getattr(self, '_trans_rels')
 
         # reset cache on chaining
@@ -53,8 +55,8 @@ class TranslatableQuerySet(query.QuerySet):
                 context.read(self._trans_lang)
             self._trans_cache = True
 
-    def apply(self, lang=None):
-        """Apply a language on the `TranslatableQuerySet`."""
+    def translate(self, lang=None):
+        """Translate the `TranslatableQuerySet` in a language."""
         clone = self.all()
         clone._trans_lang = _get_preferred_language(lang)
         return clone
@@ -65,12 +67,18 @@ class TranslatableQuerySet(query.QuerySet):
         clone._trans_rels = () if fields == (None,) else fields
         return clone
 
+    def query_in(self, lang=None):
+        """Query the `TranslatableQuerySet` in a language."""
+        clone = self.all()
+        clone._trans_quer = _get_preferred_language(lang)
+        return clone
+
     def filter(self, *args, **kwargs):
         """Filter the `TranslatableQuerySet` with lookups and queries."""
-        query = _fetch_translations_query_getter(self.model, self._trans_lang)(*args, **kwargs)
+        query = _fetch_translations_query_getter(self.model, self._trans_quer)(*args, **kwargs)
         return super(TranslatableQuerySet, self).filter(query)
 
     def exclude(self, *args, **kwargs):
         """Exclude the `TranslatableQuerySet` with lookups and queries."""
-        query = _fetch_translations_query_getter(self.model, self._trans_lang)(*args, **kwargs)
+        query = _fetch_translations_query_getter(self.model, self._trans_quer)(*args, **kwargs)
         return super(TranslatableQuerySet, self).exclude(query)
