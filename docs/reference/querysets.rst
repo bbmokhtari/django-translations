@@ -199,8 +199,8 @@ This module contains the querysets for the Translations app.
 
       Apply a language on the :class:`TranslatableQuerySet`.
 
-      Causes the :class:`TranslatableQuerySet` to translate its
-      instances in the specified language in the evaluation.
+      Causes the instances of the :class:`TranslatableQuerySet` to be
+      translated in the specified language in the evaluation.
 
       :param lang: The language to apply on the :class:`TranslatableQuerySet`.
           ``None`` means use the :term:`active language` code.
