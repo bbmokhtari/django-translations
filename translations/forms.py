@@ -3,7 +3,7 @@
 from django import forms
 
 from translations.models import Translation
-from translations.utils import _get_translation_language_choices
+from translations.languages import _get_translation_language_choices
 
 
 __docformat__ = 'restructuredtext'

@@ -4,8 +4,9 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.utils import _get_supported_language, \
-    _get_default_language, _get_preferred_language, _get_dissected_lookup
+from translations.languages import _get_supported_language, \
+    _get_default_language, _get_preferred_language
+from translations.utils import _get_dissected_lookup
 
 
 __docformat__ = 'restructuredtext'

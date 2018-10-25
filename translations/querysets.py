@@ -2,7 +2,7 @@
 
 from django.db.models import query
 
-from translations.utils import _get_supported_language, \
+from translations.languages import _get_supported_language, \
     _get_default_language, _get_preferred_language
 from translations.query import _fetch_translations_query_getter
 from translations.context import Context

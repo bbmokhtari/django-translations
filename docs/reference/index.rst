@@ -17,4 +17,5 @@ contribute to the project we recommend you to read the reference.
    query
    context
    forms
+   languages
    utils

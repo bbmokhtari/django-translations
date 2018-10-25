@@ -183,7 +183,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         continents = Continent.objects.apply('de')
+         continents = Continent.objects.translate('de')
 
          # evaluate the queryset
          print(continents)
@@ -231,7 +231,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # apply a language on the queryset
-         continents = Continent.objects.apply(lang='de')
+         continents = Continent.objects.translate(lang='de')
 
          print(continents)
 
@@ -286,7 +286,7 @@ This module contains the querysets for the Translations app.
          continents = Continent.objects.translate_related(
              'countries',
              'countries__cities',
-         ).apply(lang='de')
+         ).translate(lang='de')
 
          print(continents)
          print(continents[0].countries.all())
@@ -327,7 +327,7 @@ This module contains the querysets for the Translations app.
 
             continents = Continent.objects.translate_related(
                 'countries',
-            ).apply('de')
+            ).translate('de')
 
             # Querying after translation
             print(continents[0].countries.exclude(name=''))
@@ -353,7 +353,7 @@ This module contains the querysets for the Translations app.
                 ),
             ).translate_related(
                 'countries',
-            ).apply('de')
+            ).translate('de')
 
             print(continents[0].countries.all())
 
@@ -371,10 +371,10 @@ This module contains the querysets for the Translations app.
 
             continents = Continent.objects.translate_related(
                 'countries',
-            ).apply('de')
+            ).translate('de')
 
             # Just `apply` on the relation again after querying
-            print(continents[0].countries.exclude(name='').apply('de'))
+            print(continents[0].countries.exclude(name='').translate('de'))
 
          .. testoutput:: translate_related
 
@@ -454,7 +454,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # filter the queryset
-         continents = Continent.objects.apply('de').filter(
+         continents = Continent.objects.query_in('de').filter(
             countries__name__icontains='Deutsch')
 
          print(continents)
@@ -462,7 +462,7 @@ This module contains the querysets for the Translations app.
       .. testoutput:: filter
 
          <TranslatableQuerySet [
-             <Continent: Europa>,
+             <Continent: Europe>,
          ]>
 
    .. method:: exclude(*args, **kwargs)
@@ -537,7 +537,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # exclude the queryset
-         continents = Continent.objects.apply('de').exclude(
+         continents = Continent.objects.query_in('de').exclude(
             countries__name__icontains='Deutsch')
 
          print(continents)
@@ -545,5 +545,5 @@ This module contains the querysets for the Translations app.
       .. testoutput:: exclude
 
          <TranslatableQuerySet [
-             <Continent: Asien>,
+             <Continent: Asia>,
          ]>

@@ -3,8 +3,9 @@
 from django.db import models
 
 import translations.models
-from translations.utils import _get_preferred_language, \
-    _get_relations_hierarchy, _get_purview, _get_translations
+from translations.languages import _get_preferred_language
+from translations.utils import _get_relations_hierarchy, _get_purview, \
+    _get_translations
 
 
 __docformat__ = 'restructuredtext'
