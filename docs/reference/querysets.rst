@@ -11,9 +11,9 @@ This module contains the querysets for the Translations app.
    A queryset which provides custom translation functionalities.
 
    Provides functionalities like :meth:`apply` and :meth:`translate_related`
-   to evaluate the queryset in a specific language and also
-   some other functionalities like :meth:`filter` and :meth:`exclude` to
-   filter the queryset in a specific language.
+   to evaluate the :class:`TranslatableQuerySet` in a specific language and
+   also some other functionalities like :meth:`filter` and :meth:`exclude`
+   to filter the :class:`TranslatableQuerySet` in a specific language.
 
    .. method:: __init__(*args, **kwargs)
 
