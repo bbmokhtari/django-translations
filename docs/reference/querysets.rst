@@ -22,7 +22,8 @@ This module contains the querysets for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query.QuerySet.__init__` method.
-      It defines custom translation configurations on the queryset.
+      It defines custom translation configurations on
+      the :class:`TranslatableQuerySet`.
 
       :param args: The arguments of
           the :class:`~django.db.models.query.QuerySet`\
@@ -53,35 +54,37 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
+         # initialize queryset
          continents = Continent.objects.all()
 
-         # access the ``_trans_*`` attributes of the queryset
-         print(continents._trans_lang)
-         print(continents._trans_rels)
+         print(continents)
 
       .. testoutput:: __init__
 
-         en
-         ()
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
 
    .. method:: _chain(self, **kwargs)
 
-      Return a copy of the current queryset.
+      Return a copy of the current :class:`TranslatableQuerySet`.
 
       This is an overriden version of
-      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._chain` method.
-      It copies custom translation configurations from the current queryset
-      to the chained queryset.
+      It copies custom translation configurations from
+      the current :class:`TranslatableQuerySet` to
+      the chained :class:`TranslatableQuerySet`.
 
       :param kwargs: The keyword arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query._chain` method.
       :type kwargs: dict
-      :return: The chained queryset.
+      :return: The chained :class:`TranslatableQuerySet`.
       :rtype: TranslatableQuerySet
 
-      To get a copy of the current queryset:
+      To get a copy of the current :class:`TranslatableQuerySet`:
 
       .. testsetup:: _chain
 
@@ -101,7 +104,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # get a copy of the current queryset
+         # chain the queryset
          continents = Continent.objects.all()._chain()
 
          print(continents)
