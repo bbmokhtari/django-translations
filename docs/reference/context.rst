@@ -245,7 +245,7 @@ This module contains the context managers for the Translations app.
              europe.countries.all()[0].cities.all()[0].name = 'Köln'
 
              # create the translations
-             context.create(lang='de')
+             context.create('de')
 
              print('Translations created!')
 
@@ -271,7 +271,7 @@ This module contains the context managers for the Translations app.
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
              # create the translations
-             context.create(lang='de')
+             context.create('de')
 
              print('Translations created!')
 
@@ -297,7 +297,7 @@ This module contains the context managers for the Translations app.
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
              # create the translations
-             context.create(lang='de')
+             context.create('de')
 
              print('Translations created!')
 
@@ -353,7 +353,7 @@ This module contains the context managers for the Translations app.
 
          with Context(europe, *relations) as context:
              # read the translations
-             context.read(lang='de')
+             context.read('de')
 
              # use the field values
              print(europe.name)
@@ -379,7 +379,7 @@ This module contains the context managers for the Translations app.
 
          with Context(continents, *relations) as context:
              # read the translations
-             context.read(lang='de')
+             context.read('de')
 
              # use the field values
              print(continents[0].name)
@@ -405,7 +405,7 @@ This module contains the context managers for the Translations app.
 
          with Context(continents, *relations) as context:
              # read the translations
-             context.read(lang='de')
+             context.read('de')
 
              # use the field values
              print(continents[0].name)
@@ -440,7 +440,7 @@ This module contains the context managers for the Translations app.
             )
 
             with Context(continents, 'countries') as context:
-                context.read(lang='de')
+                context.read('de')
                 # querying after translation
                 print(continents[0].countries.exclude(name=''))
 
@@ -467,7 +467,7 @@ This module contains the context managers for the Translations app.
             )
 
             with Context(continents, 'countries') as context:
-                context.read(lang='de')
+                context.read('de')
                 print(continents[0].countries.all())
 
          .. testoutput:: read
@@ -522,7 +522,7 @@ This module contains the context managers for the Translations app.
              europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
              # update the translations
-             context.update(lang='de')
+             context.update('de')
 
              print('Translations updated!')
 
@@ -548,7 +548,7 @@ This module contains the context managers for the Translations app.
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
              # update the translations
-             context.update(lang='de')
+             context.update('de')
 
              print('Translations updated!')
 
@@ -574,7 +574,7 @@ This module contains the context managers for the Translations app.
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
              # update the translations
-             context.update(lang='de')
+             context.update('de')
 
              print('Translations updated!')
 
@@ -658,7 +658,7 @@ This module contains the context managers for the Translations app.
 
          with Context(europe, *relations) as context:
              # delete the translations
-             context.delete(lang='de')
+             context.delete('de')
 
              print('Translations deleted!')
 
@@ -679,7 +679,7 @@ This module contains the context managers for the Translations app.
 
          with Context(continents, *relations) as context:
              # delete the translations
-             context.delete(lang='de')
+             context.delete('de')
 
              print('Translations deleted!')
 
@@ -700,7 +700,7 @@ This module contains the context managers for the Translations app.
 
          with Context(continents, *relations) as context:
              # delete the translations
-             context.delete(lang='de')
+             context.delete('de')
 
              print('Translations deleted!')
 
@@ -744,7 +744,7 @@ This module contains the context managers for the Translations app.
 
          with Context(europe, *relations) as context:
              # changes happened to the fields...
-             context.read(lang='de')
+             context.read('de')
 
              # reset the translations
              context.reset()
@@ -773,7 +773,7 @@ This module contains the context managers for the Translations app.
 
          with Context(continents, *relations) as context:
              # changes happened to the fields...
-             context.read(lang='de')
+             context.read('de')
 
              # reset the translations
              context.reset()
@@ -802,7 +802,7 @@ This module contains the context managers for the Translations app.
 
          with Context(continents, *relations) as context:
              # changes happened to the fields...
-             context.read(lang='de')
+             context.read('de')
 
              # reset the translations
              context.reset()

@@ -167,7 +167,7 @@ To create the translations of the defined purview for a model instance:
        europe.countries.all()[0].cities.all()[0].name = 'Köln'
 
        # create the translations in German
-       context.create(lang='de')
+       context.create('de')
 
        print('Translations created!')
 
@@ -192,7 +192,7 @@ To create the translations of the defined purview for a queryset:
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
        # create the translations in German
-       context.create(lang='de')
+       context.create('de')
 
        print('Translations created!')
 
@@ -217,7 +217,7 @@ To create the translations of the defined purview for a list of instances:
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
        # create the translations in German
-       context.create(lang='de')
+       context.create('de')
 
        print('Translations created!')
 
@@ -276,7 +276,7 @@ To read the translations of the defined purview for a model instance:
    with Context(europe, 'countries', 'countries__cities') as context:
 
        # read the translations in German
-       context.read(lang='de')
+       context.read('de')
 
        # use the instance like before
        print(europe.name)
@@ -301,7 +301,7 @@ To read the translations of the defined purview for a queryset:
    with Context(continents, 'countries', 'countries__cities') as context:
 
        # read the translations in German
-       context.read(lang='de')
+       context.read('de')
 
        # use the queryset like before
        print(continents[0].name)
@@ -326,7 +326,7 @@ To read the translations of the defined purview for a list of instances:
    with Context(continents, 'countries', 'countries__cities') as context:
 
        # read the translations in German
-       context.read(lang='de')
+       context.read('de')
 
        # use the list of instances like before
        print(continents[0].name)
@@ -366,7 +366,7 @@ not passed in, it is automatically set to the :term:`active language` code.
       ).get(code='EU')
 
       with Context(europe, 'countries', 'countries__cities') as context:
-          context.read(lang='de')
+          context.read('de')
 
           # Filtering after reading
           print(europe.name)
@@ -399,7 +399,7 @@ not passed in, it is automatically set to the :term:`active language` code.
       ).get(code='EU')
 
       with Context(europe, 'countries', 'countries__cities') as context:
-          context.read(lang='de')
+          context.read('de')
 
           print(europe.name)
           print(europe.countries.all()[0].name + '  -- Correct')
@@ -452,7 +452,7 @@ To update the translations of the defined purview for a model instance:
        europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
        # update the translations in German
-       context.update(lang='de')
+       context.update('de')
 
        print('Translations updated!')
 
@@ -477,7 +477,7 @@ To update the translations of the defined purview for a queryset:
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
        # update the translations in German
-       context.update(lang='de')
+       context.update('de')
 
        print('Translations updated!')
 
@@ -502,7 +502,7 @@ To update the translations of the defined purview for a list of instances:
        continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
        # update the translations in German
-       context.update(lang='de')
+       context.update('de')
 
        print('Translations updated!')
 
@@ -585,7 +585,7 @@ To delete the translations of the defined purview for a model instance:
    with Context(europe, 'countries', 'countries__cities') as context:
 
        # delete the translations in German
-       context.delete(lang='de')
+       context.delete('de')
 
        print('Translations deleted!')
 
@@ -605,7 +605,7 @@ To delete the translations of the defined purview for a queryset:
    with Context(continents, 'countries', 'countries__cities') as context:
 
        # delete the translations in German
-       context.delete(lang='de')
+       context.delete('de')
 
        print('Translations deleted!')
 
@@ -625,7 +625,7 @@ To delete the translations of the defined purview for a list of instances:
    with Context(continents, 'countries', 'countries__cities') as context:
 
        # delete the translations in German
-       context.delete(lang='de')
+       context.delete('de')
 
        print('Translations deleted!')
 
@@ -671,7 +671,7 @@ To reset the translations of the defined purview for a model instance:
    with Context(europe, 'countries', 'countries__cities') as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
-       context.read(lang='de')
+       context.read('de')
 
        # reset the translations
        context.reset()
@@ -699,7 +699,7 @@ To reset the translations of the defined purview for a queryset:
    with Context(continents, 'countries', 'countries__cities') as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
-       context.read(lang='de')
+       context.read('de')
 
        # reset the translations
        context.reset()
@@ -727,7 +727,7 @@ To reset the translations of the defined purview for a list of instances:
    with Context(continents, 'countries', 'countries__cities') as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
-       context.read(lang='de')
+       context.read('de')
 
        # reset the translations
        context.reset()
