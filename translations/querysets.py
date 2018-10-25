@@ -68,8 +68,8 @@ class TranslatableQuerySet(query.QuerySet):
         clone._trans_rels = () if fields == (None,) else fields
         return clone
 
-    def inquire(self, lang=None):
-        """Inquire the `TranslatableQuerySet` in a language."""
+    def probe(self, lang=None):
+        """Probe the `TranslatableQuerySet` in a language."""
         clone = self.all()
         if isinstance(lang, (list, tuple)):
             clone._trans_inqr = [_get_supported_language(l) for l in lang]

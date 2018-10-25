@@ -372,26 +372,26 @@ This module contains the querysets for the Translations app.
                 <Country: Deutschland>,
             ]>
 
-   .. method:: inquire(lang=None)
+   .. method:: probe(lang=None)
 
-      Inquire the :class:`TranslatableQuerySet` in a language.
+      Probe the :class:`TranslatableQuerySet` in a language.
 
       Causes the :class:`TranslatableQuerySet` to be
-      inquired in the specified language.
+      probed in the specified language in the evaluation.
 
-      :param lang: The language to inquire the :class:`TranslatableQuerySet`
+      :param lang: The language to probe the :class:`TranslatableQuerySet`
           in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :return: The :class:`TranslatableQuerySet` which will be inquired in the
+      :return: The :class:`TranslatableQuerySet` which will be probed in the
           specified language.
       :rtype: TranslatableQuerySet
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      To inquire the :class:`TranslatableQuerySet` in a language:
+      To probe the :class:`TranslatableQuerySet` in a language:
 
-      .. testsetup:: inquire
+      .. testsetup:: probe
 
          from tests.sample import create_samples
 
@@ -405,18 +405,18 @@ This module contains the querysets for the Translations app.
              langs=['de']
          )
 
-      .. testcode:: inquire
+      .. testcode:: probe
 
          from django.db.models import Q
          from sample.models import Continent
 
          # query the queryset
-         continents = Continent.objects.inquire(lang='de').filter(
+         continents = Continent.objects.probe(lang='de').filter(
              Q(name='Europa') | Q(name='Asien'))
 
          print(continents)
 
-      .. testoutput:: inquire
+      .. testoutput:: probe
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -436,7 +436,7 @@ This module contains the querysets for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query.QuerySet.filter` method.
-      It filters the :class:`TranslatableQuerySet` in the inquire language.
+      It filters the :class:`TranslatableQuerySet` in the probe language.
 
       :param args: The arguments of
           the :class:`~django.db.models.query.QuerySet`\
@@ -481,7 +481,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To filter the :class:`TranslatableQuerySet`
-      (using a inquire language):
+      (using a probe language):
 
       .. testsetup:: filter
 
@@ -502,7 +502,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # filter the queryset
-         continents = Continent.objects.inquire('de').filter(
+         continents = Continent.objects.probe('de').filter(
              countries__name__icontains='Deutsch')
 
          print(continents)
@@ -520,7 +520,7 @@ This module contains the querysets for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query.QuerySet.exclude` method.
-      It excludes the :class:`TranslatableQuerySet` in the inquire language.
+      It excludes the :class:`TranslatableQuerySet` in the probe language.
 
       :param args: The arguments of
           the :class:`~django.db.models.query.QuerySet`\
@@ -586,7 +586,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # exclude the queryset
-         continents = Continent.objects.inquire('de').exclude(
+         continents = Continent.objects.probe('de').exclude(
             countries__name__icontains='Deutsch')
 
          print(continents)
