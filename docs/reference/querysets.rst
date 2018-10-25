@@ -146,7 +146,7 @@ This module contains the querysets for the Translations app.
          )
 
       To evaluate the :class:`TranslatableQuerySet`
-      (using the default language):
+      (using the :term:`default language`):
 
       .. testcode:: _fetch_all
 
@@ -165,7 +165,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To evaluate the :class:`TranslatableQuerySet`
-      (using a translation language):
+      (using a :term:`translation language`):
 
       .. testcode:: _fetch_all
 
@@ -448,7 +448,7 @@ This module contains the querysets for the Translations app.
       :type kwargs: dict
 
       To filter the :class:`TranslatableQuerySet`
-      (using the default language):
+      (using the :term:`default language`):
 
       .. testsetup:: filter
 
@@ -481,7 +481,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To filter the :class:`TranslatableQuerySet`
-      (using a probe language):
+      (using a :term:`translation language`):
 
       .. testsetup:: filter
 
@@ -532,7 +532,7 @@ This module contains the querysets for the Translations app.
       :type kwargs: dict
 
       To exclude the :class:`TranslatableQuerySet`
-      (using the default language):
+      (using the :term:`default language`):
 
       .. testsetup:: exclude
 
@@ -565,7 +565,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To exclude the :class:`TranslatableQuerySet`
-      (using a translation language):
+      (using a :term:`translation language`):
 
       .. testsetup:: exclude
 
