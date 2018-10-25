@@ -14,8 +14,8 @@ This module contains the querysets for the Translations app.
    :meth:`translate` and :meth:`translate_related`
    to evaluate the :class:`TranslatableQuerySet`
    and also some other functionalities like
-   :meth:`query`, :meth:`filter` and :meth:`exclude`
-   to query the :class:`TranslatableQuerySet`.
+   :meth:`probe`, :meth:`filter` and :meth:`exclude`
+   to probe the :class:`TranslatableQuerySet`.
 
    .. method:: __init__(*args, **kwargs)
 
