@@ -554,7 +554,7 @@ This module contains the querysets for the Translations app.
 
          # exclude the queryset
          continents = Continent.objects.exclude(
-            countries__name__icontains='Ger')
+             countries__name__icontains='Ger')
 
          print(continents)
 
@@ -587,7 +587,7 @@ This module contains the querysets for the Translations app.
 
          # exclude the queryset
          continents = Continent.objects.probe('de').exclude(
-            countries__name__icontains='Deutsch')
+             countries__name__icontains='Deutsch')
 
          print(continents)
 
