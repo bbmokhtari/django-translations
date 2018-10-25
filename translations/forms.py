@@ -3,7 +3,7 @@
 from django import forms
 
 from translations.models import Translation
-from translations.languages import _get_translation_language_choices
+from translations.languages import _get_translation_choices
 
 
 __docformat__ = 'restructuredtext'
@@ -15,7 +15,7 @@ def generate_translation_form(translatable):
     the `translation language`\ s.
     """
     fields = translatable._get_translatable_fields_choices()
-    languages = _get_translation_language_choices()
+    languages = _get_translation_choices()
 
     class TranslationForm(forms.ModelForm):
         field = forms.ChoiceField(choices=fields)

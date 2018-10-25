@@ -4,20 +4,19 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.languages import _get_supported_language, \
-    _get_default_language, _get_preferred_language
+from translations.languages import _get_default_language, _get_probe_language
 from translations.utils import _get_dissected_lookup
 
 
 __docformat__ = 'restructuredtext'
 
 
-def _fetch_translations_query_getter(model, lang):
+def _fetch_translations_query_getter(model, lang=None):
     """
     Return the translations query getter specialized for a model and some
     language.
     """
-    default = _get_default_language()
+    lang, is_default, is_iter = _get_probe_language(lang)
 
     def _get_translations_query(*args, **kwargs):
         connector = kwargs.pop('_connector', None)
@@ -31,26 +30,16 @@ def _fetch_translations_query_getter(model, lang):
                 if dissected['translatable']:
                     query_default = False
                     query_languages = None
-                    if isinstance(lang, str):
-                        if lang == default:
+                    if is_iter:
+                        query_default = is_default
+                        query_languages = lang
+                    else:
+                        if is_default:
                             query_default = True
                             query_languages = None
                         else:
                             query_default = False
                             query_languages = lang
-                    elif isinstance(lang, (list, tuple)):
-                        query_languages = []
-                        for l in lang:
-                            if default == l:
-                                query_default = True
-                            else:
-                                query_languages.append(l)
-                    else:
-                        raise TypeError(
-                            '`lang` must be a str or a list of strs.'.format(
-                                lang
-                            )
-                        )
 
                     q = Q()
 
@@ -107,10 +96,6 @@ class TQ(Q):
         """Initialize a `TQ`."""
         lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
-        if isinstance(lang, (list, tuple)):
-            lang = [_get_supported_language(l) for l in lang]
-        else:
-            lang = _get_preferred_language(lang)
         self.lang = lang
 
     def __deepcopy__(self, memodict):

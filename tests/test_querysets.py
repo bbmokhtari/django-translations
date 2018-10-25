@@ -2078,16 +2078,7 @@ class TranslatableQuerySetTest(TestCase):
     def test_translate_no_lang(self):
         continents = Continent.objects.translate()
 
-        self.assertEqual(continents._trans_lang, 'de')
-
-    def test_translate_invalid_lang(self):
-        with self.assertRaises(ValueError) as error:
-            continents = Continent.objects.translate('xx')
-
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
+        self.assertEqual(continents._trans_lang, None)
 
     def test_translate_related(self):
         continents = Continent.objects.translate_related(

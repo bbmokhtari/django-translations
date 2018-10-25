@@ -162,7 +162,7 @@ This module contains the languages for the Translations app.
 
       en
 
-.. function:: _get_preferred_language(lang=None)
+.. function:: _get_translate_language(lang=None)
 
    Return the :term:`supported language` code of a preferred language code.
 
@@ -193,32 +193,32 @@ This module contains the languages for the Translations app.
    To get the :term:`supported language` code of a preferred language code
    (no language code):
 
-   .. testcode:: _get_preferred_language
+   .. testcode:: _get_translate_language
 
-      from translations.languages import _get_preferred_language
+      from translations.languages import _get_translate_language
 
       # get the preferred language
-      preferred = _get_preferred_language()
+      preferred, is_default = _get_translate_language()
 
       print(preferred)
 
-   .. testoutput:: _get_preferred_language
+   .. testoutput:: _get_translate_language
 
       en
 
    To get the :term:`supported language` code of a preferred language code
    (a custom language code):
 
-   .. testcode:: _get_preferred_language
+   .. testcode:: _get_translate_language
 
-      from translations.languages import _get_preferred_language
+      from translations.languages import _get_translate_language
 
       # get the preferred language
-      preferred = _get_preferred_language('en-us')
+      preferred, is_default = _get_translate_language('en-us')
 
       print(preferred)
 
-   .. testoutput:: _get_preferred_language
+   .. testoutput:: _get_translate_language
 
       en
 
@@ -261,7 +261,7 @@ This module contains the languages for the Translations app.
           'tr',
       ]
 
-.. function:: _get_translation_language_choices()
+.. function:: _get_translation_choices()
 
    Return the :term:`translation language` choices.
 
@@ -286,16 +286,16 @@ This module contains the languages for the Translations app.
 
    To get the :term:`translation language` choices:
 
-   .. testcode:: _get_translation_language_choices
+   .. testcode:: _get_translation_choices
 
-      from translations.languages import _get_translation_language_choices
+      from translations.languages import _get_translation_choices
 
       # get the translation language choices
-      choices = _get_translation_language_choices()
+      choices = _get_translation_choices()
 
       print(choices)
 
-   .. testoutput:: _get_translation_language_choices
+   .. testoutput:: _get_translation_choices
 
       [
           (None, '---------'),

@@ -61,5 +61,5 @@ class GenerateTranslationFormTest(TestCase):
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )

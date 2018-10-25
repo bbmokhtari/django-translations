@@ -3,7 +3,7 @@
 from django.db import models
 
 import translations.models
-from translations.languages import _get_preferred_language
+from translations.languages import _get_translate_language
 from translations.utils import _get_relations_hierarchy, _get_purview, \
     _get_translations
 
@@ -45,52 +45,58 @@ class Context:
         """
         Create the translations of the `Context`\ 's `purview` in a language.
         """
-        lang = _get_preferred_language(lang)
-        _translations = [
-            translations.models.Translation(
-                language=lang, text=text, **address
-            ) for address, text in self._get_changed_fields()
-        ]
-        translations.models.Translation.objects.bulk_create(_translations)
+        lang, is_default = _get_translate_language(lang)
+        if not is_default:
+            _translations = [
+                translations.models.Translation(
+                    language=lang, text=text, **address
+                ) for address, text in self._get_changed_fields()
+            ]
+            translations.models.Translation.objects.bulk_create(_translations)
 
     def read(self, lang=None):
         """
         Read the translations of the `Context`\ 's `purview` in a language.
         """
-        lang = _get_preferred_language(lang)
-        _translations = _get_translations(self.query, lang)
-        for translation in _translations:
-            ct_id = translation.content_type.id
-            obj_id = translation.object_id
-            field = translation.field
-            text = translation.text
-            obj = self.mapping[ct_id][obj_id]
-            if field in type(obj)._get_translatable_fields_names():
-                setattr(obj, field, text)
+        lang, is_default = _get_translate_language(lang)
+        if not is_default:
+            _translations = _get_translations(self.query, lang)
+            for translation in _translations:
+                ct_id = translation.content_type.id
+                obj_id = translation.object_id
+                field = translation.field
+                text = translation.text
+                obj = self.mapping[ct_id][obj_id]
+                if field in type(obj)._get_translatable_fields_names():
+                    setattr(obj, field, text)
+        else:
+            self.reset()
 
     def update(self, lang=None):
         """
         Update the translations of the `Context`\ 's `purview` in a language.
         """
-        lang = _get_preferred_language(lang)
-        query = models.Q()
-        _translations = []
-        for address, text in self._get_changed_fields():
-            query |= models.Q(**address)
-            _translations.append(
-                translations.models.Translation(
-                    language=lang, text=text, **address
+        lang, is_default = _get_translate_language(lang)
+        if not is_default:
+            query = models.Q()
+            _translations = []
+            for address, text in self._get_changed_fields():
+                query |= models.Q(**address)
+                _translations.append(
+                    translations.models.Translation(
+                        language=lang, text=text, **address
+                    )
                 )
-            )
-        _get_translations(query, lang).delete()
-        translations.models.Translation.objects.bulk_create(_translations)
+            _get_translations(query, lang).delete()
+            translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):
         """
         Delete the translations of the `Context`\ 's `purview` in a language.
         """
-        lang = _get_preferred_language(lang)
-        _get_translations(self.query, lang).delete()
+        lang, is_default = _get_translate_language(lang)
+        if not is_default:
+            _get_translations(self.query, lang).delete()
 
     def reset(self):
         """

@@ -2,8 +2,8 @@ from django.test import TestCase, override_settings
 from django.utils.translation import override
 
 from translations.languages import _get_supported_language, \
-    _get_default_language, _get_active_language, _get_preferred_language, \
-    _get_all_languages, _get_translation_language_choices
+    _get_default_language, _get_active_language, _get_translate_language, \
+    _get_all_languages, _get_translation_choices
 
 
 class GetsupportedLanguageTest(TestCase):
@@ -33,7 +33,7 @@ class GetsupportedLanguageTest(TestCase):
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )
 
 
@@ -68,7 +68,7 @@ class GetDefaultLanguageTest(TestCase):
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )
 
 
@@ -103,69 +103,69 @@ class GetActiveLanguageTest(TestCase):
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )
 
 
-class GetPreferredLanguageTest(TestCase):
-    """Tests for `_get_preferred_language`."""
+class GetTranslateLanguageTest(TestCase):
+    """Tests for `_get_translate_language`."""
 
     @override(language='en', deactivate=True)
     def test_unaccented_active(self):
         self.assertEqual(
-            _get_preferred_language(),
-            'en'
+            _get_translate_language(),
+            ('en', True)
         )
 
     @override(language='en-us', deactivate=True)
     def test_nonexisting_accented_active(self):
         self.assertEqual(
-            _get_preferred_language(),
-            'en'
+            _get_translate_language(),
+            ('en', True)
         )
 
     @override(language='en-gb', deactivate=True)
     def test_existing_accented_active(self):
         self.assertEqual(
-            _get_preferred_language(),
-            'en-gb'
+            _get_translate_language(),
+            ('en-gb', False)
         )
 
     @override(language='xx', deactivate=True)
     def test_invalid_active(self):
         with self.assertRaises(ValueError) as error:
-            _get_preferred_language()
+            _get_translate_language()
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )
 
     def test_unaccented_custom(self):
         self.assertEqual(
-            _get_preferred_language('en'),
-            'en'
+            _get_translate_language('en'),
+            ('en', True)
         )
 
     def test_nonexisting_accented_custom(self):
         self.assertEqual(
-            _get_preferred_language('en-us'),
-            'en'
+            _get_translate_language('en-us'),
+            ('en', True)
         )
 
     def test_existing_accented_custom(self):
         self.assertEqual(
-            _get_preferred_language('en-gb'),
-            'en-gb'
+            _get_translate_language('en-gb'),
+            ('en-gb', False)
         )
 
     def test_invalid_custom(self):
         with self.assertRaises(ValueError) as error:
-            _get_preferred_language('xx')
+            _get_translate_language('xx')
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )
 
 
@@ -186,12 +186,12 @@ class GetAllLanguages(TestCase):
 
 
 class GetTranslationLanguageChoicesTest(TestCase):
-    """Tests for `_get_translation_language_choices`."""
+    """Tests for `_get_translation_choices`."""
 
     @override_settings(LANGUAGE_CODE='en-us')
     def test_nonexisting_accented_default_language_code(self):
         self.assertListEqual(
-            _get_translation_language_choices(),
+            _get_translation_choices(),
             [
                 (None, '---------'),
                 ('en-gb', 'English (Great Britain)'),
@@ -203,7 +203,7 @@ class GetTranslationLanguageChoicesTest(TestCase):
     @override_settings(LANGUAGE_CODE='en-gb')
     def test_existing_accented_default_language_code(self):
         self.assertListEqual(
-            _get_translation_language_choices(),
+            _get_translation_choices(),
             [
                 (None, '---------'),
                 ('en', 'English'),
@@ -215,9 +215,9 @@ class GetTranslationLanguageChoicesTest(TestCase):
     @override_settings(LANGUAGE_CODE='xx')
     def test_invalid_default_language_code(self):
         with self.assertRaises(ValueError) as error:
-            _get_translation_language_choices()
+            _get_translation_choices()
 
         self.assertEqual(
             error.exception.args[0],
-            'The language code `xx` is not supported.'
+            '`xx` is not a supported language.'
         )
