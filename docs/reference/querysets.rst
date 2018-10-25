@@ -66,14 +66,14 @@ This module contains the querysets for the Translations app.
              <Continent: Asia>,
          ]>
 
-   .. method:: _chain(self, **kwargs)
+   .. method:: _chain(**kwargs)
 
       Return a copy of the current :class:`TranslatableQuerySet`.
 
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._chain` method.
-      It copies custom translation configurations from
+      It copies the custom translation configurations from
       the current :class:`TranslatableQuerySet` to
       the chained :class:`TranslatableQuerySet`.
 
@@ -116,17 +116,17 @@ This module contains the querysets for the Translations app.
              <Continent: Asia>,
          ]>
 
-   .. method:: _fetch_all(self)
+   .. method:: _fetch_all()
 
-      Evaluate the queryset.
+      Evaluate the :class:`TranslatableQuerySet`.
 
       This is an overriden version of
-      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._fetch_all` method.
-      It translates the instances of the queryset and their specified
-      relations in the evaluation if the queryset is in translate mode.
+      It translates the instances of the queryset and their related
+      instances in the applied language.
 
-      To evaluate the queryset in normal mode:
+      To evaluate the :class:`TranslatableQuerySet` in the default language:
 
       .. testsetup:: _fetch_all
 
@@ -158,7 +158,7 @@ This module contains the querysets for the Translations app.
              <Continent: Asia>,
          ]>
 
-      To evaluate the queryset in translate mode:
+      To evaluate the :class:`TranslatableQuerySet` in the applied language:
 
       .. testsetup:: _fetch_all
 
@@ -190,7 +190,7 @@ This module contains the querysets for the Translations app.
              <Continent: Asien>,
          ]>
 
-   .. method:: apply(self, lang=None)
+   .. method:: apply(lang=None)
 
       Apply a language on the queryset.
 
@@ -374,7 +374,7 @@ This module contains the querysets for the Translations app.
                 <Country: Deutschland>,
             ]>
 
-   .. method:: filter(self, *args, **kwargs)
+   .. method:: filter(*args, **kwargs)
 
       Filter the queryset with lookups and queries.
 
@@ -457,7 +457,7 @@ This module contains the querysets for the Translations app.
              <Continent: Europa>,
          ]>
 
-   .. method:: exclude(self, *args, **kwargs)
+   .. method:: exclude(*args, **kwargs)
 
       Exclude the queryset with lookups and queries.
 

@@ -34,7 +34,7 @@ class TranslatableQuerySet(query.QuerySet):
         return clone
 
     def _fetch_all(self):
-        """Evaluate the queryset."""
+        """Evaluate the `TranslatableQuerySet`."""
         super(TranslatableQuerySet, self)._fetch_all()
 
         if self._trans_lang == _get_default_language():
