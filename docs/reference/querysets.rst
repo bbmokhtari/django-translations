@@ -10,9 +10,11 @@ This module contains the querysets for the Translations app.
 
    A queryset which provides custom translation functionalities.
 
-   Provides functionalities like :meth:`apply` and :meth:`translate_related`
-   to evaluate the :class:`TranslatableQuerySet` in a specific language and
-   also some other functionalities like :meth:`filter` and :meth:`exclude`
+   Provides functionalities like
+   :meth:`translate` and :meth:`translate_related`
+   to evaluate the :class:`TranslatableQuerySet` in a specific language
+   and also some other functionalities like
+   :meth:`query_in`, :meth:`filter` and :meth:`exclude`
    to filter the :class:`TranslatableQuerySet` in a specific language.
 
    .. method:: __init__(*args, **kwargs)
@@ -127,10 +129,7 @@ This module contains the querysets for the Translations app.
       some of their relations
       (specified using the :meth:`translate_related` method)
       in a language
-      (specified using the :meth:`apply` method).
-
-      To evaluate the :class:`TranslatableQuerySet`
-      (using the default language):
+      (specified using the :meth:`translate` method).
 
       .. testsetup:: _fetch_all
 
@@ -145,6 +144,9 @@ This module contains the querysets for the Translations app.
              city_fields=['name', 'denonym'],
              langs=['de']
          )
+
+      To evaluate the :class:`TranslatableQuerySet`
+      (using the default language):
 
       .. testcode:: _fetch_all
 
@@ -165,20 +167,6 @@ This module contains the querysets for the Translations app.
       To evaluate the :class:`TranslatableQuerySet`
       (using the applied language):
 
-      .. testsetup:: _fetch_all
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
       .. testcode:: _fetch_all
 
          from sample.models import Continent
@@ -195,24 +183,26 @@ This module contains the querysets for the Translations app.
              <Continent: Asien>,
          ]>
 
-   .. method:: apply(lang=None)
+   .. method:: translate(lang=None)
 
-      Apply a language on the :class:`TranslatableQuerySet`.
+      Translate the :class:`TranslatableQuerySet` in a language.
 
       Causes the instances of the :class:`TranslatableQuerySet` to be
       translated in the specified language in the evaluation.
 
-      :param lang: The language to apply on the :class:`TranslatableQuerySet`.
+      :param lang: The language to translate the :class:`TranslatableQuerySet`
+          in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :return: The :class:`TranslatableQuerySet` which the language is applied on.
+      :return: The :class:`TranslatableQuerySet` which is translated in the
+          specified language.
       :rtype: TranslatableQuerySet
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      To apply a language on the :class:`TranslatableQuerySet`:
+      To translate :class:`TranslatableQuerySet` in a language:
 
-      .. testsetup:: apply
+      .. testsetup:: translate
 
          from tests.sample import create_samples
 
@@ -226,16 +216,16 @@ This module contains the querysets for the Translations app.
              langs=['de']
          )
 
-      .. testcode:: apply
+      .. testcode:: translate
 
          from sample.models import Continent
 
-         # apply a language on the queryset
+         # translate the queryset
          continents = Continent.objects.translate(lang='de')
 
          print(continents)
 
-      .. testoutput:: apply
+      .. testoutput:: translate
 
          <TranslatableQuerySet [
              <Continent: Europa>,
@@ -373,7 +363,7 @@ This module contains the querysets for the Translations app.
                 'countries',
             ).translate('de')
 
-            # Just `apply` on the relation again after querying
+            # Just `translate` the relation again after querying
             print(continents[0].countries.exclude(name='').translate('de'))
 
          .. testoutput:: translate_related
