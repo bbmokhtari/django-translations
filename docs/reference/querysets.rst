@@ -250,17 +250,19 @@ This module contains the querysets for the Translations app.
 
    .. method:: translate_related(*fields)
 
-      Translate some relations of the queryset.
+      Translate some relations of the :class:`TranslatableQuerySet`.
 
-      Causes the queryset's specified relations to be translated while
-      evaluating the queryset.
+      Causes the relations of the :class:`TranslatableQuerySet` to be
+      translated in the evaluation.
 
-      :param relations: The relations of the queryset to translate.
+      :param relations: The relations of the :class:`TranslatableQuerySet`
+          to translate.
       :type relations: list(str)
-      :return: The queryset which the relations of are translated.
+      :return: The :class:`TranslatableQuerySet` which the relations of will
+          be translated.
       :rtype: TranslatableQuerySet
 
-      To translate some relations of the queryset:
+      To translate some relations of the :class:`TranslatableQuerySet`:
 
       .. testsetup:: translate_related
 

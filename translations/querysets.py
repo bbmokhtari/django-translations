@@ -60,17 +60,17 @@ class TranslatableQuerySet(query.QuerySet):
         return clone
 
     def translate_related(self, *fields):
-        """Translate some relations of the queryset."""
+        """Translate some relations of the `TranslatableQuerySet`."""
         clone = self.all()
         clone._trans_rels = () if fields == (None,) else fields
         return clone
 
     def filter(self, *args, **kwargs):
-        """Filter the queryset with lookups and queries."""
+        """Filter the `TranslatableQuerySet` with lookups and queries."""
         query = _fetch_translations_query_getter(self.model, self._trans_lang)(*args, **kwargs)
         return super(TranslatableQuerySet, self).filter(query)
 
     def exclude(self, *args, **kwargs):
-        """Exclude the queryset with lookups and queries."""
+        """Exclude the `TranslatableQuerySet` with lookups and queries."""
         query = _fetch_translations_query_getter(self.model, self._trans_lang)(*args, **kwargs)
         return super(TranslatableQuerySet, self).exclude(query)
