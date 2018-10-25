@@ -14,7 +14,7 @@ This module contains the querysets for the Translations app.
    :meth:`translate` and :meth:`translate_related`
    to evaluate the :class:`TranslatableQuerySet`
    and also some other functionalities like
-   :meth:`query_in`, :meth:`filter` and :meth:`exclude`
+   :meth:`query`, :meth:`filter` and :meth:`exclude`
    to query the :class:`TranslatableQuerySet`.
 
    .. method:: __init__(*args, **kwargs)
@@ -372,26 +372,83 @@ This module contains the querysets for the Translations app.
                 <Country: Deutschland>,
             ]>
 
+   .. method:: inquire(lang=None)
+
+      Inquire the :class:`TranslatableQuerySet` in a language.
+
+      Causes the :class:`TranslatableQuerySet` to be
+      inquired in the specified language.
+
+      :param lang: The language to inquire the :class:`TranslatableQuerySet`
+          in.
+          ``None`` means use the :term:`active language` code.
+      :type lang: str or None
+      :return: The :class:`TranslatableQuerySet` which will be inquired in the
+          specified language.
+      :rtype: TranslatableQuerySet
+      :raise ValueError: If the language code is not included in
+          the :data:`~django.conf.settings.LANGUAGES` setting.
+
+      To inquire the :class:`TranslatableQuerySet` in a language:
+
+      .. testsetup:: inquire
+
+         from tests.sample import create_samples
+
+         create_samples(
+             continent_names=['europe', 'asia'],
+             country_names=['germany', 'south korea'],
+             city_names=['cologne', 'seoul'],
+             continent_fields=['name', 'denonym'],
+             country_fields=['name', 'denonym'],
+             city_fields=['name', 'denonym'],
+             langs=['de']
+         )
+
+      .. testcode:: inquire
+
+         from django.db.models import Q
+         from sample.models import Continent
+
+         # query the queryset
+         continents = Continent.objects.inquire(lang='de').filter(
+             Q(name='Europa') | Q(name='Asien'))
+
+         print(continents)
+
+      .. testoutput:: inquire
+
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
+
+      .. note::
+
+         Inquiring only affects the :attr:`translatable fields \
+         <translations.models.Translatable.TranslatableMeta.fields>` that have
+         a translation.
+
    .. method:: filter(*args, **kwargs)
 
-      Filter the queryset with lookups and queries.
+      Filter the :class:`TranslatableQuerySet`.
 
       This is an overriden version of
-      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query.QuerySet.filter` method.
-      It filters the queryset in the specified language if the queryset is in
-      translate mode.
+      It filters the :class:`TranslatableQuerySet` in the inquire language.
 
       :param args: The arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query.QuerySet.filter` method.
       :type args: list
       :param kwargs: The keyword arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query.QuerySet.filter` method.
       :type kwargs: dict
 
-      To filter the queryset in normal mode:
+      To filter the :class:`TranslatableQuerySet`
+      (using the default language):
 
       .. testsetup:: filter
 
@@ -413,7 +470,7 @@ This module contains the querysets for the Translations app.
 
          # filter the queryset
          continents = Continent.objects.filter(
-            countries__name__icontains='Ger')
+             countries__name__icontains='Ger')
 
          print(continents)
 
@@ -423,7 +480,8 @@ This module contains the querysets for the Translations app.
              <Continent: Europe>,
          ]>
 
-      To filter the queryset in translate mode:
+      To filter the :class:`TranslatableQuerySet`
+      (using a inquire language):
 
       .. testsetup:: filter
 
@@ -444,8 +502,8 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # filter the queryset
-         continents = Continent.objects.query_in('de').filter(
-            countries__name__icontains='Deutsch')
+         continents = Continent.objects.inquire('de').filter(
+             countries__name__icontains='Deutsch')
 
          print(continents)
 
@@ -457,24 +515,24 @@ This module contains the querysets for the Translations app.
 
    .. method:: exclude(*args, **kwargs)
 
-      Exclude the queryset with lookups and queries.
+      Exclude the :class:`TranslatableQuerySet`.
 
       This is an overriden version of
-      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query.QuerySet.exclude` method.
-      It excludes the queryset in the specified language if the queryset is in
-      translate mode.
+      It excludes the :class:`TranslatableQuerySet` in the inquire language.
 
       :param args: The arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query.QuerySet.exclude` method.
       :type args: list
       :param kwargs: The keyword arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query.QuerySet.exclude` method.
       :type kwargs: dict
 
-      To exclude the queryset in normal mode:
+      To exclude the :class:`TranslatableQuerySet`
+      (using the default language):
 
       .. testsetup:: exclude
 
@@ -506,7 +564,8 @@ This module contains the querysets for the Translations app.
              <Continent: Asia>,
          ]>
 
-      To exclude the queryset in translate mode:
+      To exclude the :class:`TranslatableQuerySet`
+      (using a translation language):
 
       .. testsetup:: exclude
 
@@ -527,7 +586,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # exclude the queryset
-         continents = Continent.objects.query_in('de').exclude(
+         continents = Continent.objects.inquire('de').exclude(
             countries__name__icontains='Deutsch')
 
          print(continents)

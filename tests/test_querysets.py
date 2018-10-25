@@ -1009,7 +1009,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().filter(Q(name='Europa') | Q(name='Asien'))
+        continents = Continent.objects.inquire().filter(Q(name='Europa') | Q(name='Asien'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1042,7 +1042,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().filter(Q(countries__name='Deutschland') | Q(countries__name='Südkorea'))
+        continents = Continent.objects.inquire().filter(Q(countries__name='Deutschland') | Q(countries__name='Südkorea'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1075,7 +1075,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().filter(Q(countries__cities__name='Köln') | Q(countries__cities__name='Seül'))
+        continents = Continent.objects.inquire().filter(Q(countries__cities__name='Köln') | Q(countries__cities__name='Seül'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1108,7 +1108,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().filter(Q(countries__name='Deutschland', countries__cities__name='Köln') | Q(countries__name='Südkorea', countries__cities__name='Seül'))
+        continents = Continent.objects.inquire().filter(Q(countries__name='Deutschland', countries__cities__name='Köln') | Q(countries__name='Südkorea', countries__cities__name='Seül'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1140,7 +1140,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').filter(Q(name='Europa') | Q(name='Asien'))
+        continents = Continent.objects.inquire('de').filter(Q(name='Europa') | Q(name='Asien'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1172,7 +1172,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').filter(Q(countries__name='Deutschland') | Q(countries__name='Südkorea'))
+        continents = Continent.objects.inquire('de').filter(Q(countries__name='Deutschland') | Q(countries__name='Südkorea'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1204,7 +1204,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').filter(Q(countries__cities__name='Köln') | Q(countries__cities__name='Seül'))
+        continents = Continent.objects.inquire('de').filter(Q(countries__cities__name='Köln') | Q(countries__cities__name='Seül'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1236,7 +1236,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').filter(Q(countries__name='Deutschland', countries__cities__name='Köln') | Q(countries__name='Südkorea', countries__cities__name='Seül'))
+        continents = Continent.objects.inquire('de').filter(Q(countries__name='Deutschland', countries__cities__name='Köln') | Q(countries__name='Südkorea', countries__cities__name='Seül'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1269,7 +1269,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().exclude(Q(name='Afrika') | Q(name='Nordamerika'))
+        continents = Continent.objects.inquire().exclude(Q(name='Afrika') | Q(name='Nordamerika'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1302,7 +1302,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().exclude(Q(countries__name='Ägypten') | Q(countries__name='Mexiko'))
+        continents = Continent.objects.inquire().exclude(Q(countries__name='Ägypten') | Q(countries__name='Mexiko'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1335,7 +1335,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().exclude(Q(countries__cities__name='Cairo') | Q(countries__cities__name='Mexiko Stadtisch'))
+        continents = Continent.objects.inquire().exclude(Q(countries__cities__name='Cairo') | Q(countries__cities__name='Mexiko Stadtisch'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1368,7 +1368,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in().exclude(Q(countries__name='Ägypten', countries__cities__name='Cairo') | Q(countries__name='Mexiko', countries__cities__name='Mexiko Stadtisch'))
+        continents = Continent.objects.inquire().exclude(Q(countries__name='Ägypten', countries__cities__name='Cairo') | Q(countries__name='Mexiko', countries__cities__name='Mexiko Stadtisch'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1400,7 +1400,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').exclude(Q(name='Afrika') | Q(name='Nordamerika'))
+        continents = Continent.objects.inquire('de').exclude(Q(name='Afrika') | Q(name='Nordamerika'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1432,7 +1432,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').exclude(Q(countries__name='Ägypten') | Q(countries__name='Mexiko'))
+        continents = Continent.objects.inquire('de').exclude(Q(countries__name='Ägypten') | Q(countries__name='Mexiko'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1464,7 +1464,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').exclude(Q(countries__cities__name='Cairo') | Q(countries__cities__name='Mexiko Stadtisch'))
+        continents = Continent.objects.inquire('de').exclude(Q(countries__cities__name='Cairo') | Q(countries__cities__name='Mexiko Stadtisch'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1496,7 +1496,7 @@ class TranslatableQuerySetTest(TestCase):
             langs=['de', 'tr']
         )
 
-        continents = Continent.objects.query_in('de').exclude(Q(countries__name='Ägypten', countries__cities__name='Cairo') | Q(countries__name='Mexiko', countries__cities__name='Mexiko Stadtisch'))
+        continents = Continent.objects.inquire('de').exclude(Q(countries__name='Ägypten', countries__cities__name='Cairo') | Q(countries__name='Mexiko', countries__cities__name='Mexiko Stadtisch'))
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
