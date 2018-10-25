@@ -4,9 +4,8 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.utils import _get_supported_language, \
-    _get_default_language, _get_active_language, _get_preferred_language, \
-    _get_all_languages, _get_dissected_lookup
+from translations.utils import _get_default_language, _get_dissected_lookup
+from translations.lang import _get_lang_intention
 
 
 __docformat__ = 'restructuredtext'
@@ -103,29 +102,11 @@ class TQ(Q):
     logically (using `&` and `|`).
     """
 
-    class LANG:
-        DEFAULT = 'L:D'
-        ACTIVE  = 'L:A'
-        LOOSE   = 'L:O'
-        ALL     = 'L:L'
-
     def __init__(self, *args, **kwargs):
         """Initialize a `TQ`."""
         lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
-        if lang == self.LANG.DEFAULT:
-            lang = _get_default_language()
-        elif lang == self.LANG.ACTIVE:
-            lang = _get_active_language()
-        elif lang == self.LANG.LOOSE:
-            lang = [_get_default_language(), _get_active_language()]
-        elif lang == self.LANG.ALL:
-            lang = _get_all_languages()
-        elif isinstance(lang, (list, tuple)):
-            lang = [_get_supported_language(l) for l in lang]
-        else:
-            lang = _get_preferred_language(lang)
-        self.lang = lang
+        self.lang = _get_lang_intention(lang)
 
     def __deepcopy__(self, memodict):
         """Return a copy of the `TQ` object."""
