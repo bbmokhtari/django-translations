@@ -221,7 +221,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # translate the queryset
-         continents = Continent.objects.translate(lang='de')
+         continents = Continent.objects.translate('de')
 
          print(continents)
 
@@ -276,7 +276,7 @@ This module contains the querysets for the Translations app.
          continents = Continent.objects.translate_related(
              'countries',
              'countries__cities',
-         ).translate(lang='de')
+         ).translate('de')
 
          print(continents)
          print(continents[0].countries.all())
@@ -411,7 +411,7 @@ This module contains the querysets for the Translations app.
          from sample.models import Continent
 
          # query the queryset
-         continents = Continent.objects.probe(lang='de').filter(
+         continents = Continent.objects.probe('de').filter(
              Q(name='Europa') | Q(name='Asien'))
 
          print(continents)
@@ -425,7 +425,7 @@ This module contains the querysets for the Translations app.
 
       .. note::
 
-         Inquiring only affects the :attr:`translatable fields \
+         Probing only affects the :attr:`translatable fields \
          <translations.models.Translatable.TranslatableMeta.fields>` that have
          a translation.
 
