@@ -125,8 +125,8 @@ This module contains the querysets for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._fetch_all` method.
-      It translates the instances of the :class:`TranslatableQuerySet` and
-      some of their relations
+      It translates the :class:`TranslatableQuerySet`
+      and some of its relations
       (specified using the :meth:`translate_related` method)
       in a language
       (specified using the :meth:`translate` method).
@@ -187,14 +187,14 @@ This module contains the querysets for the Translations app.
 
       Translate the :class:`TranslatableQuerySet` in a language.
 
-      Causes the instances of the :class:`TranslatableQuerySet` to be
+      Causes the :class:`TranslatableQuerySet` to be
       translated in the specified language in the evaluation.
 
       :param lang: The language to translate the :class:`TranslatableQuerySet`
           in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :return: The :class:`TranslatableQuerySet` which is translated in the
+      :return: The :class:`TranslatableQuerySet` which will be translated in the
           specified language.
       :rtype: TranslatableQuerySet
       :raise ValueError: If the language code is not included in
