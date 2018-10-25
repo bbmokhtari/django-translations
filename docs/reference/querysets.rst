@@ -123,11 +123,14 @@ This module contains the querysets for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._fetch_all` method.
-      It translates the instances of the queryset and some of their relations
-      (specified using the :meth:`translate_related` method) in a language
+      It translates the instances of the :class:`TranslatableQuerySet` and
+      some of their relations
+      (specified using the :meth:`translate_related` method)
+      in a language
       (specified using the :meth:`apply` method).
 
-      To evaluate the :class:`TranslatableQuerySet` in the default language:
+      To evaluate the :class:`TranslatableQuerySet`
+      (using the default language):
 
       .. testsetup:: _fetch_all
 
@@ -159,7 +162,8 @@ This module contains the querysets for the Translations app.
              <Continent: Asia>,
          ]>
 
-      To evaluate the :class:`TranslatableQuerySet` in the applied language:
+      To evaluate the :class:`TranslatableQuerySet`
+      (using the applied language):
 
       .. testsetup:: _fetch_all
 
