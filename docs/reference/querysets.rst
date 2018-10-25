@@ -10,25 +10,30 @@ This module contains the querysets for the Translations app.
 
    A queryset which provides custom translation functionalities.
 
+   Provides functionalities like :meth:`apply` and :meth:`translate_related`
+   to evaluate the queryset in a specific language and also
+   some other functionalities like :meth:`filter` and :meth:`exclude` to
+   filter the queryset in a specific language.
+
    .. method:: __init__(*args, **kwargs)
 
-      Initialize the queryset.
+      Initialize a :class:`TranslatableQuerySet`.
 
       This is an overriden version of
-      the :class:`default queryset <django.db.models.query.QuerySet>`\ 's
+      the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query.QuerySet.__init__` method.
       It defines custom translation configurations on the queryset.
 
       :param args: The arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query.QuerySet.__init__` method.
       :type args: list
       :param kwargs: The keyword arguments of
-          the :class:`default queryset <django.db.models.query.QuerySet>`\
+          the :class:`~django.db.models.query.QuerySet`\
           's :meth:`~django.db.models.query.QuerySet.__init__` method.
       :type kwargs: dict
 
-      To get the queryset's custom translation configurations:
+      To initialize a :class:`TranslatableQuerySet`:
 
       .. testsetup:: __init__
 
