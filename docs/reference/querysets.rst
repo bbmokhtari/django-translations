@@ -123,8 +123,9 @@ This module contains the querysets for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
       :meth:`~django.db.models.query._fetch_all` method.
-      It translates the instances of the queryset and their related
-      instances in the applied language.
+      It translates the instances of the queryset and some of their relations
+      (specified using the :meth:`translate_related` method) in a language
+      (specified using the :meth:`apply` method).
 
       To evaluate the :class:`TranslatableQuerySet` in the default language:
 
@@ -192,19 +193,20 @@ This module contains the querysets for the Translations app.
 
    .. method:: apply(lang=None)
 
-      Apply a language on the queryset.
+      Apply a language on the :class:`TranslatableQuerySet`.
 
-      Causes the queryset to query the database in the specified language.
+      Causes the :class:`TranslatableQuerySet` to translate its
+      instances in the specified language in the evaluation.
 
-      :param lang: The language to apply on the queryset.
+      :param lang: The language to apply on the :class:`TranslatableQuerySet`.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
-      :return: The queryset which the language is applied on.
+      :return: The :class:`TranslatableQuerySet` which the language is applied on.
       :rtype: TranslatableQuerySet
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      To apply a language on the queryset:
+      To apply a language on the :class:`TranslatableQuerySet`:
 
       .. testsetup:: apply
 
@@ -224,7 +226,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # apply `German` on the queryset
+         # apply a language on the queryset
          continents = Continent.objects.apply(lang='de')
 
          print(continents)

@@ -54,7 +54,7 @@ class TranslatableQuerySet(query.QuerySet):
             self._trans_cache = True
 
     def apply(self, lang=None):
-        """Apply a language on the queryset."""
+        """Apply a language on the `TranslatableQuerySet`."""
         clone = self.all()
         clone._trans_lang = _get_preferred_language(lang)
         return clone
