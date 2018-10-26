@@ -147,7 +147,8 @@ This module contains the languages for the Translations app.
       )
 
    To get the :term:`supported language` code of the :term:`active language`
-   code:
+   code
+   (assume ``en``):
 
    .. testcode:: _get_active_language
 
@@ -348,7 +349,7 @@ This module contains the languages for the Translations app.
       )
 
    To get the :term:`supported language` code of a translate language code
-   (active language code):
+   (the :term:`active language` code - assume ``en``):
 
    .. testcode:: _get_translate_language
 
@@ -408,7 +409,7 @@ This module contains the languages for the Translations app.
       )
 
    To get the :term:`supported language` code(s) of some probe language code(s)
-   (active language code):
+   (the :term:`active language` code - assume ``en``):
 
    .. testcode:: _get_probe_language
 
@@ -457,3 +458,181 @@ This module contains the languages for the Translations app.
           'en',
           'en-gb',
       ]
+
+.. class:: _TRANSLATE
+
+   A class which provides standard translate language codes.
+
+   .. attribute:: DEFAULT
+
+      Return the :term:`default language` code.
+
+      To get the :term:`default language` code.
+
+      .. testcode:: translate_default
+
+         from translations.languages import translate
+
+         # get the default language
+         default = translate.DEFAULT
+
+         print(default)
+
+      .. testoutput:: translate_default
+
+         en
+
+   .. attribute:: ACTIVE
+
+      Return the :term:`active language` code.
+
+      To get the :term:`active language` code.
+      (assume ``en``)
+
+      .. testcode:: translate_active
+
+         from translations.languages import translate
+
+         # get the active language
+         active = translate.ACTIVE
+
+         print(active)
+
+      .. testoutput:: translate_active
+
+         en
+
+.. class:: _PROBE
+
+   A class which provides standard probe language codes.
+
+   .. attribute:: DEFAULT
+
+      Return the :term:`default language` code.
+
+      To get the :term:`default language` code.
+
+      .. testcode:: probe_default
+
+         from translations.languages import probe
+
+         # get the default language
+         default = probe.DEFAULT
+
+         print(default)
+
+      .. testoutput:: probe_default
+
+         en
+
+   .. attribute:: ACTIVE
+
+      Return the :term:`active language` code.
+
+      To get the :term:`active language` code.
+      (assume ``en``)
+
+      .. testcode:: probe_active
+
+         from translations.languages import probe
+
+         # get the active language
+         active = probe.ACTIVE
+
+         print(active)
+
+      .. testoutput:: probe_active
+
+         en
+
+   .. attribute:: DEFAULT_ACTIVE
+
+      Return the :term:`default language` and :term:`active language` codes.
+
+      To get the :term:`default language` and :term:`active language` codes.
+      (assume ``en``)
+
+      .. testcode:: probe_default_active_1
+
+         from translations.languages import probe
+
+         # get the default and active language
+         defact = probe.DEFAULT_ACTIVE
+
+         print(defact)
+
+      .. testoutput:: probe_default_active_1
+
+         en
+
+      To get the :term:`default language` and :term:`active language` codes.
+      (assume ``de``)
+
+      .. testsetup:: probe_default_active_2
+
+         from django.utils.translation import activate
+
+         activate('de')
+
+      .. testcode:: probe_default_active_2
+
+         from translations.languages import probe
+
+         # get the default and active language
+         defact = probe.DEFAULT_ACTIVE
+
+         print(defact)
+
+      .. testoutput:: probe_default_active_2
+
+         ['en', 'de']
+
+   .. attribute:: TRANSLATION
+
+      Return the :term:`translation language` codes.
+
+      To get the :term:`translation language` codes.
+
+      .. testcode:: probe_translation
+
+         from translations.languages import probe
+
+         # get the translation language
+         translation = probe.TRANSLATION
+
+         print(translation)
+
+      .. testoutput:: probe_translation
+
+         ['en-gb', 'de', 'tr']
+
+   .. attribute:: ALL
+
+      Return all the `supported language` codes.
+
+      To get all the :term:`supported language` codes.
+
+      .. testcode:: probe_all
+
+         from translations.languages import probe
+
+         # get all the language
+         all = probe.ALL
+
+         print(all)
+
+      .. testoutput:: probe_all
+
+         ['en', 'en-gb', 'de', 'tr']
+
+.. data:: translate
+
+   An object which provides standard translate language codes.
+
+   An instance of :class:`_TRANSLATE`
+
+.. data:: probe
+
+   An object which provides standard probe language codes.
+
+   An instance of :class:`_PROBE`

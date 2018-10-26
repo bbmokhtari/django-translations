@@ -165,7 +165,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To evaluate the :class:`TranslatableQuerySet`
-      (using the :term:`active language` - assume 'en'):
+      (using the :term:`active language` - assume ``en``):
 
       .. testcode:: _fetch_all
 
@@ -234,7 +234,7 @@ This module contains the querysets for the Translations app.
          )
 
       To translate the :class:`TranslatableQuerySet` in a language
-      (using the :term:`active language` - assume 'en'):
+      (using the :term:`active language` - assume ``en``):
 
       .. testcode:: translate
 
@@ -443,7 +443,7 @@ This module contains the querysets for the Translations app.
          )
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
-      (using the :term:`active language` - assume 'en'):
+      (using the :term:`active language` - assume ``en``):
 
       .. testcode:: probe
 
@@ -569,7 +569,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To filter the :class:`TranslatableQuerySet`
-      (using the :term:`active language` - assume 'en'):
+      (using the :term:`active language` - assume ``en``):
 
       .. testcode:: filter
 
@@ -677,7 +677,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To exclude the :class:`TranslatableQuerySet`
-      (using the :term:`active language` - assume 'en'):
+      (using the :term:`active language` - assume ``en``):
 
       .. testcode:: exclude
 

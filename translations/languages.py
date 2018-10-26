@@ -107,7 +107,7 @@ def _get_probe_language(lang=None):
 
 
 class _TRANSLATE:
-    """A class which contains standard translate language codes."""
+    """A class which provides standard translate language codes."""
 
     @property
     def DEFAULT(self):
@@ -121,7 +121,7 @@ class _TRANSLATE:
 
 
 class _PROBE:
-    """A class which contains standard probe language codes."""
+    """A class which provides standard probe language codes."""
 
     @property
     def DEFAULT(self):
@@ -136,7 +136,10 @@ class _PROBE:
     @property
     def DEFAULT_ACTIVE(self):
         """Return the `default language` and `active language` codes."""
-        return [self.DEFAULT, self.ACTIVE]
+        if self.DEFAULT != self.ACTIVE:
+            return [self.DEFAULT, self.ACTIVE]
+        else:
+            return self.DEFAULT
 
     @property
     def TRANSLATION(self):
@@ -149,8 +152,8 @@ class _PROBE:
         return _get_all_languages()
 
 
-trans = _TRANSLATE
-"""An object which contains standard translate language codes."""
+translate = _TRANSLATE()
+"""An object which provides standard translate language codes."""
 
-probe = _PROBE
-"""An object which contains standard probe language codes."""
+probe = _PROBE()
+"""An object which provides standard probe language codes."""
