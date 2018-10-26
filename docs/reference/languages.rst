@@ -198,7 +198,7 @@ This module contains the languages for the Translations app.
       from translations.languages import _get_translate_language
 
       # get the preferred language
-      preferred, is_default = _get_translate_language()
+      preferred = _get_translate_language()
 
       print(preferred)
 
@@ -214,7 +214,7 @@ This module contains the languages for the Translations app.
       from translations.languages import _get_translate_language
 
       # get the preferred language
-      preferred, is_default = _get_translate_language('en-us')
+      preferred = _get_translate_language('en-us')
 
       print(preferred)
 
