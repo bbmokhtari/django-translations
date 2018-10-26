@@ -463,6 +463,18 @@ This module contains the languages for the Translations app.
 
    A class which provides standard translate language codes.
 
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
    .. attribute:: DEFAULT
 
       Return the :term:`default language` code.
@@ -505,6 +517,18 @@ This module contains the languages for the Translations app.
 .. class:: _PROBE
 
    A class which provides standard probe language codes.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
 
    .. attribute:: DEFAULT
 
