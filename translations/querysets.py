@@ -2,7 +2,8 @@
 
 from django.db.models import query
 
-from translations.languages import _get_default_language
+from translations.languages import _get_default_language, \
+    _get_translate_language, _get_probe_language
 from translations.query import _fetch_translations_query_getter
 from translations.context import Context
 
@@ -58,7 +59,7 @@ class TranslatableQuerySet(query.QuerySet):
     def translate(self, lang=None):
         """Translate the `TranslatableQuerySet` in a language."""
         clone = self.all()
-        clone._trans_lang = lang
+        clone._trans_lang = _get_translate_language(lang)
         return clone
 
     def translate_related(self, *fields):
@@ -70,7 +71,7 @@ class TranslatableQuerySet(query.QuerySet):
     def probe(self, lang=None):
         """Probe the `TranslatableQuerySet` in a language."""
         clone = self.all()
-        clone._trans_prob = lang
+        clone._trans_prob = _get_probe_language(lang)
         return clone
 
     def filter(self, *args, **kwargs):

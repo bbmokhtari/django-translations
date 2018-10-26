@@ -4,19 +4,19 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.languages import _get_probe_language
+from translations.languages import _get_default_language
 from translations.utils import _get_dissected_lookup
 
 
 __docformat__ = 'restructuredtext'
 
 
-def _fetch_translations_query_getter(model, lang=None):
+def _fetch_translations_query_getter(model, lang):
     """
     Return the translations query getter specialized for a model and some
     language.
     """
-    lang, is_default, is_iter = _get_probe_language(lang)
+    default = _get_default_language()
 
     def _get_translations_query(*args, **kwargs):
         connector = kwargs.pop('_connector', None)
@@ -30,11 +30,15 @@ def _fetch_translations_query_getter(model, lang=None):
                 if dissected['translatable']:
                     query_default = False
                     query_languages = None
-                    if is_iter:
-                        query_default = is_default
-                        query_languages = lang
+                    if isinstance(lang, (list, tuple)):
+                        query_languages = []
+                        for x in lang:
+                            if x == default:
+                                query_default = True
+                            else:
+                                query_languages.append(x)
                     else:
-                        if is_default:
+                        if lang == default:
                             query_default = True
                             query_languages = None
                         else:

@@ -2078,7 +2078,16 @@ class TranslatableQuerySetTest(TestCase):
     def test_translate_no_lang(self):
         continents = Continent.objects.translate()
 
-        self.assertEqual(continents._trans_lang, None)
+        self.assertEqual(continents._trans_lang, 'de')
+
+    def test_translate_invalid_lang(self):
+        with self.assertRaises(ValueError) as error:
+            Continent.objects.translate('xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     def test_translate_related(self):
         continents = Continent.objects.translate_related(
@@ -2087,4 +2096,24 @@ class TranslatableQuerySetTest(TestCase):
         self.assertTupleEqual(
             continents._trans_rels,
             ('countries', 'countries__cities',)
+        )
+
+    def test_probe(self):
+        continents = Continent.objects.probe('de')
+
+        self.assertEqual(continents._trans_prob, 'de')
+
+    @override(language='de', deactivate=True)
+    def test_probe_no_lang(self):
+        continents = Continent.objects.probe()
+
+        self.assertEqual(continents._trans_prob, 'de')
+
+    def test_probe_invalid_lang(self):
+        with self.assertRaises(ValueError) as error:
+            Continent.objects.probe('xx')
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
         )

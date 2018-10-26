@@ -92,28 +92,17 @@ def _get_translation_choices():
 def _get_translate_language(lang=None):
     """Return the `supported language` code of a preferred language code."""
     if lang is None:
-        lang =  _get_active_language()
+        return _get_active_language()
     else:
-        lang = _get_supported_language(lang)
-    return lang
+        return _get_supported_language(lang)
 
 
 def _get_probe_language(lang=None):
     """Return the `supported language` code of a preferred language code."""
-    default = _get_default_language()
     if isinstance(lang, (list, tuple)):
-        trans_langs = []
-        includes_default = False
-        for l in lang:
-            l = _get_supported_language(l)
-            if l == default:
-                includes_default = True
-            else:
-                trans_langs.append(l)
-        return (trans_langs, includes_default, True)
+        return [_get_supported_language(x) for x in lang]
     else:
-        lang = _get_translate_language(lang)
-        return (lang, lang == default, False)
+        return _get_translate_language(lang)
 
 
 class _LANGUAGE:
