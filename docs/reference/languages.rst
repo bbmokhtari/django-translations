@@ -187,7 +187,7 @@ This module contains the languages for the Translations app.
 
       from translations.languages import _get_all_languages
 
-      # get the supported languages
+      # get all the languages
       languages = _get_all_languages()
 
       print(languages)
@@ -226,7 +226,7 @@ This module contains the languages for the Translations app.
 
       from translations.languages import _get_all_choices
 
-      # get the supported language choices
+      # get all the language choices
       choices = _get_all_choices()
 
       print(choices)
@@ -321,19 +321,19 @@ This module contains the languages for the Translations app.
 
 .. function:: _get_translate_language(lang=None)
 
-   Return the :term:`supported language` code of a preferred language code.
+   Return the :term:`supported language` code of a translate language code.
 
-   If the preferred language code is passed in, it returns
+   If the translate language code is passed in, it returns
    the :term:`supported language` code of it, otherwise it returns
    the :term:`supported language` code of the :term:`active language` code.
 
-   :param lang: The preferred language code to get
+   :param lang: The translate language code to get
        the :term:`supported language` code of.
        ``None`` means use the :term:`active language` code.
    :type lang: str or None
-   :return: The :term:`supported language` code of the preferred language code.
+   :return: The :term:`supported language` code of the translate language code.
    :rtype: str
-   :raise ValueError: If the preferred language code is not supported.
+   :raise ValueError: If the translate language code is not supported.
 
    Considering this setting:
 
@@ -347,34 +347,113 @@ This module contains the languages for the Translations app.
           ('tr', 'Turkish'),
       )
 
-   To get the :term:`supported language` code of a preferred language code
-   (no language code):
+   To get the :term:`supported language` code of a translate language code
+   (active language code):
 
    .. testcode:: _get_translate_language
 
       from translations.languages import _get_translate_language
 
-      # get the preferred language
-      preferred = _get_translate_language()
+      # get the translate language
+      translate = _get_translate_language()
 
-      print(preferred)
+      print(translate)
 
    .. testoutput:: _get_translate_language
 
       en
 
-   To get the :term:`supported language` code of a preferred language code
+   To get the :term:`supported language` code of a translate language code
    (a custom language code):
 
    .. testcode:: _get_translate_language
 
       from translations.languages import _get_translate_language
 
-      # get the preferred language
-      preferred = _get_translate_language('en-us')
+      # get the translate language
+      translate = _get_translate_language('en-us')
 
-      print(preferred)
+      print(translate)
 
    .. testoutput:: _get_translate_language
 
       en
+
+.. function:: _get_probe_language(lang=None)
+
+   Return the :term:`supported language` code(s) of some probe language code(s).
+
+   If the probe language code(s) is (are) passed in, it returns
+   the :term:`supported language` code(s) of it (them), otherwise it returns
+   the :term:`supported language` code of the :term:`active language` code.
+
+   :param lang: The probe language code(s) to get
+       the :term:`supported language` code(s) of.
+       ``None`` means use the :term:`active language` code.
+   :type lang: str or None
+   :return: The :term:`supported language` code(s) of the probe language code(s).
+   :rtype: str
+   :raise ValueError: If the probe language code(s) is (are) not supported.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the :term:`supported language` code(s) of some probe language code(s)
+   (active language code):
+
+   .. testcode:: _get_probe_language
+
+      from translations.languages import _get_probe_language
+
+      # get the probe language
+      probe = _get_probe_language()
+
+      print(probe)
+
+   .. testoutput:: _get_probe_language
+
+      en
+
+   To get the :term:`supported language` code(s) of some probe language code(s)
+   (a custom language code):
+
+   .. testcode:: _get_probe_language
+
+      from translations.languages import _get_probe_language
+
+      # get the probe language
+      probe = _get_probe_language('en-us')
+
+      print(probe)
+
+   .. testoutput:: _get_probe_language
+
+      en
+
+   To get the :term:`supported language` code(s) of some probe language code(s)
+   (multiple custom language codes):
+
+   .. testcode:: _get_probe_language
+
+      from translations.languages import _get_probe_language
+
+      # get the probe language
+      probe = _get_probe_language(['en-us', 'en-gb'])
+
+      print(probe)
+
+   .. testoutput:: _get_probe_language
+
+      [
+          'en',
+          'en-gb',
+      ]
