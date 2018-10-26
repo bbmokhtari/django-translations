@@ -69,7 +69,7 @@ class TranslatableQuerySet(query.QuerySet):
         return clone
 
     def probe(self, lang=None):
-        """Probe the `TranslatableQuerySet` in a language."""
+        """Probe the `TranslatableQuerySet` in some language(s)."""
         clone = self.all()
         clone._trans_prob = _get_probe_language(lang)
         return clone
