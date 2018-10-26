@@ -585,7 +585,10 @@ This module contains the languages for the Translations app.
 
       .. testoutput:: probe_default_active_2
 
-         ['en', 'de']
+         [
+             'en',
+             'de',
+         ]
 
    .. attribute:: TRANSLATION
 
@@ -604,7 +607,11 @@ This module contains the languages for the Translations app.
 
       .. testoutput:: probe_translation
 
-         ['en-gb', 'de', 'tr']
+         [
+             'en-gb',
+             'de',
+             'tr',
+         ]
 
    .. attribute:: ALL
 
@@ -623,7 +630,12 @@ This module contains the languages for the Translations app.
 
       .. testoutput:: probe_all
 
-         ['en', 'en-gb', 'de', 'tr']
+         [
+             'en',
+             'en-gb',
+             'de',
+             'tr',
+         ]
 
 .. data:: translate
 
