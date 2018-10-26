@@ -91,7 +91,7 @@ def _get_translation_choices():
 
 
 def _get_translate_language(lang=None):
-    """Return the `supported language` code of a preferred language code."""
+    """Return the `supported language` code of a translate language code."""
     if lang is None:
         return _get_active_language()
     else:
@@ -99,29 +99,58 @@ def _get_translate_language(lang=None):
 
 
 def _get_probe_language(lang=None):
-    """Return the `supported language` code of a preferred language code."""
+    """Return the `supported language` code(s) of some probe language code(s)."""
     if isinstance(lang, (list, tuple)):
         return [_get_supported_language(x) for x in lang]
     else:
         return _get_translate_language(lang)
 
 
-class _LANGUAGE:
+class _TRANSLATE:
+    """A class which contains standard translate language codes."""
 
     @property
     def DEFAULT(self):
+        """Return the `default language`."""
         return _get_default_language()
 
     @property
     def ACTIVE(self):
+        """Return the `active language` code."""
+        return _get_active_language()
+
+
+class _PROBE:
+    """A class which contains standard probe language codes."""
+
+    @property
+    def DEFAULT(self):
+        """Return the `default language` code."""
+        return _get_default_language()
+
+    @property
+    def ACTIVE(self):
+        """Return the `active language` code."""
         return _get_active_language()
 
     @property
-    def LOOSE(self):
-        return [_get_default_language(), _get_active_language()]
+    def DEFAULT_ACTIVE(self):
+        """Return the `default language` and `active language` codes."""
+        return [self.DEFAULT, self.ACTIVE]
+
+    @property
+    def TRANSLATION(self):
+        """Return the `translation language` codes."""
+        return _get_translation_languages()
 
     @property
     def ALL(self):
+        """Return all the `supported language` codes."""
         return _get_all_languages()
 
-languages = _LANGUAGE
+
+trans = _TRANSLATE
+"""An object which contains standard translate language codes."""
+
+probe = _PROBE
+"""An object which contains standard probe language codes."""
