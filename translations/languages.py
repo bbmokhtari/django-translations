@@ -95,10 +95,7 @@ def _get_translate_language(lang=None):
         lang =  _get_active_language()
     else:
         lang = _get_supported_language(lang)
-
-    default = _get_default_language()
-
-    return (lang, lang == default)
+    return lang
 
 
 def _get_probe_language(lang=None):
@@ -115,8 +112,8 @@ def _get_probe_language(lang=None):
                 trans_langs.append(l)
         return (trans_langs, includes_default, True)
     else:
-        lang, is_default = _get_translate_language(lang)
-        return (lang, is_default, False)
+        lang = _get_translate_language(lang)
+        return (lang, lang == default, False)
 
 
 class _LANGUAGE:

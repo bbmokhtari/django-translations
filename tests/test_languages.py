@@ -114,21 +114,21 @@ class GetTranslateLanguageTest(TestCase):
     def test_unaccented_active(self):
         self.assertEqual(
             _get_translate_language(),
-            ('en', True)
+            'en'
         )
 
     @override(language='en-us', deactivate=True)
     def test_nonexisting_accented_active(self):
         self.assertEqual(
             _get_translate_language(),
-            ('en', True)
+            'en'
         )
 
     @override(language='en-gb', deactivate=True)
     def test_existing_accented_active(self):
         self.assertEqual(
             _get_translate_language(),
-            ('en-gb', False)
+            'en-gb'
         )
 
     @override(language='xx', deactivate=True)
@@ -144,19 +144,19 @@ class GetTranslateLanguageTest(TestCase):
     def test_unaccented_custom(self):
         self.assertEqual(
             _get_translate_language('en'),
-            ('en', True)
+            'en'
         )
 
     def test_nonexisting_accented_custom(self):
         self.assertEqual(
             _get_translate_language('en-us'),
-            ('en', True)
+            'en'
         )
 
     def test_existing_accented_custom(self):
         self.assertEqual(
             _get_translate_language('en-gb'),
-            ('en-gb', False)
+            'en-gb'
         )
 
     def test_invalid_custom(self):

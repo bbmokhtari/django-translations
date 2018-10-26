@@ -3,7 +3,8 @@
 from django.db import models
 
 import translations.models
-from translations.languages import _get_translate_language
+from translations.languages import _get_default_language, \
+    _get_translate_language
 from translations.utils import _get_relations_hierarchy, _get_purview, \
     _get_translations
 
@@ -45,8 +46,8 @@ class Context:
         """
         Create the translations of the `Context`\ 's `purview` in a language.
         """
-        lang, is_default = _get_translate_language(lang)
-        if not is_default:
+        lang = _get_translate_language(lang)
+        if lang != _get_default_language():
             _translations = [
                 translations.models.Translation(
                     language=lang, text=text, **address
@@ -58,8 +59,8 @@ class Context:
         """
         Read the translations of the `Context`\ 's `purview` in a language.
         """
-        lang, is_default = _get_translate_language(lang)
-        if not is_default:
+        lang = _get_translate_language(lang)
+        if lang != _get_default_language():
             _translations = _get_translations(self.query, lang)
             for translation in _translations:
                 ct_id = translation.content_type.id
@@ -76,8 +77,8 @@ class Context:
         """
         Update the translations of the `Context`\ 's `purview` in a language.
         """
-        lang, is_default = _get_translate_language(lang)
-        if not is_default:
+        lang = _get_translate_language(lang)
+        if lang != _get_default_language():
             query = models.Q()
             _translations = []
             for address, text in self._get_changed_fields():
@@ -94,8 +95,8 @@ class Context:
         """
         Delete the translations of the `Context`\ 's `purview` in a language.
         """
-        lang, is_default = _get_translate_language(lang)
-        if not is_default:
+        lang = _get_translate_language(lang)
+        if lang != _get_default_language():
             _get_translations(self.query, lang).delete()
 
     def reset(self):
