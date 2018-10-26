@@ -614,6 +614,12 @@ This module contains the languages for the Translations app.
              'de',
          ]
 
+      .. testcleanup:: probe_default_active_2
+
+         from django.utils.translation import deactivate
+
+         deactivate()
+
    .. attribute:: TRANSLATION
 
       Return the :term:`translation language` codes.
