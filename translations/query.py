@@ -4,7 +4,7 @@ import copy
 from django.db.models import Q
 from django.db.models.constants import LOOKUP_SEP
 
-from translations.languages import _get_default_language
+from translations.languages import _get_default_language, _get_probe_language
 from translations.utils import _get_dissected_lookup
 
 
@@ -100,7 +100,7 @@ class TQ(Q):
         """Initialize a `TQ`."""
         lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
-        self.lang = lang
+        self.lang = _get_probe_language(lang)
 
     def __deepcopy__(self, memodict):
         """Return a copy of the `TQ` object."""
