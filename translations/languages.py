@@ -1,4 +1,5 @@
 """This module contains the languages for the Translations app."""
+
 from django.utils.translation import get_language
 from django.conf import settings
 

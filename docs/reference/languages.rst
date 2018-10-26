@@ -162,6 +162,163 @@ This module contains the languages for the Translations app.
 
       en
 
+.. function:: _get_all_languages()
+
+   Return all the :term:`supported language` codes.
+
+   :return: All the :term:`supported language` codes.
+   :rtype: list(str)
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get all the :term:`supported language` codes:
+
+   .. testcode:: _get_all_languages
+
+      from translations.languages import _get_all_languages
+
+      # get the supported languages
+      languages = _get_all_languages()
+
+      print(languages)
+
+   .. testoutput:: _get_all_languages
+
+      [
+          'en',
+          'en-gb',
+          'de',
+          'tr',
+      ]
+
+.. function:: _get_all_choices()
+
+   Return all the :term:`supported language` choices.
+
+   :return: All the :term:`supported language` choices.
+   :rtype: list(tuple(str, str))
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get all the :term:`supported language` choices:
+
+   .. testcode:: _get_all_choices
+
+      from translations.languages import _get_all_choices
+
+      # get the supported language choices
+      choices = _get_all_choices()
+
+      print(choices)
+
+   .. testoutput:: _get_all_choices
+
+      [
+          (None, '---------'),
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      ]
+
+.. function:: _get_translation_languages()
+
+   Return the :term:`translation language` codes.
+
+   :return: The :term:`translation language` codes.
+   :rtype: list(str)
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the :term:`translation language` codes:
+
+   .. testcode:: _get_translation_languages
+
+      from translations.languages import _get_translation_languages
+
+      # get the translation languages
+      languages = _get_translation_languages()
+
+      print(languages)
+
+   .. testoutput:: _get_translation_languages
+
+      [
+          'en-gb',
+          'de',
+          'tr',
+      ]
+
+.. function:: _get_translation_choices()
+
+   Return the :term:`translation language` choices.
+
+   :return: The :term:`translation language` choices.
+   :rtype: list(tuple(str, str))
+   :raise ValueError: If the :term:`default language` code is not supported.
+
+   Considering this setting:
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   To get the :term:`translation language` choices:
+
+   .. testcode:: _get_translation_choices
+
+      from translations.languages import _get_translation_choices
+
+      # get the translation language choices
+      choices = _get_translation_choices()
+
+      print(choices)
+
+   .. testoutput:: _get_translation_choices
+
+      [
+          (None, '---------'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      ]
+
 .. function:: _get_translate_language(lang=None)
 
    Return the :term:`supported language` code of a preferred language code.
@@ -221,85 +378,3 @@ This module contains the languages for the Translations app.
    .. testoutput:: _get_translate_language
 
       en
-
-.. function:: _get_all_languages()
-
-   Return all the :term:`supported language` codes.
-
-   :return: The :term:`supported language` codes.
-   :rtype: list(str)
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
-   To get all the :term:`supported language` codes:
-
-   .. testcode:: _get_all_languages
-
-      from translations.languages import _get_all_languages
-
-      # get the supported languages
-      languages = _get_all_languages()
-
-      print(languages)
-
-   .. testoutput:: _get_all_languages
-
-      [
-          'en',
-          'en-gb',
-          'de',
-          'tr',
-      ]
-
-.. function:: _get_translation_choices()
-
-   Return the :term:`translation language` choices.
-
-   Returns the :term:`supported language` choices removing the
-   :term:`default language` choice and adding an empty choice.
-
-   :return: The :term:`translation language` choices.
-   :rtype: list(tuple(str, str))
-   :raise ValueError: If the :term:`default language` code is not supported.
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
-   To get the :term:`translation language` choices:
-
-   .. testcode:: _get_translation_choices
-
-      from translations.languages import _get_translation_choices
-
-      # get the translation language choices
-      choices = _get_translation_choices()
-
-      print(choices)
-
-   .. testoutput:: _get_translation_choices
-
-      [
-          (None, '---------'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      ]
