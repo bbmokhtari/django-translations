@@ -77,7 +77,11 @@ This module contains the query utilities for the Translations app.
    Encapsulate translation filters as objects that can then be combined
    logically (using `&` and `|`).
 
-   To query using :class:`TQ`:
+   Provides functionalities like :meth:`_combine` to combine :class:`TQ`
+   objects logically with another :class:`~django.db.models.Q` object
+   using some probe language(s).
+
+   To use :class:`TQ`:
 
    .. testsetup:: tq
 
@@ -99,9 +103,15 @@ This module contains the query utilities for the Translations app.
       from translations.query import TQ
 
       continents = Continent.objects.filter(
-          TQ(countries__cities__name__startswith='Köln', _lang='de') |
-          TQ(countries__cities__name__startswith='Koln', _lang='tr') |
-          TQ(countries__cities__name__startswith='Cologne', _lang='en')
+          TQ(
+              countries__cities__name__startswith='Cologne',
+              _lang='en'  # filter this query in English
+          )
+          |
+          TQ(
+              countries__cities__name__startswith='Köln',
+              _lang='de'  # filter this query in German
+          )
       ).distinct()
 
       print(continents)
@@ -112,13 +122,16 @@ This module contains the query utilities for the Translations app.
           <Continent: Europe>,
       ]>
 
-   .. method:: __init__(self, *args, **kwargs)
+   .. method:: __init__(*args, **kwargs)
 
       Initialize a :class:`TQ` with :class:`~django.db.models.Q` arguments and
       some language(s).
 
-      Receives the normal :class:`~django.db.models.Q` arguments and also some
-      language(s) to use for querying.
+      This is an overriden version of
+      the :class:`~django.db.models.Q`\ 's
+      :meth:`~django.db.models.Q.__init__` method.
+      It defines custom probe language(s) on
+      the :class:`TQ` to use for filtering.
 
       :param args: The arguments of
           the :class:`~django.db.models.Q`\
@@ -128,7 +141,7 @@ This module contains the query utilities for the Translations app.
           the :class:`~django.db.models.Q`\
           's :meth:`~django.db.models.Q.__init__` method.
       :type kwargs: dict
-      :param _lang: The language(s) to use for querying.
+      :param _lang: The probe language(s) to use for filtering.
       :type _lang: str or list or None
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
@@ -150,3 +163,82 @@ This module contains the query utilities for the Translations app.
              ('countries__cities__name__startswith', 'Köln'),
          )
          de
+
+   .. method:: __deepcopy__(memodict)
+
+      Return a copy of the :class:`TQ` object.
+
+      This is an overriden version of
+      the :class:`~django.db.models.Q`\ 's
+      :meth:`~django.db.models.Q.__deepcopy__` method.
+      It copies the custom probe language(s) from
+      the current :class:`TQ` to
+      the copied :class:`TQ`.
+
+      :param memodict: The argument of
+          the :class:`~django.db.models.Q`\
+          's :meth:`~django.db.models.Q.__deepcopy__` method.
+      :return: The copy of the :class:`TQ` object.
+      :rtype: TQ
+
+      To get a copy of a :class:`TQ` object:
+
+      .. testcode:: deepcopy
+
+         from translations.query import TQ
+         import copy
+
+         tq = TQ(countries__cities__name__startswith='Köln', _lang='de')
+         cp = copy.deepcopy(tq)
+
+         print(cp)
+         print(cp.lang)
+
+      .. testoutput:: deepcopy
+
+         (AND:
+             ('countries__cities__name__startswith', 'Köln'),
+         )
+         de
+
+   .. method:: _combine(other, conn)
+
+      Return the result of logical combination with
+      another :class:`~django.db.models.Q` object.
+
+      This is an overriden version of
+      the :class:`~django.db.models.Q`\ 's
+      :meth:`~django.db.models.Q._combine` method.
+      It combines the :class:`TQ` object with
+      another :class:`~django.db.models.Q` object logically.
+
+      :param other: the other :class:`~django.db.models.Q` object.
+      :type other: ~django.db.models.Q
+      :param conn: The type of logical combination.
+      :type conn: str
+      :return: the result of logical combination with
+          the other :class:`~django.db.models.Q` object.
+      :rtype: ~django.db.models.Q
+
+      To get the result of logical combination with
+      another :class:`~django.db.models.Q` object:
+
+      .. testcode:: combine
+
+         from translations.query import TQ
+
+         tq1 = TQ(countries__cities__name__startswith='Köln', _lang='de')
+         tq2 = TQ(countries__cities__name__startswith='Koln', _lang='tr')
+
+         print(tq1 | tq2)
+
+      .. testoutput:: combine
+
+         (OR:
+             (AND:
+                 ('countries__cities__name__startswith', 'Koln'),
+             ),
+             (AND:
+                 ('countries__cities__name__startswith', 'Köln'),
+             ),
+         )

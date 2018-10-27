@@ -17,9 +17,58 @@ This module contains the querysets for the Translations app.
    :meth:`probe`, :meth:`filter` and :meth:`exclude`
    to probe the :class:`TranslatableQuerySet`.
 
+   To use :class:`TranslatableQuerySet`:
+
+   .. testsetup:: __init__
+
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
+   .. testcode:: __init__
+
+      from sample.models import Continent
+
+      # initialize queryset
+      continents = Continent.objects.probe(  # filter in English and German
+          ['en', 'de']
+      ).filter(                              # familiar filtering
+          countries__cities__name__startswith='Köln'
+      ).translate(                           # translate the result in German
+          'de'
+      ).translate_related(                   # translate the relations as well
+          'countries',
+          'countries__cities'
+      )
+
+      print(continents)
+      print(continents[0].countries.all())
+      print(continents[0].countries.all()[0].cities.all())
+
+   .. testoutput:: __init__
+
+      <TranslatableQuerySet [
+          <Continent: Europa>,
+      ]>
+      <TranslatableQuerySet [
+          <Country: Deutschland>,
+      ]>
+      <TranslatableQuerySet [
+          <City: Köln>,
+      ]>
+
    .. method:: __init__(*args, **kwargs)
 
-      Initialize a :class:`TranslatableQuerySet`.
+      Initialize a :class:`TranslatableQuerySet`
+      with :class:`~django.db.models.query.QuerySet` arguments.
 
       This is an overriden version of
       the :class:`~django.db.models.query.QuerySet`\ 's
@@ -77,7 +126,7 @@ This module contains the querysets for the Translations app.
       :meth:`~django.db.models.query._chain` method.
       It copies the custom translation configurations from
       the current :class:`TranslatableQuerySet` to
-      the chained :class:`TranslatableQuerySet`.
+      the copied :class:`TranslatableQuerySet`.
 
       :param kwargs: The keyword arguments of
           the :class:`~django.db.models.query.QuerySet`\
