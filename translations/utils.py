@@ -152,10 +152,11 @@ def _get_purview(entity, hierarchy):
 
         def _fill_obj(obj):
             if included:
-                obj._default_translatable_fields = {
-                    field: getattr(obj, field) for field in
-                    type(obj)._get_translatable_fields_names()
-                }
+                if not hasattr(obj, '_default_translatable_fields'):
+                    obj._default_translatable_fields = {
+                        field: getattr(obj, field) for field in
+                        type(obj)._get_translatable_fields_names()
+                    }
                 object_id = str(obj.id)
                 instances[object_id] = obj
                 nonlocal query
