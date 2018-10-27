@@ -5,7 +5,8 @@ from translations.languages import _get_supported_language, \
     _get_default_language, _get_active_language, \
     _get_all_languages, _get_all_choices, \
     _get_translation_languages, _get_translation_choices, \
-    _get_translate_language, _get_probe_language
+    _get_translate_language, _get_probe_language, \
+    translate, probe
 
 
 class GetsupportedLanguageTest(TestCase):
@@ -383,6 +384,138 @@ class GetProbeLanguageTest(TestCase):
     def test_invalid_custom_list(self):
         with self.assertRaises(ValueError) as error:
             _get_probe_language(['xx'])
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
+
+
+class TranslateTest(TestCase):
+    """Tests for `_TRANSLATE`."""
+
+    @override_settings(LANGUAGE_CODE='en')
+    def test_default_unaccented(self):
+        self.assertEqual(
+            translate.DEFAULT,
+            'en'
+        )
+
+    @override_settings(LANGUAGE_CODE='en-us')
+    def test_default_nonexisting_accented(self):
+        self.assertEqual(
+            translate.DEFAULT,
+            'en'
+        )
+
+    @override_settings(LANGUAGE_CODE='en-gb')
+    def test_default_existing_accented(self):
+        self.assertEqual(
+            translate.DEFAULT,
+            'en-gb'
+        )
+
+    @override_settings(LANGUAGE_CODE='xx')
+    def test_default_invalid(self):
+        with self.assertRaises(ValueError) as error:
+            translate.DEFAULT
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
+
+    @override(language='en', deactivate=True)
+    def test_active_unaccented(self):
+        self.assertEqual(
+            translate.ACTIVE,
+            'en'
+        )
+
+    @override(language='en-us', deactivate=True)
+    def test_active_nonexisting_accented(self):
+        self.assertEqual(
+            translate.ACTIVE,
+            'en'
+        )
+
+    @override(language='en-gb', deactivate=True)
+    def test_active_existing_accented(self):
+        self.assertEqual(
+            translate.ACTIVE,
+            'en-gb'
+        )
+
+    @override(language='xx', deactivate=True)
+    def test_active_invalid(self):
+        with self.assertRaises(ValueError) as error:
+            translate.ACTIVE
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
+
+
+class ProbeTest(TestCase):
+    """Tests for `_PROBE`."""
+
+    @override_settings(LANGUAGE_CODE='en')
+    def test_default_unaccented(self):
+        self.assertEqual(
+            probe.DEFAULT,
+            'en'
+        )
+
+    @override_settings(LANGUAGE_CODE='en-us')
+    def test_default_nonexisting_accented(self):
+        self.assertEqual(
+            probe.DEFAULT,
+            'en'
+        )
+
+    @override_settings(LANGUAGE_CODE='en-gb')
+    def test_default_existing_accented(self):
+        self.assertEqual(
+            probe.DEFAULT,
+            'en-gb'
+        )
+
+    @override_settings(LANGUAGE_CODE='xx')
+    def test_default_invalid(self):
+        with self.assertRaises(ValueError) as error:
+            probe.DEFAULT
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
+
+    @override(language='en', deactivate=True)
+    def test_active_unaccented(self):
+        self.assertEqual(
+            probe.ACTIVE,
+            'en'
+        )
+
+    @override(language='en-us', deactivate=True)
+    def test_active_nonexisting_accented(self):
+        self.assertEqual(
+            probe.ACTIVE,
+            'en'
+        )
+
+    @override(language='en-gb', deactivate=True)
+    def test_active_existing_accented(self):
+        self.assertEqual(
+            probe.ACTIVE,
+            'en-gb'
+        )
+
+    @override(language='xx', deactivate=True)
+    def test_active_invalid(self):
+        with self.assertRaises(ValueError) as error:
+            probe.ACTIVE
 
         self.assertEqual(
             error.exception.args[0],
