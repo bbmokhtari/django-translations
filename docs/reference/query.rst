@@ -25,8 +25,8 @@ This module contains the query utilities for the Translations app.
        language.
    :rtype: function
 
-   To fetch the translations query getter specialized for a model and a
-   language:
+   To fetch the translations query getter specialized for a model and some
+   language(s) (a custom language):
 
    .. testcode:: _fetch_translations_query_getter
 
@@ -50,7 +50,7 @@ This module contains the query utilities for the Translations app.
       )
 
    To fetch the translations query getter specialized for a model and some
-   languages:
+   language(s) (multiple custom languages):
 
    .. testcode:: _fetch_translations_query_getter
 
@@ -72,59 +72,81 @@ This module contains the query utilities for the Translations app.
           ),
       )
 
-.. class:: TQ(~django.db.models.Q)
+.. class:: TQ
 
    Encapsulate translation filters as objects that can then be combined
    logically (using `&` and `|`).
 
+   To query using :class:`TQ`:
+
+   .. testsetup:: tq
+
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
+   .. testcode:: tq
+
+      from sample.models import Continent
+      from translations.query import TQ
+
+      continents = Continent.objects.filter(
+          TQ(countries__cities__name__startswith='Köln', _lang='de') |
+          TQ(countries__cities__name__startswith='Koln', _lang='tr') |
+          TQ(countries__cities__name__startswith='Cologne', _lang='en')
+      ).distinct()
+
+      print(continents)
+
+   .. testoutput:: tq
+
+      <TranslatableQuerySet [
+          <Continent: Europe>,
+      ]>
+
    .. method:: __init__(self, *args, **kwargs)
 
-      Initialize a `TQ` with the default `Q` parameters and some
-      language(s) to apply on the filter.
+      Initialize a :class:`TQ` with :class:`~django.db.models.Q` arguments and
+      some language(s).
+
+      Receives the normal :class:`~django.db.models.Q` arguments and also some
+      language(s) to use for querying.
 
       :param args: The arguments of
-          the :class:`default Q <django.db.models.Q>`\
+          the :class:`~django.db.models.Q`\
           's :meth:`~django.db.models.Q.__init__` method.
       :type args: list
       :param kwargs: The keyword arguments of
-          the :class:`default Q <django.db.models.Q>`\
+          the :class:`~django.db.models.Q`\
           's :meth:`~django.db.models.Q.__init__` method.
       :type kwargs: dict
-      :param _lang: The language(s) to apply on the filter.
-      :type _lang: str or list(str)
+      :param _lang: The language(s) to use for querying.
+      :type _lang: str or list or None
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      .. testsetup:: init
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      To Initialize a `TQ`:
+      To Initialize a :class:`TQ`:
 
       .. testcode:: init
 
-         from sample.models import Continent
          from translations.query import TQ
 
-         continents = Continent.objects.filter(
-             TQ(countries__cities__name__startswith='Köl', _lang='de') |
-             TQ(countries__cities__name__startswith='Kol', _lang='tr')
-         ).distinct()
+         tq = TQ(countries__cities__name__startswith='Köln', _lang='de')
 
-         print(continents)
+         print(tq)
+         print(tq.lang)
 
       .. testoutput:: init
 
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-         ]>
+         (AND:
+             ('countries__cities__name__startswith', 'Köln'),
+         )
+         de

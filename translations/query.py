@@ -1,4 +1,5 @@
 """This module contains the query utilities for the Translations app."""
+
 import copy
 
 from django.db.models import Q
@@ -14,7 +15,7 @@ __docformat__ = 'restructuredtext'
 def _fetch_translations_query_getter(model, lang):
     """
     Return the translations query getter specialized for a model and some
-    language.
+    language(s).
     """
     default = _get_default_language()
 
