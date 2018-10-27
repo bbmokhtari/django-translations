@@ -49,9 +49,11 @@ This module contains the admins for the Translations app.
 
 .. class:: TranslatableAdmin
 
-   The admin which represents the translatables.
+   The admin which represents the :class:`~translations.models.Translatable`
+   instances.
 
-   Manages creating, reading, updating and deleting the translatable objects.
+   Manages creating, reading, updating and deleting
+   the :class:`~translations.models.Translatable` instances.
 
    To make an admin translatable:
 
@@ -64,9 +66,10 @@ This module contains the admins for the Translations app.
 
 .. class:: TranslationInline
 
-   The inline which represents the translations.
+   The inline which represents the :class:`~translations.models.Translation` instances.
 
-   Manages creating, reading, updating and deleting the translation objects.
+   Manages creating, reading, updating and deleting
+   the :class:`~translations.models.Translation` instances.
 
    To add translation inlines to a translatable admin:
 

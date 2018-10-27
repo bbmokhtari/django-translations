@@ -98,7 +98,7 @@ class TQ(Q):
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize a `TQ`."""
+        """Initialize a `TQ` with `Q` arguments and some language(s)."""
         lang = kwargs.pop('_lang', None)
         super(TQ, self).__init__(*args, **kwargs)
         self.lang = _get_probe_language(lang)
@@ -110,7 +110,7 @@ class TQ(Q):
         return obj
 
     def _combine(self, other, conn):
-        """Return the result of logical combination with another `Q`."""
+        """Return the result of logical combination with another `Q` object."""
         if not isinstance(other, Q):
             raise TypeError(other)
 
