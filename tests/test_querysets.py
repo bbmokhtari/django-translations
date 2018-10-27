@@ -2098,10 +2098,15 @@ class TranslatableQuerySetTest(TestCase):
             ('countries', 'countries__cities',)
         )
 
-    def test_probe(self):
+    def test_probe_str(self):
         continents = Continent.objects.probe('de')
 
         self.assertEqual(continents._trans_prob, 'de')
+
+    def test_probe_list(self):
+        continents = Continent.objects.probe(['en', 'de'])
+
+        self.assertEqual(continents._trans_prob, ['en', 'de'])
 
     @override(language='de', deactivate=True)
     def test_probe_no_lang(self):
