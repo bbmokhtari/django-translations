@@ -19,7 +19,7 @@ This module contains the querysets for the Translations app.
 
    To use :class:`TranslatableQuerySet`:
 
-   .. testsetup:: __init__
+   .. testsetup:: TranslatableQuerySet
 
       from tests.sample import create_samples
 
@@ -33,18 +33,18 @@ This module contains the querysets for the Translations app.
           langs=['de']
       )
 
-   .. testcode:: __init__
+   .. testcode:: TranslatableQuerySet
 
       from sample.models import Continent
 
-      # initialize queryset
-      continents = Continent.objects.probe(  # filter in English and German
+      continents = Continent.objects.distinct(
+      ).probe(              # filter in English and German
           ['en', 'de']
-      ).filter(                              # familiar filtering
+      ).filter(             # familiar filtering
           countries__cities__name__startswith='Köln'
-      ).translate(                           # translate the result in German
+      ).translate(          # translate the results in German
           'de'
-      ).translate_related(                   # translate the relations as well
+      ).translate_related(  # translate these relations as well
           'countries',
           'countries__cities'
       )
@@ -53,7 +53,7 @@ This module contains the querysets for the Translations app.
       print(continents[0].countries.all())
       print(continents[0].countries.all()[0].cities.all())
 
-   .. testoutput:: __init__
+   .. testoutput:: TranslatableQuerySet
 
       <TranslatableQuerySet [
           <Continent: Europa>,
@@ -87,7 +87,7 @@ This module contains the querysets for the Translations app.
 
       To initialize a :class:`TranslatableQuerySet`:
 
-      .. testsetup:: __init__
+      .. testsetup:: init
 
          from tests.sample import create_samples
 
@@ -101,7 +101,7 @@ This module contains the querysets for the Translations app.
              langs=['de']
          )
 
-      .. testcode:: __init__
+      .. testcode:: init
 
          from sample.models import Continent
 
@@ -110,7 +110,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: __init__
+      .. testoutput:: init
 
          <TranslatableQuerySet [
              <Continent: Europe>,

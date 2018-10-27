@@ -78,12 +78,12 @@ This module contains the query utilities for the Translations app.
    logically (using `&` and `|`).
 
    Provides functionalities like :meth:`_combine` to combine :class:`TQ`
-   objects logically with another :class:`~django.db.models.Q` object
+   objects logically with another :class:`~django.db.models.Q` objects
    using some probe language(s).
 
    To use :class:`TQ`:
 
-   .. testsetup:: tq
+   .. testsetup:: TQ
 
       from tests.sample import create_samples
 
@@ -97,7 +97,7 @@ This module contains the query utilities for the Translations app.
           langs=['de']
       )
 
-   .. testcode:: tq
+   .. testcode:: TQ
 
       from sample.models import Continent
       from translations.query import TQ
@@ -105,18 +105,18 @@ This module contains the query utilities for the Translations app.
       continents = Continent.objects.filter(
           TQ(
               countries__cities__name__startswith='Cologne',
-              _lang='en'  # filter this query in English
+              _lang='en'  # use English for this filter
           )
-          |
+          |               # logical combinator
           TQ(
               countries__cities__name__startswith='Köln',
-              _lang='de'  # filter this query in German
+              _lang='de'  # use German for this filter
           )
       ).distinct()
 
       print(continents)
 
-   .. testoutput:: tq
+   .. testoutput:: TQ
 
       <TranslatableQuerySet [
           <Continent: Europe>,
@@ -131,7 +131,7 @@ This module contains the query utilities for the Translations app.
       the :class:`~django.db.models.Q`\ 's
       :meth:`~django.db.models.Q.__init__` method.
       It defines custom probe language(s) on
-      the :class:`TQ` to use for filtering.
+      the :class:`TQ` to use on the filter.
 
       :param args: The arguments of
           the :class:`~django.db.models.Q`\
@@ -141,7 +141,7 @@ This module contains the query utilities for the Translations app.
           the :class:`~django.db.models.Q`\
           's :meth:`~django.db.models.Q.__init__` method.
       :type kwargs: dict
-      :param _lang: The probe language(s) to use for filtering.
+      :param _lang: The probe language(s) to use on the filter.
       :type _lang: str or list or None
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.

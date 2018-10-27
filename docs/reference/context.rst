@@ -16,6 +16,73 @@ This module contains the context managers for the Translations app.
    :meth:`reset`
    to manage the :class:`Context`.
 
+   To use :class:`Context`:
+
+   .. testsetup:: Context
+
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
+   .. testcode:: Context
+
+      from translations.context import Context
+      from sample.models import Continent
+
+      continents = Continent.objects.all()
+      relations = ('countries', 'countries__cities',)
+
+      with Context(continents, *relations) as context:
+          context.read('de')    # read the translations onto the context
+          print('-- GERMAN:')   # use the objects like before
+          print(continents)
+          print(continents[0].countries.all())
+          print(continents[0].countries.all()[0].cities.all())
+
+          continents[0].countries.all()[0].name = 'Change the name'
+          context.update('de')  # update the translations from the context
+
+          context.delete('de')  # delete the translations of the context
+
+          context.reset()       # reset the translations of the context
+          print('-- ENGLISH:') # use the objects like before
+          print(continents)
+          print(continents[0].countries.all())
+          print(continents[0].countries.all()[0].cities.all())
+
+   .. testoutput:: Context
+
+      -- GERMAN:
+      <TranslatableQuerySet [
+          <Continent: Europa>,
+          <Continent: Asien>,
+      ]>
+      <TranslatableQuerySet [
+          <Country: Deutschland>,
+      ]>
+      <TranslatableQuerySet [
+          <City: Köln>,
+      ]>
+      -- ENGLISH:
+      <TranslatableQuerySet [
+          <Continent: Europe>,
+          <Continent: Asia>,
+      ]>
+      <TranslatableQuerySet [
+          <Country: Germany>,
+      ]>
+      <TranslatableQuerySet [
+          <City: Cologne>,
+      ]>
+
    .. method:: __init__(entity, *relations)
 
       Initialize a :class:`Context` with an entity and some relations of it.
