@@ -452,7 +452,7 @@ This module contains the utilities for the Translations app.
       mapping, query = _get_purview(continents, hierarchy)
 
       # get the translations
-      translations = _get_translations(query, lang='de')
+      translations = _get_translations(query, 'de')
 
       print(translations)
 

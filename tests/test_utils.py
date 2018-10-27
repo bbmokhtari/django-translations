@@ -1281,7 +1281,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1306,7 +1306,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1333,7 +1333,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1360,7 +1360,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1387,7 +1387,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1414,7 +1414,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1445,7 +1445,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1476,7 +1476,7 @@ class GetTranslationsTest(TestCase):
         mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(query, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
