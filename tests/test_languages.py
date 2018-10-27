@@ -114,9 +114,8 @@ class GetAllLanguagesTest(TestCase):
     """Tests for `_get_all_languages`."""
 
     def test_get_all_languages(self):
-        languages = _get_all_languages()
         self.assertListEqual(
-            languages,
+            _get_all_languages(),
             [
                 'en',
                 'en-gb',
@@ -130,9 +129,8 @@ class GetAllChoicesTest(TestCase):
     """Tests for `_get_all_choices`."""
 
     def test_get_all_choices(self):
-        choices = _get_all_choices()
         self.assertListEqual(
-            choices,
+            _get_all_choices(),
             [
                 (None, '---------'),
                 ('en', 'English'),
@@ -520,4 +518,72 @@ class ProbeTest(TestCase):
         self.assertEqual(
             error.exception.args[0],
             '`xx` is not a supported language.'
+        )
+
+    @override(language='en', deactivate=True)
+    def test_default_active_same(self):
+        self.assertEqual(
+            probe.DEFAULT_ACTIVE,
+            'en'
+        )
+
+    @override(language='de', deactivate=True)
+    def test_default_active_different(self):
+        self.assertEqual(
+            probe.DEFAULT_ACTIVE,
+            ['en', 'de']
+        )
+
+    @override_settings(LANGUAGE_CODE='en')
+    def test_translations_unaccented_default(self):
+        self.assertListEqual(
+            probe.TRANSLATION,
+            [
+                'en-gb',
+                'de',
+                'tr',
+            ]
+        )
+
+    @override_settings(LANGUAGE_CODE='en-us')
+    def test_translations_nonexisting_accented_default(self):
+        self.assertListEqual(
+            probe.TRANSLATION,
+            [
+                'en-gb',
+                'de',
+                'tr',
+            ]
+        )
+
+    @override_settings(LANGUAGE_CODE='en-gb')
+    def test_translations_existing_accented_default(self):
+        self.assertListEqual(
+            probe.TRANSLATION,
+            [
+                'en',
+                'de',
+                'tr',
+            ]
+        )
+
+    @override_settings(LANGUAGE_CODE='xx')
+    def test_translations_invalid_default(self):
+        with self.assertRaises(ValueError) as error:
+            probe.TRANSLATION
+
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
+
+    def test_all(self):
+        self.assertListEqual(
+            probe.ALL,
+            [
+                'en',
+                'en-gb',
+                'de',
+                'tr',
+            ]
         )
