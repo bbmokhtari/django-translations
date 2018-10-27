@@ -102,7 +102,7 @@ class Context:
     def reset(self):
         """
         Reset the translations of the `Context`\ 's `purview` to
-        the original language.
+        the `default language`.
         """
         for (ct_id, objs) in self.mapping.items():
             for (obj_id, obj) in objs.items():

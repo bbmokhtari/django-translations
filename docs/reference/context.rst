@@ -711,11 +711,11 @@ This module contains the context managers for the Translations app.
    .. method:: reset()
 
       Reset the translations of the :class:`Context`\ 's :term:`purview` to
-      the original language.
+      the :term:`default language`.
 
       Resets the translations on the :attr:`translatable fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview` to the original language.
+      :class:`Context`\ 's :term:`purview` to the :term:`default language`.
 
       .. testsetup:: reset
 
