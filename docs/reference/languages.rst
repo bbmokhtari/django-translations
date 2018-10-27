@@ -17,11 +17,10 @@ This module contains the languages for the Translations app.
    found, it returns it, otherwise it throws an error stating there is no
    such language supported in the settings.
 
-   :param lang: The custom language code to derive
-       the :term:`supported language` code out of.
+   :param lang: The custom language code to get
+       the :term:`supported language` code of.
    :type lang: str
-   :return: The :term:`supported language` code derived out of
-       the custom language code.
+   :return: The :term:`supported language` code of the custom language code.
    :rtype: str
    :raise ValueError: If the language code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
@@ -391,7 +390,7 @@ This module contains the languages for the Translations app.
    :param lang: The probe language code(s) to get
        the :term:`supported language` code(s) of.
        ``None`` means use the :term:`active language` code.
-   :type lang: str or None
+   :type lang: str or list or None
    :return: The :term:`supported language` code(s) of the probe language code(s).
    :rtype: str
    :raise ValueError: If the probe language code(s) is (are) not supported.
@@ -645,7 +644,7 @@ This module contains the languages for the Translations app.
 
    .. attribute:: ALL
 
-      Return all the `supported language` codes.
+      Return all the :term:`supported language` codes.
 
       To get all the :term:`supported language` codes.
 
