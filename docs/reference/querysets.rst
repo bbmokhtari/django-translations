@@ -165,26 +165,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To evaluate the :class:`TranslatableQuerySet`
-      (using the :term:`active language` - assume ``en``):
-
-      .. testcode:: _fetch_all
-
-         from sample.models import Continent
-
-         continents = Continent.objects.translate()
-
-         # evaluate the queryset
-         print(continents)
-
-      .. testoutput:: _fetch_all
-
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-             <Continent: Asia>,
-         ]>
-
-      To evaluate the :class:`TranslatableQuerySet`
-      (using a :term:`supported language`):
+      (using a custom language):
 
       .. testcode:: _fetch_all
 
@@ -233,27 +214,7 @@ This module contains the querysets for the Translations app.
              langs=['de']
          )
 
-      To translate the :class:`TranslatableQuerySet` in a language
-      (using the :term:`active language` - assume ``en``):
-
-      .. testcode:: translate
-
-         from sample.models import Continent
-
-         # translate the queryset
-         continents = Continent.objects.translate()
-
-         print(continents)
-
-      .. testoutput:: translate
-
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-             <Continent: Asia>,
-         ]>
-
-      To translate the :class:`TranslatableQuerySet` in a language
-      (using a :term:`supported language`):
+      To translate the :class:`TranslatableQuerySet` in a language:
 
       .. testcode:: translate
 
@@ -421,7 +382,7 @@ This module contains the querysets for the Translations app.
       :param lang: The language(s) to probe the :class:`TranslatableQuerySet`
           in.
           ``None`` means use the :term:`active language` code.
-      :type lang: str or None
+      :type lang: str or list or None
       :return: The :class:`TranslatableQuerySet` which will be probed in the
           specified language(s).
       :rtype: TranslatableQuerySet
@@ -443,28 +404,7 @@ This module contains the querysets for the Translations app.
          )
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
-      (using the :term:`active language` - assume ``en``):
-
-      .. testcode:: probe
-
-         from django.db.models import Q
-         from sample.models import Continent
-
-         # query the queryset
-         continents = Continent.objects.probe().filter(
-             Q(name='Europe') | Q(name='Asia'))
-
-         print(continents)
-
-      .. testoutput:: probe
-
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-             <Continent: Asia>,
-         ]>
-
-      To probe the :class:`TranslatableQuerySet` in some language(s)
-      (using a :term:`supported language`):
+      (using a custom language):
 
       .. testcode:: probe
 
@@ -485,7 +425,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
-      (using multiple :term:`supported language`\ s):
+      (using multiple custom languages):
 
       .. testcode:: probe
 
@@ -569,26 +509,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To filter the :class:`TranslatableQuerySet`
-      (using the :term:`active language` - assume ``en``):
-
-      .. testcode:: filter
-
-         from sample.models import Continent
-
-         # filter the queryset
-         continents = Continent.objects.probe().filter(
-             countries__name__icontains='Ger')
-
-         print(continents)
-
-      .. testoutput:: filter
-
-         <TranslatableQuerySet [
-             <Continent: Europe>,
-         ]>
-
-      To filter the :class:`TranslatableQuerySet`
-      (using a :term:`supported language`):
+      (using a custom language):
 
       .. testcode:: filter
 
@@ -607,7 +528,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To filter the :class:`TranslatableQuerySet`
-      (using multiple :term:`supported language`\ s):
+      (using multiple custom languages):
 
       .. testcode:: filter
 
@@ -677,26 +598,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To exclude the :class:`TranslatableQuerySet`
-      (using the :term:`active language` - assume ``en``):
-
-      .. testcode:: exclude
-
-         from sample.models import Continent
-
-         # exclude the queryset
-         continents = Continent.objects.probe().exclude(
-             countries__name__icontains='Ger')
-
-         print(continents)
-
-      .. testoutput:: exclude
-
-         <TranslatableQuerySet [
-             <Continent: Asia>,
-         ]>
-
-      To exclude the :class:`TranslatableQuerySet`
-      (using a :term:`supported language`):
+      (using a custom language):
 
       .. testcode:: exclude
 
@@ -715,7 +617,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To exclude the :class:`TranslatableQuerySet`
-      (using multiple :term:`supported language`\ s):
+      (using multiple custom languages):
 
       .. testcode:: exclude
 
