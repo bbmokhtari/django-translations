@@ -27,7 +27,7 @@ class Context:
         pass
 
     def _get_changed_fields(self):
-        """
+        r"""
         Yield the info about the changed fields in the `Context`\ 's `purview`.
         """
         for (ct_id, objs) in self.mapping.items():
@@ -43,7 +43,7 @@ class Context:
                         }, text)
 
     def create(self, lang=None):
-        """
+        r"""
         Create the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_translate_language(lang)
@@ -56,7 +56,7 @@ class Context:
             translations.models.Translation.objects.bulk_create(_translations)
 
     def read(self, lang=None):
-        """
+        r"""
         Read the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_translate_language(lang)
@@ -74,7 +74,7 @@ class Context:
             self.reset()
 
     def update(self, lang=None):
-        """
+        r"""
         Update the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_translate_language(lang)
@@ -92,7 +92,7 @@ class Context:
             translations.models.Translation.objects.bulk_create(_translations)
 
     def delete(self, lang=None):
-        """
+        r"""
         Delete the translations of the `Context`\ 's `purview` in a language.
         """
         lang = _get_translate_language(lang)
@@ -100,7 +100,7 @@ class Context:
             _get_translations(self.query, lang).delete()
 
     def reset(self):
-        """
+        r"""
         Reset the translations of the `Context`\ 's `purview` to
         the `default language`.
         """
