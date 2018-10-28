@@ -25,7 +25,7 @@ Requirements
 ------------
 
 * Python (>=3.5)
-* Django (1.11, >=2.0)
+* Django (>=2.0)
 
 Installation
 ------------
@@ -106,6 +106,42 @@ This provides specialized translation inlines for the model.
 
 .. image:: https://raw.githubusercontent.com/perplexionist/django-translations/master/docs/_static/admin.png
 
+QuerySet
+~~~~~~~~
+
+Use the extended ORM capabilities:
+
+.. code:: python
+
+   >>> from sample.models import Continent
+   >>> continents = Continent.objects.all(
+   ... ).distinct(           # familiar distinct
+   ... ).probe(              # filter in English and German
+   ...       ['en', 'de']
+   ... ).filter(             # familiar filtering
+   ...       countries__cities__name__startswith='Köln'
+   ... ).translate(          # translate the results in German
+   ...       'de'
+   ... ).translate_related(  # translate these relations as well
+   ...       'countries',
+   ...       'countries__cities'
+   ... )
+   >>> print(continents)
+   <TranslatableQuerySet [
+       <Continent: Europa>,
+   ]>
+   >>> print(continents[0].countries.all())
+   <TranslatableQuerySet [
+       <Country: Deutschland>,
+   ]>
+   >>> print(continents[0].countries.all()[0].cities.all())
+   <TranslatableQuerySet [
+       <City: Köln>,
+   ]>
+
+This does only **ONE QUERY** to translate the queryset
+and the relations.
+
 Query
 ~~~~~
 
@@ -114,29 +150,51 @@ Use the context:
 .. code:: python
 
    >>> from translations.context import Context
-   >>> # 1. query the database like before
+   >>> from sample.models import Continent
    >>> continents = Continent.objects.all()
-   >>> # 2. work with the translated objects
-   >>> with Context(continents, 'countries', 'countries__cities',) as context:
-   ...     # -------------------------------- read the context in German
-   ...     context.read('de')
-   ...     print(continents[0].name)
-   ...     print(continents[0].countries.all()[0].name)
-   ...     # -------------------------------- update the context in German
-   ...     continents[0].name = 'Europa (changed)'
-   ...     continents[0].countries.all()[0].name = 'Deutschland (changed)'
-   ...     context.update('de')
-   ...     # -------------------------------- and more capabilties
-   ...     context.reset()
-   ...     print(continents[0].name)
-   ...     print(continents[0].countries.all()[0].name)
-   Europa
-   Deutschland
-   Europe
-   Germany
+   >>> relations = ('countries', 'countries__cities',)
+   >>> with Context(continents, *relations) as context:
+   ...     context.read('de')    # read the translations onto the context
+   ...     print('----------')   # use the objects like before
+   ...     print(continents)
+   ...     print(continents[0].countries.all())
+   ...     print(continents[0].countries.all()[0].cities.all())
+   ... 
+   ...     continents[0].countries.all()[0].name = 'Change the name'
+   ...     context.update('de')  # update the translations from the context
+   ... 
+   ...     context.delete('de')  # delete the translations of the context
+   ... 
+   ...     context.reset()       # reset the translations of the context
+   ...     print('----------')   # use the objects like before
+   ...     print(continents)
+   ...     print(continents[0].countries.all())
+   ...     print(continents[0].countries.all()[0].cities.all())
+   ----------
+   <TranslatableQuerySet [
+       <Continent: Europa>,
+       <Continent: Asien>,
+   ]>
+   <TranslatableQuerySet [
+       <Country: Deutschland>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Köln>,
+   ]>
+   ----------
+   <TranslatableQuerySet [
+       <Continent: Europe>,
+       <Continent: Asia>,
+   ]>
+   <TranslatableQuerySet [
+       <Country: Germany>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Cologne>,
+   ]>
 
-This does only **ONE QUERY** to translate any object (instance, queryset, list)
-plus all its relations.
+This does only **ONE QUERY** to translate the any object
+(instance, queryset, list) and the relations.
 
 Documentation
 -------------

@@ -42,7 +42,7 @@ This module contains the context managers for the Translations app.
 
       with Context(continents, *relations) as context:
           context.read('de')    # read the translations onto the context
-          print('-- GERMAN:')   # use the objects like before
+          print('----------')   # use the objects like before
           print(continents)
           print(continents[0].countries.all())
           print(continents[0].countries.all()[0].cities.all())
@@ -53,14 +53,14 @@ This module contains the context managers for the Translations app.
           context.delete('de')  # delete the translations of the context
 
           context.reset()       # reset the translations of the context
-          print('-- ENGLISH:') # use the objects like before
+          print('----------')   # use the objects like before
           print(continents)
           print(continents[0].countries.all())
           print(continents[0].countries.all()[0].cities.all())
 
    .. testoutput:: Context
 
-      -- GERMAN:
+      ----------
       <TranslatableQuerySet [
           <Continent: Europa>,
           <Continent: Asien>,
@@ -71,7 +71,7 @@ This module contains the context managers for the Translations app.
       <TranslatableQuerySet [
           <City: Köln>,
       ]>
-      -- ENGLISH:
+      ----------
       <TranslatableQuerySet [
           <Continent: Europe>,
           <Continent: Asia>,
