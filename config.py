@@ -48,9 +48,9 @@ keywords = ['django', 'internationalization']
 
 release = {
     'name': os.environ.get('TRAVIS_TAG', ''),  # e.g. `1.0.0rc2`
-    'version': '',                            # e.g. `1.0.0`
-    'status': '',                             # e.g. `rc`
-    'classifier': '',                         # e.g. `5 - Production/Stable`
+    'version': '',                             # e.g. `1.0.0`
+    'status': '',                              # e.g. `rc`
+    'classifier': '',                          # e.g. `5 - Production/Stable`
 }
 
 if release['name']:

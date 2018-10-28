@@ -1,108 +1,14 @@
-from django.test import TestCase, override_settings
-from django.db.models import Q
+from django.test import TestCase
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 
-from translations.utils import _get_standard_language, \
-    _get_translation_language_choices, \
-    _get_reverse_relation, _get_dissected_lookup, \
-    _get_translations_lookup_query, _get_translations_query, \
+from translations.utils import _get_reverse_relation, _get_dissected_lookup, \
     _get_relations_hierarchy, _get_entity_details, \
-    _get_instance_groups, _get_translations
+    _get_purview, _get_translations
 
 from sample.models import Continent, Country, City
 
 from tests.sample import create_samples
-
-
-class GetStandardLanguageTest(TestCase):
-    """Tests for `_get_standard_language`."""
-
-    @override_settings(LANGUAGE_CODE='de')
-    def test_active_unaccented_language(self):
-        self.assertEqual(
-            _get_standard_language(),
-            'de'
-        )
-
-    def test_custom_unaccented_language(self):
-        self.assertEqual(
-            _get_standard_language('de'),
-            'de'
-        )
-
-    @override_settings(LANGUAGE_CODE='de-at')
-    def test_active_nonexisting_accented_language(self):
-        self.assertEqual(
-            _get_standard_language(),
-            'de'
-        )
-
-    def test_custom_nonexisting_accented_language(self):
-        self.assertEqual(
-            _get_standard_language('de-at'),
-            'de'
-        )
-
-    @override_settings(LANGUAGE_CODE='en-gb')
-    def test_active_existing_accented_language(self):
-        self.assertEqual(
-            _get_standard_language(),
-            'en-gb'
-        )
-
-    def test_custom_existing_accented_language(self):
-        self.assertEqual(
-            _get_standard_language('en-gb'),
-            'en-gb'
-        )
-
-    def test_invalid_language(self):
-        with self.assertRaises(ValueError) as error:
-            _get_standard_language('xx')
-
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
-
-
-class GetTranslationLanguageChoicesTest(TestCase):
-    """Tests for `_get_translation_language_choices`."""
-
-    @override_settings(LANGUAGE_CODE='en-us')
-    def test_nonexisting_accented_default_language_code(self):
-        self.assertListEqual(
-            _get_translation_language_choices(),
-            [
-                (None, '---------'),
-                ('en-gb', 'English (Great Britain)'),
-                ('de', 'German'),
-                ('tr', 'Turkish')
-            ]
-        )
-
-    @override_settings(LANGUAGE_CODE='en-gb')
-    def test_existing_accented_default_language_code(self):
-        self.assertListEqual(
-            _get_translation_language_choices(),
-            [
-                (None, '---------'),
-                ('en', 'English'),
-                ('de', 'German'),
-                ('tr', 'Turkish')
-            ]
-        )
-
-    @override_settings(LANGUAGE_CODE='xx')
-    def test_invalid_default_language_code(self):
-        with self.assertRaises(ValueError) as error:
-            _get_translation_language_choices()
-
-        self.assertEqual(
-            error.exception.args[0],
-            'The language code `xx` is not supported.'
-        )
 
 
 class GetReverseRelationTest(TestCase):
@@ -163,150 +69,150 @@ class GetReverseRelationTest(TestCase):
 class GetDissectedLookupTest(TestCase):
     """Tests for `_get_dissected_lookup`."""
 
-    def test_no_rel_with_field_not_translatable_no_lookup(self):
+    def test_nrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'code'),
             {
                 'relation': [],
                 'field': 'code',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
 
-    def test_no_rel_with_field_translatable_no_lookup(self):
+    def test_nrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'name'),
             {
                 'relation': [],
                 'field': 'name',
-                'lookup': '',
+                'supplement': '',
                 'translatable': True,
             }
         )
 
-    def test_no_rel_with_field_not_translatable_with_lookup(self):
+    def test_nrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'code__icontains'),
             {
                 'relation': [],
                 'field': 'code',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': False,
             }
         )
 
-    def test_no_rel_with_field_translatable_with_lookup(self):
+    def test_nrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'name__icontains'),
             {
                 'relation': [],
                 'field': 'name',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': True,
             }
         )
 
-    def test_with_rel_no_field_no_lookup(self):
+    def test_yrel_nfield_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries'),
             {
                 'relation': ['countries'],
                 'field': '',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
 
-    def test_with_rel_no_field_with_lookup(self):
+    def test_yrel_nfield_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__gt'),
             {
                 'relation': ['countries'],
                 'field': '',
-                'lookup': 'gt',
+                'supplement': 'gt',
                 'translatable': False,
             }
         )
 
-    def test_with_rel_with_field_not_translatable_no_lookup(self):
+    def test_yrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__code'),
             {
                 'relation': ['countries'],
                 'field': 'code',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
 
-    def test_with_rel_with_field_translatable_no_lookup(self):
+    def test_yrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__name'),
             {
                 'relation': ['countries'],
                 'field': 'name',
-                'lookup': '',
+                'supplement': '',
                 'translatable': True,
             }
         )
 
-    def test_with_rel_with_field_not_translatable_with_lookup(self):
+    def test_yrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__code__icontains'),
             {
                 'relation': ['countries'],
                 'field': 'code',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': False,
             }
         )
 
-    def test_with_rel_with_field_translatable_with_lookup(self):
+    def test_yrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__name__icontains'),
             {
                 'relation': ['countries'],
                 'field': 'name',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': True,
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__id'),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'id',
-                'lookup': '',
+                'supplement': '',
                 'translatable': False,
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_no_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_nlookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__name'),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'name',
-                'lookup': '',
+                'supplement': '',
                 'translatable': True,
             }
         )
 
-    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ntranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(Continent, 'countries__cities__id__gt'),
             {
                 'relation': ['countries', 'cities'],
                 'field': 'id',
-                'lookup': 'gt',
+                'supplement': 'gt',
                 'translatable': False,
             }
         )
 
-    def test_with_nested_rel_with_field_translatable_with_lookup(self):
+    def test_ynestedrel_yfield_ytranslatable_ylookup(self):
         self.assertDictEqual(
             _get_dissected_lookup(
                 Continent,
@@ -315,334 +221,8 @@ class GetDissectedLookupTest(TestCase):
             {
                 'relation': ['countries', 'cities'],
                 'field': 'name',
-                'lookup': 'icontains',
+                'supplement': 'icontains',
                 'translatable': True,
-            }
-        )
-
-
-class GetTranslationsLookupQueryTest(TestCase):
-    """Tests for `_get_translations_lookup_query`."""
-
-    def test_no_rel_with_field_not_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'code', 'EU', 'de'
-            ).children),
-            {
-                'code': 'EU',
-            }
-        )
-
-    def test_no_rel_with_field_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'name', 'Europa', 'de'
-            ).children),
-            {
-                'translations__field': 'name',
-                'translations__language': 'de',
-                'translations__text': 'Europa',
-            }
-        )
-
-    def test_no_rel_with_field_not_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'code__icontains', 'EU', 'de'
-            ).children),
-            {
-                'code__icontains': 'EU',
-            },
-        )
-
-    def test_no_rel_with_field_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'name__icontains', 'Europa', 'de'
-            ).children),
-            {
-                'translations__field': 'name',
-                'translations__language': 'de',
-                'translations__text__icontains': 'Europa',
-            }
-        )
-
-    def test_with_rel_no_field_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries', 1, 'de'
-            ).children),
-            {
-                'countries': 1,
-            }
-        )
-
-    def test_with_rel_no_field_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__gt', 1, 'de'
-            ).children),
-            {
-                'countries__gt': 1,
-            }
-        )
-
-    def test_with_rel_with_field_not_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__code', 'DE', 'de'
-            ).children),
-            {
-                'countries__code': 'DE',
-            }
-        )
-
-    def test_with_rel_with_field_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__name', 'Deutschland', 'de'
-            ).children),
-            {
-                'countries__translations__field': 'name',
-                'countries__translations__language': 'de',
-                'countries__translations__text': 'Deutschland',
-            }
-        )
-
-    def test_with_rel_with_field_not_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__code__icontains', 'DE', 'de'
-            ).children),
-            {
-                'countries__code__icontains': 'DE',
-            }
-        )
-
-    def test_with_rel_with_field_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__name__icontains', 'Deutsch', 'de'
-            ).children),
-            {
-                'countries__translations__field': 'name',
-                'countries__translations__language': 'de',
-                'countries__translations__text__icontains': 'Deutsch',
-            }
-        )
-
-    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__cities__id', 1, 'de'
-            ).children),
-            {
-                'countries__cities__id': 1,
-            }
-        )
-
-    def test_with_nested_rel_with_field_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__cities__name', 'Köln', 'de'
-            ).children),
-            {
-                'countries__cities__translations__field': 'name',
-                'countries__cities__translations__language': 'de',
-                'countries__cities__translations__text': 'Köln',
-            }
-        )
-
-    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__cities__id__gt', 1, 'de'
-            ).children),
-            {
-                'countries__cities__id__gt': 1,
-            }
-        )
-
-    def test_with_nested_rel_with_field_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_lookup_query(
-                Continent, 'countries__cities__name__icontains', 'Kö', 'de'
-            ).children),
-            {
-                'countries__cities__translations__field': 'name',
-                'countries__cities__translations__language': 'de',
-                'countries__cities__translations__text__icontains': 'Kö',
-            }
-        )
-
-
-class GetTranslationsQueryTest(TestCase):
-    """Tests for `_get_translations_query`."""
-
-    def test_no_rel_with_field_not_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(code='EU'), 'de'
-            ).children[0].children),
-            {
-                'code': 'EU',
-            }
-        )
-
-    def test_no_rel_with_field_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(name='Europa'), 'de'
-            ).children[0].children),
-            {
-                'translations__field': 'name',
-                'translations__language': 'de',
-                'translations__text': 'Europa',
-            }
-        )
-
-    def test_no_rel_with_field_not_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(code__icontains='EU'), 'de'
-            ).children[0].children),
-            {
-                'code__icontains': 'EU',
-            },
-        )
-
-    def test_no_rel_with_field_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(name__icontains='Europa'), 'de'
-            ).children[0].children),
-            {
-                'translations__field': 'name',
-                'translations__language': 'de',
-                'translations__text__icontains': 'Europa',
-            }
-        )
-
-    def test_with_rel_no_field_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries=1), 'de'
-            ).children[0].children),
-            {
-                'countries': 1,
-            }
-        )
-
-    def test_with_rel_no_field_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__gt=1), 'de'
-            ).children[0].children),
-            {
-                'countries__gt': 1,
-            }
-        )
-
-    def test_with_rel_with_field_not_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__code='DE'), 'de'
-            ).children[0].children),
-            {
-                'countries__code': 'DE',
-            }
-        )
-
-    def test_with_rel_with_field_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__name='Deutschland'), 'de'
-            ).children[0].children),
-            {
-                'countries__translations__field': 'name',
-                'countries__translations__language': 'de',
-                'countries__translations__text': 'Deutschland',
-            }
-        )
-
-    def test_with_rel_with_field_not_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__code__icontains='DE'), 'de'
-            ).children[0].children),
-            {
-                'countries__code__icontains': 'DE',
-            }
-        )
-
-    def test_with_rel_with_field_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__name__icontains='Deutsch'), 'de'
-            ).children[0].children),
-            {
-                'countries__translations__field': 'name',
-                'countries__translations__language': 'de',
-                'countries__translations__text__icontains': 'Deutsch',
-            }
-        )
-
-    def test_with_nested_rel_with_field_not_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__cities__id=1), 'de'
-            ).children[0].children),
-            {
-                'countries__cities__id': 1,
-            }
-        )
-
-    def test_with_nested_rel_with_field_translatable_no_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__cities__name='Köln'), 'de'
-            ).children[0].children),
-            {
-                'countries__cities__translations__field': 'name',
-                'countries__cities__translations__language': 'de',
-                'countries__cities__translations__text': 'Köln',
-            }
-        )
-
-    def test_with_nested_rel_with_field_not_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__cities__id__gt=1), 'de'
-            ).children[0].children),
-            {
-                'countries__cities__id__gt': 1,
-            }
-        )
-
-    def test_with_nested_rel_with_field_translatable_with_lookup(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(countries__cities__name__icontains='Kö'), 'de'
-            ).children[0].children),
-            {
-                'countries__cities__translations__field': 'name',
-                'countries__cities__translations__language': 'de',
-                'countries__cities__translations__text__icontains': 'Kö',
-            }
-        )
-
-    def test_nested_query(self):
-        self.assertDictEqual(
-            dict(_get_translations_query(
-                Continent, Q(
-                    Q(countries__cities__name__icontains='Kö'),
-                ), 'de'
-            ).children[0].children[0].children),
-            {
-                'countries__cities__translations__field': 'name',
-                'countries__cities__translations__language': 'de',
-                'countries__cities__translations__text__icontains': 'Kö',
             }
         )
 
@@ -1002,8 +582,8 @@ class GetEntityDetailsTest(TestCase):
         )
 
 
-class GetInstanceGroupsTest(TestCase):
-    """Tests for `_get_instance_groups`."""
+class GetPurviewTest(TestCase):
+    """Tests for `_get_purview`."""
 
     def test_instance_level_0_relation(self):
         create_samples(
@@ -1018,8 +598,10 @@ class GetInstanceGroupsTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1046,8 +628,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1080,8 +664,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1115,8 +701,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(europe, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1147,8 +735,10 @@ class GetInstanceGroupsTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1181,8 +771,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1223,8 +815,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1266,8 +860,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(continents, hierarchy),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1297,11 +893,10 @@ class GetInstanceGroupsTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1328,11 +923,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1365,11 +959,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1403,11 +996,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(europe, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                europe,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe
@@ -1438,11 +1030,10 @@ class GetInstanceGroupsTest(TestCase):
 
         ct_continent = ContentType.objects.get_for_model(Continent)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1475,11 +1066,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_country = ContentType.objects.get_for_model(Country)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1520,11 +1110,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_continent = ContentType.objects.get_for_model(Continent)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1566,11 +1155,10 @@ class GetInstanceGroupsTest(TestCase):
         ct_country = ContentType.objects.get_for_model(Country)
         ct_city = ContentType.objects.get_for_model(City)
 
+        mapping, query = _get_purview(continents, hierarchy)
+
         self.assertDictEqual(
-            _get_instance_groups(
-                continents,
-                hierarchy,
-            ),
+            mapping,
             {
                 ct_continent.id: {
                     str(europe.id): europe,
@@ -1601,10 +1189,7 @@ class GetInstanceGroupsTest(TestCase):
         behzad = Person('Behzad')
 
         with self.assertRaises(TypeError) as error:
-            _get_instance_groups(
-                behzad,
-                {}
-            )
+            _get_purview(behzad, {})
 
         self.assertEqual(
             error.exception.args[0],
@@ -1628,10 +1213,7 @@ class GetInstanceGroupsTest(TestCase):
         people.append(Person('Max'))
 
         with self.assertRaises(TypeError) as error:
-            _get_instance_groups(
-                people,
-                {}
-            )
+            _get_purview(people, {})
 
         self.assertEqual(
             error.exception.args[0],
@@ -1651,10 +1233,7 @@ class GetInstanceGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy
-            )
+            _get_purview(europe, hierarchy)
 
         self.assertEqual(
             error.exception.args[0],
@@ -1675,10 +1254,7 @@ class GetInstanceGroupsTest(TestCase):
         hierarchy = _get_relations_hierarchy('countries__wrong')
 
         with self.assertRaises(FieldDoesNotExist) as error:
-            _get_instance_groups(
-                europe,
-                hierarchy
-            )
+            _get_purview(europe, hierarchy)
 
         self.assertEqual(
             error.exception.args[0],
@@ -1702,10 +1278,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy()
-        groups = _get_instance_groups(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1727,10 +1303,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1)
-        groups = _get_instance_groups(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1754,10 +1330,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_2)
-        groups = _get_instance_groups(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1781,10 +1357,10 @@ class GetTranslationsTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
-        groups = _get_instance_groups(europe, hierarchy)
+        mapping, query = _get_purview(europe, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1808,10 +1384,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy()
-        groups = _get_instance_groups(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1835,10 +1411,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1)
-        groups = _get_instance_groups(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1866,10 +1442,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_2)
-        groups = _get_instance_groups(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
@@ -1897,10 +1473,10 @@ class GetTranslationsTest(TestCase):
 
         continents = Continent.objects.all()
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
-        groups = _get_instance_groups(continents, hierarchy)
+        mapping, query = _get_purview(continents, hierarchy)
 
         self.assertQuerysetEqual(
-            _get_translations(groups, lang='de').order_by('id'),
+            _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',

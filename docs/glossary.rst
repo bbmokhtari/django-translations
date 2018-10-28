@@ -6,11 +6,24 @@ The terms you might see in the documentation:
 
 .. glossary::
 
+   supported language
+     A supported language is a language which is included in
+     the :data:`~django.conf.settings.LANGUAGES` setting.
+
+   default language
+     The default language is a language which is set by
+     the :data:`~django.conf.settings.LANGUAGE_CODE` setting.
+
+   translation language
+     A translation language is a language which is in
+     the collection of :term:`supported language`\ s minus
+     the :term:`default language`.
+
    active language
      The active language is a language which is automatically activated in
      each request. It is usually determined by the ``Accept-Language`` header
-     received in each HTTP request (from the browser or another client). You
-     can access it in Django using the
+     received in each HTTP request (from the browser or another client).
+     You can access it in Django using the
      :func:`~django.utils.translation.get_language` function.
 
    relations hierarchy
@@ -42,8 +55,11 @@ The terms you might see in the documentation:
      the ``nested_relation`` represents the second-level relation of the
      model and so on.
 
-   instance groups
-     The instance groups are a group of instances divided into groups based on
+   purview
+     The purview is simply an area of effect, it defines the instances to be
+     affected and some information about them, so it consists of two parts.
+
+     The first part is a mapping of instances divided into groups based on
      their content types.
 
      example::
@@ -58,3 +74,6 @@ The terms you might see in the documentation:
 
      The first level keys are content types, the second level keys are object
      ids and the values of the object id keys are the instances.
+
+     The second part is the query that can be used to fetch the translations
+     of all the instances in the purview.

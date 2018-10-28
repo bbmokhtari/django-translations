@@ -234,52 +234,26 @@ intersphinx_mapping = {
 doctest_global_setup = """
 from django.db import connection
 from django.test import TestCase
-from django.db.models.query import QuerySet
-from django.db.models.query import Q
-from pprint import pprint
 import builtins
+import beautifier
 
 # Turn on the test database for the doctests
 connection.creation.create_test_db(verbosity=0)
 TestCase.setUpClass()
 
 # Beautify `testoutput`
-def print(obj='', start='', end='\\n'):
-    if type(obj) == dict:
-        pprint(obj, width=72)
-    elif type(obj) == QuerySet:
-        obj = obj.order_by('id')
-        representation = repr(obj)
-        start_index = representation.find('[')
-        end_index = representation.rfind(']')
-        start_str = representation[:(start_index + 1)]
-        center_str = representation[(start_index + 1): end_index]
-        end_str = representation[end_index:]
-        items = map(lambda x: (' ' * 4) + x, center_str.split(', '))
-        print(start_str)
-        print(',\\n'.join(items))
-        print(end_str)
-    elif type(obj) == Q:
-        indent = len(start) * ' '
-        print('({}:'.format(obj.connector), start=indent)
-        def sorter(x):
-            if type(x) == Q:
-                return ''
-            elif type(x) == tuple:
-                return x[0]
-        for child in sorted(obj.children, key=sorter):
-            if type(child) == tuple and child[0] in ['_connector', '_negated']:
-                continue
-            print(child, start=indent + (4 * ' '))
-        print(')', start=indent)
-    else:
-        builtins.print(start + str(obj), end=end)
-
+def print(value='', end='\\n'):
+    builtins.print(beautifier.beautify(value, False), end=end)
 """
 
 doctest_global_cleanup = """
 from django.db import connection
 from django.test import TestCase
+import builtins
+
+# Normalize `testoutput`
+def print(value='', end='\\n'):
+    builtins.print(value, end=end)
 
 # Turn off the test database for the doctests
 TestCase.tearDownClass()

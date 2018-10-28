@@ -5,76 +5,11 @@ from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
 from django.core.exceptions import FieldError
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import get_language
-from django.conf import settings
 
 import translations.models
 
 
 __docformat__ = 'restructuredtext'
-
-
-_standard_language_cache = {}
-_translation_language_choices_cache = {}
-
-
-def _get_standard_language(lang=None):
-    """Return the standard language code of a custom language code."""
-    lang = lang if lang else get_language()
-
-    # check cache first
-    try:
-        return _standard_language_cache[lang]
-    except KeyError:
-        pass
-
-    code = lang.split('-')[0]
-
-    lang_exists = False
-    code_exists = False
-
-    # break when the lang is found but not when the code is found
-    # cause the code might come before lang and we may miss an accent
-    for language in settings.LANGUAGES:
-        if lang == language[0]:
-            lang_exists = True
-            break
-        if code == language[0]:
-            code_exists = True
-
-    if lang_exists:
-        _standard_language_cache[lang] = lang
-    elif code_exists:
-        _standard_language_cache[lang] = code
-    else:
-        raise ValueError(
-            'The language code `{}` is not supported.'.format(lang)
-        )
-
-    return _standard_language_cache[lang]
-
-
-def _get_translation_language_choices():
-    """Return the translation language choices."""
-    default = _get_standard_language(settings.LANGUAGE_CODE)
-
-    # check cache first
-    try:
-        return _translation_language_choices_cache[default]
-    except KeyError:
-        pass
-
-    choices = [
-        (None, '---------'),
-    ]
-
-    for language in settings.LANGUAGES:
-        if language[0] != default:
-            choices.append(language)
-
-    _translation_language_choices_cache[default] = choices
-
-    return _translation_language_choices_cache[default]
 
 
 def _get_reverse_relation(model, relation):
@@ -102,11 +37,11 @@ def _get_reverse_relation(model, relation):
 
 
 def _get_dissected_lookup(model, lookup):
-    """Return the dissected info of a query lookup."""
+    """Return the dissected info of a lookup."""
     dissected = {
         'relation': [],
         'field': '',
-        'lookup': '',
+        'supplement': '',
         'translatable': False,
     }
 
@@ -119,7 +54,7 @@ def _get_dissected_lookup(model, lookup):
         except Exception as e:
             if not dissected['relation'] or nest or dissected['field']:
                 raise e
-            dissected['lookup'] = root
+            dissected['supplement'] = root
         else:
             field_model = field.related_model
             if field_model:
@@ -133,7 +68,7 @@ def _get_dissected_lookup(model, lookup):
                         dissected['translatable'] = True
                 if nest:
                     if len(nest) == 1:
-                        dissected['lookup'] = nest[0]
+                        dissected['supplement'] = nest[0]
                     else:
                         raise FieldError("Unsupported lookup '{}'".format(
                             nest[0])
@@ -144,54 +79,6 @@ def _get_dissected_lookup(model, lookup):
     _fill_dissected(model, *parts)
 
     return dissected
-
-
-def _get_translations_lookup_query(model, lookup, value, lang):
-    """Return the translations query of a lookup."""
-    dissected = _get_dissected_lookup(model, lookup)
-    query_dict = {}
-    if dissected['translatable']:
-        dissected['relation'].append('translations')
-        relation = LOOKUP_SEP.join(dissected['relation'])
-
-        query_dict['{}__field'.format(relation)] = dissected['field']
-        query_dict['{}__language'.format(relation)] = lang
-        query_dict[
-            '{}__text{}'.format(
-                relation,
-                (LOOKUP_SEP + dissected['lookup'])
-                if dissected['lookup'] else ''
-            )
-        ] = value
-    else:
-        query_dict[lookup] = value
-
-    return models.Q(**query_dict)
-
-
-def _get_translations_query(model, query, lang):
-    """Return the translations query of a query."""
-    children = []
-    for index, child in enumerate(query.children):
-        if isinstance(child, models.Q):
-            children.append(
-                _get_translations_query(
-                    model, child, lang
-                )
-            )
-        elif isinstance(child, tuple):
-            children.append(
-                _get_translations_lookup_query(
-                    model, child[0], child[1], lang
-                )
-            )
-        else:
-            raise ValueError("Unsupported query {}".format(child))
-    return models.Q(
-        *children,
-        _connector=query.connector,
-        _negated=query.negated
-    )
 
 
 def _get_relations_hierarchy(*relations):
@@ -245,12 +132,10 @@ def _get_entity_details(entity):
     return (iterable, model)
 
 
-def _get_instance_groups(entity, hierarchy):
-    """
-    Return the `instance groups` of an entity and a `relations hierarchy` of
-    it.
-    """
-    groups = {}
+def _get_purview(entity, hierarchy):
+    """Return the `purview` of an entity and a `relations hierarchy` of it."""
+    mapping = {}
+    query = models.Q()
 
     def _fill_entity(entity, hierarchy, included=True):
         iterable, model = _get_entity_details(entity)
@@ -258,20 +143,27 @@ def _get_instance_groups(entity, hierarchy):
         if model is None:
             return
 
-        content_type = ContentType.objects.get_for_model(model)
+        content_type_id = ContentType.objects.get_for_model(model).id
 
         if included:
-            object_groups = groups.setdefault(content_type.id, {})
+            instances = mapping.setdefault(content_type_id, {})
             if not issubclass(model, translations.models.Translatable):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj):
             if included:
-                obj._default_translatable_fields = {
-                    field: getattr(obj, field) for field in
-                    type(obj)._get_translatable_fields_names()
-                }
-                object_groups[str(obj.id)] = obj
+                if not hasattr(obj, '_default_translatable_fields'):
+                    obj._default_translatable_fields = {
+                        field: getattr(obj, field) for field in
+                        type(obj)._get_translatable_fields_names()
+                    }
+                object_id = str(obj.id)
+                instances[object_id] = obj
+                nonlocal query
+                query |= models.Q(
+                    content_type__id=content_type_id,
+                    object_id=object_id,
+                )
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
@@ -304,23 +196,18 @@ def _get_instance_groups(entity, hierarchy):
 
     _fill_entity(entity, hierarchy)
 
-    return groups
+    return mapping, query
 
 
-def _get_translations(groups, lang):
-    """Return the translations of some `instance groups` in a language."""
-    filters = models.Q()
-    for (ct_id, objs) in groups.items():
-        for obj_id in objs:
-            filters |= models.Q(
-                content_type__id=ct_id,
-                object_id=obj_id,
-            )
+def _get_translations(query, lang):
+    """Return the `Translation` queryset of a query in a language."""
+    if (query):
+        queryset = translations.models.Translation.objects.filter(
+            language=lang,
+        ).filter(
+            query,
+        ).select_related('content_type')
 
-    queryset = translations.models.Translation.objects.filter(
-        language=lang,
-    ).filter(
-        filters,
-    ).select_related('content_type')
-
-    return queryset
+        return queryset
+    else:
+        return translations.models.Translation.objects.none()

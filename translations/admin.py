@@ -32,7 +32,7 @@ class TranslatableAdminMixin(object):
 
 
 class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
-    """The admin which represents the translatables."""
+    """The admin which represents the `Translatable` instances."""
 
     def get_inline_instances(self, request, obj=None):
         inlines = list(
@@ -43,7 +43,7 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
 
 
 class TranslationInline(GenericStackedInline):
-    """The inline which represents the translations."""
+    """The inline which represents the `Translation` instances."""
 
     model = Translation
     extra = 1
