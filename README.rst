@@ -114,18 +114,14 @@ Use the extended ORM capabilities:
 .. code:: python
 
    >>> from sample.models import Continent
-   >>> continents = Continent.objects.all(
-   ... ).distinct(           # familiar distinct
-   ... ).probe(              # filter in English and German
-   ...       ['en', 'de']
-   ... ).filter(             # familiar filtering
-   ...       countries__cities__name__startswith='Köln'
-   ... ).translate(          # translate the results in German
-   ...       'de'
-   ... ).translate_related(  # translate these relations as well
-   ...       'countries',
-   ...       'countries__cities'
-   ... )
+   >>> continents = Continent.objects\
+   ... .distinct()\                       # familiar distinct
+   ... .probe(['en', 'de'])\              # filter in English and German
+   ... .filter(                           # familiar filtering
+   ...     countries__cities__name__startswith='Köln')\
+   ... .translate('de')\                  # translate the results in German
+   ... .translate_related(                # translate these relations as well
+   ...       'countries', 'countries__cities')
    >>> print(continents)
    <TranslatableQuerySet [
        <Continent: Europa>,
@@ -155,7 +151,7 @@ Use the context:
    >>> relations = ('countries', 'countries__cities',)
    >>> with Context(continents, *relations) as context:
    ...     context.read('de')    # read the translations onto the context
-   ...     print('----------')   # use the objects like before
+   ...     print()               # use the objects like before
    ...     print(continents)
    ...     print(continents[0].countries.all())
    ...     print(continents[0].countries.all()[0].cities.all())
@@ -166,11 +162,11 @@ Use the context:
    ...     context.delete('de')  # delete the translations of the context
    ... 
    ...     context.reset()       # reset the translations of the context
-   ...     print('----------')   # use the objects like before
+   ...     print()               # use the objects like before
    ...     print(continents)
    ...     print(continents[0].countries.all())
    ...     print(continents[0].countries.all()[0].cities.all())
-   ----------
+
    <TranslatableQuerySet [
        <Continent: Europa>,
        <Continent: Asien>,
@@ -181,7 +177,7 @@ Use the context:
    <TranslatableQuerySet [
        <City: Köln>,
    ]>
-   ----------
+
    <TranslatableQuerySet [
        <Continent: Europe>,
        <Continent: Asia>,
