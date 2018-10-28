@@ -12,7 +12,7 @@ Translations
 .. |pypi| image:: https://img.shields.io/badge/pypi-1.0.0-f9d35f.svg
           :target: https://pypi.org/project/django-translations/
 
-.. |django| image:: https://img.shields.io/badge/django-1.11%7C2.0%7C2.1-0C4B33.svg
+.. |django| image:: https://img.shields.io/badge/django-2.0%7C2.1-0C4B33.svg
             :target: https://pypi.org/project/django-translations/
 
 .. |flake8| image:: https://img.shields.io/badge/flake8-linted-green.svg

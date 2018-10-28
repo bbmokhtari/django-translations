@@ -1,6 +1,5 @@
 import os
 import shutil
-import django
 
 
 settings = """
@@ -85,24 +84,17 @@ LOGGING = {
         },
     },
 }
+
 """
 
-urls_1 = """
-
-from django.conf.urls import include
-
-urlpatterns += [
-    url('sample/', include('sample.urls'))
-]
-"""
-
-urls_2 = """
+urls = """
 
 from django.urls import include
 
 urlpatterns += [
     path('sample/', include('sample.urls'))
 ]
+
 """
 
 if __name__ == '__main__':
@@ -121,7 +113,4 @@ if __name__ == '__main__':
 
     # configure urls
     with open(os.path.join('project', 'project', 'urls.py'), 'a') as fh:
-        if int(django.get_version().split('.')[0]) == 2:
-            fh.write(urls_2)
-        else:
-            fh.write(urls_1)
+        fh.write(urls)
