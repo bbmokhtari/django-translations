@@ -6,6 +6,7 @@ from translations.models import TranslatableQuerySet
 def beautify(obj, representation=True):
     return beautify_any(obj, '', True, representation)
 
+
 def beautify_any(obj, base, first, representation):
     if isinstance(obj, dict):
         return beautify_iter(
@@ -44,30 +45,36 @@ def beautify_any(obj, base, first, representation):
         else:
             return str(obj)
 
+
 def dict_iterator(obj, beautifier):
     return sorted([
-        '{key}: {value}'.format(key=beautifier(key), value=beautifier(value)) \
+        '{key}: {value}'.format(key=beautifier(key), value=beautifier(value))
         for key, value in obj.items()
     ])
+
 
 def list_iterator(obj, beautifier):
     return [beautifier(value) for value in obj]
 
+
 def q_iterator(obj, beautifier):
     return sorted([
-        beautifier(value, False) \
-        if isinstance(value, Q) else beautifier(value) \
+        beautifier(value, False)
+        if isinstance(value, Q) else beautifier(value)
         for value in obj.children
     ])
 
+
 def queryset_iterator(obj, beautifier):
     return [beautifier(value) for value in sorted(obj, key=lambda x: x.pk)]
+
 
 def beautify_iter(obj, base, first, opener, closer, iterator):
     indent = base + (4 * ' ')
 
     # items
     items = []
+
     def beautifier(value, representation=True):
         return beautify_any(value, indent, False, representation)
     for item in iterator(obj, beautifier):

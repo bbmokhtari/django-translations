@@ -57,12 +57,13 @@ def _fetch_translations_query_getter(model, lang):
                         field_supp = (LOOKUP_SEP + dissected['supplement']) \
                             if dissected['supplement'] else ''
                         lang_supp = (LOOKUP_SEP + 'in') \
-                            if isinstance(query_languages, (list, tuple)) else ''
+                            if isinstance(query_languages, (list, tuple)) \
+                            else ''
 
                         q |= Q(**{
-                            '{}__field'.format(relation): 
+                            '{}__field'.format(relation):
                                 dissected['field'],
-                            '{}__text{}'.format(relation, field_supp): 
+                            '{}__text{}'.format(relation, field_supp):
                                 child[1],
                             '{}__language{}'.format(relation, lang_supp):
                                 query_languages

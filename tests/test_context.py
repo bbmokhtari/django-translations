@@ -48,7 +48,8 @@ class ContextTest(TestCase):
             with Context(europe, 'wrong'):
                 pass
 
-        self.assertEqual(error.exception.args[0], "Continent has no field named 'wrong'")
+        self.assertEqual(
+            error.exception.args[0], "Continent has no field named 'wrong'")
 
     def test_init_instance_invalid_nested_relation(self):
         create_samples(
@@ -65,7 +66,8 @@ class ContextTest(TestCase):
             with Context(europe, 'countries__wrong'):
                 pass
 
-        self.assertEqual(error.exception.args[0], "Country has no field named 'wrong'")
+        self.assertEqual(
+            error.exception.args[0], "Country has no field named 'wrong'")
 
     def test_init_queryset_invalid_entity(self):
         class Person:
@@ -105,7 +107,8 @@ class ContextTest(TestCase):
             with Context(continents, 'wrong'):
                 pass
 
-        self.assertEqual(error.exception.args[0], "Continent has no field named 'wrong'")
+        self.assertEqual(
+            error.exception.args[0], "Continent has no field named 'wrong'")
 
     def test_init_queryset_invalid_nested_relation(self):
         create_samples(
@@ -122,7 +125,8 @@ class ContextTest(TestCase):
             with Context(continents, 'countries__wrong'):
                 pass
 
-        self.assertEqual(error.exception.args[0], "Country has no field named 'wrong'")
+        self.assertEqual(
+            error.exception.args[0], "Country has no field named 'wrong'")
 
     def test_get_changed_fields_instance_level_0_relation(self):
         create_samples(
@@ -1448,7 +1452,10 @@ class ContextTest(TestCase):
             with Context(europe) as context:
                 context.create('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_create_queryset_level_0_relation_no_lang(self):
@@ -2566,7 +2573,10 @@ class ContextTest(TestCase):
             with Context(continents) as context:
                 context.create('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_read_instance_level_0_relation_no_lang(self):
@@ -3006,7 +3016,10 @@ class ContextTest(TestCase):
             with Context(europe) as context:
                 context.read('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_read_queryset_level_0_relation_no_lang(self):
@@ -3605,7 +3618,10 @@ class ContextTest(TestCase):
             with Context(continents) as context:
                 context.read('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_update_instance_level_0_relation_no_lang(self):
@@ -4356,7 +4372,10 @@ class ContextTest(TestCase):
             with Context(europe) as context:
                 context.update('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_update_queryset_level_0_relation_no_lang(self):
@@ -5523,7 +5542,10 @@ class ContextTest(TestCase):
             with Context(continents) as context:
                 context.update('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_delete_instance_level_0_relation_no_lang(self):
@@ -6002,7 +6024,10 @@ class ContextTest(TestCase):
             with Context(europe) as context:
                 context.update('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_delete_queryset_level_0_relation_no_lang(self):
@@ -6641,7 +6666,10 @@ class ContextTest(TestCase):
             with Context(continents) as context:
                 context.update('xx')
 
-        self.assertEqual(error.exception.args[0], '`xx` is not a supported language.')
+        self.assertEqual(
+            error.exception.args[0],
+            '`xx` is not a supported language.'
+        )
 
     @override(language='de', deactivate=True)
     def test_reset_instance_level_0_relation_no_lang(self):

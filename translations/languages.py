@@ -99,7 +99,9 @@ def _get_translate_language(lang=None):
 
 
 def _get_probe_language(lang=None):
-    """Return the `supported language` code(s) of some probe language code(s)."""
+    """
+    Return the `supported language` code(s) of some probe language code(s).
+    """
     if isinstance(lang, (list, tuple)):
         return [_get_supported_language(x) for x in lang]
     else:

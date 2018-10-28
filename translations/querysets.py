@@ -76,10 +76,16 @@ class TranslatableQuerySet(query.QuerySet):
 
     def filter(self, *args, **kwargs):
         """Filter the `TranslatableQuerySet`."""
-        query = _fetch_translations_query_getter(self.model, self._trans_prob)(*args, **kwargs)
+        query = _fetch_translations_query_getter(
+            self.model,
+            self._trans_prob
+        )(*args, **kwargs)
         return super(TranslatableQuerySet, self).filter(query)
 
     def exclude(self, *args, **kwargs):
         """Exclude the `TranslatableQuerySet`."""
-        query = _fetch_translations_query_getter(self.model, self._trans_prob)(*args, **kwargs)
+        query = _fetch_translations_query_getter(
+            self.model,
+            self._trans_prob
+        )(*args, **kwargs)
         return super(TranslatableQuerySet, self).exclude(query)
