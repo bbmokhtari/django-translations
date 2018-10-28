@@ -37,16 +37,14 @@ This module contains the querysets for the Translations app.
 
       from sample.models import Continent
 
-      continents = Continent.objects.distinct(
-      ).probe(              # filter in English and German
-          ['en', 'de']
+      continents = Continent.objects.all(
+      ).distinct(           # familiar distinct
+      ).probe(['en', 'de']  # filter in English and German
       ).filter(             # familiar filtering
           countries__cities__name__startswith='Köln'
-      ).translate(          # translate the results in German
-          'de'
+      ).translate('de'      # translate the results in German
       ).translate_related(  # translate these relations as well
-          'countries',
-          'countries__cities'
+          'countries', 'countries__cities',
       )
 
       print(continents)
