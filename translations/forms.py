@@ -10,7 +10,7 @@ __docformat__ = 'restructuredtext'
 
 
 def generate_translation_form(translatable):
-    """
+    r"""
     Return the `Translation` form based on a `Translatable` model and
     the `translation language`\ s.
     """
