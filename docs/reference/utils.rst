@@ -95,18 +95,19 @@ This module contains the utilities for the Translations app.
 
    Return the :term:`relations hierarchy` of some relations.
 
-   Creates the :term:`relations hierarchy`, splits each relation into
-   different parts based on the relation depth and fills the
-   :term:`relations hierarchy` with them. When all the relations are
-   processed returns the :term:`relations hierarchy`.
+   Transforms the relations into a :term:`relations hierarchy`. Each level of
+   :term:`relations hierarchy` contains the relations in that level and each
+   relation contains certain information, things like whether the relation is
+   included or not and what are its nested relations, forming the next level
+   of :term:`relations hierarchy`.
 
-   :param relations: The relations to derive the :term:`relations hierarchy`
-       out of.
+   :param relations: The relations to get the :term:`relations hierarchy`
+       of.
        Each relation may be composed of many ``related_query_name``\ s
        separated by :data:`~django.db.models.constants.LOOKUP_SEP`
        (usually ``__``) to represent a deeply nested relation.
    :type relations: list(str)
-   :return: The :term:`relations hierarchy` derived out of the relations.
+   :return: The :term:`relations hierarchy` of the relations.
    :rtype: dict(str, dict)
 
    To get the :term:`relations hierarchy` of some relations
@@ -331,13 +332,13 @@ This module contains the utilities for the Translations app.
    Returns the mapping of the instances specified by the entity and its
    relations, and the query to fetch their translations.
 
-   :param entity: the entity to derive the :term:`purview` out of.
+   :param entity: the entity to get the :term:`purview` of.
    :type entity: ~django.db.models.Model or
        ~collections.Iterable(~django.db.models.Model)
-   :param hierarchy: The :term:`relations hierarchy` of the entity to derive
-       the :term:`purview` out of.
+   :param hierarchy: The :term:`relations hierarchy` of the entity to get
+       the :term:`purview` of.
    :type hierarchy: dict(str, dict)
-   :return: The :term:`purview` derived out of the entity and
+   :return: The :term:`purview` of the entity and
        the :term:`relations hierarchy` of it.
    :rtype: tuple(dict(int, dict(str, ~django.db.models.Model)), \
        ~django.db.models.Q)
