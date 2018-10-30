@@ -196,7 +196,7 @@ This module contains the context managers for the Translations app.
       Yield the info about the changed fields in
       the :class:`Context`\ 's :term:`purview`.
 
-      Yields the info about the changed fields using
+      Yields the info about the changed fields in
       the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview`.
@@ -384,11 +384,11 @@ This module contains the context managers for the Translations app.
       Read the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Applies the translations on the :attr:`TranslatableMeta.fields \
+      Reads the translations onto the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
-      :param lang: The language to fetch the translations in.
+      :param lang: The language to read the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
       :raise ValueError: If the language code is not supported.
