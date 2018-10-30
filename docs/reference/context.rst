@@ -197,7 +197,7 @@ This module contains the context managers for the Translations app.
       the :class:`Context`\ 's :term:`purview`.
 
       Yields the info about the changed fields using
-      the :attr:`translatable fields \
+      the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview`.
 
@@ -249,7 +249,7 @@ This module contains the context managers for the Translations app.
       Create the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Creates the translations using the :attr:`translatable fields \
+      Creates the translations using the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -384,7 +384,7 @@ This module contains the context managers for the Translations app.
       Read the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Applies the translations on the :attr:`translatable fields \
+      Applies the translations on the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -548,7 +548,7 @@ This module contains the context managers for the Translations app.
       Update the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Updates the translations using the :attr:`translatable fields \
+      Updates the translations using the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -661,7 +661,7 @@ This module contains the context managers for the Translations app.
       Delete the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Deletes the translations for the :attr:`translatable fields \
+      Deletes the translations for the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -780,7 +780,7 @@ This module contains the context managers for the Translations app.
       Reset the translations of the :class:`Context`\ 's :term:`purview` to
       the :term:`default language`.
 
-      Resets the translations on the :attr:`translatable fields \
+      Resets the translations on the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` to the :term:`default language`.
 

@@ -281,7 +281,7 @@ This module contains the querysets for the Translations app.
 
       .. note::
 
-         Translating only affects the :attr:`translatable fields \
+         Translating only affects the :attr:`TranslatableMeta.fields \
          <translations.models.Translatable.TranslatableMeta.fields>` that have
          a translation.
 
@@ -494,7 +494,7 @@ This module contains the querysets for the Translations app.
 
       .. note::
 
-         Probing only affects the :attr:`translatable fields \
+         Probing only affects the :attr:`TranslatableMeta.fields \
          <translations.models.Translatable.TranslatableMeta.fields>` that have
          a translation.
 
