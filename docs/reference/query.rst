@@ -18,11 +18,11 @@ This module contains the query utilities for the Translations app.
    :param model: The model which the translations query getter is specialized
        for.
    :type model: type(~django.db.models.Model)
-   :param lang: The lang which the translations query getter is specialized
-       for.
+   :param lang: The language(s) which the translations query getter is
+       specialized for.
    :type lang: str or list(str)
    :return: The translations query getter specialized for the model and the
-       language.
+       language(s).
    :rtype: function
 
    To fetch the translations query getter specialized for a model and some
