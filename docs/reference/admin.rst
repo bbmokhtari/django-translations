@@ -14,7 +14,7 @@ This module contains the admins for the Translations app.
    prepare the translation inlines of a type in some inlines based on the
    admin model.
 
-   .. method:: prepare_translation_inlines(self, inlines, inline_type)
+   .. method:: prepare_translation_inlines(inlines, inline_type)
 
       Prepare the translation inlines of a type in some inlines based on the
       admin model.
