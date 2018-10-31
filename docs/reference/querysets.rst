@@ -12,10 +12,10 @@ This module contains the querysets for the Translations app.
 
    Provides functionalities like
    :meth:`translate` and :meth:`translate_related`
-   to evaluate the :class:`TranslatableQuerySet`
+   to translate the :class:`TranslatableQuerySet` and the relations of it
    and also some other functionalities like
    :meth:`probe`, :meth:`filter` and :meth:`exclude`
-   to probe the :class:`TranslatableQuerySet`.
+   to query the :class:`TranslatableQuerySet`.
 
    To use :class:`TranslatableQuerySet`:
 
