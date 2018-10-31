@@ -233,7 +233,7 @@ To create the translations of a list of instances and some relations of it:
 
    Translations created!
 
-The language code must already declared in the
+The language code must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
@@ -253,7 +253,7 @@ Reading the translations
 
 To read the translations of the ``Context``\ 's purview in a language
 use the :meth:`~translations.context.Context.read` method.
-This applies the translations on the :ref:`translatable fields \
+This reads the translations onto the :ref:`translatable fields \
 <specify-fields>` of the ``Context``\ 's purview.
 It accepts a language code which determines the language to
 read the translation in.
@@ -350,7 +350,7 @@ To read the translations of a list of instances and some relations of it:
    Deutschland
    Köln
 
-The language code must already declared in the
+The language code must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
@@ -360,6 +360,57 @@ not passed in, it is automatically set to the :term:`active language` code.
 
    If there is no translation for a field, the value of the field is not
    changed. (It remains what it was before)
+
+.. warning::
+
+   Any methods on the relations queryset which imply
+   a database query will reset previously translated results:
+
+   .. testcode:: guide_read
+
+      from translations.context import Context
+      from sample.models import Continent
+
+      continents = Continent.objects.prefetch_related(
+          'countries',
+      )
+
+      with Context(continents, 'countries') as context:
+          context.read('de')
+          # querying after translation
+          print(continents[0].countries.exclude(name=''))
+
+   .. testoutput:: guide_read
+
+      <TranslatableQuerySet [
+          <Country: Germany>,
+      ]>
+
+   In some cases the querying can be done before the translation:
+
+   .. testcode:: guide_read
+
+      from django.db.models import Prefetch
+      from translations.context import Context
+      from sample.models import Continent, Country
+
+      # querying before translation
+      continents = Continent.objects.prefetch_related(
+          Prefetch(
+              'countries',
+              queryset=Country.objects.exclude(name=''),
+          ),
+      )
+
+      with Context(continents, 'countries') as context:
+          context.read('de')
+          print(continents[0].countries.all())
+
+   .. testoutput:: guide_read
+
+      <TranslatableQuerySet [
+          <Country: Deutschland>,
+      ]>
 
 Updating the translations
 =========================
@@ -389,12 +440,13 @@ To update the translations of an instance and some relations of it:
 
 .. testcode:: guide_update
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # change the instance like before
        europe.name = 'Europa (changed)'
@@ -414,12 +466,13 @@ To update the translations of a queryset and some relations of it:
 
 .. testcode:: guide_update
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # change the queryset like before
        continents[0].name = 'Europa (changed)'
@@ -439,12 +492,13 @@ To update the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_update
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # change the list of instances like before
        continents[0].name = 'Europa (changed)'
@@ -460,7 +514,7 @@ To update the translations of a list of instances and some relations of it:
 
    Translations updated!
 
-The language code must already declared in the
+The language code must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
@@ -527,12 +581,13 @@ To delete the translations of an instance and some relations of it:
 
 .. testcode:: guide_delete_0
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # delete the translations in German
        context.delete('de')
@@ -547,12 +602,13 @@ To delete the translations of a queryset and some relations of it:
 
 .. testcode:: guide_delete_1
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # delete the translations in German
        context.delete('de')
@@ -567,12 +623,13 @@ To delete the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_delete_2
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # delete the translations in German
        context.delete('de')
@@ -583,7 +640,7 @@ To delete the translations of a list of instances and some relations of it:
 
    Translations deleted!
 
-The language code must already declared in the
+The language code must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
@@ -613,12 +670,13 @@ To reset the translations of an instance and some relations of it:
 
 .. testcode:: guide_reset
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
        context.read('de')
@@ -641,12 +699,13 @@ To reset the translations of a queryset and some relations of it:
 
 .. testcode:: guide_reset
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
        context.read('de')
@@ -669,12 +728,13 @@ To reset the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_reset
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
        context.read('de')
