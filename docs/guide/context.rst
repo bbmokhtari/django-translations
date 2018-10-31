@@ -10,11 +10,11 @@ What is context
 When something is going to be stated it can be done so in the context of a
 certain language.
 
-Initiate a context
-==================
+Initialize a context
+====================
 
-To initiate a context use the :class:`~translations.context.Context`
-class. The context's purview must be defined in the initiation, meaning which
+To initialize a context use the :class:`~translations.context.Context`
+class. The context's purview must be defined in the initialization, meaning which
 ``entity`` and what ``*relations`` of that entity should it affect.
 
 All the actions like `reading the translations`_,
@@ -35,7 +35,7 @@ objects in the defined purview.
        langs=['de']
    )
 
-To initiate a context for a model instance:
+To initialize a context for a model instance:
 
 .. testcode:: guide_init
 
@@ -44,15 +44,15 @@ To initiate a context for a model instance:
 
    europe = Continent.objects.get(code='EU')
 
-   # initiate context
+   # initialize context
    with Context(europe, 'countries', 'countries__cities') as context:
-       print('Context initiated!')
+       print('Context initialized!')
 
 .. testoutput:: guide_init
 
-   Context initiated!
+   Context initialized!
 
-To initiate a context for a queryset:
+To initialize a context for a queryset:
 
 .. testcode:: guide_init
 
@@ -61,15 +61,15 @@ To initiate a context for a queryset:
 
    continents = Continent.objects.all()
 
-   # initiate context
+   # initialize context
    with Context(continents, 'countries', 'countries__cities') as context:
-       print('Context initiated!')
+       print('Context initialized!')
 
 .. testoutput:: guide_init
 
-   Context initiated!
+   Context initialized!
 
-To initiate a context for a list of model instances:
+To initialize a context for a list of model instances:
 
 .. testcode:: guide_init
 
@@ -78,13 +78,13 @@ To initiate a context for a list of model instances:
 
    continents = list(Continent.objects.all())
 
-   # initiate context
+   # initialize context
    with Context(continents, 'countries', 'countries__cities') as context:
-       print('Context initiated!')
+       print('Context initialized!')
 
 .. testoutput:: guide_init
 
-   Context initiated!
+   Context initialized!
 
 The ``entity`` must be a model instance, a queryset or a list of model
 instances.
@@ -99,7 +99,7 @@ The model of the ``*relations`` must be
 .. note::
 
    It is **recommended** for the relations of the entity to be
-   prefetched before initiating a context,
+   prefetched before initializing a context,
    in order to reach optimal performance.
 
    To do this use
