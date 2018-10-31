@@ -85,15 +85,16 @@ This module contains the context managers for the Translations app.
 
    .. method:: __init__(entity, *relations)
 
-      Initialize a :class:`Context` with an entity and some relations of it.
+      Initialize a :class:`Context` for an entity and some relations of it.
 
       Defines the entity and the relations of it as
       the :class:`Context`\ 's :term:`purview`.
 
-      :param entity: The entity to use in the :class:`Context`.
+      :param entity: The entity to initialize the :class:`Context` for.
       :type entity: ~django.db.models.Model or
           ~collections.Iterable(~django.db.models.Model)
-      :param relations: The relations of the entity to use in the :class:`Context`.
+      :param relations: The relations of the entity to initialize
+          the :class:`Context` for.
       :type relations: list(str)
       :raise TypeError:
 
@@ -123,7 +124,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To Initialize a :class:`Context` with an entity (an instance)
+      To Initialize a :class:`Context` for an entity (an instance)
       and some relations of it:
 
       .. testcode:: init
@@ -142,7 +143,7 @@ This module contains the context managers for the Translations app.
 
          Context Initialized!
 
-      To Initialize a :class:`Context` with an entity (a queryset)
+      To Initialize a :class:`Context` for an entity (a queryset)
       and some relations of it:
 
       .. testcode:: init
@@ -161,7 +162,7 @@ This module contains the context managers for the Translations app.
 
          Context Initialized!
 
-      To Initialize a :class:`Context` with an entity (a list of instances)
+      To Initialize a :class:`Context` for an entity (a list of instances)
       and some relations of it:
 
       .. testcode:: init
