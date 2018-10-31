@@ -647,7 +647,7 @@ not passed in, it is automatically set to the :term:`active language` code.
 Resetting the translations
 ==========================
 
-To reset the translations of the ``Context``\ 's purview to original values
+To reset the translations of the ``Context``\ 's purview to the :term:`default language`
 use the :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
 <specify-fields>` of the ``Context``\ 's purview.
