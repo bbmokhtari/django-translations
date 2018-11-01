@@ -33,7 +33,7 @@ To make a model translatable inherit it from the
 
 .. _specify-fields:
 
-Specify model's translatable fields
+Specify models' translatable fields
 ===================================
 
 To specify the model's translatable fields specify the
