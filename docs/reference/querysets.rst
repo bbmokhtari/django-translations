@@ -261,14 +261,29 @@ This module contains the querysets for the Translations app.
              langs=['de']
          )
 
-      To translate the :class:`TranslatableQuerySet` in a language:
+      To translate the :class:`TranslatableQuerySet` (an instance) in a language:
+
+      .. testcode:: translate
+
+         from sample.models import Continent
+
+         # translate the instance
+         europe = Continent.objects.translate('de').get(code='EU')
+
+         print(europe)
+
+      .. testoutput:: translate
+
+         Europa
+
+      To translate the :class:`TranslatableQuerySet` (a queryset) in a language:
 
       .. testcode:: translate
 
          from sample.models import Continent
 
          # translate the queryset
-         continents = Continent.objects.translate('de')
+         continents = Continent.objects.translate('de').all()
 
          print(continents)
 
