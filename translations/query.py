@@ -71,12 +71,19 @@ def _fetch_translations_query_getter(model, lang):
                 else:
                     q = Q(**{child[0]: child[1]})
             elif isinstance(child, TQ):
-                getter = _fetch_translations_query_getter(model, child.lang)
-                q = getter(
-                    *child.children,
-                    _connector=child.connector,
-                    _negated=child.negated
-                )
+                if child.lang:
+                    getter = _fetch_translations_query_getter(model, child.lang)
+                    q = getter(
+                        *child.children,
+                        _connector=child.connector,
+                        _negated=child.negated
+                    )
+                else:
+                    q = _get_translations_query(
+                        *child.children,
+                        _connector=child.connector,
+                        _negated=child.negated
+                    )
             elif isinstance(child, Q):
                 q = _get_translations_query(
                     *child.children,
@@ -94,20 +101,25 @@ def _fetch_translations_query_getter(model, lang):
 
 class TQ(Q):
     """
-    Encapsulate translation filters as objects that can then be combined
+    Encapsulate translation queries as objects that can then be combined
     logically (using `&` and `|`).
     """
 
     def __init__(self, *args, **kwargs):
-        """Initialize a `TQ` with `Q` arguments and some language(s)."""
-        lang = kwargs.pop('_lang', None)
+        """Initialize a `TQ` with `Q` arguments."""
         super(TQ, self).__init__(*args, **kwargs)
-        self.lang = _get_probe_language(lang)
+        self.lang = None
 
     def __deepcopy__(self, memodict):
         """Return a copy of the `TQ` object."""
         obj = super(TQ, self).__deepcopy__(memodict)
         obj.lang = self.lang
+        return obj
+
+    def __call__(self, lang):
+        """Specialize the `TQ` for some language(s)."""
+        obj = copy.deepcopy(self)
+        obj.lang = _get_probe_language(lang)
         return obj
 
     def _combine(self, other, conn):
