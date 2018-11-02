@@ -16,7 +16,7 @@ Translate the queryset
 To translate the queryset in a language use the
 :meth:`~translations.querysets.TranslatableQuerySet.translate` method.
 It translates the :ref:`translatable fields \
-<specify-fields>` of the queryset in the evaluation.
+<specify-fields>` of the queryset in a language in the evaluation.
 It accepts a language code which determines the language to
 translate the queryset in.
 
@@ -216,7 +216,7 @@ Probe (filter, exclude, etc.) the queryset
 To probe the queryset in some language(s) use the
 :meth:`~translations.querysets.TranslatableQuerySet.probe` method.
 It probes the :ref:`translatable fields \
-<specify-fields>` of the queryset in the evaluation.
+<specify-fields>` of the queryset in a language in the evaluation.
 It accepts some language code(s) which determines the language(s) to
 probe the queryset in.
 
