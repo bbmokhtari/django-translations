@@ -210,8 +210,8 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
           <Country: Deutschland>,
       ]>
 
-Probe the queryset
-==================
+Probe (filter, exclude, etc.) the queryset
+==========================================
 
 To probe the queryset in some language(s) use the
 :meth:`~translations.querysets.TranslatableQuerySet.probe` method.
