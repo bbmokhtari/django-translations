@@ -1,0 +1,882 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Context &#8212; Django Translations 1.0.0rc5 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Forms" href="forms.html" />
+    <link rel="prev" title="Query" href="query.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+    <link rel="apple-touch-icon" href="../_static/translation.svg" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+              <div class="related top">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="query.html" title="Previous document">Query</a>
+        </li>
+        <li>
+          <a href="forms.html" title="Next document">Forms</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-translations.context">
+<span id="context"></span><h1>Context<a class="headerlink" href="#module-translations.context" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the context managers for the Translations app.</p>
+<dl class="class">
+<dt id="translations.context.Context">
+<em class="property">class </em><code class="descclassname">translations.context.</code><code class="descname">Context</code><a class="reference internal" href="../_modules/translations/context.html#Context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager which provides custom translation functionalities.</p>
+<p>Provides CRUD functionalities like
+<a class="reference internal" href="#translations.context.Context.create" title="translations.context.Context.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a>, <a class="reference internal" href="#translations.context.Context.read" title="translations.context.Context.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a>, <a class="reference internal" href="#translations.context.Context.update" title="translations.context.Context.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> and <a class="reference internal" href="#translations.context.Context.delete" title="translations.context.Context.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a>
+to work with the translations and also some other functionalities like
+<a class="reference internal" href="#translations.context.Context.reset" title="translations.context.Context.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a>
+to manage the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>.</p>
+<p>To use <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>    <span class="c1"># read the translations onto the context</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>            <span class="c1"># use the objects like before</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Change the name&#39;</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>  <span class="c1"># update the translations from the context</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>  <span class="c1"># delete the translations of the context</span>
+
+    <span class="n">context</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>       <span class="c1"># reset the translations of the context</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>            <span class="c1"># use the objects like before</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>:
+&lt;TranslatableQuerySet [
+    &lt;Continent: Europa&gt;,
+    &lt;Continent: Asien&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Köln&gt;,
+]&gt;
+:
+&lt;TranslatableQuerySet [
+    &lt;Continent: Europe&gt;,
+    &lt;Continent: Asia&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;Country: Germany&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Cologne&gt;,
+]&gt;
+</pre></div>
+</div>
+<dl class="method">
+<dt id="translations.context.Context.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>entity</em>, <em>*relations</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for an entity and some relations of it.</p>
+<p>Defines the entity and the relations of it as
+the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>entity</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v2.2)"><em>Model</em></a><em> or
+</em><em>Iterable</em><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v2.2)"><em>Model</em></a><em>)</em>) – The entity to initialize the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for.</li>
+<li><strong>relations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>)</em>) – The relations of the entity to initialize
+the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – <ul>
+<li>If the entity is neither a model instance nor
+an iterable of model instances.</li>
+<li>If the model of the entity is
+not <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a>.</li>
+<li>If the models of the relations are
+not <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a>.</li>
+</ul>
+</li>
+<li><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldDoesNotExist" title="(in Django v2.2)"><strong>FieldDoesNotExist</strong></a> – If a relation is
+pointing to the fields that don’t exist.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To Initialize a <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for an entity (an instance)
+and some relations of it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="c1"># initialize context</span>
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Context Initialized!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Context Initialized!
+</pre></div>
+</div>
+<p>To Initialize a <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for an entity (a queryset)
+and some relations of it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="c1"># initialize context</span>
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Context Initialized!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Context Initialized!
+</pre></div>
+</div>
+<p>To Initialize a <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for an entity (a list of instances)
+and some relations of it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="c1"># initialize context</span>
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Context Initialized!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Context Initialized!
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is <strong>recommended</strong> for the relations of the entity to be
+prefetched before initializing a <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>,
+in order to reach optimal performance.</p>
+<p class="last">To do this use
+<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet.select_related" title="(in Django v2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">select_related()</span></code></a>,
+<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet.prefetch_related" title="(in Django v2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prefetch_related()</span></code></a> or
+<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.prefetch_related_objects" title="(in Django v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">prefetch_related_objects()</span></code></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.context.Context._get_changed_fields">
+<code class="descname">_get_changed_fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context._get_changed_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context._get_changed_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Yield the info about the changed fields in
+the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>.</p>
+<p>Yields the info about the changed fields in
+the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
+<a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The info about the changed fields in
+the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Iterable(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>))</td>
+</tr>
+</tbody>
+</table>
+<p>To get the info about the changed fields in
+the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa&#39;</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">denonym</span> <span class="o">=</span> <span class="s1">&#39;Europäisch&#39;</span>
+
+    <span class="c1"># get the change fields</span>
+    <span class="n">changed</span> <span class="o">=</span> <span class="p">[</span><span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+               <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">context</span><span class="o">.</span><span class="n">_get_changed_fields</span><span class="p">()]</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="n">changed</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+    &#39;Europa&#39;,
+    &#39;Europäisch&#39;,
+]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.context.Context.create">
+<code class="descname">create</code><span class="sig-paren">(</span><em>lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in
+a language.</p>
+<p>Creates the translations using the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
+<a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in a language.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The language to create the translations in.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means use the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the language code is not supported.</li>
+<li><strong>IntegrityError</strong> – If duplicate translations
+are created for a specific field of a unique instance in a
+language.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To create the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(an instance and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa&#39;</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Deutschland&#39;</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Köln&#39;</span>
+
+    <span class="c1"># create the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations created!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations created!
+</pre></div>
+</div>
+<p>To create the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a queryset and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Deutschland&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Köln&#39;</span>
+
+    <span class="c1"># create the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations created!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations created!
+</pre></div>
+</div>
+<p>To create the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a list of instances and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Deutschland&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Köln&#39;</span>
+
+    <span class="c1"># create the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations created!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations created!
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Creating only affects the translatable fields that have changed.</p>
+<p class="last">If the value of a field is not changed, the translation for it is not
+created. (No need to set all the translatable fields beforehand)</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.context.Context.read">
+<code class="descname">read</code><span class="sig-paren">(</span><em>lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in
+a language.</p>
+<p>Reads the translations onto the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
+<a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in a language.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The language to read the translations in.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means use the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the language code is not supported.</td>
+</tr>
+</tbody>
+</table>
+<p>To read the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(an instance and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># read the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="c1"># use the field values</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
+Deutschland
+Köln
+</pre></div>
+</div>
+<p>To read the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a queryset and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># read the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="c1"># use the field values</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
+Deutschland
+Köln
+</pre></div>
+</div>
+<p>To read the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a list of instances and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># read the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="c1"># use the field values</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
+Deutschland
+Köln
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Reading only affects the translatable fields that have a translation.</p>
+<p class="last">If there is no translation for a field, the value of the field is not
+changed. (It remains what it was before)</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Any methods on the relations queryset which imply
+a database query will reset previously translated results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
+    <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="s1">&#39;countries&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+    <span class="c1"># querying after translation</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Country: Germany&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>In some cases the querying can be done before the translation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Prefetch</span>
+<span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
+
+<span class="c1"># querying before translation</span>
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
+    <span class="n">Prefetch</span><span class="p">(</span>
+        <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+        <span class="n">queryset</span><span class="o">=</span><span class="n">Country</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="s1">&#39;countries&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="last highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.context.Context.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in
+a language.</p>
+<p>Updates the translations using the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
+<a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in a language.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The language to update the translations in.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means use the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the language code is not supported.</td>
+</tr>
+</tbody>
+</table>
+<p>To update the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(an instance and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa (changed)&#39;</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Deutschland (changed)&#39;</span>
+    <span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Köln (changed)&#39;</span>
+
+    <span class="c1"># update the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations updated!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations updated!
+</pre></div>
+</div>
+<p>To update the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a queryset and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa (changed)&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Deutschland (changed)&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Köln (changed)&#39;</span>
+
+    <span class="c1"># update the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations updated!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations updated!
+</pre></div>
+</div>
+<p>To update the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a list of instances and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># change the field values</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Europa (changed)&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Deutschland (changed)&#39;</span>
+    <span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Köln (changed)&#39;</span>
+
+    <span class="c1"># update the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations updated!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations updated!
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Updating only affects the translatable fields that have changed.</p>
+<p class="last">If the value of a field is not changed, the translation for it is not
+updated. (No need to initialize all the translatable fields beforehand)</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.context.Context.delete">
+<code class="descname">delete</code><span class="sig-paren">(</span><em>lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in
+a language.</p>
+<p>Deletes the translations for the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
+<a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> in a language.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The language to delete the translations in.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> means use the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the language code is not supported.</td>
+</tr>
+</tbody>
+</table>
+<p>To delete the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(an instance and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># delete the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations deleted!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations deleted!
+</pre></div>
+</div>
+<p>To delete the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a queryset and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># delete the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations deleted!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations deleted!
+</pre></div>
+</div>
+<p>To delete the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a list of instances and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># delete the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Translations deleted!&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Translations deleted!
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.context.Context.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> to
+the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>.</p>
+<p>Resets the translations on the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
+<a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a> to the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>.</p>
+<p>To reset the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(an instance and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">europe</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># changes happened to the fields...</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="c1"># reset the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="c1"># use the field values</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europe
+Germany
+Cologne
+</pre></div>
+</div>
+<p>To reset the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a queryset and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># changes happened to the fields...</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="c1"># reset the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="c1"># use the field values</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europe
+Germany
+Cologne
+</pre></div>
+</div>
+<p>To reset the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>’s <a class="reference internal" href="../glossary.html#term-purview"><span class="xref std std-term">purview</span></a>
+(a list of instances and some relations of it):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
+
+<span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="n">continents</span><span class="p">,</span> <span class="o">*</span><span class="n">relations</span><span class="p">)</span> <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+    <span class="c1"># changes happened to the fields...</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+    <span class="c1"># reset the translations</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+    <span class="c1"># use the field values</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europe
+Germany
+Cologne
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="query.html" title="Previous document">Query</a>
+        </li>
+        <li>
+          <a href="forms.html" title="Next document">Forms</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/translation.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Django Translations</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">An easy, efficient and modular way of translating django models.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=perplexionist&repo=django-translations&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../guide/index.html">Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querysets.html">QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Query</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forms.html">Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="languages.html">Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Reference</a><ul>
+      <li>Previous: <a href="query.html" title="previous chapter">Query</a></li>
+      <li>Next: <a href="forms.html" title="next chapter">Forms</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Behzad B. Mokhtari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/reference/context.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/perplexionist/django-translations" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

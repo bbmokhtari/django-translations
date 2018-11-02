@@ -1,0 +1,423 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>QuerySets &#8212; Django Translations 1.0.0rc5 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Context" href="context.html" />
+    <link rel="prev" title="Admin" href="admin.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+    <link rel="apple-touch-icon" href="../_static/translation.svg" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+              <div class="related top">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="admin.html" title="Previous document">Admin</a>
+        </li>
+        <li>
+          <a href="context.html" title="Next document">Context</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="querysets">
+<h1>QuerySets<a class="headerlink" href="#querysets" title="Permalink to this headline">¶</a></h1>
+<p>This module provides an in depth knowledge of the Translations querysets.</p>
+<div class="section" id="make-querysets-translatable">
+<h2>Make querysets translatable<a class="headerlink" href="#make-querysets-translatable" title="Permalink to this headline">¶</a></h2>
+<p>To make a queryset translatable
+make sure the queryset model is <a class="reference internal" href="models.html#translatable-models"><span class="std std-ref">translatable</span></a>.</p>
+</div>
+<div class="section" id="translate-the-queryset">
+<h2>Translate the queryset<a class="headerlink" href="#translate-the-queryset" title="Permalink to this headline">¶</a></h2>
+<p>To translate the queryset in a language use the
+<a class="reference internal" href="../reference/querysets.html#translations.querysets.TranslatableQuerySet.translate" title="translations.querysets.TranslatableQuerySet.translate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translate()</span></code></a> method.
+It translates the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the queryset in a language in the evaluation.
+It accepts a language code which determines the language to
+translate the queryset in.</p>
+<p>To translate an instance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="c1"># translate the instance</span>
+<span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
+</pre></div>
+</div>
+<p>To translate a queryset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="c1"># translate the queryset</span>
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europa&gt;,
+    &lt;Continent: Asien&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>The language code must already be declared in the
+<code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code> setting. It is optional and if it is
+not passed in, it is automatically set to the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Translating only affects the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
+</div>
+</div>
+<div class="section" id="translate-the-queryset-relations">
+<h2>Translate the queryset relations<a class="headerlink" href="#translate-the-queryset-relations" title="Permalink to this headline">¶</a></h2>
+<p>To translate some queryset relations use the
+<a class="reference internal" href="../reference/querysets.html#translations.querysets.TranslatableQuerySet.translate_related" title="translations.querysets.TranslatableQuerySet.translate_related"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translate_related()</span></code></a> method.
+It translates the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the queryset relations in the evaluation.
+It accepts some relations which determines the queryset relations to
+translate.</p>
+<p>To translate some queryset relations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="c1"># translate the queryset relations</span>
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
+    <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;countries__cities&#39;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europa&gt;,
+    &lt;Continent: Asien&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Köln&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>The relations must be an unpacked list of strings.
+They may be separated by <code class="docutils literal notranslate"><span class="pre">__</span></code>s to represent a deeply nested relation.
+The models of the relations must be <a class="reference internal" href="models.html#translatable-models"><span class="std std-ref">translatable</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is <strong>recommended</strong> for the queryset relations to be
+prefetched before translating them,
+in order to reach optimal performance.</p>
+<p class="last">To do this use
+<code class="docutils literal notranslate"><span class="pre">select_related</span></code>,
+<code class="docutils literal notranslate"><span class="pre">prefetch_related</span></code> or
+<code class="docutils literal notranslate"><span class="pre">prefetch_related_objects</span></code>.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Any subsequent chained methods on the relations queryset which imply
+a database query will reset previously translated results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
+    <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+<span class="c1"># Querying after translation</span>
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Country: Germany&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>In some cases the querying can be done before the translation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Prefetch</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
+
+<span class="c1"># Querying before translation</span>
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
+    <span class="n">Prefetch</span><span class="p">(</span>
+        <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+        <span class="n">queryset</span><span class="o">=</span><span class="n">Country</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">),</span>
+    <span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
+    <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>And in some cases the querying must be done anyway, in these cases:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
+    <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
+<span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
+
+<span class="c1"># Just `translate` the relation again after querying</span>
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="last highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="probe-filter-exclude-etc-the-queryset">
+<h2>Probe (filter, exclude, etc.) the queryset<a class="headerlink" href="#probe-filter-exclude-etc-the-queryset" title="Permalink to this headline">¶</a></h2>
+<p>To probe the queryset in some language(s) use the
+<a class="reference internal" href="../reference/querysets.html#translations.querysets.TranslatableQuerySet.probe" title="translations.querysets.TranslatableQuerySet.probe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">probe()</span></code></a> method.
+It probes the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the queryset in a language in the evaluation.
+It accepts some language code(s) which determines the language(s) to
+probe the queryset in.</p>
+<p>To probe the queryset in a custom language:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="c1"># probe the queryset</span>
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Europa&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Asien&#39;</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europe&gt;,
+    &lt;Continent: Asia&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>To probe the queryset in multiple custom languages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="c1"># probe the queryset</span>
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Europa&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Asien&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europe&gt;,
+    &lt;Continent: Asia&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>The language code(s) must already be declared in the
+<code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code> setting. It is optional and if it is
+not passed in, it is automatically set to the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Probing only affects the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure to use <code class="docutils literal notranslate"><span class="pre">distinct</span></code> on
+the probed queryset when using multiple languages, otherwise it may
+return duplicate results.</p>
+</div>
+</div>
+<div class="section" id="advanced-querying">
+<h2>Advanced querying<a class="headerlink" href="#advanced-querying" title="Permalink to this headline">¶</a></h2>
+<p>To encapsulate translation queries as objects that can then be combined
+logically (using <cite>&amp;</cite> and <cite>|</cite>) use the <a class="reference internal" href="../reference/query.html#translations.query.TQ" title="translations.query.TQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">TQ</span></code></a> class.
+It works just like the normal django <code class="docutils literal notranslate"><span class="pre">Q</span></code> object untill you specialize it
+(call its object) in some language(s).
+It accepts some language code(s) which determines the language(s) to
+specialize the query in.</p>
+<p>To create complex logical combinations of queries for different languages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.query</span> <span class="kn">import</span> <span class="n">TQ</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+
+<span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="n">TQ</span><span class="p">(</span>
+        <span class="n">countries__cities__name__startswith</span><span class="o">=</span><span class="s1">&#39;Cologne&#39;</span><span class="p">,</span>
+    <span class="p">)</span>         <span class="c1"># use probe language (default English) for this query</span>
+    <span class="o">|</span>         <span class="c1"># logical combinator</span>
+    <span class="n">TQ</span><span class="p">(</span>
+        <span class="n">countries__cities__name__startswith</span><span class="o">=</span><span class="s1">&#39;Köln&#39;</span><span class="p">,</span>
+    <span class="p">)(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>   <span class="c1"># use German for this query</span>
+<span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europe&gt;,
+]&gt;
+</pre></div>
+</div>
+<p>The language code(s) must already be declared in the
+<code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code> setting. It is optional and if it is
+not passed in, it is automatically set to the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">TQ</span></code> objects act exactly like <code class="docutils literal notranslate"><span class="pre">Q</span></code> objects,
+untill they are called using some language(s).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="admin.html" title="Previous document">Admin</a>
+        </li>
+        <li>
+          <a href="context.html" title="Next document">Context</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../index.html">
+    <img class="logo" src="../_static/translation.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Django Translations</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">An easy, efficient and modular way of translating django models.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=perplexionist&repo=django-translations&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="context.html">Context</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Guide</a><ul>
+      <li>Previous: <a href="admin.html" title="previous chapter">Admin</a></li>
+      <li>Next: <a href="context.html" title="next chapter">Context</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Behzad B. Mokhtari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/guide/querysets.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/perplexionist/django-translations" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

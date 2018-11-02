@@ -1,0 +1,236 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>translations.querysets &#8212; Django Translations 1.0.0rc5 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+    <link rel="apple-touch-icon" href="../../_static/translation.svg" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+              <div class="related top">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+    </ul>
+  </nav>
+              </div>
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for translations.querysets</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;This module contains the querysets for the Translations app.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">query</span>
+
+<span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_default_language</span><span class="p">,</span> \
+    <span class="n">_get_translate_language</span><span class="p">,</span> <span class="n">_get_probe_language</span>
+<span class="kn">from</span> <span class="nn">translations.query</span> <span class="k">import</span> <span class="n">_fetch_translations_query_getter</span>
+<span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
+
+
+<span class="n">__docformat__</span> <span class="o">=</span> <span class="s1">&#39;restructuredtext&#39;</span>
+
+
+<div class="viewcode-block" id="TranslatableQuerySet"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet">[docs]</a><span class="k">class</span> <span class="nc">TranslatableQuerySet</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">QuerySet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A queryset which provides custom translation functionalities.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TranslatableQuerySet.__init__"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize a `TranslatableQuerySet` with `QuerySet` arguments.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TranslatableQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_lang</span> <span class="o">=</span> <span class="n">_get_default_language</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_prob</span> <span class="o">=</span> <span class="n">_get_default_language</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_rels</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_trans_cache</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet._chain"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet._chain">[docs]</a>    <span class="k">def</span> <span class="nf">_chain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a copy of the current `TranslatableQuerySet`.&quot;&quot;&quot;</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">TranslatableQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_chain</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># default values for all</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_lang</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_trans_lang&#39;</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_prob</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_trans_prob&#39;</span><span class="p">)</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_rels</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_trans_rels&#39;</span><span class="p">)</span>
+
+        <span class="c1"># reset cache on chaining</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_cache</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="n">clone</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet._fetch_all"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet._fetch_all">[docs]</a>    <span class="k">def</span> <span class="nf">_fetch_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluate the `TranslatableQuerySet`.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TranslatableQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_fetch_all</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans_lang</span> <span class="o">==</span> <span class="n">_get_default_language</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iterable_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">ModelIterable</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s1">&#39;Translations does not support custom iteration (yet). &#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;e.g. values, values_list, etc. &#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;If necessary you can `decipher` and then do it.&#39;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trans_cache</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Context</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_result_cache</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_trans_rels</span><span class="p">)</span> \
+                    <span class="k">as</span> <span class="n">context</span><span class="p">:</span>
+                <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trans_lang</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trans_cache</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet.translate"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate the `TranslatableQuerySet` in a language.&quot;&quot;&quot;</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_lang</span> <span class="o">=</span> <span class="n">_get_translate_language</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clone</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet.translate_related"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet.translate_related">[docs]</a>    <span class="k">def</span> <span class="nf">translate_related</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">fields</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Translate some relations of the `TranslatableQuerySet`.&quot;&quot;&quot;</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_rels</span> <span class="o">=</span> <span class="p">()</span> <span class="k">if</span> <span class="n">fields</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,)</span> <span class="k">else</span> <span class="n">fields</span>
+        <span class="k">return</span> <span class="n">clone</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet.probe"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet.probe">[docs]</a>    <span class="k">def</span> <span class="nf">probe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Probe the `TranslatableQuerySet` in some language(s).&quot;&quot;&quot;</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="n">clone</span><span class="o">.</span><span class="n">_trans_prob</span> <span class="o">=</span> <span class="n">_get_probe_language</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clone</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet.filter"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter the `TranslatableQuerySet`.&quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">_fetch_translations_query_getter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trans_prob</span>
+        <span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">TranslatableQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TranslatableQuerySet.exclude"><a class="viewcode-back" href="../../reference/querysets.html#translations.querysets.TranslatableQuerySet.exclude">[docs]</a>    <span class="k">def</span> <span class="nf">exclude</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Exclude the `TranslatableQuerySet`.&quot;&quot;&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">_fetch_translations_query_getter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trans_prob</span>
+        <span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">TranslatableQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">query</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../index.html">
+    <img class="logo" src="../../_static/translation.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Django Translations</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">An easy, efficient and modular way of translating django models.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=perplexionist&repo=django-translations&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../guide/index.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../howto/index.html">How to</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../donation.html">Donation</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Behzad B. Mokhtari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/perplexionist/django-translations" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
