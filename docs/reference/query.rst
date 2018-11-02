@@ -30,8 +30,8 @@ This module contains the query utilities for the Translations app.
 
    .. testcode:: _fetch_translations_query_getter
 
-      from sample.models import Continent
       from translations.query import _fetch_translations_query_getter
+      from sample.models import Continent
 
       getter = _fetch_translations_query_getter(Continent, 'de')
       query = getter(countries__name__icontains='Deutsch')
@@ -54,8 +54,8 @@ This module contains the query utilities for the Translations app.
 
    .. testcode:: _fetch_translations_query_getter
 
-      from sample.models import Continent
       from translations.query import _fetch_translations_query_getter
+      from sample.models import Continent
 
       getter = _fetch_translations_query_getter(Continent, ['de', 'tr'])
       query = getter(countries__name__icontains='Deutsch')
@@ -100,17 +100,17 @@ This module contains the query utilities for the Translations app.
 
    .. testcode:: TQ
 
-      from sample.models import Continent
       from translations.query import TQ
+      from sample.models import Continent
 
       continents = Continent.objects.filter(
           TQ(
               countries__cities__name__startswith='Cologne',
-          )('en')         # use English for this query
-          |               # logical combinator
+          )         # use probe language (default English) for this query
+          |         # logical combinator
           TQ(
               countries__cities__name__startswith='Köln',
-          )('de')         # use German for this query
+          )('de')   # use German for this query
       ).distinct()
 
       print(continents)

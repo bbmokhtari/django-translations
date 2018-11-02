@@ -317,17 +317,17 @@ To create complex logical combinations of queries for different languages:
 
 .. testcode:: TQ
 
-   from sample.models import Continent
    from translations.query import TQ
+   from sample.models import Continent
 
    continents = Continent.objects.filter(
        TQ(
            countries__cities__name__startswith='Cologne',
-       )               # use probe language (default English) for this query
-       |               # logical combinator
+       )         # use probe language (default English) for this query
+       |         # logical combinator
        TQ(
            countries__cities__name__startswith='Köln',
-       )('de')         # use German for this query
+       )('de')   # use German for this query
    ).distinct()
 
    print(continents)
