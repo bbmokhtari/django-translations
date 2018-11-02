@@ -288,3 +288,61 @@ not passed in, it is automatically set to the :term:`active language` code.
    Make sure to use ``distinct`` on
    the probed queryset when using multiple languages, otherwise it may
    return duplicate results.
+
+Advanced querying
+=================
+
+To encapsulate translation queries as objects that can then be combined
+logically (using `&` and `|`) use the :class:`~translations.query.TQ` class.
+It works just like the normal django ``Q`` object untill you specialize it
+(call its object) in some language(s).
+It accepts some language code(s) which determines the language(s) to
+specialize the query in.
+
+.. testsetup:: TQ
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+To create complex logical combinations of queries for different languages:
+
+.. testcode:: TQ
+
+   from sample.models import Continent
+   from translations.query import TQ
+
+   continents = Continent.objects.filter(
+       TQ(
+           countries__cities__name__startswith='Cologne',
+       )               # use probe language (default English) for this query
+       |               # logical combinator
+       TQ(
+           countries__cities__name__startswith='Köln',
+       )('de')         # use German for this query
+   ).distinct()
+
+   print(continents)
+
+.. testoutput:: TQ
+
+   <TranslatableQuerySet [
+       <Continent: Europe>,
+   ]>
+
+The language code(s) must already be declared in the
+``LANGUAGES`` setting. It is optional and if it is
+not passed in, it is automatically set to the :term:`active language` code.
+
+.. note::
+
+   ``TQ`` objects act exactly like ``Q`` objects,
+   untill they are called using some language(s).
