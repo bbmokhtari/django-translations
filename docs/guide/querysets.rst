@@ -73,9 +73,8 @@ not passed in, it is automatically set to the :term:`active language` code.
 
 .. note::
 
-   Translating only affects the :attr:`TranslatableMeta.fields \
-   <translations.models.Translatable.TranslatableMeta.fields>` that have
-   a translation.
+   Translating only affects the :ref:`translatable fields \
+   <specify-fields>` that have a translation.
 
 Translate the queryset relations
 ================================
@@ -130,7 +129,9 @@ To translate some relations of the queryset:
        <City: Köln>,
    ]>
 
-Arguments details and errors
+The relations must be an unpacked list of strings.
+They may be separated by ``__``\ s to represent a deeply nested relation.
+The models of the relations must be :ref:`translatable <translatable-models>`.
 
 .. note::
 
@@ -139,9 +140,9 @@ Arguments details and errors
    in order to reach optimal performance.
 
    To do this use
-   :meth:`~django.db.models.query.QuerySet.select_related`,
-   :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-   :func:`~django.db.models.prefetch_related_objects`.
+   ``select_related``,
+   ``prefetch_related`` or
+   ``prefetch_related_objects``.
 
 .. warning::
 
