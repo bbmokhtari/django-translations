@@ -137,12 +137,12 @@ Use the extended ORM capabilities:
    ]>
 
 This does only **ONE QUERY** to translate the queryset
-and the relations.
+and its relations.
 
-Query
-~~~~~
+Context
+~~~~~~~
 
-Use the context:
+Use the translation context:
 
 .. code:: python
 
@@ -190,8 +190,8 @@ Use the context:
        <City: Cologne>,
    ]>
 
-This does only **ONE QUERY** to translate the any object
-(instance, queryset, list) and the relations.
+This does only **ONE QUERY** to read the translations of any object
+(instance, queryset, list) and its relations, or to create their translations.
 
 Documentation
 -------------
