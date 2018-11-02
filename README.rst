@@ -162,7 +162,7 @@ To create complex logical combinations of queries for different languages:
        <Continent: Europe>,
    ]>
 
-It does the same amount of queries it did before in Django.
+This **DOES NOT** do any extra queries.
 
 Context
 ~~~~~~~
