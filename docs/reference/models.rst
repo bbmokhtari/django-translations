@@ -120,7 +120,7 @@ This module contains the models for the Translations app.
       :return: The translatable fields of the model.
       :rtype: list(~django.db.models.Field)
 
-      To get the translatable fields of the mentioned model:
+      To get the mentioned model's translatable fields:
 
       .. testcode:: get_translatable_fields
 

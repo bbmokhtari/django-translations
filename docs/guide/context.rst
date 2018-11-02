@@ -10,12 +10,14 @@ What is context
 When something is going to be stated it can be done so in the context of a
 certain language.
 
-Initiate a context
-==================
+Initialize a context
+====================
 
-To initiate a context use the :class:`~translations.context.Context`
-class. The context's purview must be defined in the initiation, meaning which
-``entity`` and what ``*relations`` of that entity should it affect.
+To initialize a context use the :class:`~translations.context.Context`
+class.
+The instances to be affected by the ``Context`` must be defined in the
+initialization, meaning which entity and what relations of it
+should the ``Context`` act upon. This is called the ``Context``\ 's purview.
 
 All the actions like `reading the translations`_,
 `updating the translations`_, etc only affects the
@@ -35,71 +37,74 @@ objects in the defined purview.
        langs=['de']
    )
 
-To initiate a context for a model instance:
+To initialize a ``Context`` for an instance and some relations of it:
 
 .. testcode:: guide_init
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   # initiate context
-   with Context(europe, 'countries', 'countries__cities') as context:
-       print('Context initiated!')
+   # initialize context
+   with Context(europe, *relations) as context:
+       print('Context initialized!')
 
 .. testoutput:: guide_init
 
-   Context initiated!
+   Context initialized!
 
-To initiate a context for a queryset:
+To initialize a ``Context`` for a queryset and some relations of it:
 
 .. testcode:: guide_init
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   # initiate context
-   with Context(continents, 'countries', 'countries__cities') as context:
-       print('Context initiated!')
+   # initialize context
+   with Context(continents, *relations) as context:
+       print('Context initialized!')
 
 .. testoutput:: guide_init
 
-   Context initiated!
+   Context initialized!
 
-To initiate a context for a list of model instances:
+To initialize a ``Context`` for a list of instances and some relations of it:
 
 .. testcode:: guide_init
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   # initiate context
-   with Context(continents, 'countries', 'countries__cities') as context:
-       print('Context initiated!')
+   # initialize context
+   with Context(continents, *relations) as context:
+       print('Context initialized!')
 
 .. testoutput:: guide_init
 
-   Context initiated!
+   Context initialized!
 
-The ``entity`` must be a model instance, a queryset or a list of model
+The entity must be a model instance, a queryset or a list of model
 instances.
-The model of the ``entity`` must be
+The model of the entity must be
 :ref:`translatable <translatable-models>`.
 
-The ``*relations`` must be an unpacked list of strings.
+The relations must be an unpacked list of strings.
 They may be separated by ``__``\ s to represent a deeply nested relation.
-The model of the ``*relations`` must be
+The model of the relations must be
 :ref:`translatable <translatable-models>`.
 
 .. note::
 
    It is **recommended** for the relations of the entity to be
-   prefetched before initiating a context,
+   prefetched before initializing a context,
    in order to reach optimal performance.
 
    To do this use
@@ -110,11 +115,11 @@ The model of the ``*relations`` must be
 Creating the translations
 =========================
 
-To create the translations of the context's purview in a language
+To create the translations of the ``Context``\ 's purview in a language
 use the :meth:`~translations.context.Context.create` method.
 This creates the translations using the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
-It takes in a ``lang`` parameter which determines the language to
+<specify-fields>` of the ``Context``\ 's purview.
+It accepts a language code which determines the language to
 create the translation in.
 
 .. testsetup:: guide_create_0
@@ -150,16 +155,17 @@ create the translation in.
        langs=['de']
    )
 
-To create the translations of the defined purview for a model instance:
+To create the translations of an instance and some relations of it:
 
 .. testcode:: guide_create_0
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # change the instance like before
        europe.name = 'Europa'
@@ -175,16 +181,17 @@ To create the translations of the defined purview for a model instance:
 
    Translations created!
 
-To create the translations of the defined purview for a queryset:
+To create the translations of a queryset and some relations of it:
 
 .. testcode:: guide_create_1
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # change the queryset like before
        continents[0].name = 'Europa'
@@ -200,16 +207,17 @@ To create the translations of the defined purview for a queryset:
 
    Translations created!
 
-To create the translations of the defined purview for a list of instances:
+To create the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_create_2
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # change the list of instances like before
        continents[0].name = 'Europa'
@@ -225,12 +233,12 @@ To create the translations of the defined purview for a list of instances:
 
    Translations created!
 
-The ``lang`` must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+The language code must already be declared in the
+``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
 Creating duplicate translations for a field raises
-:exc:`~django.db.utils.IntegrityError`, to update the translations check out
+``IntegrityError``, to update the translations check out
 `updating the translations`_.
 
 .. note::
@@ -243,11 +251,11 @@ Creating duplicate translations for a field raises
 Reading the translations
 ========================
 
-To read the translations of the context's purview in a language
+To read the translations of the ``Context``\ 's purview in a language
 use the :meth:`~translations.context.Context.read` method.
-This applies the translations on the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
-It takes in a ``lang`` parameter which determines the language to
+This reads the translations onto the :ref:`translatable fields \
+<specify-fields>` of the ``Context``\ 's purview.
+It accepts a language code which determines the language to
 read the translation in.
 
 .. testsetup:: guide_read
@@ -264,16 +272,17 @@ read the translation in.
        langs=['de']
    )
 
-To read the translations of the defined purview for a model instance:
+To read the translations of an instance and some relations of it:
 
 .. testcode:: guide_read
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # read the translations in German
        context.read('de')
@@ -289,16 +298,17 @@ To read the translations of the defined purview for a model instance:
    Deutschland
    Köln
 
-To read the translations of the defined purview for a queryset:
+To read the translations of a queryset and some relations of it:
 
 .. testcode:: guide_read
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # read the translations in German
        context.read('de')
@@ -314,16 +324,17 @@ To read the translations of the defined purview for a queryset:
    Deutschland
    Köln
 
-To read the translations of the defined purview for a list of instances:
+To read the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_read
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # read the translations in German
        context.read('de')
@@ -339,8 +350,8 @@ To read the translations of the defined purview for a list of instances:
    Deutschland
    Köln
 
-The ``lang`` must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+The language code must already be declared in the
+``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
 .. note::
@@ -352,73 +363,63 @@ not passed in, it is automatically set to the :term:`active language` code.
 
 .. warning::
 
-   Filtering any queryset after reading the translations will cause
-   the translations of that queryset to be reset.
+   Any methods on the relations queryset which imply
+   a database query will reset previously translated results:
 
    .. testcode:: guide_read
 
-      from sample.models import Continent
       from translations.context import Context
+      from sample.models import Continent
 
-      europe = Continent.objects.prefetch_related(
+      continents = Continent.objects.prefetch_related(
           'countries',
-          'countries__cities',
-      ).get(code='EU')
+      )
 
-      with Context(europe, 'countries', 'countries__cities') as context:
+      with Context(continents, 'countries') as context:
           context.read('de')
-
-          # Filtering after reading
-          print(europe.name)
-          print(europe.countries.exclude(name='')[0].name + '  -- Wrong')
-          print(europe.countries.exclude(name='')[0].cities.all()[0].name + '  -- Wrong')
+          # querying after translation
+          print(continents[0].countries.exclude(name=''))
 
    .. testoutput:: guide_read
 
-      Europa
-      Germany  -- Wrong
-      Cologne  -- Wrong
+      <TranslatableQuerySet [
+          <Country: Germany>,
+      ]>
 
-   The solution is to do the filtering before reading the
-   translations. To do this on the relations use
-   :class:`~django.db.models.Prefetch`.
+   In some cases the querying can be done before the translation:
 
    .. testcode:: guide_read
 
       from django.db.models import Prefetch
-      from sample.models import Continent, Country
       from translations.context import Context
+      from sample.models import Continent, Country
 
-      # Filtering before reading
-      europe = Continent.objects.prefetch_related(
+      # querying before translation
+      continents = Continent.objects.prefetch_related(
           Prefetch(
               'countries',
               queryset=Country.objects.exclude(name=''),
           ),
-          'countries__cities',
-      ).get(code='EU')
+      )
 
-      with Context(europe, 'countries', 'countries__cities') as context:
+      with Context(continents, 'countries') as context:
           context.read('de')
-
-          print(europe.name)
-          print(europe.countries.all()[0].name + '  -- Correct')
-          print(europe.countries.all()[0].cities.all()[0].name + '  -- Correct')
+          print(continents[0].countries.all())
 
    .. testoutput:: guide_read
 
-      Europa
-      Deutschland  -- Correct
-      Köln  -- Correct
+      <TranslatableQuerySet [
+          <Country: Deutschland>,
+      ]>
 
 Updating the translations
 =========================
 
-To update the translations of the context's purview in a language
+To update the translations of the ``Context``\ 's purview in a language
 use the :meth:`~translations.context.Context.update` method.
 This updates the translations using the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
-It takes in a ``lang`` parameter which determines the language to
+<specify-fields>` of the ``Context``\ 's purview.
+It accepts a language code which determines the language to
 update the translation in.
 
 .. testsetup:: guide_update
@@ -435,16 +436,17 @@ update the translation in.
        langs=['de']
    )
 
-To update the translations of the defined purview for a model instance:
+To update the translations of an instance and some relations of it:
 
 .. testcode:: guide_update
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # change the instance like before
        europe.name = 'Europa (changed)'
@@ -460,16 +462,17 @@ To update the translations of the defined purview for a model instance:
 
    Translations updated!
 
-To update the translations of the defined purview for a queryset:
+To update the translations of a queryset and some relations of it:
 
 .. testcode:: guide_update
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # change the queryset like before
        continents[0].name = 'Europa (changed)'
@@ -485,16 +488,17 @@ To update the translations of the defined purview for a queryset:
 
    Translations updated!
 
-To update the translations of the defined purview for a list of instances:
+To update the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_update
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # change the list of instances like before
        continents[0].name = 'Europa (changed)'
@@ -510,8 +514,8 @@ To update the translations of the defined purview for a list of instances:
 
    Translations updated!
 
-The ``lang`` must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+The language code must already be declared in the
+``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
 .. note::
@@ -524,11 +528,11 @@ not passed in, it is automatically set to the :term:`active language` code.
 Deleting the translations
 =========================
 
-To delete the translations of the context's purview in a language
+To delete the translations of the ``Context``\ 's purview in a language
 use the :meth:`~translations.context.Context.delete` method.
 This deletes the translations for the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
-It takes in a ``lang`` parameter which determines the language to
+<specify-fields>` of the ``Context``\ 's purview.
+It accepts a language code which determines the language to
 delete the translation in.
 
 .. testsetup:: guide_delete_0
@@ -573,16 +577,17 @@ delete the translation in.
        langs=['de']
    )
 
-To delete the translations of the defined purview for a model instance:
+To delete the translations of an instance and some relations of it:
 
 .. testcode:: guide_delete_0
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # delete the translations in German
        context.delete('de')
@@ -593,16 +598,17 @@ To delete the translations of the defined purview for a model instance:
 
    Translations deleted!
 
-To delete the translations of the defined purview for a queryset:
+To delete the translations of a queryset and some relations of it:
 
 .. testcode:: guide_delete_1
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # delete the translations in German
        context.delete('de')
@@ -613,16 +619,17 @@ To delete the translations of the defined purview for a queryset:
 
    Translations deleted!
 
-To delete the translations of the defined purview for a list of instances:
+To delete the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_delete_2
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # delete the translations in German
        context.delete('de')
@@ -633,17 +640,17 @@ To delete the translations of the defined purview for a list of instances:
 
    Translations deleted!
 
-The ``lang`` must be a language code already declared in the
-:data:`~django.conf.settings.LANGUAGES` setting. It is optional and if it is
+The language code must already be declared in the
+``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
 
 Resetting the translations
 ==========================
 
-To reset the translations of the context's purview to original values
+To reset the translations of the ``Context``\ 's purview to the :term:`default language`
 use the :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
+<specify-fields>` of the ``Context``\ 's purview.
 
 .. testsetup:: guide_reset
 
@@ -659,16 +666,17 @@ This resets the translations on the :ref:`translatable fields \
        langs=['de']
    )
 
-To reset the translations of the defined purview for a model instance:
+To reset the translations of an instance and some relations of it:
 
 .. testcode:: guide_reset
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    europe = Continent.objects.get(code='EU')
+   relations = ('countries', 'countries__cities',)
 
-   with Context(europe, 'countries', 'countries__cities') as context:
+   with Context(europe, *relations) as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
        context.read('de')
@@ -687,16 +695,17 @@ To reset the translations of the defined purview for a model instance:
    Germany
    Cologne
 
-To reset the translations of the defined purview for a queryset:
+To reset the translations of a queryset and some relations of it:
 
 .. testcode:: guide_reset
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = Continent.objects.all()
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
        context.read('de')
@@ -715,16 +724,17 @@ To reset the translations of the defined purview for a queryset:
    Germany
    Cologne
 
-To reset the translations of the defined purview for a list of instances:
+To reset the translations of a list of instances and some relations of it:
 
 .. testcode:: guide_reset
 
-   from sample.models import Continent
    from translations.context import Context
+   from sample.models import Continent
 
    continents = list(Continent.objects.all())
+   relations = ('countries', 'countries__cities',)
 
-   with Context(continents, 'countries', 'countries__cities') as context:
+   with Context(continents, *relations) as context:
 
        # changes happened to the fields, create, read, update, delete, etc...
        context.read('de')

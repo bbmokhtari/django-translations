@@ -95,18 +95,19 @@ This module contains the utilities for the Translations app.
 
    Return the :term:`relations hierarchy` of some relations.
 
-   Creates the :term:`relations hierarchy`, splits each relation into
-   different parts based on the relation depth and fills the
-   :term:`relations hierarchy` with them. When all the relations are
-   processed returns the :term:`relations hierarchy`.
+   Transforms the relations into a :term:`relations hierarchy`. Each level of
+   :term:`relations hierarchy` contains the relations in that level and each
+   relation contains certain information, things like whether the relation is
+   included or not and what are its nested relations, forming the next level
+   of :term:`relations hierarchy`.
 
-   :param relations: The relations to derive the :term:`relations hierarchy`
-       out of.
+   :param relations: The relations to get the :term:`relations hierarchy`
+       of.
        Each relation may be composed of many ``related_query_name``\ s
        separated by :data:`~django.db.models.constants.LOOKUP_SEP`
        (usually ``__``) to represent a deeply nested relation.
    :type relations: list(str)
-   :return: The :term:`relations hierarchy` derived out of the relations.
+   :return: The :term:`relations hierarchy` of the relations.
    :rtype: dict(str, dict)
 
    To get the :term:`relations hierarchy` of some relations
@@ -220,10 +221,7 @@ This module contains the utilities for the Translations app.
 
       If the entity is an empty iterable it returns the model as ``None``,
       even if the iterable is an empty queryset (which the model of can be
-      retrieved). It's because the other parts of the code first check to see
-      if the model in the details is ``None``, in that case they skip the
-      translation process all together (because there's nothing to
-      translate).
+      retrieved).
 
    .. testsetup:: _get_entity_details
 
@@ -331,13 +329,13 @@ This module contains the utilities for the Translations app.
    Returns the mapping of the instances specified by the entity and its
    relations, and the query to fetch their translations.
 
-   :param entity: the entity to derive the :term:`purview` out of.
+   :param entity: the entity to get the :term:`purview` of.
    :type entity: ~django.db.models.Model or
        ~collections.Iterable(~django.db.models.Model)
-   :param hierarchy: The :term:`relations hierarchy` of the entity to derive
-       the :term:`purview` out of.
+   :param hierarchy: The :term:`relations hierarchy` of the entity to get
+       the :term:`purview` of.
    :type hierarchy: dict(str, dict)
-   :return: The :term:`purview` derived out of the entity and
+   :return: The :term:`purview` of the entity and
        the :term:`relations hierarchy` of it.
    :rtype: tuple(dict(int, dict(str, ~django.db.models.Model)), \
        ~django.db.models.Q)
@@ -349,7 +347,7 @@ This module contains the utilities for the Translations app.
        - If the model of the entity is
          not :class:`~translations.models.Translatable`.
 
-       - If the models of the included relations are
+       - If the models of the relations are
          not :class:`~translations.models.Translatable`.
 
    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
@@ -378,6 +376,12 @@ This module contains the utilities for the Translations app.
       from translations.utils import _get_relations_hierarchy, _get_purview
       from sample.models import Continent, Country, City
 
+      def ct(obj):
+          return ContentType.objects.get_for_model(type(obj)).id
+
+      def oi(obj):
+          return str(obj.id)
+
       continents = Continent.objects.all()
       hierarchy = _get_relations_hierarchy('countries',
                                            'countries__cities')
@@ -389,22 +393,15 @@ This module contains the utilities for the Translations app.
       germany = europe.countries.all()[0]
       cologne = germany.cities.all()[0]
 
-      continent = ContentType.objects.get_for_model(Continent)
-      country = ContentType.objects.get_for_model(Country)
-      city = ContentType.objects.get_for_model(City)
-
-      print('Continent: `{}`'.format(
-                mapping[continent.id][str(europe.id)]))
-      print('Country: `{}`'.format(
-                mapping[country.id][str(germany.id)]))
-      print('City: `{}`'.format(
-                mapping[city.id][str(cologne.id)]))
+      print(mapping[ct(europe)][oi(europe)] is europe)
+      print(mapping[ct(germany)][oi(germany)] is germany)
+      print(mapping[ct(cologne)][oi(cologne)] is cologne)
 
    .. testoutput:: _get_purview
 
-      Continent: `Europe`
-      Country: `Germany`
-      City: `Cologne`
+      True
+      True
+      True
 
 .. function:: _get_translations(query, lang)
 

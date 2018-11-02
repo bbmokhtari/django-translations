@@ -85,15 +85,16 @@ This module contains the context managers for the Translations app.
 
    .. method:: __init__(entity, *relations)
 
-      Initialize a :class:`Context` with an entity and some relations of it.
+      Initialize a :class:`Context` for an entity and some relations of it.
 
       Defines the entity and the relations of it as
       the :class:`Context`\ 's :term:`purview`.
 
-      :param entity: The entity to use in the :class:`Context`.
+      :param entity: The entity to initialize the :class:`Context` for.
       :type entity: ~django.db.models.Model or
           ~collections.Iterable(~django.db.models.Model)
-      :param relations: The relations of the entity to use in the :class:`Context`.
+      :param relations: The relations of the entity to initialize
+          the :class:`Context` for.
       :type relations: list(str)
       :raise TypeError:
 
@@ -103,7 +104,7 @@ This module contains the context managers for the Translations app.
           - If the model of the entity is
             not :class:`~translations.models.Translatable`.
 
-          - If the models of the included relations are
+          - If the models of the relations are
             not :class:`~translations.models.Translatable`.
 
       :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
@@ -123,7 +124,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To Initialize a :class:`Context` with an entity (an instance)
+      To Initialize a :class:`Context` for an entity (an instance)
       and some relations of it:
 
       .. testcode:: init
@@ -142,7 +143,7 @@ This module contains the context managers for the Translations app.
 
          Context Initialized!
 
-      To Initialize a :class:`Context` with an entity (a queryset)
+      To Initialize a :class:`Context` for an entity (a queryset)
       and some relations of it:
 
       .. testcode:: init
@@ -161,7 +162,7 @@ This module contains the context managers for the Translations app.
 
          Context Initialized!
 
-      To Initialize a :class:`Context` with an entity (a list of instances)
+      To Initialize a :class:`Context` for an entity (a list of instances)
       and some relations of it:
 
       .. testcode:: init
@@ -196,8 +197,8 @@ This module contains the context managers for the Translations app.
       Yield the info about the changed fields in
       the :class:`Context`\ 's :term:`purview`.
 
-      Yields the info about the changed fields using
-      the :attr:`translatable fields \
+      Yields the info about the changed fields in
+      the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview`.
 
@@ -249,7 +250,7 @@ This module contains the context managers for the Translations app.
       Create the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Creates the translations using the :attr:`translatable fields \
+      Creates the translations using the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -384,11 +385,11 @@ This module contains the context managers for the Translations app.
       Read the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Applies the translations on the :attr:`translatable fields \
+      Reads the translations onto the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
-      :param lang: The language to fetch the translations in.
+      :param lang: The language to read the translations in.
           ``None`` means use the :term:`active language` code.
       :type lang: str or None
       :raise ValueError: If the language code is not supported.
@@ -548,7 +549,7 @@ This module contains the context managers for the Translations app.
       Update the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Updates the translations using the :attr:`translatable fields \
+      Updates the translations using the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -661,7 +662,7 @@ This module contains the context managers for the Translations app.
       Delete the translations of the :class:`Context`\ 's :term:`purview` in
       a language.
 
-      Deletes the translations for the :attr:`translatable fields \
+      Deletes the translations for the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` in a language.
 
@@ -780,7 +781,7 @@ This module contains the context managers for the Translations app.
       Reset the translations of the :class:`Context`\ 's :term:`purview` to
       the :term:`default language`.
 
-      Resets the translations on the :attr:`translatable fields \
+      Resets the translations on the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` to the :term:`default language`.
 

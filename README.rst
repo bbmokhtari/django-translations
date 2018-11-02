@@ -116,7 +116,7 @@ Use the extended ORM capabilities:
    >>> from sample.models import Continent
    >>> continents = Continent.objects.all(
    ... ).distinct(           # familiar distinct
-   ... ).probe(['en', 'de']  # filter in English and German
+   ... ).probe(['en', 'de']  # probe (filter, exclude, etc.) in English and German
    ... ).filter(             # familiar filtering
    ...     countries__cities__name__startswith='Köln'
    ... ).translate('de'      # translate the results in German
@@ -137,12 +137,12 @@ Use the extended ORM capabilities:
    ]>
 
 This does only **ONE QUERY** to translate the queryset
-and the relations.
+and its relations.
 
-Query
-~~~~~
+Context
+~~~~~~~
 
-Use the context:
+Use the translation context:
 
 .. code:: python
 
@@ -190,8 +190,8 @@ Use the context:
        <City: Cologne>,
    ]>
 
-This does only **ONE QUERY** to translate the any object
-(instance, queryset, list) and the relations.
+This does only **ONE QUERY** to read the translations of any object
+(instance, queryset, list) and its relations, or to create their translations.
 
 Documentation
 -------------

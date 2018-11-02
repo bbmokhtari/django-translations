@@ -83,7 +83,7 @@ class Translatable(models.Model):
 
     @classmethod
     def get_translatable_fields(cls):
-        """Return the translatable fields of the model."""
+        """Return the model’s translatable fields."""
         if not hasattr(cls, '_cached_translatable_fields'):
             if cls.TranslatableMeta.fields is None:
                 fields = []

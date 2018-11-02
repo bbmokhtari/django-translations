@@ -22,24 +22,24 @@ To make a model translatable inherit it from the
 
 .. note::
 
-   Since :class:`~translations.models.Translatable` is an abstract model there
+   Since ``Translatable`` is an abstract model there
    is no need to migrate afterwards.
 
 .. warning::
 
-   Care not to inherit the :class:`~translations.models.Translation` model
-   accidentally instead of the :class:`~translations.models.Translatable`
+   Care not to inherit the ``Translation`` model
+   accidentally instead of the ``Translatable``
    model.
 
 .. _specify-fields:
 
-Specify model's translatable fields
+Specify models' translatable fields
 ===================================
 
 To specify the model's translatable fields specify the
 :attr:`~translations.models.Translatable.TranslatableMeta.fields` attribute
 of the :class:`~translations.models.Translatable.TranslatableMeta` class
-declared inside the translatable model.
+declared inside the ``Translatable`` model.
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Continent
@@ -47,16 +47,16 @@ declared inside the translatable model.
 
 By default the ``fields`` attribute is
 set to ``None``. This means the translation will use the text based fields
-automatically. (like :class:`~django.db.models.CharField` and
-:class:`~django.db.models.TextField` - this does not include
-:class:`~django.db.models.EmailField` or the fields with ``choices``)
+automatically. (like ``CharField`` and
+``TextField`` - this does not include
+``EmailField`` or the fields with ``choices``)
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: City
    :emphasize-lines: 1
 
 If needed, the ``fields`` attribute
-can be set to nothing. You can do this by explicitly setting it to ``[]``.
+can be set to nothing. This can be done by explicitly setting it to ``[]``.
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Timezone

@@ -18,11 +18,11 @@ This module contains the query utilities for the Translations app.
    :param model: The model which the translations query getter is specialized
        for.
    :type model: type(~django.db.models.Model)
-   :param lang: The lang which the translations query getter is specialized
-       for.
+   :param lang: The language(s) which the translations query getter is
+       specialized for.
    :type lang: str or list(str)
    :return: The translations query getter specialized for the model and the
-       language.
+       language(s).
    :rtype: function
 
    To fetch the translations query getter specialized for a model and some
@@ -30,8 +30,8 @@ This module contains the query utilities for the Translations app.
 
    .. testcode:: _fetch_translations_query_getter
 
-      from sample.models import Continent
       from translations.query import _fetch_translations_query_getter
+      from sample.models import Continent
 
       getter = _fetch_translations_query_getter(Continent, 'de')
       query = getter(countries__name__icontains='Deutsch')
@@ -54,8 +54,8 @@ This module contains the query utilities for the Translations app.
 
    .. testcode:: _fetch_translations_query_getter
 
-      from sample.models import Continent
       from translations.query import _fetch_translations_query_getter
+      from sample.models import Continent
 
       getter = _fetch_translations_query_getter(Continent, ['de', 'tr'])
       query = getter(countries__name__icontains='Deutsch')
@@ -74,12 +74,13 @@ This module contains the query utilities for the Translations app.
 
 .. class:: TQ
 
-   Encapsulate translation filters as objects that can then be combined
+   Encapsulate translation queries as objects that can then be combined
    logically (using `&` and `|`).
 
-   Provides functionalities like :meth:`_combine` to combine :class:`TQ`
-   objects logically with another :class:`~django.db.models.Q` objects
-   using some probe language(s).
+   Provides functionalities like :meth:`__call__` to Specialize
+   the :class:`TQ` for some language(s) and :meth:`_combine` to
+   combine :class:`TQ` objects logically with
+   other :class:`~django.db.models.Q` objects.
 
    To use :class:`TQ`:
 
@@ -99,19 +100,17 @@ This module contains the query utilities for the Translations app.
 
    .. testcode:: TQ
 
-      from sample.models import Continent
       from translations.query import TQ
+      from sample.models import Continent
 
       continents = Continent.objects.filter(
           TQ(
               countries__cities__name__startswith='Cologne',
-              _lang='en'  # use English for this filter
-          )
-          |               # logical combinator
+          )         # use probe language (default English) for this query
+          |         # logical combinator
           TQ(
               countries__cities__name__startswith='Köln',
-              _lang='de'  # use German for this filter
-          )
+          )('de')   # use German for this query
       ).distinct()
 
       print(continents)
@@ -124,14 +123,13 @@ This module contains the query utilities for the Translations app.
 
    .. method:: __init__(*args, **kwargs)
 
-      Initialize a :class:`TQ` with :class:`~django.db.models.Q` arguments and
-      some language(s).
+      Initialize a :class:`TQ` with :class:`~django.db.models.Q` arguments.
 
       This is an overriden version of
       the :class:`~django.db.models.Q`\ 's
       :meth:`~django.db.models.Q.__init__` method.
-      It defines custom probe language(s) on
-      the :class:`TQ` to use on the filter.
+      It defines custom translation configurations on
+      the :class:`TQ`.
 
       :param args: The arguments of
           the :class:`~django.db.models.Q`\
@@ -141,10 +139,6 @@ This module contains the query utilities for the Translations app.
           the :class:`~django.db.models.Q`\
           's :meth:`~django.db.models.Q.__init__` method.
       :type kwargs: dict
-      :param _lang: The probe language(s) to use on the filter.
-      :type _lang: str or list or None
-      :raise ValueError: If the language code is not included in
-          the :data:`~django.conf.settings.LANGUAGES` setting.
 
       To Initialize a :class:`TQ`:
 
@@ -152,17 +146,15 @@ This module contains the query utilities for the Translations app.
 
          from translations.query import TQ
 
-         tq = TQ(countries__cities__name__startswith='Köln', _lang='de')
+         tq = TQ(countries__cities__name__startswith='Köln')
 
          print(tq)
-         print(tq.lang)
 
       .. testoutput:: init
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
          )
-         de
 
    .. method:: __deepcopy__(memodict)
 
@@ -171,7 +163,7 @@ This module contains the query utilities for the Translations app.
       This is an overriden version of
       the :class:`~django.db.models.Q`\ 's
       :meth:`~django.db.models.Q.__deepcopy__` method.
-      It copies the custom probe language(s) from
+      It copies the custom translation configurations from
       the current :class:`TQ` to
       the copied :class:`TQ`.
 
@@ -188,13 +180,43 @@ This module contains the query utilities for the Translations app.
          from translations.query import TQ
          import copy
 
-         tq = TQ(countries__cities__name__startswith='Köln', _lang='de')
+         tq = TQ(countries__cities__name__startswith='Köln')('de')
          cp = copy.deepcopy(tq)
 
          print(cp)
          print(cp.lang)
 
       .. testoutput:: deepcopy
+
+         (AND:
+             ('countries__cities__name__startswith', 'Köln'),
+         )
+         de
+
+   .. method:: __call__(lang=None)
+
+      Specialize the :class:`TQ` for some language(s).
+
+      Causes the :class:`TQ` to be queried in the specified language(s).
+
+      :param lang: The language(s) to specialize the query for.
+          ``None`` means use the :term:`active language` code.
+      :type lang: str or list or None
+      :raise ValueError: If the language code(s) is(are) not included in
+          the :data:`~django.conf.settings.LANGUAGES` setting.
+
+      To specialize the :class:`TQ` for some language(s):
+
+      .. testcode:: call
+
+         from translations.query import TQ
+
+         tq = TQ(countries__cities__name__startswith='Köln')('de')
+
+         print(tq)
+         print(tq.lang)
+
+      .. testoutput:: call
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -227,8 +249,8 @@ This module contains the query utilities for the Translations app.
 
          from translations.query import TQ
 
-         tq1 = TQ(countries__cities__name__startswith='Köln', _lang='de')
-         tq2 = TQ(countries__cities__name__startswith='Koln', _lang='tr')
+         tq1 = TQ(countries__cities__name__startswith='Köln')('de')
+         tq2 = TQ(countries__cities__name__startswith='Koln')('tr')
 
          print(tq1 | tq2)
 
