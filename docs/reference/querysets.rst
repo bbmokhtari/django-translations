@@ -470,7 +470,7 @@ This module contains the querysets for the Translations app.
          )
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
-      (using a custom language):
+      (a custom language):
 
       .. testcode:: probe
 
@@ -491,7 +491,7 @@ This module contains the querysets for the Translations app.
          ]>
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
-      (using multiple custom languages):
+      (multiple custom languages):
 
       .. testcode:: probe
 

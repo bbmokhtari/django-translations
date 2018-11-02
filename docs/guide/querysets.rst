@@ -209,3 +209,80 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
       <TranslatableQuerySet [
           <Country: Deutschland>,
       ]>
+
+Probe the queryset
+==================
+
+To probe the queryset in some language(s) use the
+:meth:`~translations.querysets.TranslatableQuerySet.probe` method.
+It probes the :ref:`translatable fields \
+<specify-fields>` of the queryset in the evaluation.
+It accepts some language code(s) which determines the language(s) to
+probe the queryset in.
+
+.. testsetup:: guide_probe
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+To probe the queryset in a custom language:
+
+.. testcode:: guide_probe
+
+   from sample.models import Continent
+
+   # probe the queryset
+   continents = Continent.objects.probe('de').filter(
+       Q(name='Europa') | Q(name='Asien'))
+
+   print(continents)
+
+.. testoutput:: guide_probe
+
+   <TranslatableQuerySet [
+       <Continent: Europe>,
+       <Continent: Asia>,
+   ]>
+
+To probe the queryset in multiple custom languages:
+
+.. testcode:: guide_probe
+
+   from sample.models import Continent
+
+   # translate the queryset
+   continents = Continent.objects.probe(['en', 'de']).filter(
+       Q(name='Europa') | Q(name='Asien')).distinct()
+
+   print(continents)
+
+.. testoutput:: guide_probe
+
+   <TranslatableQuerySet [
+       <Continent: Europa>,
+       <Continent: Asien>,
+   ]>
+
+The language code(s) must already be declared in the
+``LANGUAGES`` setting. It is optional and if it is
+not passed in, it is automatically set to the :term:`active language` code.
+
+.. note::
+
+   Probing only affects the :ref:`translatable fields \
+   <specify-fields>` that have a translation.
+
+.. note::
+
+   Make sure to use ``distinct`` on
+   the probed queryset when using multiple languages, otherwise it may
+   return duplicate results.
