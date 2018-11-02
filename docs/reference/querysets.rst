@@ -39,7 +39,7 @@ This module contains the querysets for the Translations app.
 
       continents = Continent.objects.all(
       ).distinct(           # familiar distinct
-      ).probe(['en', 'de']  # filter in English and German
+      ).probe(['en', 'de']  # probe (filter, exclude, etc.) in English and German
       ).filter(             # familiar filtering
           countries__cities__name__startswith='Köln'
       ).translate('de'      # translate the results in German
