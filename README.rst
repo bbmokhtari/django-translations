@@ -139,31 +139,6 @@ Use the extended ORM capabilities:
 This does only **ONE QUERY** to translate the queryset
 and its relations.
 
-Advanced queries
-~~~~~~~~~~~~~~~~
-
-To create complex logical combinations of queries for different languages:
-
-.. code:: python
-
-   >>> from translations.query import TQ
-   >>> from sample.models import Continent
-   >>> continents = Continent.objects.filter(
-   >>>     TQ(
-   >>>         countries__cities__name__startswith='Cologne',
-   >>>     )         # use probe language (default English) for this query
-   >>>     |         # logical combinator
-   >>>     TQ(
-   >>>         countries__cities__name__startswith='Köln',
-   >>>     )('de')   # use German for this query
-   >>> ).distinct()
-   >>> print(continents)
-   <TranslatableQuerySet [
-       <Continent: Europe>,
-   ]>
-
-This **DOES NOT** do any extra queries.
-
 Context
 ~~~~~~~
 
