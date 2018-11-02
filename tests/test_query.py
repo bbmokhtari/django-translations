@@ -1595,7 +1595,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code='EU',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1610,7 +1611,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name='Europa',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1627,7 +1629,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code__icontains='EU',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1642,7 +1645,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name__icontains='Europa',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1659,7 +1663,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries=1,
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1674,7 +1679,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__gt=1,
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1689,7 +1695,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code='DE',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1704,7 +1711,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name='Deutschland',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1721,7 +1729,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code__icontains='DE',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1736,7 +1745,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name__icontains='Deutsch',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1753,7 +1763,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id=1,
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1768,7 +1779,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name='Köln',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1785,7 +1797,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id__gt=1,
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1800,7 +1813,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name__icontains='Kö',
-                    )('de'
+                )(
+                    'de'
                 )
             ).children[0].children[0].children,
             [
@@ -1817,7 +1831,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code='EU',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1832,7 +1847,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name='Europa',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1847,7 +1863,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code__icontains='EU',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1862,7 +1879,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name__icontains='Europa',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1877,7 +1895,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries=1,
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1892,7 +1911,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__gt=1,
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1907,7 +1927,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code='en',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1922,7 +1943,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name='Deutschland',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1937,7 +1959,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code__icontains='en',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1952,7 +1975,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name__icontains='Deutsch',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1967,7 +1991,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id=1,
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1982,7 +2007,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name='Köln',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -1997,7 +2023,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id__gt=1,
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -2012,7 +2039,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name__icontains='Kö',
-                    )('en'
+                )(
+                    'en'
                 )
             ).children[0].children[0].children,
             [
@@ -2027,7 +2055,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code='EU',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2042,7 +2071,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name='Europa',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2059,7 +2089,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code__icontains='EU',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2074,7 +2105,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name__icontains='Europa',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2091,7 +2123,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries=1,
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2106,7 +2139,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__gt=1,
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2121,7 +2155,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code='de',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2136,7 +2171,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name='Deutschland',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2153,7 +2189,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code__icontains=['de', 'tr'],
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2168,7 +2205,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name__icontains='Deutsch',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2185,7 +2223,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id=1,
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2200,7 +2239,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name='Köln',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2220,7 +2260,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id__gt=1,
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2235,7 +2276,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name__icontains='Kö',
-                    )(['de', 'tr']
+                )(
+                    ['de', 'tr']
                 )
             ).children[0].children[0].children,
             [
@@ -2255,7 +2297,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code='EU',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2270,7 +2313,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name='Europa',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2290,7 +2334,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     code__icontains='EU',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2305,7 +2350,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     name__icontains='Europa',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2325,7 +2371,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries=1,
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                     )
                 ).children[0].children[0].children,
             [
@@ -2340,7 +2387,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__gt=1,
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2355,7 +2403,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code=['de'],
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2370,7 +2419,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name='Deutschland',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2390,7 +2440,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__code__icontains=['de'],
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2405,7 +2456,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__name__icontains='Deutsch',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2425,7 +2477,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id=1,
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2440,7 +2493,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name='Köln',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2460,7 +2514,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__id__gt=1,
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [
@@ -2475,7 +2530,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
             getter(
                 TQ(
                     countries__cities__name__icontains='Kö',
-                    )(['en', 'de']
+                )(
+                    ['en', 'de']
                 )
             ).children[0].children[0].children,
             [

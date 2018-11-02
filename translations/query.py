@@ -72,7 +72,10 @@ def _fetch_translations_query_getter(model, lang):
                     q = Q(**{child[0]: child[1]})
             elif isinstance(child, TQ):
                 if child.lang:
-                    getter = _fetch_translations_query_getter(model, child.lang)
+                    getter = _fetch_translations_query_getter(
+                        model,
+                        child.lang
+                    )
                     q = getter(
                         *child.children,
                         _connector=child.connector,
