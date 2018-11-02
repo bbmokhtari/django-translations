@@ -477,7 +477,7 @@ This module contains the querysets for the Translations app.
          from django.db.models import Q
          from sample.models import Continent
 
-         # query the queryset
+         # probe the queryset
          continents = Continent.objects.probe('de').filter(
              Q(name='Europa') | Q(name='Asien'))
 
@@ -498,7 +498,7 @@ This module contains the querysets for the Translations app.
          from django.db.models import Q
          from sample.models import Continent
 
-         # query the queryset
+         # probe the queryset
          continents = Continent.objects.probe(['en', 'de']).filter(
              Q(name='Europa') | Q(name='Asien')).distinct()
 

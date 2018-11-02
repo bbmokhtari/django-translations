@@ -149,7 +149,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
    Any subsequent chained methods on the relations queryset which imply
    a database query will reset previously translated results:
 
-   .. testcode:: translate_related
+   .. testcode:: guide_translate_related
 
       from sample.models import Continent
 
@@ -160,7 +160,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
       # Querying after translation
       print(continents[0].countries.exclude(name=''))
 
-   .. testoutput:: translate_related
+   .. testoutput:: guide_translate_related
 
       <TranslatableQuerySet [
           <Country: Germany>,
@@ -168,7 +168,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
    In some cases the querying can be done before the translation:
 
-   .. testcode:: translate_related
+   .. testcode:: guide_translate_related
 
       from django.db.models import Prefetch
       from sample.models import Continent, Country
@@ -185,7 +185,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
       print(continents[0].countries.all())
 
-   .. testoutput:: translate_related
+   .. testoutput:: guide_translate_related
 
       <TranslatableQuerySet [
           <Country: Deutschland>,
@@ -193,7 +193,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
    And in some cases the querying must be done anyway, in these cases:
 
-   .. testcode:: translate_related
+   .. testcode:: guide_translate_related
 
       from sample.models import Continent
 
@@ -204,7 +204,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
       # Just `translate` the relation again after querying
       print(continents[0].countries.exclude(name='').translate('de'))
 
-   .. testoutput:: translate_related
+   .. testoutput:: guide_translate_related
 
       <TranslatableQuerySet [
           <Country: Deutschland>,
@@ -238,6 +238,7 @@ To probe the queryset in a custom language:
 
 .. testcode:: guide_probe
 
+   from django.db.models import Q
    from sample.models import Continent
 
    # probe the queryset
@@ -257,9 +258,10 @@ To probe the queryset in multiple custom languages:
 
 .. testcode:: guide_probe
 
+   from django.db.models import Q
    from sample.models import Continent
 
-   # translate the queryset
+   # probe the queryset
    continents = Continent.objects.probe(['en', 'de']).filter(
        Q(name='Europa') | Q(name='Asien')).distinct()
 
@@ -268,8 +270,8 @@ To probe the queryset in multiple custom languages:
 .. testoutput:: guide_probe
 
    <TranslatableQuerySet [
-       <Continent: Europa>,
-       <Continent: Asien>,
+       <Continent: Europe>,
+       <Continent: Asia>,
    ]>
 
 The language code(s) must already be declared in the
