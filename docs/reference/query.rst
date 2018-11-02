@@ -77,9 +77,10 @@ This module contains the query utilities for the Translations app.
    Encapsulate translation queries as objects that can then be combined
    logically (using `&` and `|`).
 
-   Provides functionalities like :meth:`_combine` to combine :class:`TQ`
-   objects logically with another :class:`~django.db.models.Q` objects
-   using some probe language(s).
+   Provides functionalities like :meth:`__call__` to Specialize
+   the :class:`TQ` for some language(s) and :meth:`_combine` to
+   combine :class:`TQ` objects logically with
+   other :class:`~django.db.models.Q` objects.
 
    To use :class:`TQ`:
 
