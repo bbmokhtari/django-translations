@@ -193,13 +193,14 @@ This module contains the query utilities for the Translations app.
          )
          de
 
-   .. method:: __call__(lang)
+   .. method:: __call__(lang=None)
 
       Specialize the :class:`TQ` for some language(s).
 
       Causes the :class:`TQ` to be queried in the specified language(s).
 
       :param lang: The language(s) to specialize the query for.
+          ``None`` means use the :term:`active language` code.
       :type lang: str or list or None
       :raise ValueError: If the language code(s) is(are) not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.

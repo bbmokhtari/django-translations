@@ -116,7 +116,7 @@ class TQ(Q):
         obj.lang = self.lang
         return obj
 
-    def __call__(self, lang):
+    def __call__(self, lang=None):
         """Specialize the `TQ` for some language(s)."""
         obj = copy.deepcopy(self)
         obj.lang = _get_probe_language(lang)
