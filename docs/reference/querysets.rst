@@ -302,19 +302,23 @@ This module contains the querysets for the Translations app.
 
    .. method:: translate_related(*fields)
 
-      Translate some relations of the :class:`TranslatableQuerySet`.
+      Translate some :class:`TranslatableQuerySet` relations.
 
-      Causes the relations of the :class:`TranslatableQuerySet` to be
+      Causes the :class:`TranslatableQuerySet` relations to be
       translated in the evaluation.
 
-      :param relations: The relations of the :class:`TranslatableQuerySet`
+      :param relations: The :class:`TranslatableQuerySet` relations
           to translate.
       :type relations: list(str)
       :return: The :class:`TranslatableQuerySet` which the relations of will
           be translated.
       :rtype: TranslatableQuerySet
+      :raise TypeError: If the models of the relations are
+          not :class:`~translations.models.Translatable`.
+      :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
+          pointing to the fields that don't exist.
 
-      To translate some relations of the :class:`TranslatableQuerySet`:
+      To translate some :class:`TranslatableQuerySet` relations:
 
       .. testsetup:: translate_related
 
@@ -334,7 +338,7 @@ This module contains the querysets for the Translations app.
 
          from sample.models import Continent
 
-         # translate some relations of the queryset
+         # translate the queryset relations
          continents = Continent.objects.translate_related(
              'countries',
              'countries__cities',
@@ -359,7 +363,7 @@ This module contains the querysets for the Translations app.
 
       .. note::
 
-         It is **recommended** for the relations of the queryset to be
+         It is **recommended** for the queryset relations to be
          prefetched before translating them,
          in order to reach optimal performance.
 

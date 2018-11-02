@@ -79,11 +79,11 @@ not passed in, it is automatically set to the :term:`active language` code.
 Translate the queryset relations
 ================================
 
-To translate some relations of the queryset use the
+To translate some queryset relations use the
 :meth:`~translations.querysets.TranslatableQuerySet.translate_related` method.
 It translates the :ref:`translatable fields \
 <specify-fields>` of the queryset relations in the evaluation.
-It accepts some relations which determines the relations of the queryset to
+It accepts some relations which determines the queryset relations to
 translate.
 
 .. testsetup:: guide_translate_related
@@ -100,13 +100,13 @@ translate.
        langs=['de']
    )
 
-To translate some relations of the queryset:
+To translate some queryset relations:
 
 .. testcode:: guide_translate_related
 
    from sample.models import Continent
 
-   # translate some relations of the queryset
+   # translate the queryset relations
    continents = Continent.objects.translate_related(
        'countries',
        'countries__cities',
@@ -135,7 +135,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
 .. note::
 
-   It is **recommended** for the relations of the queryset to be
+   It is **recommended** for the queryset relations to be
    prefetched before translating them,
    in order to reach optimal performance.
 

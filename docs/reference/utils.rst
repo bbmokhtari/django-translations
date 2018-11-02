@@ -347,7 +347,7 @@ This module contains the utilities for the Translations app.
        - If the model of the entity is
          not :class:`~translations.models.Translatable`.
 
-       - If the models of the included relations are
+       - If the models of the relations are
          not :class:`~translations.models.Translatable`.
 
    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
