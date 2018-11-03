@@ -4,11 +4,33 @@ QuerySets
 
 This module provides an in depth knowledge of the Translations querysets.
 
+.. note::
+
+   The examples are assumed to be executed on this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
 Make querysets translatable
 ===========================
 
 To make a queryset translatable
 make sure the queryset model is :ref:`translatable <translatable-models>`.
+
+.. _translate:
 
 Translate the queryset
 ======================
@@ -277,6 +299,11 @@ To probe the queryset in multiple custom languages:
 The language code(s) must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
+
+.. note::
+
+   Please note that the results are returned in the default language.
+   To translate them use the :ref:`translate <translate>` method.
 
 .. note::
 
