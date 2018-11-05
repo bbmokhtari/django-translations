@@ -41,7 +41,7 @@ This module contains the querysets for the Translations app.
 
    .. testsetup:: TranslatableQuerySet.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -107,7 +107,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.__init__.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -157,7 +157,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet._chain.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -202,7 +202,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet._fetch_all.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -216,7 +216,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet._fetch_all.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -285,7 +285,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.translate.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -299,7 +299,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.translate.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -370,7 +370,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.translate_related.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -426,7 +426,7 @@ This module contains the querysets for the Translations app.
 
          .. testsetup:: TranslatableQuerySet.translate_related.warning.1
 
-            from tests.sample import create_samples
+            from sample.utils import create_samples
 
             create_samples(
                 continent_names=['europe', 'asia'],
@@ -440,7 +440,7 @@ This module contains the querysets for the Translations app.
 
          .. testsetup:: TranslatableQuerySet.translate_related.warning.2
 
-            from tests.sample import create_samples
+            from sample.utils import create_samples
 
             create_samples(
                 continent_names=['europe', 'asia'],
@@ -454,7 +454,7 @@ This module contains the querysets for the Translations app.
 
          .. testsetup:: TranslatableQuerySet.translate_related.warning.3
 
-            from tests.sample import create_samples
+            from sample.utils import create_samples
 
             create_samples(
                 continent_names=['europe', 'asia'],
@@ -549,7 +549,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.probe.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -563,7 +563,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.probe.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -649,7 +649,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.filter.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -663,7 +663,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.filter.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -677,7 +677,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.filter.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -766,7 +766,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.exclude.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -780,7 +780,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.exclude.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -794,7 +794,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.exclude.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],

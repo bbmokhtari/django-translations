@@ -36,7 +36,7 @@ This module contains the models for the Translations app.
 
    .. testsetup:: Translation.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe'],

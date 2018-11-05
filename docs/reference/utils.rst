@@ -247,7 +247,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_entity_details.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -261,7 +261,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_entity_details.2
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -275,7 +275,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_entity_details.3
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -289,7 +289,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_entity_details.4
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -419,7 +419,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_purview.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -487,7 +487,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_translations.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],

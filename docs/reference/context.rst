@@ -40,7 +40,7 @@ This module contains the context managers for the Translations app.
 
    .. testsetup:: Context.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -134,7 +134,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.__init__.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -148,7 +148,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.__init__.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -162,7 +162,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.__init__.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -258,7 +258,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context._get_changed_fields.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -315,7 +315,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.create.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -326,7 +326,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.create.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -337,7 +337,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.create.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -450,7 +450,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.read.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -464,7 +464,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.read.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -478,7 +478,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.read.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -600,7 +600,7 @@ This module contains the context managers for the Translations app.
 
          .. testsetup:: Context.read.warning.1
 
-            from tests.sample import create_samples
+            from sample.utils import create_samples
 
             create_samples(
                 continent_names=['europe', 'asia'],
@@ -614,7 +614,7 @@ This module contains the context managers for the Translations app.
 
          .. testsetup:: Context.read.warning.2
 
-            from tests.sample import create_samples
+            from sample.utils import create_samples
 
             create_samples(
                 continent_names=['europe', 'asia'],
@@ -691,7 +691,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.update.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -705,7 +705,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.update.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -719,7 +719,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.update.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -835,7 +835,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.delete.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -849,7 +849,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.delete.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -863,7 +863,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.delete.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -952,7 +952,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.reset.1
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -966,7 +966,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.reset.2
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],
@@ -980,7 +980,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.reset.3
 
-         from tests.sample import create_samples
+         from sample.utils import create_samples
 
          create_samples(
              continent_names=['europe', 'asia'],

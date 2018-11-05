@@ -8,7 +8,7 @@ from translations.utils import _get_reverse_relation, _get_dissected_lookup, \
 
 from sample.models import Continent, Country, City
 
-from tests.sample import create_samples
+from sample.utils import create_samples
 
 
 class GetReverseRelationTest(TestCase):

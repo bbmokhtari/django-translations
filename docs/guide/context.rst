@@ -47,7 +47,7 @@ objects in the defined purview.
 
 .. testsetup:: Context.__init__.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -61,7 +61,7 @@ objects in the defined purview.
 
 .. testsetup:: Context.__init__.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -75,7 +75,7 @@ objects in the defined purview.
 
 .. testsetup:: Context.__init__.3
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -174,7 +174,7 @@ create the translation in.
 
 .. testsetup:: Context.create.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -185,7 +185,7 @@ create the translation in.
 
 .. testsetup:: Context.create.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -196,7 +196,7 @@ create the translation in.
 
 .. testsetup:: Context.create.3
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -310,7 +310,7 @@ read the translation in.
 
 .. testsetup:: Context.read.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -324,7 +324,7 @@ read the translation in.
 
 .. testsetup:: Context.read.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -338,7 +338,7 @@ read the translation in.
 
 .. testsetup:: Context.read.3
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -461,7 +461,7 @@ not passed in, it is automatically set to the :term:`active language` code.
 
    .. testsetup:: Context.read.warning.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -475,7 +475,7 @@ not passed in, it is automatically set to the :term:`active language` code.
 
    .. testsetup:: Context.read.warning.2
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -548,7 +548,7 @@ update the translation in.
 
 .. testsetup:: Context.update.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -562,7 +562,7 @@ update the translation in.
 
 .. testsetup:: Context.update.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -576,7 +576,7 @@ update the translation in.
 
 .. testsetup:: Context.update.3
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -689,7 +689,7 @@ delete the translation in.
 
 .. testsetup:: Context.delete.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -703,7 +703,7 @@ delete the translation in.
 
 .. testsetup:: Context.delete.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -717,7 +717,7 @@ delete the translation in.
 
 .. testsetup:: Context.delete.3
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -806,7 +806,7 @@ This resets the translations on the :ref:`translatable fields \
 
 .. testsetup:: Context.reset.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -820,7 +820,7 @@ This resets the translations on the :ref:`translatable fields \
 
 .. testsetup:: Context.reset.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -834,7 +834,7 @@ This resets the translations on the :ref:`translatable fields \
 
 .. testsetup:: Context.reset.3
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],

@@ -46,7 +46,7 @@ translate the queryset in.
 
 .. testsetup:: TranslatableQuerySet.translate.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -60,7 +60,7 @@ translate the queryset in.
 
 .. testsetup:: TranslatableQuerySet.translate.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -126,7 +126,7 @@ translate.
 
 .. testsetup:: TranslatableQuerySet.translate_related.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -186,7 +186,7 @@ The models of the relations must be :ref:`translatable <models.Translatable>`.
 
    .. testsetup:: TranslatableQuerySet.translate_related.warning.1
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -200,7 +200,7 @@ The models of the relations must be :ref:`translatable <models.Translatable>`.
 
    .. testsetup:: TranslatableQuerySet.translate_related.warning.2
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -214,7 +214,7 @@ The models of the relations must be :ref:`translatable <models.Translatable>`.
 
    .. testsetup:: TranslatableQuerySet.translate_related.warning.3
 
-      from tests.sample import create_samples
+      from sample.utils import create_samples
 
       create_samples(
           continent_names=['europe', 'asia'],
@@ -304,7 +304,7 @@ probe the queryset in.
 
 .. testsetup:: TranslatableQuerySet.probe.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -318,7 +318,7 @@ probe the queryset in.
 
 .. testsetup:: TranslatableQuerySet.probe.2
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
@@ -404,7 +404,7 @@ specialize the query in.
 
 .. testsetup:: TQ.1
 
-   from tests.sample import create_samples
+   from sample.utils import create_samples
 
    create_samples(
        continent_names=['europe', 'asia'],
