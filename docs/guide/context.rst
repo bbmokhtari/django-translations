@@ -1,6 +1,6 @@
-*******
-Context
-*******
+**************
+Guide: Context
+**************
 
 This module provides an in depth knowledge of the Translations context.
 

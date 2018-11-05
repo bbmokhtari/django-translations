@@ -1,6 +1,6 @@
-*****
-Query
-*****
+**********
+Ref: Query
+**********
 
 .. module:: translations.query
 

@@ -1,6 +1,6 @@
-*****
-Admin
-*****
+**********
+Ref: Admin
+**********
 
 .. module:: translations.admin
 

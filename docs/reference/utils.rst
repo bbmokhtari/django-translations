@@ -1,6 +1,6 @@
-*********
-Utilities
-*********
+**************
+Ref: Utilities
+**************
 
 .. module:: translations.utils
 

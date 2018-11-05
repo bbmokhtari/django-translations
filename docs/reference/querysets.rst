@@ -1,6 +1,6 @@
-*********
-QuerySets
-*********
+**************
+Ref: QuerySets
+**************
 
 .. module:: translations.querysets
 
