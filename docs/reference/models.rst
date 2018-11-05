@@ -34,9 +34,7 @@ This module contains the models for the Translations app.
       model directly unless you *really* have to and you know what you're
       doing.
 
-   To create the translation of a field manually:
-
-   .. testsetup:: Translation
+   .. testsetup:: Translation_1
 
       from tests.sample import create_samples
 
@@ -44,7 +42,9 @@ This module contains the models for the Translations app.
           continent_names=['europe'],
       )
 
-   .. testcode:: Translation
+   To create the translation of a field manually:
+
+   .. testcode:: Translation_1
 
       from django.contrib.contenttypes.models import ContentType
       from sample.models import Continent
@@ -62,7 +62,7 @@ This module contains the models for the Translations app.
 
       print(translation)
 
-   .. testoutput:: Translation
+   .. testoutput:: Translation_1
 
       Europe: Europa
 
@@ -129,14 +129,14 @@ This module contains the models for the Translations app.
 
       To get the mentioned model's translatable fields:
 
-      .. testcode:: get_translatable_fields
+      .. testcode:: get_translatable_fields_1
 
          from sample.models import Continent
 
          for field in Continent.get_translatable_fields():
              print(field)
 
-      .. testoutput:: get_translatable_fields
+      .. testoutput:: get_translatable_fields_1
 
          sample.Continent.name
          sample.Continent.denonym
@@ -153,14 +153,14 @@ This module contains the models for the Translations app.
 
       To get the names of the mentioned model's translatable fields:
 
-      .. testcode:: _get_translatable_fields_names
+      .. testcode:: _get_translatable_fields_names_1
 
          from sample.models import Continent
 
          for name in Continent._get_translatable_fields_names():
              print(name)
 
-      .. testoutput:: _get_translatable_fields_names
+      .. testoutput:: _get_translatable_fields_names_1
 
          name
          denonym
@@ -177,14 +177,14 @@ This module contains the models for the Translations app.
 
       To get the choices of the mentioned model's translatable fields:
 
-      .. testcode:: _get_translatable_fields_choices
+      .. testcode:: _get_translatable_fields_choices_1
 
          from sample.models import Continent
 
          for choice in Continent._get_translatable_fields_choices():
              print(choice)
 
-      .. testoutput:: _get_translatable_fields_choices
+      .. testoutput:: _get_translatable_fields_choices_1
 
          (None, '---------')
          ('name', 'name')
