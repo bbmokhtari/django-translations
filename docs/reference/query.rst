@@ -28,7 +28,7 @@ This module contains the query utilities for the Translations app.
    To fetch the translations query getter specialized for a model and some
    language(s) (a custom language):
 
-   .. testcode:: _fetch_translations_query_getter_1
+   .. testcode:: _fetch_translations_query_getter.1
 
       from translations.query import _fetch_translations_query_getter
       from sample.models import Continent
@@ -39,7 +39,7 @@ This module contains the query utilities for the Translations app.
       # output
       print(query)
 
-   .. testoutput:: _fetch_translations_query_getter_1
+   .. testoutput:: _fetch_translations_query_getter.1
 
       (AND:
           (AND:
@@ -52,7 +52,7 @@ This module contains the query utilities for the Translations app.
    To fetch the translations query getter specialized for a model and some
    language(s) (multiple custom languages):
 
-   .. testcode:: _fetch_translations_query_getter_2
+   .. testcode:: _fetch_translations_query_getter.2
 
       from translations.query import _fetch_translations_query_getter
       from sample.models import Continent
@@ -62,7 +62,7 @@ This module contains the query utilities for the Translations app.
 
       print(query)
 
-   .. testoutput:: _fetch_translations_query_getter_2
+   .. testoutput:: _fetch_translations_query_getter.2
 
       (AND:
           (AND:
@@ -82,7 +82,7 @@ This module contains the query utilities for the Translations app.
    combine :class:`TQ` objects logically with
    other :class:`~django.db.models.Q` objects.
 
-   .. testsetup:: TQ_1
+   .. testsetup:: TQ.1
 
       from tests.sample import create_samples
 
@@ -98,7 +98,7 @@ This module contains the query utilities for the Translations app.
 
    To use :class:`TQ`:
 
-   .. testcode:: TQ_1
+   .. testcode:: TQ.1
 
       from translations.query import TQ
       from sample.models import Continent
@@ -115,7 +115,7 @@ This module contains the query utilities for the Translations app.
 
       print(continents)
 
-   .. testoutput:: TQ_1
+   .. testoutput:: TQ.1
 
       <TranslatableQuerySet [
           <Continent: Europe>,
@@ -142,7 +142,7 @@ This module contains the query utilities for the Translations app.
 
       To Initialize a :class:`TQ`:
 
-      .. testcode:: __init___1
+      .. testcode:: TQ.__init__.1
 
          from translations.query import TQ
 
@@ -150,7 +150,7 @@ This module contains the query utilities for the Translations app.
 
          print(tq)
 
-      .. testoutput:: __init___1
+      .. testoutput:: TQ.__init__.1
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -175,7 +175,7 @@ This module contains the query utilities for the Translations app.
 
       To get a copy of a :class:`TQ` object:
 
-      .. testcode:: __deepcopy___1
+      .. testcode:: TQ.__deepcopy__.1
 
          from translations.query import TQ
          import copy
@@ -186,7 +186,7 @@ This module contains the query utilities for the Translations app.
          print(cp)
          print(cp.lang)
 
-      .. testoutput:: __deepcopy___1
+      .. testoutput:: TQ.__deepcopy__.1
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -207,7 +207,7 @@ This module contains the query utilities for the Translations app.
 
       To specialize the :class:`TQ` for some language(s):
 
-      .. testcode:: __call___1
+      .. testcode:: TQ.__call__.1
 
          from translations.query import TQ
 
@@ -216,7 +216,7 @@ This module contains the query utilities for the Translations app.
          print(tq)
          print(tq.lang)
 
-      .. testoutput:: __call___1
+      .. testoutput:: TQ.__call__.1
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -245,7 +245,7 @@ This module contains the query utilities for the Translations app.
       To get the result of logical combination with
       another :class:`~django.db.models.Q` object:
 
-      .. testcode:: _combine_1
+      .. testcode:: TQ._combine.1
 
          from translations.query import TQ
 
@@ -254,7 +254,7 @@ This module contains the query utilities for the Translations app.
 
          print(tq1 | tq2)
 
-      .. testoutput:: _combine_1
+      .. testoutput:: TQ._combine.1
 
          (OR:
              (AND:

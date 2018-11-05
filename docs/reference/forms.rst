@@ -29,7 +29,7 @@ This module contains the form utilities for the Translations app.
    a :class:`~translations.models.Translatable` model and
    the :term:`translation language`\ s:
 
-   .. testcode:: generate_translation_form_1
+   .. testcode:: generate_translation_form.1
 
       from translations.forms import generate_translation_form
       from sample.models import Continent
@@ -40,7 +40,7 @@ This module contains the form utilities for the Translations app.
       print(form.declared_fields['field'].choices)
       print(form.declared_fields['language'].choices)
 
-   .. testoutput:: generate_translation_form_1
+   .. testoutput:: generate_translation_form.1
 
       [
           (None, '---------'),

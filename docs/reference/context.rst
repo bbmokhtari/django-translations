@@ -16,7 +16,7 @@ This module contains the context managers for the Translations app.
    :meth:`reset`
    to manage the :class:`Context`.
 
-   .. testsetup:: Context_1
+   .. testsetup:: Context.1
 
       from tests.sample import create_samples
 
@@ -32,7 +32,7 @@ This module contains the context managers for the Translations app.
 
    To use :class:`Context`:
 
-   .. testcode:: Context_1
+   .. testcode:: Context.1
 
       from translations.context import Context
       from sample.models import Continent
@@ -58,7 +58,7 @@ This module contains the context managers for the Translations app.
           print(continents[0].countries.all())
           print(continents[0].countries.all()[0].cities.all())
 
-   .. testoutput:: Context_1
+   .. testoutput:: Context.1
 
       :
       <TranslatableQuerySet [
@@ -110,7 +110,7 @@ This module contains the context managers for the Translations app.
       :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
           pointing to the fields that don't exist.
 
-      .. testsetup:: __init___1
+      .. testsetup:: Context.__init__.1
 
          from tests.sample import create_samples
 
@@ -124,7 +124,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: __init___2
+      .. testsetup:: Context.__init__.2
 
          from tests.sample import create_samples
 
@@ -138,7 +138,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: __init___3
+      .. testsetup:: Context.__init__.3
 
          from tests.sample import create_samples
 
@@ -155,7 +155,7 @@ This module contains the context managers for the Translations app.
       To Initialize a :class:`Context` for an entity (an instance)
       and some relations of it:
 
-      .. testcode:: __init___1
+      .. testcode:: Context.__init__.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -167,14 +167,14 @@ This module contains the context managers for the Translations app.
          with Context(europe, *relations) as context:
              print('Context Initialized!')
 
-      .. testoutput:: __init___1
+      .. testoutput:: Context.__init__.1
 
          Context Initialized!
 
       To Initialize a :class:`Context` for an entity (a queryset)
       and some relations of it:
 
-      .. testcode:: __init___2
+      .. testcode:: Context.__init__.2
 
          from translations.context import Context
          from sample.models import Continent
@@ -186,14 +186,14 @@ This module contains the context managers for the Translations app.
          with Context(continents, *relations) as context:
              print('Context Initialized!')
 
-      .. testoutput:: __init___2
+      .. testoutput:: Context.__init__.2
 
          Context Initialized!
 
       To Initialize a :class:`Context` for an entity (a list of instances)
       and some relations of it:
 
-      .. testcode:: __init___3
+      .. testcode:: Context.__init__.3
 
          from translations.context import Context
          from sample.models import Continent
@@ -205,7 +205,7 @@ This module contains the context managers for the Translations app.
          with Context(continents, *relations) as context:
              print('Context Initialized!')
 
-      .. testoutput:: __init___3
+      .. testoutput:: Context.__init__.3
 
          Context Initialized!
 
@@ -234,7 +234,7 @@ This module contains the context managers for the Translations app.
           the :class:`Context`\ 's :term:`purview`.
       :rtype: ~collections.Iterable(tuple(dict, str))
 
-      .. testsetup:: _get_changed_fields_1
+      .. testsetup:: Context._get_changed_fields.1
 
          from tests.sample import create_samples
 
@@ -248,7 +248,7 @@ This module contains the context managers for the Translations app.
       To get the info about the changed fields in
       the :class:`Context`\ 's :term:`purview`:
 
-      .. testcode:: _get_changed_fields_1
+      .. testcode:: Context._get_changed_fields.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -267,7 +267,7 @@ This module contains the context managers for the Translations app.
 
              print(changed)
 
-      .. testoutput:: _get_changed_fields_1
+      .. testoutput:: Context._get_changed_fields.1
 
          [
              'Europa',
@@ -291,7 +291,7 @@ This module contains the context managers for the Translations app.
           are created for a specific field of a unique instance in a
           language.
 
-      .. testsetup:: create_1
+      .. testsetup:: Context.create.1
 
          from tests.sample import create_samples
 
@@ -302,7 +302,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: create_2
+      .. testsetup:: Context.create.2
 
          from tests.sample import create_samples
 
@@ -313,7 +313,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: create_3
+      .. testsetup:: Context.create.3
 
          from tests.sample import create_samples
 
@@ -327,7 +327,7 @@ This module contains the context managers for the Translations app.
       To create the translations of the :class:`Context`\ 's :term:`purview`
       (an instance and some relations of it):
 
-      .. testcode:: create_1
+      .. testcode:: Context.create.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -347,14 +347,14 @@ This module contains the context managers for the Translations app.
 
              print('Translations created!')
 
-      .. testoutput:: create_1
+      .. testoutput:: Context.create.1
 
          Translations created!
 
       To create the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
 
-      .. testcode:: create_2
+      .. testcode:: Context.create.2
 
          from translations.context import Context
          from sample.models import Continent
@@ -374,14 +374,14 @@ This module contains the context managers for the Translations app.
 
              print('Translations created!')
 
-      .. testoutput:: create_2
+      .. testoutput:: Context.create.2
 
          Translations created!
 
       To create the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
 
-      .. testcode:: create_3
+      .. testcode:: Context.create.3
 
          from translations.context import Context
          from sample.models import Continent
@@ -401,7 +401,7 @@ This module contains the context managers for the Translations app.
 
              print('Translations created!')
 
-      .. testoutput:: create_3
+      .. testoutput:: Context.create.3
 
          Translations created!
 
@@ -426,7 +426,7 @@ This module contains the context managers for the Translations app.
       :type lang: str or None
       :raise ValueError: If the language code is not supported.
 
-      .. testsetup:: read_1
+      .. testsetup:: Context.read.1
 
          from tests.sample import create_samples
 
@@ -440,7 +440,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: read_2
+      .. testsetup:: Context.read.2
 
          from tests.sample import create_samples
 
@@ -454,7 +454,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: read_3
+      .. testsetup:: Context.read.3
 
          from tests.sample import create_samples
 
@@ -471,7 +471,7 @@ This module contains the context managers for the Translations app.
       To read the translations of the :class:`Context`\ 's :term:`purview`
       (an instance and some relations of it):
 
-      .. testcode:: read_1
+      .. testcode:: Context.read.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -489,7 +489,7 @@ This module contains the context managers for the Translations app.
              print(europe.countries.all())
              print(europe.countries.all()[0].cities.all())
 
-      .. testoutput:: read_1
+      .. testoutput:: Context.read.1
 
          Europa
          <TranslatableQuerySet [
@@ -502,7 +502,7 @@ This module contains the context managers for the Translations app.
       To read the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
 
-      .. testcode:: read_2
+      .. testcode:: Context.read.2
 
          from translations.context import Context
          from sample.models import Continent
@@ -520,7 +520,7 @@ This module contains the context managers for the Translations app.
              print(continents[0].countries.all())
              print(continents[0].countries.all()[0].cities.all())
 
-      .. testoutput:: read_2
+      .. testoutput:: Context.read.2
 
          <TranslatableQuerySet [
              <Continent: Europa>,
@@ -536,7 +536,7 @@ This module contains the context managers for the Translations app.
       To read the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
 
-      .. testcode:: read_3
+      .. testcode:: Context.read.3
 
          from translations.context import Context
          from sample.models import Continent
@@ -554,7 +554,7 @@ This module contains the context managers for the Translations app.
              print(continents[0].countries.all())
              print(continents[0].countries.all()[0].cities.all())
 
-      .. testoutput:: read_3
+      .. testoutput:: Context.read.3
 
          [
              <Continent: Europa>,
@@ -576,7 +576,7 @@ This module contains the context managers for the Translations app.
 
       .. warning::
 
-         .. testsetup:: read_warning_1
+         .. testsetup:: Context.read.warning.1
 
             from tests.sample import create_samples
 
@@ -590,7 +590,7 @@ This module contains the context managers for the Translations app.
                 langs=['de']
             )
 
-         .. testsetup:: read_warning_2
+         .. testsetup:: Context.read.warning.2
 
             from tests.sample import create_samples
 
@@ -607,7 +607,7 @@ This module contains the context managers for the Translations app.
          Any methods on the relations queryset which imply
          a database query will reset previously translated results:
 
-         .. testcode:: read_warning_1
+         .. testcode:: Context.read.warning.1
 
             from translations.context import Context
             from sample.models import Continent
@@ -621,7 +621,7 @@ This module contains the context managers for the Translations app.
                 # querying after translation
                 print(continents[0].countries.exclude(name=''))
 
-         .. testoutput:: read_warning_1
+         .. testoutput:: Context.read.warning.1
 
             <TranslatableQuerySet [
                 <Country: Germany>,
@@ -629,7 +629,7 @@ This module contains the context managers for the Translations app.
 
          In some cases the querying can be done before the translation:
 
-         .. testcode:: read_warning_2
+         .. testcode:: Context.read.warning.2
 
             from django.db.models import Prefetch
             from translations.context import Context
@@ -647,7 +647,7 @@ This module contains the context managers for the Translations app.
                 context.read('de')
                 print(continents[0].countries.all())
 
-         .. testoutput:: read_warning_2
+         .. testoutput:: Context.read.warning.2
 
             <TranslatableQuerySet [
                 <Country: Deutschland>,
@@ -667,7 +667,7 @@ This module contains the context managers for the Translations app.
       :type lang: str or None
       :raise ValueError: If the language code is not supported.
 
-      .. testsetup:: update_1
+      .. testsetup:: Context.update.1
 
          from tests.sample import create_samples
 
@@ -681,7 +681,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: update_2
+      .. testsetup:: Context.update.2
 
          from tests.sample import create_samples
 
@@ -695,7 +695,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: update_3
+      .. testsetup:: Context.update.3
 
          from tests.sample import create_samples
 
@@ -712,7 +712,7 @@ This module contains the context managers for the Translations app.
       To update the translations of the :class:`Context`\ 's :term:`purview`
       (an instance and some relations of it):
 
-      .. testcode:: update_1
+      .. testcode:: Context.update.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -732,14 +732,14 @@ This module contains the context managers for the Translations app.
 
              print('Translations updated!')
 
-      .. testoutput:: update_1
+      .. testoutput:: Context.update.1
 
          Translations updated!
 
       To update the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
 
-      .. testcode:: update_2
+      .. testcode:: Context.update.2
 
          from translations.context import Context
          from sample.models import Continent
@@ -759,14 +759,14 @@ This module contains the context managers for the Translations app.
 
              print('Translations updated!')
 
-      .. testoutput:: update_2
+      .. testoutput:: Context.update.2
 
          Translations updated!
 
       To update the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
 
-      .. testcode:: update_3
+      .. testcode:: Context.update.3
 
          from translations.context import Context
          from sample.models import Continent
@@ -786,7 +786,7 @@ This module contains the context managers for the Translations app.
 
              print('Translations updated!')
 
-      .. testoutput:: update_3
+      .. testoutput:: Context.update.3
 
          Translations updated!
 
@@ -811,7 +811,7 @@ This module contains the context managers for the Translations app.
       :type lang: str or None
       :raise ValueError: If the language code is not supported.
 
-      .. testsetup:: delete_1
+      .. testsetup:: Context.delete.1
 
          from tests.sample import create_samples
 
@@ -825,7 +825,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: delete_2
+      .. testsetup:: Context.delete.2
 
          from tests.sample import create_samples
 
@@ -839,7 +839,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: delete_3
+      .. testsetup:: Context.delete.3
 
          from tests.sample import create_samples
 
@@ -856,7 +856,7 @@ This module contains the context managers for the Translations app.
       To delete the translations of the :class:`Context`\ 's :term:`purview`
       (an instance and some relations of it):
 
-      .. testcode:: delete_1
+      .. testcode:: Context.delete.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -871,14 +871,14 @@ This module contains the context managers for the Translations app.
 
              print('Translations deleted!')
 
-      .. testoutput:: delete_1
+      .. testoutput:: Context.delete.1
 
          Translations deleted!
 
       To delete the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
 
-      .. testcode:: delete_2
+      .. testcode:: Context.delete.2
 
          from translations.context import Context
          from sample.models import Continent
@@ -893,14 +893,14 @@ This module contains the context managers for the Translations app.
 
              print('Translations deleted!')
 
-      .. testoutput:: delete_2
+      .. testoutput:: Context.delete.2
 
          Translations deleted!
 
       To delete the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
 
-      .. testcode:: delete_3
+      .. testcode:: Context.delete.3
 
          from translations.context import Context
          from sample.models import Continent
@@ -915,7 +915,7 @@ This module contains the context managers for the Translations app.
 
              print('Translations deleted!')
 
-      .. testoutput:: delete_3
+      .. testoutput:: Context.delete.3
 
          Translations deleted!
 
@@ -928,7 +928,7 @@ This module contains the context managers for the Translations app.
       <translations.models.Translatable.TranslatableMeta.fields>` of the
       :class:`Context`\ 's :term:`purview` to the :term:`default language`.
 
-      .. testsetup:: reset_1
+      .. testsetup:: Context.reset.1
 
          from tests.sample import create_samples
 
@@ -942,7 +942,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: reset_2
+      .. testsetup:: Context.reset.2
 
          from tests.sample import create_samples
 
@@ -956,7 +956,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      .. testsetup:: reset_3
+      .. testsetup:: Context.reset.3
 
          from tests.sample import create_samples
 
@@ -973,7 +973,7 @@ This module contains the context managers for the Translations app.
       To reset the translations of the :class:`Context`\ 's :term:`purview`
       (an instance and some relations of it):
 
-      .. testcode:: reset_1
+      .. testcode:: Context.reset.1
 
          from translations.context import Context
          from sample.models import Continent
@@ -994,7 +994,7 @@ This module contains the context managers for the Translations app.
              print(europe.countries.all())
              print(europe.countries.all()[0].cities.all())
 
-      .. testoutput:: reset_1
+      .. testoutput:: Context.reset.1
 
          Europe
          <TranslatableQuerySet [
@@ -1007,7 +1007,7 @@ This module contains the context managers for the Translations app.
       To reset the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
 
-      .. testcode:: reset_2
+      .. testcode:: Context.reset.2
 
          from translations.context import Context
          from sample.models import Continent
@@ -1028,7 +1028,7 @@ This module contains the context managers for the Translations app.
              print(continents[0].countries.all())
              print(continents[0].countries.all()[0].cities.all())
 
-      .. testoutput:: reset_2
+      .. testoutput:: Context.reset.2
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -1044,7 +1044,7 @@ This module contains the context managers for the Translations app.
       To reset the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
 
-      .. testcode:: reset_3
+      .. testcode:: Context.reset.3
 
          from translations.context import Context
          from sample.models import Continent
@@ -1065,7 +1065,7 @@ This module contains the context managers for the Translations app.
              print(continents[0].countries.all())
              print(continents[0].countries.all()[0].cities.all())
 
-      .. testoutput:: reset_3
+      .. testoutput:: Context.reset.3
 
          [
              <Continent: Europe>,
