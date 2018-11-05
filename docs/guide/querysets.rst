@@ -24,6 +24,8 @@ This module provides an in depth knowledge of the Translations querysets.
    |               | Seoul       | Seul        |
    +---------------+-------------+-------------+
 
+   Please memorize this dataset in order to understand the examples better.
+
 Make querysets translatable
 ===========================
 
