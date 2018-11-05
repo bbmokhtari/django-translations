@@ -6,6 +6,28 @@ Ref: Utilities
 
 This module contains the utilities for the Translations app.
 
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
+   Please memorize this dataset in order to understand the examples better.
+
 .. function:: _get_reverse_relation(model, relation)
 
    Return the reverse of a model's relation.

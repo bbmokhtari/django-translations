@@ -6,6 +6,28 @@ Ref: QuerySets
 
 This module contains the querysets for the Translations app.
 
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
+   Please memorize this dataset in order to understand the examples better.
+
 .. class:: TranslatableQuerySet
 
    A queryset which provides custom translation functionalities.

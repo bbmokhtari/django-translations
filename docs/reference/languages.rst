@@ -6,6 +6,22 @@ Ref: Languages
 
 This module contains the languages for the Translations app.
 
+.. important::
+
+   The examples are assumed to be executed using these settings.
+
+   .. code-block:: python
+
+      LANGUAGE_CODE = 'en-us'
+      LANGUAGES = (
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
+
+   Please keep these settings in mind in order to understand the examples better.
+
 .. function:: _get_supported_language(lang)
 
    Return the :term:`supported language` code of a custom language code.
@@ -24,18 +40,6 @@ This module contains the languages for the Translations app.
    :rtype: str
    :raise ValueError: If the language code is not specified in
        the :data:`~django.conf.settings.LANGUAGES` setting.
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    To get the :term:`supported language` code of a custom language code
    (an unaccented language code):
@@ -95,18 +99,6 @@ This module contains the languages for the Translations app.
    :rtype: str
    :raise ValueError: If the :term:`default language` code is not supported.
 
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
    To get the :term:`supported language` code of the :term:`default language`
    code:
 
@@ -133,18 +125,6 @@ This module contains the languages for the Translations app.
    :rtype: str
    :raise ValueError: If the :term:`active language` code is not supported.
 
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
    To get the :term:`supported language` code of the :term:`active language`
    code
    (assume ``en``):
@@ -168,18 +148,6 @@ This module contains the languages for the Translations app.
 
    :return: All the :term:`supported language` codes.
    :rtype: list(str)
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    To get all the :term:`supported language` codes:
 
@@ -207,18 +175,6 @@ This module contains the languages for the Translations app.
 
    :return: All the :term:`supported language` choices.
    :rtype: list(tuple(str, str))
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    To get all the :term:`supported language` choices:
 
@@ -248,18 +204,6 @@ This module contains the languages for the Translations app.
    :return: The :term:`translation language` codes.
    :rtype: list(str)
 
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
    To get the :term:`translation language` codes:
 
    .. testcode:: _get_translation_languages.1
@@ -286,18 +230,6 @@ This module contains the languages for the Translations app.
    :return: The :term:`translation language` choices.
    :rtype: list(tuple(str, str))
    :raise ValueError: If the :term:`default language` code is not supported.
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    To get the :term:`translation language` choices:
 
@@ -334,18 +266,6 @@ This module contains the languages for the Translations app.
    :return: The :term:`supported language` code of the translate language code.
    :rtype: str
    :raise ValueError: If the translate language code is not supported.
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    To get the :term:`supported language` code of a translate language code
    (the :term:`active language` code - assume ``en``):
@@ -394,18 +314,6 @@ This module contains the languages for the Translations app.
    :return: The :term:`supported language` code(s) of the probe language code(s).
    :rtype: str
    :raise ValueError: If the probe language code(s) is (are) not supported.
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    To get the :term:`supported language` code(s) of some probe language code(s)
    (the :term:`active language` code - assume ``en``):
@@ -462,18 +370,6 @@ This module contains the languages for the Translations app.
 
    A class which provides standard translate language codes.
 
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
-
    .. attribute:: DEFAULT
 
       Return the :term:`default language` code.
@@ -516,18 +412,6 @@ This module contains the languages for the Translations app.
 .. class:: _PROBE
 
    A class which provides standard probe language codes.
-
-   Considering this setting:
-
-   .. code-block:: python
-
-      LANGUAGE_CODE = 'en-us'
-      LANGUAGES = (
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
 
    .. attribute:: DEFAULT
 
