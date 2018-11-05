@@ -4,9 +4,9 @@ QuerySets
 
 This module provides an in depth knowledge of the Translations querysets.
 
-.. note::
+.. important::
 
-   The examples are assumed to be executed on this dataset.
+   The examples are assumed to CRUD this dataset.
 
    +---------------+-------------+-------------+
    | Type\\Lang    | English     | German      |

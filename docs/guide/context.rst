@@ -4,6 +4,26 @@ Context
 
 This module provides an in depth knowledge of the Translations context.
 
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
 What is context
 ===============
 
@@ -288,15 +308,19 @@ To read the translations of an instance and some relations of it:
        context.read('de')
 
        # use the instance like before
-       print(europe.name)
-       print(europe.countries.all()[0].name)
-       print(europe.countries.all()[0].cities.all()[0].name)
+       print(europe)
+       print(europe.countries.all())
+       print(europe.countries.all()[0].cities.all())
 
 .. testoutput:: guide_read
 
    Europa
-   Deutschland
-   Köln
+   <TranslatableQuerySet [
+       <Country: Deutschland>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Köln>,
+   ]>
 
 To read the translations of a queryset and some relations of it:
 
@@ -314,15 +338,22 @@ To read the translations of a queryset and some relations of it:
        context.read('de')
 
        # use the queryset like before
-       print(continents[0].name)
-       print(continents[0].countries.all()[0].name)
-       print(continents[0].countries.all()[0].cities.all()[0].name)
+       print(continents)
+       print(continents[0].countries.all())
+       print(continents[0].countries.all()[0].cities.all())
 
 .. testoutput:: guide_read
 
-   Europa
-   Deutschland
-   Köln
+   <TranslatableQuerySet [
+       <Continent: Europa>,
+       <Continent: Asien>,
+   ]>
+   <TranslatableQuerySet [
+       <Country: Deutschland>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Köln>,
+   ]>
 
 To read the translations of a list of instances and some relations of it:
 
@@ -340,15 +371,22 @@ To read the translations of a list of instances and some relations of it:
        context.read('de')
 
        # use the list of instances like before
-       print(continents[0].name)
-       print(continents[0].countries.all()[0].name)
-       print(continents[0].countries.all()[0].cities.all()[0].name)
+       print(continents)
+       print(continents[0].countries.all())
+       print(continents[0].countries.all()[0].cities.all())
 
 .. testoutput:: guide_read
 
-   Europa
-   Deutschland
-   Köln
+   [
+       <Continent: Europa>,
+       <Continent: Asien>,
+   ]
+   <TranslatableQuerySet [
+       <Country: Deutschland>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Köln>,
+   ]>
 
 The language code must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
@@ -686,14 +724,18 @@ To reset the translations of an instance and some relations of it:
 
        # use the instance like before
        print(europe)
-       print(europe.countries.all()[0])
-       print(europe.countries.all()[0].cities.all()[0])
+       print(europe.countries.all())
+       print(europe.countries.all()[0].cities.all())
 
 .. testoutput:: guide_reset
 
    Europe
-   Germany
-   Cologne
+   <TranslatableQuerySet [
+       <Country: Germany>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Cologne>,
+   ]>
 
 To reset the translations of a queryset and some relations of it:
 
@@ -714,15 +756,22 @@ To reset the translations of a queryset and some relations of it:
        context.reset()
 
        # use the queryset like before
-       print(continents[0])
-       print(continents[0].countries.all()[0])
-       print(continents[0].countries.all()[0].cities.all()[0])
+       print(continents)
+       print(continents[0].countries.all())
+       print(continents[0].countries.all()[0].cities.all())
 
 .. testoutput:: guide_reset
 
-   Europe
-   Germany
-   Cologne
+   <TranslatableQuerySet [
+       <Continent: Europe>,
+       <Continent: Asia>,
+   ]>
+   <TranslatableQuerySet [
+       <Country: Germany>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Cologne>,
+   ]>
 
 To reset the translations of a list of instances and some relations of it:
 
@@ -743,12 +792,19 @@ To reset the translations of a list of instances and some relations of it:
        context.reset()
 
        # use the list of instances like before
-       print(continents[0])
-       print(continents[0].countries.all()[0])
-       print(continents[0].countries.all()[0].cities.all()[0])
+       print(continents)
+       print(continents[0].countries.all())
+       print(continents[0].countries.all()[0].cities.all())
 
 .. testoutput:: guide_reset
 
-   Europe
-   Germany
-   Cologne
+   [
+       <Continent: Europe>,
+       <Continent: Asia>,
+   ]
+   <TranslatableQuerySet [
+       <Country: Germany>,
+   ]>
+   <TranslatableQuerySet [
+       <City: Cologne>,
+   ]>
