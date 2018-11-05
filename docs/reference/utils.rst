@@ -247,59 +247,19 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_entity_details.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    .. testsetup:: _get_entity_details.2
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    .. testsetup:: _get_entity_details.3
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    .. testsetup:: _get_entity_details.4
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    To get the iteration and type details of an entity
    (a list of instances):
@@ -419,17 +379,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_purview.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    To get the purview of an entity and
    a relations hierarchy of it:
@@ -487,17 +437,7 @@ This module contains the utilities for the Translations app.
 
    .. testsetup:: _get_translations.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    To get the :class:`~translations.models.Translation` queryset of a query in
    a language:

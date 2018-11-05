@@ -40,17 +40,7 @@ This module contains the context managers for the Translations app.
 
    .. testsetup:: Context.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    To use :class:`Context`:
 
@@ -134,45 +124,15 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.__init__.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.__init__.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.__init__.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To Initialize a :class:`Context` for an entity (an instance)
       and some relations of it:
@@ -258,14 +218,7 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context._get_changed_fields.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             langs=['de']
-         )
+         create_doc_samples(translations=False)
 
       To get the info about the changed fields in
       the :class:`Context`\ 's purview:
@@ -315,36 +268,15 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.create.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             langs=['de']
-         )
+         create_doc_samples(translations=False)
 
       .. testsetup:: Context.create.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             langs=['de']
-         )
+         create_doc_samples(translations=False)
 
       .. testsetup:: Context.create.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             langs=['de']
-         )
+         create_doc_samples(translations=False)
 
       To create the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
@@ -450,45 +382,15 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.read.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.read.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.read.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To read the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
@@ -600,31 +502,11 @@ This module contains the context managers for the Translations app.
 
          .. testsetup:: Context.read.warning.1
 
-            from sample.utils import create_samples
-
-            create_samples(
-                continent_names=['europe', 'asia'],
-                country_names=['germany', 'south korea'],
-                city_names=['cologne', 'seoul'],
-                continent_fields=['name', 'denonym'],
-                country_fields=['name', 'denonym'],
-                city_fields=['name', 'denonym'],
-                langs=['de']
-            )
+            create_doc_samples(translations=True)
 
          .. testsetup:: Context.read.warning.2
 
-            from sample.utils import create_samples
-
-            create_samples(
-                continent_names=['europe', 'asia'],
-                country_names=['germany', 'south korea'],
-                city_names=['cologne', 'seoul'],
-                continent_fields=['name', 'denonym'],
-                country_fields=['name', 'denonym'],
-                city_fields=['name', 'denonym'],
-                langs=['de']
-            )
+            create_doc_samples(translations=True)
 
          Any methods on the relations queryset which imply
          a database query will reset previously translated results:
@@ -691,45 +573,15 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.update.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.update.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.update.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To update the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
@@ -835,45 +687,15 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.delete.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.delete.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.delete.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To delete the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
@@ -952,45 +774,15 @@ This module contains the context managers for the Translations app.
 
       .. testsetup:: Context.reset.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.reset.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: Context.reset.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To reset the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):

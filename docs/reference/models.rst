@@ -36,11 +36,7 @@ This module contains the models for the Translations app.
 
    .. testsetup:: Translation.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe'],
-      )
+      create_doc_samples(translations=False)
 
    To create the translation of a field manually:
 

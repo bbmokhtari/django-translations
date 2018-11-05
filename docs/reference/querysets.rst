@@ -41,17 +41,7 @@ This module contains the querysets for the Translations app.
 
    .. testsetup:: TranslatableQuerySet.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    To use :class:`TranslatableQuerySet`:
 
@@ -107,17 +97,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.__init__.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To initialize a :class:`TranslatableQuerySet`:
 
@@ -157,17 +137,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet._chain.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To get a copy of the current :class:`TranslatableQuerySet`:
 
@@ -202,31 +172,11 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet._fetch_all.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet._fetch_all.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To evaluate the :class:`TranslatableQuerySet`
       (using the :term:`default language`):
@@ -285,31 +235,11 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.translate.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet.translate.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To translate the :class:`TranslatableQuerySet` (an instance) in a language:
 
@@ -370,17 +300,7 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.translate_related.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To translate some :class:`TranslatableQuerySet` relations:
 
@@ -426,45 +346,15 @@ This module contains the querysets for the Translations app.
 
          .. testsetup:: TranslatableQuerySet.translate_related.warning.1
 
-            from sample.utils import create_samples
-
-            create_samples(
-                continent_names=['europe', 'asia'],
-                country_names=['germany', 'south korea'],
-                city_names=['cologne', 'seoul'],
-                continent_fields=['name', 'denonym'],
-                country_fields=['name', 'denonym'],
-                city_fields=['name', 'denonym'],
-                langs=['de']
-            )
+            create_doc_samples(translations=True)
 
          .. testsetup:: TranslatableQuerySet.translate_related.warning.2
 
-            from sample.utils import create_samples
-
-            create_samples(
-                continent_names=['europe', 'asia'],
-                country_names=['germany', 'south korea'],
-                city_names=['cologne', 'seoul'],
-                continent_fields=['name', 'denonym'],
-                country_fields=['name', 'denonym'],
-                city_fields=['name', 'denonym'],
-                langs=['de']
-            )
+            create_doc_samples(translations=True)
 
          .. testsetup:: TranslatableQuerySet.translate_related.warning.3
 
-            from sample.utils import create_samples
-
-            create_samples(
-                continent_names=['europe', 'asia'],
-                country_names=['germany', 'south korea'],
-                city_names=['cologne', 'seoul'],
-                continent_fields=['name', 'denonym'],
-                country_fields=['name', 'denonym'],
-                city_fields=['name', 'denonym'],
-                langs=['de']
-            )
+            create_doc_samples(translations=True)
 
          Any subsequent chained methods on the relations queryset which imply
          a database query will reset previously translated results:
@@ -549,31 +439,11 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.probe.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet.probe.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
       (a custom language):
@@ -649,45 +519,15 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.filter.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet.filter.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet.filter.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To filter the :class:`TranslatableQuerySet`
       (using the :term:`default language`):
@@ -766,45 +606,15 @@ This module contains the querysets for the Translations app.
 
       .. testsetup:: TranslatableQuerySet.exclude.1
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet.exclude.2
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       .. testsetup:: TranslatableQuerySet.exclude.3
 
-         from sample.utils import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+         create_doc_samples(translations=True)
 
       To exclude the :class:`TranslatableQuerySet`
       (using the :term:`default language`):
