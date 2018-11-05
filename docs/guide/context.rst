@@ -144,12 +144,12 @@ To initialize a context for a list of instances and some relations of it:
 The entity must be a model instance, a queryset or a list of model
 instances.
 The model of the entity must be
-:ref:`translatable <translatable-models>`.
+:ref:`translatable <models.Translatable>`.
 
 The relations must be an unpacked list of strings.
 They may be separated by ``__``\ s to represent a deeply nested relation.
 The model of the relations must be
-:ref:`translatable <translatable-models>`.
+:ref:`translatable <models.Translatable>`.
 
 .. note::
 
@@ -168,7 +168,7 @@ Creating the translations
 To create the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.create` method.
 This creates the translations using the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
+<models.Translatable.TranslatableMeta.fields>` of the context's purview.
 It accepts a language code which determines the language to
 create the translation in.
 
@@ -304,7 +304,7 @@ Reading the translations
 To read the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.read` method.
 This reads the translations onto the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
+<models.Translatable.TranslatableMeta.fields>` of the context's purview.
 It accepts a language code which determines the language to
 read the translation in.
 
@@ -542,7 +542,7 @@ Updating the translations
 To update the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.update` method.
 This updates the translations using the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
+<models.Translatable.TranslatableMeta.fields>` of the context's purview.
 It accepts a language code which determines the language to
 update the translation in.
 
@@ -683,7 +683,7 @@ Deleting the translations
 To delete the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.delete` method.
 This deletes the translations for the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
+<models.Translatable.TranslatableMeta.fields>` of the context's purview.
 It accepts a language code which determines the language to
 delete the translation in.
 
@@ -802,7 +802,7 @@ Resetting the translations
 To reset the translations of the context's purview to the :term:`default language`
 use the :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
-<specify-fields>` of the context's purview.
+<models.Translatable.TranslatableMeta.fields>` of the context's purview.
 
 .. testsetup:: Context.reset.1
 

@@ -30,9 +30,9 @@ Make querysets translatable
 ===========================
 
 To make a queryset translatable
-make sure the queryset model is :ref:`translatable <translatable-models>`.
+make sure the queryset model is :ref:`translatable <models.Translatable>`.
 
-.. _translate:
+.. _querysets.TranslatableQuerySet.translate:
 
 Translate the queryset
 ======================
@@ -40,7 +40,7 @@ Translate the queryset
 To translate the queryset in a language use the
 :meth:`~translations.querysets.TranslatableQuerySet.translate` method.
 It translates the :ref:`translatable fields \
-<specify-fields>` of the queryset in a language in the evaluation.
+<models.Translatable.TranslatableMeta.fields>` of the queryset in a language in the evaluation.
 It accepts a language code which determines the language to
 translate the queryset in.
 
@@ -112,7 +112,7 @@ not passed in, it is automatically set to the :term:`active language` code.
 .. note::
 
    Translating only affects the :ref:`translatable fields \
-   <specify-fields>` that have a translation.
+   <models.Translatable.TranslatableMeta.fields>` that have a translation.
 
 Translate the queryset relations
 ================================
@@ -120,7 +120,7 @@ Translate the queryset relations
 To translate some queryset relations use the
 :meth:`~translations.querysets.TranslatableQuerySet.translate_related` method.
 It translates the :ref:`translatable fields \
-<specify-fields>` of the queryset relations in the evaluation.
+<models.Translatable.TranslatableMeta.fields>` of the queryset relations in the evaluation.
 It accepts some relations which determines the queryset relations to
 translate.
 
@@ -169,7 +169,7 @@ To translate some queryset relations:
 
 The relations must be an unpacked list of strings.
 They may be separated by ``__``\ s to represent a deeply nested relation.
-The models of the relations must be :ref:`translatable <translatable-models>`.
+The models of the relations must be :ref:`translatable <models.Translatable>`.
 
 .. note::
 
@@ -290,7 +290,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
           <Country: Deutschland>,
       ]>
 
-.. _probe:
+.. _querysets.TranslatableQuerySet.probe:
 
 Probe (filter, exclude, etc.) the queryset
 ==========================================
@@ -298,7 +298,7 @@ Probe (filter, exclude, etc.) the queryset
 To probe the queryset in some language(s) use the
 :meth:`~translations.querysets.TranslatableQuerySet.probe` method.
 It probes the :ref:`translatable fields \
-<specify-fields>` of the queryset in a language in the evaluation.
+<models.Translatable.TranslatableMeta.fields>` of the queryset in a language in the evaluation.
 It accepts some language code(s) which determines the language(s) to
 probe the queryset in.
 
@@ -377,12 +377,12 @@ not passed in, it is automatically set to the :term:`active language` code.
 .. note::
 
    Please note that the results are returned in the default language.
-   To translate them use the :ref:`translate <translate>` method.
+   To translate them use the :ref:`translate <querysets.TranslatableQuerySet.translate>` method.
 
 .. note::
 
    Probing only affects the :ref:`translatable fields \
-   <specify-fields>` that have a translation.
+   <models.Translatable.TranslatableMeta.fields>` that have a translation.
 
 .. note::
 
@@ -390,7 +390,7 @@ not passed in, it is automatically set to the :term:`active language` code.
    the probed queryset when using multiple languages, otherwise it may
    return duplicate results.
 
-.. _tq:
+.. _query.TQ:
 
 Advanced querying
 =================

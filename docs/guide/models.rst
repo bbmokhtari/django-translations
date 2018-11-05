@@ -4,7 +4,7 @@ Guide: Models
 
 This module provides an in depth knowledge of the Translations models.
 
-.. _translatable-models:
+.. _models.Translatable:
 
 Make models translatable
 ========================
@@ -31,7 +31,7 @@ To make a model translatable inherit it from the
    accidentally instead of the ``Translatable``
    model.
 
-.. _specify-fields:
+.. _models.Translatable.TranslatableMeta.fields:
 
 Specify models' translatable fields
 ===================================

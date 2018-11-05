@@ -33,7 +33,7 @@ Translate Languages
 
 Translate languages are used in places like
 the :doc:`Context <./context>`\ s and
-the :ref:`translate <translate>` method.
+the :ref:`translate <querysets.TranslatableQuerySet.translate>` method.
 
 To access standard translate language codes use
 the :data:`~translations.languages.translate` object.
@@ -73,8 +73,8 @@ Probe Languages
 ===============
 
 Probe languages are used in places like
-the :ref:`TQ <tq>`\ s and
-the :ref:`probe <probe>` method.
+the :ref:`TQ <query.TQ>`\ s and
+the :ref:`probe <querysets.TranslatableQuerySet.probe>` method.
 
 To access standard probe language codes use
 the :data:`~translations.languages.probe` object.
