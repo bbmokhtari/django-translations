@@ -47,45 +47,15 @@ objects in the defined purview.
 
 .. testsetup:: Context.__init__.1
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.__init__.2
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.__init__.3
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To initialize a context for an instance and some relations of it:
 
@@ -174,36 +144,15 @@ create the translation in.
 
 .. testsetup:: Context.create.1
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       langs=['de']
-   )
+   create_doc_samples(translations=False)
 
 .. testsetup:: Context.create.2
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       langs=['de']
-   )
+   create_doc_samples(translations=False)
 
 .. testsetup:: Context.create.3
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       langs=['de']
-   )
+   create_doc_samples(translations=False)
 
 To create the translations of an instance and some relations of it:
 
@@ -310,45 +259,15 @@ read the translation in.
 
 .. testsetup:: Context.read.1
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.read.2
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.read.3
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To read the translations of an instance and some relations of it:
 
@@ -461,31 +380,11 @@ not passed in, it is automatically set to the :term:`active language` code.
 
    .. testsetup:: Context.read.warning.1
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    .. testsetup:: Context.read.warning.2
 
-      from sample.utils import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    Any methods on the relations queryset which imply
    a database query will reset previously translated results:
@@ -548,45 +447,15 @@ update the translation in.
 
 .. testsetup:: Context.update.1
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.update.2
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.update.3
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To update the translations of an instance and some relations of it:
 
@@ -689,45 +558,15 @@ delete the translation in.
 
 .. testsetup:: Context.delete.1
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.delete.2
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.delete.3
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To delete the translations of an instance and some relations of it:
 
@@ -806,45 +645,15 @@ This resets the translations on the :ref:`translatable fields \
 
 .. testsetup:: Context.reset.1
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.reset.2
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 .. testsetup:: Context.reset.3
 
-   from sample.utils import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To reset the translations of an instance and some relations of it:
 

@@ -254,15 +254,22 @@ def print(value='', end='\\n'):
 
 # Sample creation
 def create_doc_samples(translations=True):
-    create_samples(
-        continent_names=['europe', 'asia'],
-        country_names=['germany', 'south korea'],
-        city_names=['cologne', 'seoul'],
-        continent_fields=['name', 'denonym'],
-        country_fields=['name', 'denonym'],
-        city_fields=['name', 'denonym'],
-        langs=['de']
-    )
+    if translations:
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+    else:
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+        )
 
 """
 
