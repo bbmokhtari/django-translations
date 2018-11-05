@@ -15,3 +15,4 @@ recommend you to read the guide.
    admin
    querysets
    context
+   languages

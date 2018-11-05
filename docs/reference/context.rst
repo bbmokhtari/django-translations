@@ -88,7 +88,7 @@ This module contains the context managers for the Translations app.
       Initialize a :class:`Context` for an entity and some relations of it.
 
       Defines the entity and the relations of it as
-      the :class:`Context`\ 's :term:`purview`.
+      the :class:`Context`\ 's purview.
 
       :param entity: The entity to initialize the :class:`Context` for.
       :type entity: ~django.db.models.Model or
@@ -223,15 +223,15 @@ This module contains the context managers for the Translations app.
    .. method:: _get_changed_fields()
 
       Yield the info about the changed fields in
-      the :class:`Context`\ 's :term:`purview`.
+      the :class:`Context`\ 's purview.
 
       Yields the info about the changed fields in
       the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview`.
+      :class:`Context`\ 's purview.
 
       :return: The info about the changed fields in
-          the :class:`Context`\ 's :term:`purview`.
+          the :class:`Context`\ 's purview.
       :rtype: ~collections.Iterable(tuple(dict, str))
 
       .. testsetup:: Context._get_changed_fields.1
@@ -246,7 +246,7 @@ This module contains the context managers for the Translations app.
          )
 
       To get the info about the changed fields in
-      the :class:`Context`\ 's :term:`purview`:
+      the :class:`Context`\ 's purview:
 
       .. testcode:: Context._get_changed_fields.1
 
@@ -276,12 +276,12 @@ This module contains the context managers for the Translations app.
 
    .. method:: create(lang=None)
 
-      Create the translations of the :class:`Context`\ 's :term:`purview` in
+      Create the translations of the :class:`Context`\ 's purview in
       a language.
 
       Creates the translations using the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview` in a language.
+      :class:`Context`\ 's purview in a language.
 
       :param lang: The language to create the translations in.
           ``None`` means use the :term:`active language` code.
@@ -324,7 +324,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To create the translations of the :class:`Context`\ 's :term:`purview`
+      To create the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
 
       .. testcode:: Context.create.1
@@ -351,7 +351,7 @@ This module contains the context managers for the Translations app.
 
          Translations created!
 
-      To create the translations of the :class:`Context`\ 's :term:`purview`
+      To create the translations of the :class:`Context`\ 's purview
       (a queryset and some relations of it):
 
       .. testcode:: Context.create.2
@@ -378,7 +378,7 @@ This module contains the context managers for the Translations app.
 
          Translations created!
 
-      To create the translations of the :class:`Context`\ 's :term:`purview`
+      To create the translations of the :class:`Context`\ 's purview
       (a list of instances and some relations of it):
 
       .. testcode:: Context.create.3
@@ -414,12 +414,12 @@ This module contains the context managers for the Translations app.
 
    .. method:: read(lang=None)
 
-      Read the translations of the :class:`Context`\ 's :term:`purview` in
+      Read the translations of the :class:`Context`\ 's purview in
       a language.
 
       Reads the translations onto the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview` in a language.
+      :class:`Context`\ 's purview in a language.
 
       :param lang: The language to read the translations in.
           ``None`` means use the :term:`active language` code.
@@ -468,7 +468,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To read the translations of the :class:`Context`\ 's :term:`purview`
+      To read the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
 
       .. testcode:: Context.read.1
@@ -499,7 +499,7 @@ This module contains the context managers for the Translations app.
              <City: Köln>,
          ]>
 
-      To read the translations of the :class:`Context`\ 's :term:`purview`
+      To read the translations of the :class:`Context`\ 's purview
       (a queryset and some relations of it):
 
       .. testcode:: Context.read.2
@@ -533,7 +533,7 @@ This module contains the context managers for the Translations app.
              <City: Köln>,
          ]>
 
-      To read the translations of the :class:`Context`\ 's :term:`purview`
+      To read the translations of the :class:`Context`\ 's purview
       (a list of instances and some relations of it):
 
       .. testcode:: Context.read.3
@@ -655,12 +655,12 @@ This module contains the context managers for the Translations app.
 
    .. method:: update(lang=None)
 
-      Update the translations of the :class:`Context`\ 's :term:`purview` in
+      Update the translations of the :class:`Context`\ 's purview in
       a language.
 
       Updates the translations using the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview` in a language.
+      :class:`Context`\ 's purview in a language.
 
       :param lang: The language to update the translations in.
           ``None`` means use the :term:`active language` code.
@@ -709,7 +709,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To update the translations of the :class:`Context`\ 's :term:`purview`
+      To update the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
 
       .. testcode:: Context.update.1
@@ -736,7 +736,7 @@ This module contains the context managers for the Translations app.
 
          Translations updated!
 
-      To update the translations of the :class:`Context`\ 's :term:`purview`
+      To update the translations of the :class:`Context`\ 's purview
       (a queryset and some relations of it):
 
       .. testcode:: Context.update.2
@@ -763,7 +763,7 @@ This module contains the context managers for the Translations app.
 
          Translations updated!
 
-      To update the translations of the :class:`Context`\ 's :term:`purview`
+      To update the translations of the :class:`Context`\ 's purview
       (a list of instances and some relations of it):
 
       .. testcode:: Context.update.3
@@ -799,12 +799,12 @@ This module contains the context managers for the Translations app.
 
    .. method:: delete(lang=None)
 
-      Delete the translations of the :class:`Context`\ 's :term:`purview` in
+      Delete the translations of the :class:`Context`\ 's purview in
       a language.
 
       Deletes the translations for the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview` in a language.
+      :class:`Context`\ 's purview in a language.
 
       :param lang: The language to delete the translations in.
           ``None`` means use the :term:`active language` code.
@@ -853,7 +853,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To delete the translations of the :class:`Context`\ 's :term:`purview`
+      To delete the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
 
       .. testcode:: Context.delete.1
@@ -875,7 +875,7 @@ This module contains the context managers for the Translations app.
 
          Translations deleted!
 
-      To delete the translations of the :class:`Context`\ 's :term:`purview`
+      To delete the translations of the :class:`Context`\ 's purview
       (a queryset and some relations of it):
 
       .. testcode:: Context.delete.2
@@ -897,7 +897,7 @@ This module contains the context managers for the Translations app.
 
          Translations deleted!
 
-      To delete the translations of the :class:`Context`\ 's :term:`purview`
+      To delete the translations of the :class:`Context`\ 's purview
       (a list of instances and some relations of it):
 
       .. testcode:: Context.delete.3
@@ -921,12 +921,12 @@ This module contains the context managers for the Translations app.
 
    .. method:: reset()
 
-      Reset the translations of the :class:`Context`\ 's :term:`purview` to
+      Reset the translations of the :class:`Context`\ 's purview to
       the :term:`default language`.
 
       Resets the translations on the :attr:`TranslatableMeta.fields \
       <translations.models.Translatable.TranslatableMeta.fields>` of the
-      :class:`Context`\ 's :term:`purview` to the :term:`default language`.
+      :class:`Context`\ 's purview to the :term:`default language`.
 
       .. testsetup:: Context.reset.1
 
@@ -970,7 +970,7 @@ This module contains the context managers for the Translations app.
              langs=['de']
          )
 
-      To reset the translations of the :class:`Context`\ 's :term:`purview`
+      To reset the translations of the :class:`Context`\ 's purview
       (an instance and some relations of it):
 
       .. testcode:: Context.reset.1
@@ -1004,7 +1004,7 @@ This module contains the context managers for the Translations app.
              <City: Cologne>,
          ]>
 
-      To reset the translations of the :class:`Context`\ 's :term:`purview`
+      To reset the translations of the :class:`Context`\ 's purview
       (a queryset and some relations of it):
 
       .. testcode:: Context.reset.2
@@ -1041,7 +1041,7 @@ This module contains the context managers for the Translations app.
              <City: Cologne>,
          ]>
 
-      To reset the translations of the :class:`Context`\ 's :term:`purview`
+      To reset the translations of the :class:`Context`\ 's purview
       (a list of instances and some relations of it):
 
       .. testcode:: Context.reset.3
