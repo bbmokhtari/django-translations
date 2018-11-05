@@ -14,6 +14,7 @@ contribute to the project we recommend you to read the reference.
    :maxdepth: 2
    :caption: Contents:
 
+   install
    guide/index
    reference/index
    howto/index
