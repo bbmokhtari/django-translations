@@ -93,24 +93,24 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_relations_hierarchy(*relations)
 
-   Return the :term:`relations hierarchy` of some relations.
+   Return the relations hierarchy of some relations.
 
-   Transforms the relations into a :term:`relations hierarchy`. Each level of
-   :term:`relations hierarchy` contains the relations in that level and each
+   Transforms the relations into a relations hierarchy. Each level of
+   relations hierarchy contains the relations in that level and each
    relation contains certain information, things like whether the relation is
    included or not and what are its nested relations, forming the next level
-   of :term:`relations hierarchy`.
+   of relations hierarchy.
 
-   :param relations: The relations to get the :term:`relations hierarchy`
+   :param relations: The relations to get the relations hierarchy
        of.
        Each relation may be composed of many ``related_query_name``\ s
        separated by :data:`~django.db.models.constants.LOOKUP_SEP`
        (usually ``__``) to represent a deeply nested relation.
    :type relations: list(str)
-   :return: The :term:`relations hierarchy` of the relations.
+   :return: The relations hierarchy of the relations.
    :rtype: dict(str, dict)
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (a first-level relation):
 
    .. testcode:: _get_relations_hierarchy.1
@@ -131,7 +131,7 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (a second-level relation not including the first-level relation):
 
    .. testcode:: _get_relations_hierarchy.2
@@ -157,7 +157,7 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (a second-level relation including the first-level relation):
 
    .. testcode:: _get_relations_hierarchy.3
@@ -184,7 +184,7 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (no relations):
 
    .. testcode:: _get_relations_hierarchy.4
@@ -365,20 +365,20 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_purview(entity, hierarchy)
 
-   Return the :term:`purview` of an entity and
-   a :term:`relations hierarchy` of it.
+   Return the purview of an entity and
+   a relations hierarchy of it.
 
    Returns the mapping of the instances specified by the entity and its
    relations, and the query to fetch their translations.
 
-   :param entity: the entity to get the :term:`purview` of.
+   :param entity: the entity to get the purview of.
    :type entity: ~django.db.models.Model or
        ~collections.Iterable(~django.db.models.Model)
-   :param hierarchy: The :term:`relations hierarchy` of the entity to get
-       the :term:`purview` of.
+   :param hierarchy: The relations hierarchy of the entity to get
+       the purview of.
    :type hierarchy: dict(str, dict)
-   :return: The :term:`purview` of the entity and
-       the :term:`relations hierarchy` of it.
+   :return: The purview of the entity and
+       the relations hierarchy of it.
    :rtype: tuple(dict(int, dict(str, ~django.db.models.Model)), \
        ~django.db.models.Q)
    :raise TypeError:
@@ -409,8 +409,8 @@ This module contains the utilities for the Translations app.
           langs=['de']
       )
 
-   To get the :term:`purview` of an entity and
-   a :term:`relations hierarchy` of it:
+   To get the purview of an entity and
+   a relations hierarchy of it:
 
    .. testcode:: _get_purview.1
 

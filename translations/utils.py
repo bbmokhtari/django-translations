@@ -82,7 +82,7 @@ def _get_dissected_lookup(model, lookup):
 
 
 def _get_relations_hierarchy(*relations):
-    """Return the `relations hierarchy` of some relations."""
+    """Return the relations hierarchy of some relations."""
     hierarchy = {}
 
     def _fill_hierarchy(hierarchy, *relation_parts):
@@ -133,7 +133,7 @@ def _get_entity_details(entity):
 
 
 def _get_purview(entity, hierarchy):
-    """Return the `purview` of an entity and a `relations hierarchy` of it."""
+    """Return the purview of an entity and a relations hierarchy of it."""
     mapping = {}
     query = models.Q()
 
