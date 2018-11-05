@@ -228,7 +228,8 @@ This module contains the context managers for the Translations app.
          europe = Continent.objects.get(code='EU')
 
          with Context(europe) as context:
-             # change the field values
+
+             # change the instance like before
              europe.name = 'Europa'
              europe.denonym = 'Europäisch'
 
@@ -307,12 +308,13 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-             # change the field values
+
+             # change the instance like before
              europe.name = 'Europa'
              europe.countries.all()[0].name = 'Deutschland'
              europe.countries.all()[0].cities.all()[0].name = 'Köln'
 
-             # create the translations
+             # create the translations in German
              context.create('de')
 
              print('Translations created!')
@@ -333,12 +335,13 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # change the field values
+
+             # change the queryset like before
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
-             # create the translations
+             # create the translations in German
              context.create('de')
 
              print('Translations created!')
@@ -359,12 +362,13 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # change the field values
+
+             # change the list of instances like before
              continents[0].name = 'Europa'
              continents[0].countries.all()[0].name = 'Deutschland'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln'
 
-             # create the translations
+             # create the translations in German
              context.create('de')
 
              print('Translations created!')
@@ -420,19 +424,24 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-             # read the translations
+
+             # read the translations in German
              context.read('de')
 
-             # use the field values
-             print(europe.name)
-             print(europe.countries.all()[0].name)
-             print(europe.countries.all()[0].cities.all()[0].name)
+             # use the instance like before
+             print(europe)
+             print(europe.countries.all())
+             print(europe.countries.all()[0].cities.all())
 
       .. testoutput:: read
 
          Europa
-         Deutschland
-         Köln
+         <TranslatableQuerySet [
+             <Country: Deutschland>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Köln>,
+         ]>
 
       To read the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
@@ -446,19 +455,27 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # read the translations
+
+             # read the translations in German
              context.read('de')
 
-             # use the field values
-             print(continents[0].name)
-             print(continents[0].countries.all()[0].name)
-             print(continents[0].countries.all()[0].cities.all()[0].name)
+             # use the queryset like before
+             print(continents)
+             print(continents[0].countries.all())
+             print(continents[0].countries.all()[0].cities.all())
 
       .. testoutput:: read
 
-         Europa
-         Deutschland
-         Köln
+         <TranslatableQuerySet [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]>
+         <TranslatableQuerySet [
+             <Country: Deutschland>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Köln>,
+         ]>
 
       To read the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
@@ -472,19 +489,27 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # read the translations
+
+             # read the translations in German
              context.read('de')
 
-             # use the field values
-             print(continents[0].name)
-             print(continents[0].countries.all()[0].name)
-             print(continents[0].countries.all()[0].cities.all()[0].name)
+             # use the list of instances like before
+             print(continents)
+             print(continents[0].countries.all())
+             print(continents[0].countries.all()[0].cities.all())
 
       .. testoutput:: read
 
-         Europa
-         Deutschland
-         Köln
+         [
+             <Continent: Europa>,
+             <Continent: Asien>,
+         ]
+         <TranslatableQuerySet [
+             <Country: Deutschland>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Köln>,
+         ]>
 
       .. note::
 
@@ -584,12 +609,13 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-             # change the field values
+
+             # change the instance like before
              europe.name = 'Europa (changed)'
              europe.countries.all()[0].name = 'Deutschland (changed)'
              europe.countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-             # update the translations
+             # update the translations in German
              context.update('de')
 
              print('Translations updated!')
@@ -610,12 +636,13 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # change the field values
+
+             # change the queryset like before
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-             # update the translations
+             # update the translations in German
              context.update('de')
 
              print('Translations updated!')
@@ -636,12 +663,13 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # change the field values
+
+             # change the list of instances like before
              continents[0].name = 'Europa (changed)'
              continents[0].countries.all()[0].name = 'Deutschland (changed)'
              continents[0].countries.all()[0].cities.all()[0].name = 'Köln (changed)'
 
-             # update the translations
+             # update the translations in German
              context.update('de')
 
              print('Translations updated!')
@@ -725,7 +753,8 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-             # delete the translations
+
+             # delete the translations in German
              context.delete('de')
 
              print('Translations deleted!')
@@ -746,7 +775,8 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # delete the translations
+
+             # delete the translations in German
              context.delete('de')
 
              print('Translations deleted!')
@@ -767,7 +797,8 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # delete the translations
+
+             # delete the translations in German
              context.delete('de')
 
              print('Translations deleted!')
@@ -811,22 +842,27 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(europe, *relations) as context:
-             # changes happened to the fields...
+
+             # changes happened to the fields, create, read, update, delete, etc...
              context.read('de')
 
              # reset the translations
              context.reset()
 
-             # use the field values
+             # use the instance like before
              print(europe)
-             print(europe.countries.all()[0])
-             print(europe.countries.all()[0].cities.all()[0])
+             print(europe.countries.all())
+             print(europe.countries.all()[0].cities.all())
 
       .. testoutput:: reset
 
          Europe
-         Germany
-         Cologne
+         <TranslatableQuerySet [
+             <Country: Germany>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Cologne>,
+         ]>
 
       To reset the translations of the :class:`Context`\ 's :term:`purview`
       (a queryset and some relations of it):
@@ -840,22 +876,30 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # changes happened to the fields...
+
+             # changes happened to the fields, create, read, update, delete, etc...
              context.read('de')
 
              # reset the translations
              context.reset()
 
-             # use the field values
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
+             # use the queryset like before
+             print(continents)
+             print(continents[0].countries.all())
+             print(continents[0].countries.all()[0].cities.all())
 
       .. testoutput:: reset
 
-         Europe
-         Germany
-         Cologne
+         <TranslatableQuerySet [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]>
+         <TranslatableQuerySet [
+             <Country: Germany>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Cologne>,
+         ]>
 
       To reset the translations of the :class:`Context`\ 's :term:`purview`
       (a list of instances and some relations of it):
@@ -869,19 +913,27 @@ This module contains the context managers for the Translations app.
          relations = ('countries', 'countries__cities',)
 
          with Context(continents, *relations) as context:
-             # changes happened to the fields...
+
+             # changes happened to the fields, create, read, update, delete, etc...
              context.read('de')
 
              # reset the translations
              context.reset()
 
-             # use the field values
-             print(continents[0])
-             print(continents[0].countries.all()[0])
-             print(continents[0].countries.all()[0].cities.all()[0])
+             # use the list of instances like before
+             print(continents)
+             print(continents[0].countries.all())
+             print(continents[0].countries.all()[0].cities.all())
 
       .. testoutput:: reset
 
-         Europe
-         Germany
-         Cologne
+         [
+             <Continent: Europe>,
+             <Continent: Asia>,
+         ]
+         <TranslatableQuerySet [
+             <Country: Germany>,
+         ]>
+         <TranslatableQuerySet [
+             <City: Cologne>,
+         ]>

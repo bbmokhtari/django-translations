@@ -37,9 +37,9 @@ Initialize a context
 
 To initialize a context use the :class:`~translations.context.Context`
 class.
-The instances to be affected by the ``Context`` must be defined in the
+The instances to be affected by the context must be defined in the
 initialization, meaning which entity and what relations of it
-should the ``Context`` act upon. This is called the ``Context``\ 's purview.
+should the context act upon. This is called the context's purview.
 
 All the actions like `reading the translations`_,
 `updating the translations`_, etc only affects the
@@ -59,7 +59,7 @@ objects in the defined purview.
        langs=['de']
    )
 
-To initialize a ``Context`` for an instance and some relations of it:
+To initialize a context for an instance and some relations of it:
 
 .. testcode:: guide_init
 
@@ -77,7 +77,7 @@ To initialize a ``Context`` for an instance and some relations of it:
 
    Context initialized!
 
-To initialize a ``Context`` for a queryset and some relations of it:
+To initialize a context for a queryset and some relations of it:
 
 .. testcode:: guide_init
 
@@ -95,7 +95,7 @@ To initialize a ``Context`` for a queryset and some relations of it:
 
    Context initialized!
 
-To initialize a ``Context`` for a list of instances and some relations of it:
+To initialize a context for a list of instances and some relations of it:
 
 .. testcode:: guide_init
 
@@ -137,10 +137,10 @@ The model of the relations must be
 Creating the translations
 =========================
 
-To create the translations of the ``Context``\ 's purview in a language
+To create the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.create` method.
 This creates the translations using the :ref:`translatable fields \
-<specify-fields>` of the ``Context``\ 's purview.
+<specify-fields>` of the context's purview.
 It accepts a language code which determines the language to
 create the translation in.
 
@@ -273,10 +273,10 @@ Creating duplicate translations for a field raises
 Reading the translations
 ========================
 
-To read the translations of the ``Context``\ 's purview in a language
+To read the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.read` method.
 This reads the translations onto the :ref:`translatable fields \
-<specify-fields>` of the ``Context``\ 's purview.
+<specify-fields>` of the context's purview.
 It accepts a language code which determines the language to
 read the translation in.
 
@@ -455,10 +455,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 Updating the translations
 =========================
 
-To update the translations of the ``Context``\ 's purview in a language
+To update the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.update` method.
 This updates the translations using the :ref:`translatable fields \
-<specify-fields>` of the ``Context``\ 's purview.
+<specify-fields>` of the context's purview.
 It accepts a language code which determines the language to
 update the translation in.
 
@@ -568,10 +568,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 Deleting the translations
 =========================
 
-To delete the translations of the ``Context``\ 's purview in a language
+To delete the translations of the context's purview in a language
 use the :meth:`~translations.context.Context.delete` method.
 This deletes the translations for the :ref:`translatable fields \
-<specify-fields>` of the ``Context``\ 's purview.
+<specify-fields>` of the context's purview.
 It accepts a language code which determines the language to
 delete the translation in.
 
@@ -687,10 +687,10 @@ not passed in, it is automatically set to the :term:`active language` code.
 Resetting the translations
 ==========================
 
-To reset the translations of the ``Context``\ 's purview to the :term:`default language`
+To reset the translations of the context's purview to the :term:`default language`
 use the :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
-<specify-fields>` of the ``Context``\ 's purview.
+<specify-fields>` of the context's purview.
 
 .. testsetup:: guide_reset
 
