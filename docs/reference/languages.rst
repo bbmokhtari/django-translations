@@ -40,7 +40,7 @@ This module contains the languages for the Translations app.
    To get the :term:`supported language` code of a custom language code
    (an unaccented language code):
 
-   .. testcode:: _get_supported_language
+   .. testcode:: _get_supported_language_1
 
       from translations.languages import _get_supported_language
 
@@ -49,14 +49,14 @@ This module contains the languages for the Translations app.
 
       print(custom)
 
-   .. testoutput:: _get_supported_language
+   .. testoutput:: _get_supported_language_1
 
       en
 
    To get the :term:`supported language` code of a custom language code
    (an existing accented language code):
 
-   .. testcode:: _get_supported_language
+   .. testcode:: _get_supported_language_2
 
       from translations.languages import _get_supported_language
 
@@ -65,14 +65,14 @@ This module contains the languages for the Translations app.
 
       print(custom)
 
-   .. testoutput:: _get_supported_language
+   .. testoutput:: _get_supported_language_2
 
       en-gb
 
    To get the :term:`supported language` code of a custom language code
    (a non-existing accented language code):
 
-   .. testcode:: _get_supported_language
+   .. testcode:: _get_supported_language_3
 
       from translations.languages import _get_supported_language
 
@@ -81,7 +81,7 @@ This module contains the languages for the Translations app.
 
       print(custom)
 
-   .. testoutput:: _get_supported_language
+   .. testoutput:: _get_supported_language_3
 
       en
 
@@ -110,7 +110,7 @@ This module contains the languages for the Translations app.
    To get the :term:`supported language` code of the :term:`default language`
    code:
 
-   .. testcode:: _get_default_language
+   .. testcode:: _get_default_language_1
 
       from translations.languages import _get_default_language
 
@@ -119,7 +119,7 @@ This module contains the languages for the Translations app.
 
       print(default)
 
-   .. testoutput:: _get_default_language
+   .. testoutput:: _get_default_language_1
 
       en
 
@@ -149,7 +149,7 @@ This module contains the languages for the Translations app.
    code
    (assume ``en``):
 
-   .. testcode:: _get_active_language
+   .. testcode:: _get_active_language_1
 
       from translations.languages import _get_active_language
 
@@ -158,7 +158,7 @@ This module contains the languages for the Translations app.
 
       print(active)
 
-   .. testoutput:: _get_active_language
+   .. testoutput:: _get_active_language_1
 
       en
 
@@ -183,7 +183,7 @@ This module contains the languages for the Translations app.
 
    To get all the :term:`supported language` codes:
 
-   .. testcode:: _get_all_languages
+   .. testcode:: _get_all_languages_1
 
       from translations.languages import _get_all_languages
 
@@ -192,7 +192,7 @@ This module contains the languages for the Translations app.
 
       print(languages)
 
-   .. testoutput:: _get_all_languages
+   .. testoutput:: _get_all_languages_1
 
       [
           'en',
@@ -222,7 +222,7 @@ This module contains the languages for the Translations app.
 
    To get all the :term:`supported language` choices:
 
-   .. testcode:: _get_all_choices
+   .. testcode:: _get_all_choices_1
 
       from translations.languages import _get_all_choices
 
@@ -231,7 +231,7 @@ This module contains the languages for the Translations app.
 
       print(choices)
 
-   .. testoutput:: _get_all_choices
+   .. testoutput:: _get_all_choices_1
 
       [
           (None, '---------'),
@@ -262,7 +262,7 @@ This module contains the languages for the Translations app.
 
    To get the :term:`translation language` codes:
 
-   .. testcode:: _get_translation_languages
+   .. testcode:: _get_translation_languages_1
 
       from translations.languages import _get_translation_languages
 
@@ -271,7 +271,7 @@ This module contains the languages for the Translations app.
 
       print(languages)
 
-   .. testoutput:: _get_translation_languages
+   .. testoutput:: _get_translation_languages_1
 
       [
           'en-gb',
@@ -301,7 +301,7 @@ This module contains the languages for the Translations app.
 
    To get the :term:`translation language` choices:
 
-   .. testcode:: _get_translation_choices
+   .. testcode:: _get_translation_choices_1
 
       from translations.languages import _get_translation_choices
 
@@ -310,7 +310,7 @@ This module contains the languages for the Translations app.
 
       print(choices)
 
-   .. testoutput:: _get_translation_choices
+   .. testoutput:: _get_translation_choices_1
 
       [
           (None, '---------'),
@@ -350,7 +350,7 @@ This module contains the languages for the Translations app.
    To get the :term:`supported language` code of a translate language code
    (the :term:`active language` code - assume ``en``):
 
-   .. testcode:: _get_translate_language
+   .. testcode:: _get_translate_language_1
 
       from translations.languages import _get_translate_language
 
@@ -359,14 +359,14 @@ This module contains the languages for the Translations app.
 
       print(translate)
 
-   .. testoutput:: _get_translate_language
+   .. testoutput:: _get_translate_language_1
 
       en
 
    To get the :term:`supported language` code of a translate language code
    (a custom language code):
 
-   .. testcode:: _get_translate_language
+   .. testcode:: _get_translate_language_2
 
       from translations.languages import _get_translate_language
 
@@ -375,7 +375,7 @@ This module contains the languages for the Translations app.
 
       print(translate)
 
-   .. testoutput:: _get_translate_language
+   .. testoutput:: _get_translate_language_2
 
       en
 
@@ -410,7 +410,7 @@ This module contains the languages for the Translations app.
    To get the :term:`supported language` code(s) of some probe language code(s)
    (the :term:`active language` code - assume ``en``):
 
-   .. testcode:: _get_probe_language
+   .. testcode:: _get_probe_language_1
 
       from translations.languages import _get_probe_language
 
@@ -419,14 +419,14 @@ This module contains the languages for the Translations app.
 
       print(probe)
 
-   .. testoutput:: _get_probe_language
+   .. testoutput:: _get_probe_language_1
 
       en
 
    To get the :term:`supported language` code(s) of some probe language code(s)
    (a custom language code):
 
-   .. testcode:: _get_probe_language
+   .. testcode:: _get_probe_language_2
 
       from translations.languages import _get_probe_language
 
@@ -435,14 +435,14 @@ This module contains the languages for the Translations app.
 
       print(probe)
 
-   .. testoutput:: _get_probe_language
+   .. testoutput:: _get_probe_language_2
 
       en
 
    To get the :term:`supported language` code(s) of some probe language code(s)
    (multiple custom language codes):
 
-   .. testcode:: _get_probe_language
+   .. testcode:: _get_probe_language_3
 
       from translations.languages import _get_probe_language
 
@@ -451,7 +451,7 @@ This module contains the languages for the Translations app.
 
       print(probe)
 
-   .. testoutput:: _get_probe_language
+   .. testoutput:: _get_probe_language_3
 
       [
           'en',
@@ -480,7 +480,7 @@ This module contains the languages for the Translations app.
 
       To get the :term:`default language` code.
 
-      .. testcode:: translate_default
+      .. testcode:: translate_default_1
 
          from translations.languages import translate
 
@@ -489,7 +489,7 @@ This module contains the languages for the Translations app.
 
          print(default)
 
-      .. testoutput:: translate_default
+      .. testoutput:: translate_default_1
 
          en
 
@@ -500,7 +500,7 @@ This module contains the languages for the Translations app.
       To get the :term:`active language` code.
       (assume ``en``)
 
-      .. testcode:: translate_active
+      .. testcode:: translate_active_1
 
          from translations.languages import translate
 
@@ -509,7 +509,7 @@ This module contains the languages for the Translations app.
 
          print(active)
 
-      .. testoutput:: translate_active
+      .. testoutput:: translate_active_1
 
          en
 
@@ -535,7 +535,7 @@ This module contains the languages for the Translations app.
 
       To get the :term:`default language` code.
 
-      .. testcode:: probe_default
+      .. testcode:: probe_default_1
 
          from translations.languages import probe
 
@@ -544,7 +544,7 @@ This module contains the languages for the Translations app.
 
          print(default)
 
-      .. testoutput:: probe_default
+      .. testoutput:: probe_default_1
 
          en
 
@@ -555,7 +555,7 @@ This module contains the languages for the Translations app.
       To get the :term:`active language` code.
       (assume ``en``)
 
-      .. testcode:: probe_active
+      .. testcode:: probe_active_1
 
          from translations.languages import probe
 
@@ -564,13 +564,25 @@ This module contains the languages for the Translations app.
 
          print(active)
 
-      .. testoutput:: probe_active
+      .. testoutput:: probe_active_1
 
          en
 
    .. attribute:: DEFAULT_ACTIVE
 
       Return the :term:`default language` and :term:`active language` codes.
+
+      .. testsetup:: probe_default_active_1
+
+         from django.utils.translation import activate
+
+         activate('en')
+
+      .. testsetup:: probe_default_active_2
+
+         from django.utils.translation import activate
+
+         activate('de')
 
       To get the :term:`default language` and :term:`active language` codes.
       (assume ``en``)
@@ -590,12 +602,6 @@ This module contains the languages for the Translations app.
 
       To get the :term:`default language` and :term:`active language` codes.
       (assume ``de``)
-
-      .. testsetup:: probe_default_active_2
-
-         from django.utils.translation import activate
-
-         activate('de')
 
       .. testcode:: probe_default_active_2
 
@@ -625,7 +631,7 @@ This module contains the languages for the Translations app.
 
       To get the :term:`translation language` codes.
 
-      .. testcode:: probe_translation
+      .. testcode:: probe_translation_1
 
          from translations.languages import probe
 
@@ -634,7 +640,7 @@ This module contains the languages for the Translations app.
 
          print(translation)
 
-      .. testoutput:: probe_translation
+      .. testoutput:: probe_translation_1
 
          [
              'en-gb',
@@ -648,7 +654,7 @@ This module contains the languages for the Translations app.
 
       To get all the :term:`supported language` codes.
 
-      .. testcode:: probe_all
+      .. testcode:: probe_all_1
 
          from translations.languages import probe
 
@@ -657,7 +663,7 @@ This module contains the languages for the Translations app.
 
          print(all)
 
-      .. testoutput:: probe_all
+      .. testoutput:: probe_all_1
 
          [
              'en',
