@@ -45,7 +45,35 @@ All the actions like `reading the translations`_,
 `updating the translations`_, etc only affects the
 objects in the defined purview.
 
-.. testsetup:: guide_init
+.. testsetup:: Context.__init__.1
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.__init__.2
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.__init__.3
 
    from tests.sample import create_samples
 
@@ -61,7 +89,7 @@ objects in the defined purview.
 
 To initialize a context for an instance and some relations of it:
 
-.. testcode:: guide_init
+.. testcode:: Context.__init__.1
 
    from translations.context import Context
    from sample.models import Continent
@@ -73,13 +101,13 @@ To initialize a context for an instance and some relations of it:
    with Context(europe, *relations) as context:
        print('Context initialized!')
 
-.. testoutput:: guide_init
+.. testoutput:: Context.__init__.1
 
    Context initialized!
 
 To initialize a context for a queryset and some relations of it:
 
-.. testcode:: guide_init
+.. testcode:: Context.__init__.2
 
    from translations.context import Context
    from sample.models import Continent
@@ -91,13 +119,13 @@ To initialize a context for a queryset and some relations of it:
    with Context(continents, *relations) as context:
        print('Context initialized!')
 
-.. testoutput:: guide_init
+.. testoutput:: Context.__init__.2
 
    Context initialized!
 
 To initialize a context for a list of instances and some relations of it:
 
-.. testcode:: guide_init
+.. testcode:: Context.__init__.3
 
    from translations.context import Context
    from sample.models import Continent
@@ -109,7 +137,7 @@ To initialize a context for a list of instances and some relations of it:
    with Context(continents, *relations) as context:
        print('Context initialized!')
 
-.. testoutput:: guide_init
+.. testoutput:: Context.__init__.3
 
    Context initialized!
 
@@ -144,7 +172,7 @@ This creates the translations using the :ref:`translatable fields \
 It accepts a language code which determines the language to
 create the translation in.
 
-.. testsetup:: guide_create_0
+.. testsetup:: Context.create.1
 
    from tests.sample import create_samples
 
@@ -155,7 +183,7 @@ create the translation in.
        langs=['de']
    )
 
-.. testsetup:: guide_create_1
+.. testsetup:: Context.create.2
 
    from tests.sample import create_samples
 
@@ -166,7 +194,7 @@ create the translation in.
        langs=['de']
    )
 
-.. testsetup:: guide_create_2
+.. testsetup:: Context.create.3
 
    from tests.sample import create_samples
 
@@ -179,7 +207,7 @@ create the translation in.
 
 To create the translations of an instance and some relations of it:
 
-.. testcode:: guide_create_0
+.. testcode:: Context.create.1
 
    from translations.context import Context
    from sample.models import Continent
@@ -199,13 +227,13 @@ To create the translations of an instance and some relations of it:
 
        print('Translations created!')
 
-.. testoutput:: guide_create_0
+.. testoutput:: Context.create.1
 
    Translations created!
 
 To create the translations of a queryset and some relations of it:
 
-.. testcode:: guide_create_1
+.. testcode:: Context.create.2
 
    from translations.context import Context
    from sample.models import Continent
@@ -225,13 +253,13 @@ To create the translations of a queryset and some relations of it:
 
        print('Translations created!')
 
-.. testoutput:: guide_create_1
+.. testoutput:: Context.create.2
 
    Translations created!
 
 To create the translations of a list of instances and some relations of it:
 
-.. testcode:: guide_create_2
+.. testcode:: Context.create.3
 
    from translations.context import Context
    from sample.models import Continent
@@ -251,7 +279,7 @@ To create the translations of a list of instances and some relations of it:
 
        print('Translations created!')
 
-.. testoutput:: guide_create_2
+.. testoutput:: Context.create.3
 
    Translations created!
 
@@ -280,7 +308,35 @@ This reads the translations onto the :ref:`translatable fields \
 It accepts a language code which determines the language to
 read the translation in.
 
-.. testsetup:: guide_read
+.. testsetup:: Context.read.1
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.read.2
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.read.3
 
    from tests.sample import create_samples
 
@@ -296,7 +352,7 @@ read the translation in.
 
 To read the translations of an instance and some relations of it:
 
-.. testcode:: guide_read
+.. testcode:: Context.read.1
 
    from translations.context import Context
    from sample.models import Continent
@@ -314,7 +370,7 @@ To read the translations of an instance and some relations of it:
        print(europe.countries.all())
        print(europe.countries.all()[0].cities.all())
 
-.. testoutput:: guide_read
+.. testoutput:: Context.read.1
 
    Europa
    <TranslatableQuerySet [
@@ -326,7 +382,7 @@ To read the translations of an instance and some relations of it:
 
 To read the translations of a queryset and some relations of it:
 
-.. testcode:: guide_read
+.. testcode:: Context.read.2
 
    from translations.context import Context
    from sample.models import Continent
@@ -344,7 +400,7 @@ To read the translations of a queryset and some relations of it:
        print(continents[0].countries.all())
        print(continents[0].countries.all()[0].cities.all())
 
-.. testoutput:: guide_read
+.. testoutput:: Context.read.2
 
    <TranslatableQuerySet [
        <Continent: Europa>,
@@ -359,7 +415,7 @@ To read the translations of a queryset and some relations of it:
 
 To read the translations of a list of instances and some relations of it:
 
-.. testcode:: guide_read
+.. testcode:: Context.read.3
 
    from translations.context import Context
    from sample.models import Continent
@@ -377,7 +433,7 @@ To read the translations of a list of instances and some relations of it:
        print(continents[0].countries.all())
        print(continents[0].countries.all()[0].cities.all())
 
-.. testoutput:: guide_read
+.. testoutput:: Context.read.3
 
    [
        <Continent: Europa>,
@@ -403,10 +459,38 @@ not passed in, it is automatically set to the :term:`active language` code.
 
 .. warning::
 
+   .. testsetup:: Context.read.warning.1
+
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
+   .. testsetup:: Context.read.warning.2
+
+      from tests.sample import create_samples
+
+      create_samples(
+          continent_names=['europe', 'asia'],
+          country_names=['germany', 'south korea'],
+          city_names=['cologne', 'seoul'],
+          continent_fields=['name', 'denonym'],
+          country_fields=['name', 'denonym'],
+          city_fields=['name', 'denonym'],
+          langs=['de']
+      )
+
    Any methods on the relations queryset which imply
    a database query will reset previously translated results:
 
-   .. testcode:: guide_read
+   .. testcode:: Context.read.warning.1
 
       from translations.context import Context
       from sample.models import Continent
@@ -420,7 +504,7 @@ not passed in, it is automatically set to the :term:`active language` code.
           # querying after translation
           print(continents[0].countries.exclude(name=''))
 
-   .. testoutput:: guide_read
+   .. testoutput:: Context.read.warning.1
 
       <TranslatableQuerySet [
           <Country: Germany>,
@@ -428,7 +512,7 @@ not passed in, it is automatically set to the :term:`active language` code.
 
    In some cases the querying can be done before the translation:
 
-   .. testcode:: guide_read
+   .. testcode:: Context.read.warning.2
 
       from django.db.models import Prefetch
       from translations.context import Context
@@ -446,7 +530,7 @@ not passed in, it is automatically set to the :term:`active language` code.
           context.read('de')
           print(continents[0].countries.all())
 
-   .. testoutput:: guide_read
+   .. testoutput:: Context.read.warning.2
 
       <TranslatableQuerySet [
           <Country: Deutschland>,
@@ -462,7 +546,35 @@ This updates the translations using the :ref:`translatable fields \
 It accepts a language code which determines the language to
 update the translation in.
 
-.. testsetup:: guide_update
+.. testsetup:: Context.update.1
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.update.2
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.update.3
 
    from tests.sample import create_samples
 
@@ -478,7 +590,7 @@ update the translation in.
 
 To update the translations of an instance and some relations of it:
 
-.. testcode:: guide_update
+.. testcode:: Context.update.1
 
    from translations.context import Context
    from sample.models import Continent
@@ -498,13 +610,13 @@ To update the translations of an instance and some relations of it:
 
        print('Translations updated!')
 
-.. testoutput:: guide_update
+.. testoutput:: Context.update.1
 
    Translations updated!
 
 To update the translations of a queryset and some relations of it:
 
-.. testcode:: guide_update
+.. testcode:: Context.update.2
 
    from translations.context import Context
    from sample.models import Continent
@@ -524,13 +636,13 @@ To update the translations of a queryset and some relations of it:
 
        print('Translations updated!')
 
-.. testoutput:: guide_update
+.. testoutput:: Context.update.2
 
    Translations updated!
 
 To update the translations of a list of instances and some relations of it:
 
-.. testcode:: guide_update
+.. testcode:: Context.update.3
 
    from translations.context import Context
    from sample.models import Continent
@@ -550,7 +662,7 @@ To update the translations of a list of instances and some relations of it:
 
        print('Translations updated!')
 
-.. testoutput:: guide_update
+.. testoutput:: Context.update.3
 
    Translations updated!
 
@@ -575,7 +687,7 @@ This deletes the translations for the :ref:`translatable fields \
 It accepts a language code which determines the language to
 delete the translation in.
 
-.. testsetup:: guide_delete_0
+.. testsetup:: Context.delete.1
 
    from tests.sample import create_samples
 
@@ -589,7 +701,7 @@ delete the translation in.
        langs=['de']
    )
 
-.. testsetup:: guide_delete_1
+.. testsetup:: Context.delete.2
 
    from tests.sample import create_samples
 
@@ -603,7 +715,7 @@ delete the translation in.
        langs=['de']
    )
 
-.. testsetup:: guide_delete_2
+.. testsetup:: Context.delete.3
 
    from tests.sample import create_samples
 
@@ -619,7 +731,7 @@ delete the translation in.
 
 To delete the translations of an instance and some relations of it:
 
-.. testcode:: guide_delete_0
+.. testcode:: Context.delete.1
 
    from translations.context import Context
    from sample.models import Continent
@@ -634,13 +746,13 @@ To delete the translations of an instance and some relations of it:
 
        print('Translations deleted!')
 
-.. testoutput:: guide_delete_0
+.. testoutput:: Context.delete.1
 
    Translations deleted!
 
 To delete the translations of a queryset and some relations of it:
 
-.. testcode:: guide_delete_1
+.. testcode:: Context.delete.2
 
    from translations.context import Context
    from sample.models import Continent
@@ -655,13 +767,13 @@ To delete the translations of a queryset and some relations of it:
 
        print('Translations deleted!')
 
-.. testoutput:: guide_delete_1
+.. testoutput:: Context.delete.2
 
    Translations deleted!
 
 To delete the translations of a list of instances and some relations of it:
 
-.. testcode:: guide_delete_2
+.. testcode:: Context.delete.3
 
    from translations.context import Context
    from sample.models import Continent
@@ -676,7 +788,7 @@ To delete the translations of a list of instances and some relations of it:
 
        print('Translations deleted!')
 
-.. testoutput:: guide_delete_2
+.. testoutput:: Context.delete.3
 
    Translations deleted!
 
@@ -692,7 +804,35 @@ use the :meth:`~translations.context.Context.reset` method.
 This resets the translations on the :ref:`translatable fields \
 <specify-fields>` of the context's purview.
 
-.. testsetup:: guide_reset
+.. testsetup:: Context.reset.1
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.reset.2
+
+   from tests.sample import create_samples
+
+   create_samples(
+       continent_names=['europe', 'asia'],
+       country_names=['germany', 'south korea'],
+       city_names=['cologne', 'seoul'],
+       continent_fields=['name', 'denonym'],
+       country_fields=['name', 'denonym'],
+       city_fields=['name', 'denonym'],
+       langs=['de']
+   )
+
+.. testsetup:: Context.reset.3
 
    from tests.sample import create_samples
 
@@ -708,7 +848,7 @@ This resets the translations on the :ref:`translatable fields \
 
 To reset the translations of an instance and some relations of it:
 
-.. testcode:: guide_reset
+.. testcode:: Context.reset.1
 
    from translations.context import Context
    from sample.models import Continent
@@ -729,7 +869,7 @@ To reset the translations of an instance and some relations of it:
        print(europe.countries.all())
        print(europe.countries.all()[0].cities.all())
 
-.. testoutput:: guide_reset
+.. testoutput:: Context.reset.1
 
    Europe
    <TranslatableQuerySet [
@@ -741,7 +881,7 @@ To reset the translations of an instance and some relations of it:
 
 To reset the translations of a queryset and some relations of it:
 
-.. testcode:: guide_reset
+.. testcode:: Context.reset.2
 
    from translations.context import Context
    from sample.models import Continent
@@ -762,7 +902,7 @@ To reset the translations of a queryset and some relations of it:
        print(continents[0].countries.all())
        print(continents[0].countries.all()[0].cities.all())
 
-.. testoutput:: guide_reset
+.. testoutput:: Context.reset.2
 
    <TranslatableQuerySet [
        <Continent: Europe>,
@@ -777,7 +917,7 @@ To reset the translations of a queryset and some relations of it:
 
 To reset the translations of a list of instances and some relations of it:
 
-.. testcode:: guide_reset
+.. testcode:: Context.reset.3
 
    from translations.context import Context
    from sample.models import Continent
@@ -798,7 +938,7 @@ To reset the translations of a list of instances and some relations of it:
        print(continents[0].countries.all())
        print(continents[0].countries.all()[0].cities.all())
 
-.. testoutput:: guide_reset
+.. testoutput:: Context.reset.3
 
    [
        <Continent: Europe>,
