@@ -47,8 +47,8 @@ This module contains the models for the Translations app.
    .. testcode:: Translation.1
 
       from django.contrib.contenttypes.models import ContentType
-      from sample.models import Continent
       from translations.models import Translation
+      from sample.models import Continent
 
       europe = Continent.objects.get(code='EU')
 

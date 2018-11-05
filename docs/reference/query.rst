@@ -177,8 +177,8 @@ This module contains the query utilities for the Translations app.
 
       .. testcode:: TQ.__deepcopy__.1
 
-         from translations.query import TQ
          import copy
+         from translations.query import TQ
 
          tq = TQ(countries__cities__name__startswith='Köln')('de')
          cp = copy.deepcopy(tq)
