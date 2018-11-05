@@ -16,7 +16,7 @@ The terms you might see in the documentation:
 
    translation language
      A translation language is a language which is in
-     the collection of :term:`supported language`\ s minus
+     the collection of :term:`supported language`\ s excluding
      the :term:`default language`.
 
    active language

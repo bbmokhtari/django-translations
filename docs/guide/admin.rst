@@ -28,6 +28,11 @@ To make an admin translatable:
       :pyobject: ContinentAdmin
       :emphasize-lines: 2
 
+The ``TranslatableAdmin`` should represent the values for
+the :term:`default language`, and
+the ``TranslationInline`` should represent the values for
+the :term:`translation language`\ s.
+
 .. note::
 
    An admin may contain an inline which itself needs to be translatable. Since
