@@ -45,8 +45,8 @@ declared inside the ``Translatable`` model.
    :pyobject: Continent
    :emphasize-lines: 1, 27-28
 
-By default the ``fields`` attribute is
-set to ``None``. This means the translation will use the text based fields
+By default the ``fields`` attribute is set to ``None``.
+This means the translation will use the text based fields
 automatically. (like ``CharField`` and
 ``TextField`` - this does not include
 ``EmailField`` or the fields with ``choices``)
@@ -55,8 +55,8 @@ automatically. (like ``CharField`` and
    :pyobject: City
    :emphasize-lines: 1
 
-If needed, the ``fields`` attribute
-can be set to nothing. This can be done by explicitly setting it to ``[]``.
+If needed, the ``fields`` attribute can be set to nothing.
+This can be done by explicitly setting it to ``[]``.
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Timezone

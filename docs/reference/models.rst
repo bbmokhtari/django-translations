@@ -73,9 +73,6 @@ This module contains the models for the Translations app.
    Marks the subclasses as translatable and creates some default
    configurations for them based on their structure.
 
-   It also adds the :attr:`translations` relation to the model, just in case
-   any one wants to work with the translations of an instance manually.
-
    To make a model translatable:
 
    .. literalinclude:: ../../sample/models.py
@@ -85,6 +82,9 @@ This module contains the models for the Translations app.
       :pyobject: Continent
       :lines: 1-25
       :emphasize-lines: 1
+
+   It also adds the :attr:`translations` relation to the model, just in case
+   any one wants to work with the translations of an instance manually.
 
    .. note::
 
@@ -101,8 +101,15 @@ This module contains the models for the Translations app.
       .. attribute:: fields
 
          The names of the fields to use in the translation.
-         ``None`` means use the text based fields automatically.
-         ``[]`` means use no fields.
+         
+         By default it is set to ``None``.
+         This means the translation will use the text based fields
+         automatically. (like :class:`~django.db.models.CharField` and
+         :class:`~django.db.models.TextField` - this does not include
+         :class:`~django.db.models.EmailField` or the fields with ``choices``)
+
+         If needed, it can be set to nothing.
+         This can be done by explicitly setting it to ``[]``.
 
          To set the translatable fields of a model:
 
