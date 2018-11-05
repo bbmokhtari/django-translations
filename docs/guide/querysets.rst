@@ -290,6 +290,8 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
           <Country: Deutschland>,
       ]>
 
+.. _probe:
+
 Probe (filter, exclude, etc.) the queryset
 ==========================================
 
@@ -387,6 +389,8 @@ not passed in, it is automatically set to the :term:`active language` code.
    Make sure to use ``distinct`` on
    the probed queryset when using multiple languages, otherwise it may
    return duplicate results.
+
+.. _tq:
 
 Advanced querying
 =================
