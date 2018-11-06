@@ -1,6 +1,6 @@
-**********
-Ref: Forms
-**********
+****************
+Reference: Forms
+****************
 
 .. module:: translations.forms
 

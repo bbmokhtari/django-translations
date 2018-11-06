@@ -39,4 +39,4 @@ the :term:`translation language`\ s.
    translations appear as inlines to the admins, then the inlines themselves
    should have translation inlines in order to be translatable, and since
    Django does not support nested inlines there may be a need to use an
-   external library. In that case check out :doc:`../howto/customadmin`.
+   external library. In that case check out :doc:`../howto/custom_admins`.

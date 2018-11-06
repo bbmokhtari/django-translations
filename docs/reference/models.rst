@@ -1,6 +1,6 @@
-***********
-Ref: Models
-***********
+*****************
+Reference: Models
+*****************
 
 .. module:: translations.models
 

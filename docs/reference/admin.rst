@@ -1,6 +1,6 @@
-**********
-Ref: Admin
-**********
+****************
+Reference: Admin
+****************
 
 .. module:: translations.admin
 
@@ -45,7 +45,7 @@ This module contains the admins for the Translations app.
          The code above is exactly how the Translations app makes Django
          admin translatable. It can be used to make any admin translatable.
 
-         Check out :doc:`../howto/customadmin`.
+         Check out :doc:`../howto/custom_admins`.
 
 .. class:: TranslatableAdmin
 
