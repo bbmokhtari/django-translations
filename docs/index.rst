@@ -18,9 +18,9 @@ contribute to the project we recommend you to read the reference.
    guide/index
    reference/index
    howto/index
-   glossary
    contribution
    donation
+   glossary
 
 .. rubric:: Indices and tables
 

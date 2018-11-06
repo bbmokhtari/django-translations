@@ -2,6 +2,9 @@
 Contribution
 ############
 
+This module provides comprehensive information on how to contribute to the
+project.
+
 ***************************
 Report bugs/Report features
 ***************************
