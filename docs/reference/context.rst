@@ -107,6 +107,10 @@ This module contains the context managers for the Translations app.
           ~collections.Iterable(~django.db.models.Model)
       :param relations: The relations of the entity to initialize
           the :class:`Context` for.
+          Each relation may be divided into separate parts
+          by :data:`~django.db.models.constants.LOOKUP_SEP`
+          (usually ``__``) to represent a deeply nested relation.
+          Each part must be a ``related_name``.
       :type relations: list(str)
       :raise TypeError:
 

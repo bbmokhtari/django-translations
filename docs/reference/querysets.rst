@@ -289,6 +289,10 @@ This module contains the querysets for the Translations app.
 
       :param relations: The :class:`TranslatableQuerySet` relations
           to translate.
+          Each relation may be divided into separate parts
+          by :data:`~django.db.models.constants.LOOKUP_SEP`
+          (usually ``__``) to represent a deeply nested relation.
+          Each part must be a ``related_name``.
       :type relations: list(str)
       :return: The :class:`TranslatableQuerySet` which the relations of will
           be translated.
