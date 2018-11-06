@@ -2,44 +2,60 @@
 Install
 #######
 
-1. Install the Translations app using pip:
+********
+Download
+********
 
-   .. code-block:: bash
+Install the Translations app using pip:
 
-      $ pip install django-translations
+.. code-block:: bash
 
-2. Add ``translations`` to ``INSTALLED_APPS`` in the settings of your Django
-   project:
+   $ pip install django-translations
 
-   .. code-block:: python
+*****
+Setup
+*****
 
-      INSTALLED_APPS += [
-          'translations',
-      ]
+Add ``translations`` to ``INSTALLED_APPS`` in the settings of your Django
+project:
 
-3. Run ``migrate``:
+.. code-block:: python
 
-   .. code-block:: bash
+   INSTALLED_APPS += [
+       'translations',
+   ]
 
-      $ python manage.py migrate
+*******
+Migrate
+*******
 
-4. Make sure Django Translations settings are set correctly:
+Run ``migrate``:
 
-   .. code-block:: python
+.. code-block:: bash
 
-      USE_I18N = True          # use internationalization
-      USE_L10N = True          # use localization
+   $ python manage.py migrate
 
-      MIDDLEWARE += [          # locale middleware
-          'django.middleware.locale.LocaleMiddleware',
-      ]
+*********
+Configure
+*********
 
-      LANGUAGE_CODE = 'en-us'  # default (fallback) language
-      LANGUAGES = (            # supported languages
-          ('en', 'English'),
-          ('en-gb', 'English (Great Britain)'),
-          ('de', 'German'),
-          ('tr', 'Turkish'),
-      )
+Make sure Django Translations settings are set correctly:
 
-   Please note that these settings are for Django itself.
+.. code-block:: python
+
+   USE_I18N = True          # use internationalization
+   USE_L10N = True          # use localization
+
+   MIDDLEWARE += [          # locale middleware
+       'django.middleware.locale.LocaleMiddleware',
+   ]
+
+   LANGUAGE_CODE = 'en-us'  # default (fallback) language
+   LANGUAGES = (            # supported languages
+       ('en', 'English'),
+       ('en-gb', 'English (Great Britain)'),
+       ('de', 'German'),
+       ('tr', 'Turkish'),
+   )
+
+Please note that these settings are for Django itself.
