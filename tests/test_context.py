@@ -1,5 +1,4 @@
 from django.test import TestCase
-from django.core.exceptions import FieldDoesNotExist
 from django.utils.translation import override
 
 from translations.context import Context
