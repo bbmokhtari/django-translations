@@ -14,6 +14,7 @@ INSTALLED_APPS += [
     'translations.apps.TranslationsConfig',
     'sample.apps.SampleConfig',
     'tests.apps.TestsConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE += [

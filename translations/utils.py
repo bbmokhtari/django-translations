@@ -50,7 +50,10 @@ def _get_dissected_lookup(model, lookup):
         nest = relation_parts[1:]
 
         try:
-            field = model._meta.get_field(root)
+            if root == 'pk':
+                field = model._meta.pk
+            else:
+                field = model._meta.get_field(root)
         except Exception as e:
             if not dissected['relation'] or nest or dissected['field']:
                 raise e

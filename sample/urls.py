@@ -7,12 +7,12 @@ app_name = 'sample'
 urlpatterns = [
     path(
         'continent/list/',
-        views.get_continent_list,
+        views.ContinentListView.as_view(),
         name='continent_list'
     ),
     path(
         'continent/<int:pk>/',
-        views.get_continent_detail,
+        views.ContinentView.as_view(),
         name='continent_detail'
     ),
 ]
