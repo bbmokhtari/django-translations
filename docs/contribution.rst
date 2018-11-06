@@ -54,6 +54,12 @@ To create the example project:
 This creates a :file:`project` directory in the root directory of the
 cloned repository.
 
+Run migrations:
+
+.. code:: bash
+
+   $ python project/manage.py migrate
+
 To populate some data for the Sample app:
 
 .. code:: bash
