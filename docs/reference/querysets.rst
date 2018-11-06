@@ -299,8 +299,6 @@ This module contains the querysets for the Translations app.
       :rtype: TranslatableQuerySet
       :raise TypeError: If the models of the relations are
           not :class:`~translations.models.Translatable`.
-      :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
-          pointing to the fields that don't exist.
 
       .. testsetup:: TranslatableQuerySet.translate_related.1
 

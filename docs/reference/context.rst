@@ -123,9 +123,6 @@ This module contains the context managers for the Translations app.
           - If the models of the relations are
             not :class:`~translations.models.Translatable`.
 
-      :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
-          pointing to the fields that don't exist.
-
       .. testsetup:: Context.__init__.1
 
          create_doc_samples(translations=True)
