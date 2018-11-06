@@ -11,7 +11,7 @@ class GenerateTranslationFormTest(TestCase):
         form = generate_translation_form(City)
         self.assertListEqual(
             form.declared_fields['field'].choices,
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+            [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )
 
     def test_field_choices_empty(self):
@@ -25,7 +25,7 @@ class GenerateTranslationFormTest(TestCase):
         form = generate_translation_form(Continent)
         self.assertListEqual(
             form.declared_fields['field'].choices,
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+            [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )
 
     @override_settings(LANGUAGE_CODE='en-us')
@@ -56,10 +56,10 @@ class GenerateTranslationFormTest(TestCase):
 
     @override_settings(LANGUAGE_CODE='xx')
     def test_invalid_default_language_code(self):
-        with self.assertRaises(ValueError) as error:
+        with self.assertRaises(OSError) as error:
             generate_translation_form(Continent)
 
         self.assertEqual(
             error.exception.args[0],
-            '`xx` is not a supported language.'
+            'No translation files found for default language xx.'
         )

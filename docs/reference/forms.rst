@@ -44,8 +44,8 @@ This module contains the form utilities for the Translations app.
 
       [
           (None, '---------'),
-          ('name', 'name'),
-          ('denonym', 'denonym'),
+          ('name', 'Name'),
+          ('denonym', 'Denonym'),
       ]
       [
           (None, '---------'),

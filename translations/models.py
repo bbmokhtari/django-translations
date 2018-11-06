@@ -123,7 +123,7 @@ class Translatable(models.Model):
         ]
 
         for field in cls.get_translatable_fields():
-            choice = (field.name, field.verbose_name)
+            choice = (field.name, field.verbose_name.title())
             choices.append(choice)
 
         return choices
