@@ -10,3 +10,4 @@ Django Translations might face.
    :caption: How to:
 
    customadmin
+   drf

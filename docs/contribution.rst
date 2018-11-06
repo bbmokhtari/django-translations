@@ -140,7 +140,7 @@ You can submit `pull requests`_.
 .. _`pull requests`: https://github.com/perplexionist/django-translations/pulls
 
 *******************
-Releasing a Version
+Releasing a version
 *******************
 
 Creating a git tag automatically causes Travis CI to:
