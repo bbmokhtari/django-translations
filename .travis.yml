@@ -103,6 +103,7 @@ jobs:
       before_install: skip
       install:
         - pip install django~=2.0
+        - pip install djangorestframework~=3.0
         - pip install sphinx
       before_script: python create.py && python config.py
       script: make --directory docs html
