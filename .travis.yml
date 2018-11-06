@@ -102,7 +102,7 @@ jobs:
         keep-history: true
         on:
           tags: true
-    - name: "Build Dists & Upload to PyPi"
+    - name: "Build Dists & Upload to PyPI"
       python: 3.6
       env: EXAMPLE_ENGINE=sqlite3
       before_install: skip

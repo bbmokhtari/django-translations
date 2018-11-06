@@ -2,31 +2,33 @@
 Contribution
 ############
 
-This module provides comprehensive information on how to contribute to the
-project.
+This module provides comprehensive information on how to contribute to
+Django Translations.
 
-***************************
-Report bugs/Report features
-***************************
+****************************
+Report bugs/Request features
+****************************
 
-You can report bugs and request features in the `issues`_.
+You can report bugs and request features in `issues`_.
 
 .. _`issues`: https://github.com/perplexionist/django-translations/issues
 
-************
-Get the code
-************
+****
+Code
+****
 
-Clone the repository of this project:
+Clone the repository of Django Translations:
 
-.. code-block:: bash
+.. code:: bash
 
    $ git clone https://github.com/perplexionist/django-translations.git
 
-After cloning the repository (and optionally creating a virtual environment)
-install the required libraries for working on the Translations app.
+After cloning the repository (and preferably creating a virtual environment)
+install the required libraries for working on it.
+To do this change directories into the root directory of the cloned repository
+and run the following command:
 
-.. code-block:: bash
+.. code:: bash
 
    $ pip install -r requirements_dev.txt
 
@@ -35,41 +37,43 @@ The example project
 *******************
 
 The example project is a Django project which has the Translations app
-installed plus a Sample app to work with the Translations app.
+installed plus a Sample app that works with the Translations app.
 
-The Sample app is a Django app which provides the info about some continents
-and their respective countries and cities using some API endpoints.
+The Sample app is a Django app which provides certain info about some
+continents and their respective countries and cities using some API endpoints.
 
-To create the example project change directories to the
-root directory of the project and run the following command:
+Change directories into the root directory of the cloned repository
+and from here on out run all the commands in that directory:
 
-.. code-block:: bash
+To create the example project:
+
+.. code:: bash
 
    $ python create.py
 
-This creates a :file:`project` directory in the root directory of the project.
+This creates a :file:`project` directory in the root directory of the
+cloned repository.
 
-To populate some data for the Sample app run the following command in the
-root directory of the project.
+To populate some data for the Sample app:
 
-.. code-block:: bash
+.. code:: bash
 
    $ python project/manage.py shell
 
-Then in the python shell run the following command.
+Then in the python shell:
 
-.. code-block:: python
+.. code:: python
 
    >>> from sample.utils import create_all
    >>> create_all()
 
 To run the example project:
 
-.. code-block:: bash
+.. code:: bash
 
    $ python project/manage.py runserver
 
-You can check out the example project API endpoints using the following urls:
+Check API endpoints:
 
 http://localhost:8000/sample/continent/list/
 
@@ -78,7 +82,7 @@ countries and cities.
 
 http://localhost:8000/sample/continent/1/
 
-This API endpoint is used to show a chosen continent and its
+This API endpoint is used to show a certain continent and its
 countries and cities.
 
 *****
@@ -86,8 +90,9 @@ Tests
 *****
 
 To run the tests:
+(make sure you have created `The example project`_)
 
-.. code-block:: bash
+.. code:: bash
 
    $ python project/manage.py test
 
@@ -96,14 +101,15 @@ Documentation
 *************
 
 To build the documentation:
+(make sure you have created `The example project`_)
 
-.. code-block:: bash
+.. code:: bash
 
    $ make --directory docs html
 
 To run tests on the examples of the documentation:
 
-.. code-block:: bash
+.. code:: bash
 
    $ make --directory docs doctest
 
@@ -111,11 +117,11 @@ To run tests on the examples of the documentation:
 Style
 *****
 
-Translations app uses ``flake8`` for styling purposes.
+Django Translations uses ``flake8`` for styling purposes.
 
 To lint the code:
 
-.. code-block:: bash
+.. code:: bash
 
    $ flake8
 
@@ -131,7 +137,17 @@ You can submit `pull requests`_.
 Releasing a Version
 *******************
 
-Creating a git tag causes Travis CI to create a version with that tag name
-automatically.
+Creating a git tag automatically causes Travis CI to:
+
+- Lint the code
+- Run unit tests
+- Run documentation tests
+
+And if all of the above pass:
+
+- Generate the proper documentation with the git tag as the version number
+  and upload it to GitHub Pages.
+- Generate the python package with the git tag as the version number
+  and upload it to PyPI.
 
 The tag **must** follow the :pep:`440` conventions.

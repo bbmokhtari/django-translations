@@ -2,10 +2,10 @@
 Guide
 #####
 
-Here is the guide of the Translations app.
+Here is the guide of Django Translations.
 
-If you're looking for in depth knowledge of the app's capabilities we
-recommend you to read the guide.
+If you're looking for in depth knowledge of Django Translations's capabilities
+we recommend you to read the guide.
 
 .. toctree::
    :maxdepth: 2
