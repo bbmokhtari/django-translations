@@ -1,0 +1,288 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Contribution &#8212; Django Translations 1.0.0rc7 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Donation" href="donation.html" />
+    <link rel="prev" title="Make custom admins translatable" href="howto/customadmin.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+    <link rel="apple-touch-icon" href="_static/translation.svg" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+              <div class="related top">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="howto/customadmin.html" title="Previous document">Make custom admins translatable</a>
+        </li>
+        <li>
+          <a href="donation.html" title="Next document">Donation</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="contribution">
+<h1>Contribution<a class="headerlink" href="#contribution" title="Permalink to this headline">¶</a></h1>
+<p>This module provides comprehensive information on how to contribute to
+Django Translations.</p>
+<div class="section" id="report-bugs-request-features">
+<h2>Report bugs/Request features<a class="headerlink" href="#report-bugs-request-features" title="Permalink to this headline">¶</a></h2>
+<p>You can report bugs and request features in <a class="reference external" href="https://github.com/perplexionist/django-translations/issues">issues</a>.</p>
+</div>
+<div class="section" id="code">
+<h2>Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<p>Clone the repository of Django Translations:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/perplexionist/django-translations.git
+</pre></div>
+</div>
+<p>After cloning the repository (and preferably creating a virtual environment)
+install the required libraries for working on it.
+To do this change directories into the root directory of the cloned repository
+and run the following command:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install -r requirements_dev.txt
+</pre></div>
+</div>
+</div>
+<div class="section" id="the-example-project">
+<h2>The example project<a class="headerlink" href="#the-example-project" title="Permalink to this headline">¶</a></h2>
+<p>The example project is a Django project which has the Translations app
+installed plus a Sample app that works with the Translations app.</p>
+<p>The Sample app is a Django app which provides certain info about some
+continents and their respective countries and cities using some API endpoints.</p>
+<p>Change directories into the root directory of the cloned repository
+and from here on out run all the commands in that directory:</p>
+<p>To create the example project:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python create.py
+</pre></div>
+</div>
+<p>This creates a <code class="file docutils literal notranslate"><span class="pre">project</span></code> directory in the root directory of the
+cloned repository.</p>
+<p>Run migrations:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python project/manage.py migrate
+</pre></div>
+</div>
+<p>To populate some data for the Sample app:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python project/manage.py shell
+</pre></div>
+</div>
+<p>Then in the python shell:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sample.utils</span> <span class="k">import</span> <span class="n">create_all</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">create_all</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To run the example project:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python project/manage.py runserver
+</pre></div>
+</div>
+<p>Check API endpoints:</p>
+<p><a class="reference external" href="http://localhost:8000/sample/continent/list/">http://localhost:8000/sample/continent/list/</a></p>
+<p>This API endpoint is used to show a list of continents and their respective
+countries and cities.</p>
+<p><a class="reference external" href="http://localhost:8000/sample/continent/1/">http://localhost:8000/sample/continent/1/</a></p>
+<p>This API endpoint is used to show a certain continent and its
+countries and cities.</p>
+</div>
+<div class="section" id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<p>To run the tests:
+(make sure you have created <a class="reference internal" href="#the-example-project">The example project</a>)</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python project/manage.py test
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>To build the documentation:
+(make sure you have created <a class="reference internal" href="#the-example-project">The example project</a>)</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ make --directory docs html
+</pre></div>
+</div>
+<p>To run tests on the examples of the documentation:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ make --directory docs doctest
+</pre></div>
+</div>
+</div>
+<div class="section" id="style">
+<h2>Style<a class="headerlink" href="#style" title="Permalink to this headline">¶</a></h2>
+<p>Django Translations uses <code class="docutils literal notranslate"><span class="pre">flake8</span></code> for styling purposes.</p>
+<p>To lint the code:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ flake8
+</pre></div>
+</div>
+</div>
+<div class="section" id="patching">
+<h2>Patching<a class="headerlink" href="#patching" title="Permalink to this headline">¶</a></h2>
+<p>You can submit <a class="reference external" href="https://github.com/perplexionist/django-translations/pulls">pull requests</a>.</p>
+</div>
+<div class="section" id="releasing-a-version">
+<h2>Releasing a Version<a class="headerlink" href="#releasing-a-version" title="Permalink to this headline">¶</a></h2>
+<p>Creating a git tag automatically causes Travis CI to:</p>
+<ul class="simple">
+<li>Lint the code</li>
+<li>Run unit tests</li>
+<li>Run documentation tests</li>
+</ul>
+<p>And if all of the above pass:</p>
+<ul class="simple">
+<li>Generate the proper documentation with the git tag as the version number
+and upload it to GitHub Pages.</li>
+<li>Generate the python package with the git tag as the version number
+and upload it to PyPI.</li>
+</ul>
+<p>The tag <strong>must</strong> follow the <span class="target" id="index-0"></span><a class="pep reference external" href="https://www.python.org/dev/peps/pep-0440"><strong>PEP 440</strong></a> conventions.</p>
+</div>
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="howto/customadmin.html" title="Previous document">Make custom admins translatable</a>
+        </li>
+        <li>
+          <a href="donation.html" title="Next document">Donation</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="index.html">
+    <img class="logo" src="_static/translation.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Django Translations</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">An easy, efficient and modular way of translating django models.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=perplexionist&repo=django-translations&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide/index.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="howto/index.html">How to</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#report-bugs-request-features">Report bugs/Request features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#code">Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-example-project">The example project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#style">Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#patching">Patching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#releasing-a-version">Releasing a Version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="donation.html">Donation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="howto/customadmin.html" title="previous chapter">Make custom admins translatable</a></li>
+      <li>Next: <a href="donation.html" title="next chapter">Donation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Behzad B. Mokhtari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/contribution.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/perplexionist/django-translations" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

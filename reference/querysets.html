@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>QuerySets &#8212; Django Translations 1.0.0rc6 documentation</title>
+    <title>Ref: QuerySets &#8212; Django Translations 1.0.0rc7 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Query" href="query.html" />
-    <link rel="prev" title="Admin" href="admin.html" />
+    <link rel="next" title="Ref: Query" href="query.html" />
+    <link rel="prev" title="Ref: Admin" href="admin.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,10 +38,10 @@
     <ul>
         <li>
           &larr;
-          <a href="admin.html" title="Previous document">Admin</a>
+          <a href="admin.html" title="Previous document">Ref: Admin</a>
         </li>
         <li>
-          <a href="query.html" title="Next document">Query</a>
+          <a href="query.html" title="Next document">Ref: Query</a>
           &rarr;
         </li>
     </ul>
@@ -52,8 +52,49 @@
           <div class="body" role="main">
             
   <div class="section" id="module-translations.querysets">
-<span id="querysets"></span><h1>QuerySets<a class="headerlink" href="#module-translations.querysets" title="Permalink to this headline">¶</a></h1>
+<span id="ref-querysets"></span><h1>Ref: QuerySets<a class="headerlink" href="#module-translations.querysets" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the querysets for the Translations app.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The examples are assumed to CRUD this dataset.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="32%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type\Lang</th>
+<th class="head">English</th>
+<th class="head">German</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td rowspan="2">Continent</td>
+<td>Europe</td>
+<td>Europa</td>
+</tr>
+<tr class="row-odd"><td>Asia</td>
+<td>Asien</td>
+</tr>
+<tr class="row-even"><td rowspan="2">Country</td>
+<td>Germany</td>
+<td>Deutschland</td>
+</tr>
+<tr class="row-odd"><td>South Korea</td>
+<td>Südkorea</td>
+</tr>
+<tr class="row-even"><td rowspan="2">City</td>
+<td>Cologne</td>
+<td>Köln</td>
+</tr>
+<tr class="row-odd"><td>Seoul</td>
+<td>Seul</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Please memorize this dataset in order to understand the examples better.</p>
+</div>
 <dl class="class">
 <dt id="translations.querysets.TranslatableQuerySet">
 <em class="property">class </em><code class="descclassname">translations.querysets.</code><code class="descname">TranslatableQuerySet</code><a class="reference internal" href="../_modules/translations/querysets.html#TranslatableQuerySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.querysets.TranslatableQuerySet" title="Permalink to this definition">¶</a></dt>
@@ -634,10 +675,10 @@ the <a class="reference external" href="https://django.readthedocs.io/en/latest/
     <ul>
         <li>
           &larr;
-          <a href="admin.html" title="Previous document">Admin</a>
+          <a href="admin.html" title="Previous document">Ref: Admin</a>
         </li>
         <li>
-          <a href="query.html" title="Next document">Query</a>
+          <a href="query.html" title="Next document">Ref: Query</a>
           &rarr;
         </li>
     </ul>
@@ -676,21 +717,23 @@ the <a class="reference external" href="https://django.readthedocs.io/en/latest/
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">QuerySets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query.html">Query</a></li>
-<li class="toctree-l2"><a class="reference internal" href="context.html">Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="forms.html">Forms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="languages.html">Languages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Ref: Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Ref: Admin</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ref: QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Ref: Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="context.html">Ref: Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forms.html">Ref: Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="languages.html">Ref: Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Ref: Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
 <div class="relations">
@@ -698,8 +741,8 @@ the <a class="reference external" href="https://django.readthedocs.io/en/latest/
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Reference</a><ul>
-      <li>Previous: <a href="admin.html" title="previous chapter">Admin</a></li>
-      <li>Next: <a href="query.html" title="next chapter">Query</a></li>
+      <li>Previous: <a href="admin.html" title="previous chapter">Ref: Admin</a></li>
+      <li>Next: <a href="query.html" title="next chapter">Ref: Query</a></li>
   </ul></li>
   </ul></li>
 </ul>

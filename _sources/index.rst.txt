@@ -2,26 +2,25 @@
 Django Translations
 %%%%%%%%%%%%%%%%%%%
 
-Welcome to the Translations app documentation.
+Welcome to the Django Translations documentation.
 
-If you're just beginning to work with the app we recommend you to start with
-the tutorial.
+If you're looking for in depth knowledge of Django Translations's capabilities
+we recommend you to read the guide.
 
-If you're looking for more in depth knowledge of the app's capabilities we
-recommend you to read the guide.
-
-If you want to know how the inner parts of the app work or you want to
-contribute to the project we recommend you to read the reference.
+If you want to know how the inner parts of Django Translations work or you
+want to contribute to it we recommend you to read the reference.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   installation
    guide/index
    reference/index
    howto/index
-   glossary
+   contribution
    donation
+   glossary
 
 .. rubric:: Indices and tables
 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Glossary &#8212; Django Translations 1.0.0rc6 documentation</title>
+    <title>Glossary &#8212; Django Translations 1.0.0rc7 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,8 +16,7 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Donation" href="donation.html" />
-    <link rel="prev" title="Make custom admins translatable" href="howto/customadmin.html" />
+    <link rel="prev" title="Donation" href="donation.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -38,11 +37,7 @@
     <ul>
         <li>
           &larr;
-          <a href="howto/customadmin.html" title="Previous document">Make custom admins translatable</a>
-        </li>
-        <li>
-          <a href="donation.html" title="Next document">Donation</a>
-          &rarr;
+          <a href="donation.html" title="Previous document">Donation</a>
         </li>
     </ul>
   </nav>
@@ -63,7 +58,7 @@ the <code class="xref py py-data docutils literal notranslate"><span class="pre"
 the <code class="xref py py-data docutils literal notranslate"><span class="pre">LANGUAGE_CODE</span></code> setting.</dd>
 <dt id="term-translation-language">translation language</dt>
 <dd>A translation language is a language which is in
-the collection of <a class="reference internal" href="#term-supported-language"><span class="xref std std-term">supported language</span></a>s minus
+the collection of <a class="reference internal" href="#term-supported-language"><span class="xref std std-term">supported language</span></a>s excluding
 the <a class="reference internal" href="#term-default-language"><span class="xref std std-term">default language</span></a>.</dd>
 <dt id="term-active-language">active language</dt>
 <dd>The active language is a language which is automatically activated in
@@ -71,54 +66,6 @@ each request. It is usually determined by the <code class="docutils literal notr
 received in each HTTP request (from the browser or another client).
 You can access it in Django using the
 <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/utils.html#django.utils.translation.get_language" title="(in Django v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_language()</span></code></a> function.</dd>
-<dt id="term-relations-hierarchy">relations hierarchy</dt>
-<dd><p class="first">A relations hierarchy is a hierarchy containing each level of relation
-and information about whether they are included or not.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="n">root_relation_1</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s1">&#39;included&#39;</span><span class="p">:</span> <span class="n">root_relation_1_inclusion_state</span><span class="p">,</span>
-        <span class="s1">&#39;relations&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="n">nested_relation_1</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;included&#39;</span><span class="p">:</span> <span class="n">nested_relation_1_inclusion_state</span><span class="p">,</span>
-                <span class="s1">&#39;relations&#39;</span><span class="p">:</span> <span class="o">...</span>
-            <span class="p">},</span>
-            <span class="n">nested_relation_2</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;included&#39;</span><span class="p">:</span> <span class="n">nested_relation_2_inclusion_state</span><span class="p">,</span>
-                <span class="s1">&#39;relations&#39;</span><span class="p">:</span> <span class="o">...</span>
-            <span class="p">},</span>
-        <span class="p">}</span>
-    <span class="p">},</span>
-    <span class="n">root_relation_2</span><span class="p">:</span> <span class="o">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p class="last">The <code class="docutils literal notranslate"><span class="pre">root_relation</span></code> represents the first-level relation of the model,
-<code class="docutils literal notranslate"><span class="pre">included</span></code> represents whether the relation is included or not,
-<code class="docutils literal notranslate"><span class="pre">relations</span></code> represents the nested relations inside the relation and
-the <code class="docutils literal notranslate"><span class="pre">nested_relation</span></code> represents the second-level relation of the
-model and so on.</p>
-</dd>
-<dt id="term-purview">purview</dt>
-<dd><p class="first">The purview is simply an area of effect, it defines the instances to be
-affected and some information about them, so it consists of two parts.</p>
-<p>The first part is a mapping of instances divided into groups based on
-their content types.</p>
-<p>example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="n">content_type_id_1</span><span class="p">:</span> <span class="p">{</span>
-        <span class="n">object_id_1</span><span class="p">:</span> <span class="n">instance_1</span><span class="p">,</span>
-        <span class="n">object_id_2</span><span class="p">:</span> <span class="o">...</span>
-    <span class="p">},</span>
-    <span class="n">content_type_id_2</span><span class="p">:</span> <span class="o">...</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The first level keys are content types, the second level keys are object
-ids and the values of the object id keys are the instances.</p>
-<p class="last">The second part is the query that can be used to fetch the translations
-of all the instances in the purview.</p>
-</dd>
 </dl>
 </div>
 
@@ -130,11 +77,7 @@ of all the instances in the purview.</p>
     <ul>
         <li>
           &larr;
-          <a href="howto/customadmin.html" title="Previous document">Make custom admins translatable</a>
-        </li>
-        <li>
-          <a href="donation.html" title="Next document">Donation</a>
-          &rarr;
+          <a href="donation.html" title="Previous document">Donation</a>
         </li>
     </ul>
   </nav>
@@ -172,19 +115,20 @@ of all the instances in the purview.</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide/index.html">Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="howto/index.html">How to</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="donation.html">Donation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Glossary</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="howto/customadmin.html" title="previous chapter">Make custom admins translatable</a></li>
-      <li>Next: <a href="donation.html" title="next chapter">Donation</a></li>
+      <li>Previous: <a href="donation.html" title="previous chapter">Donation</a></li>
   </ul></li>
 </ul>
 </div>

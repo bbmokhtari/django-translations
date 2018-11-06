@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Context &#8212; Django Translations 1.0.0rc6 documentation</title>
+    <title>Guide: Context &#8212; Django Translations 1.0.0rc7 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Reference" href="../reference/index.html" />
-    <link rel="prev" title="QuerySets" href="querysets.html" />
+    <link rel="next" title="Guide: Languages" href="languages.html" />
+    <link rel="prev" title="Guide: QuerySets" href="querysets.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,10 +38,10 @@
     <ul>
         <li>
           &larr;
-          <a href="querysets.html" title="Previous document">QuerySets</a>
+          <a href="querysets.html" title="Previous document">Guide: QuerySets</a>
         </li>
         <li>
-          <a href="../reference/index.html" title="Next document">Reference</a>
+          <a href="languages.html" title="Next document">Guide: Languages</a>
           &rarr;
         </li>
     </ul>
@@ -51,9 +51,50 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="context">
-<h1>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="guide-context">
+<h1>Guide: Context<a class="headerlink" href="#guide-context" title="Permalink to this headline">¶</a></h1>
 <p>This module provides an in depth knowledge of the Translations context.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The examples are assumed to CRUD this dataset.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="32%" />
+<col width="32%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type\Lang</th>
+<th class="head">English</th>
+<th class="head">German</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td rowspan="2">Continent</td>
+<td>Europe</td>
+<td>Europa</td>
+</tr>
+<tr class="row-odd"><td>Asia</td>
+<td>Asien</td>
+</tr>
+<tr class="row-even"><td rowspan="2">Country</td>
+<td>Germany</td>
+<td>Deutschland</td>
+</tr>
+<tr class="row-odd"><td>South Korea</td>
+<td>Südkorea</td>
+</tr>
+<tr class="row-even"><td rowspan="2">City</td>
+<td>Cologne</td>
+<td>Köln</td>
+</tr>
+<tr class="row-odd"><td>Seoul</td>
+<td>Seul</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Please memorize this dataset in order to understand the examples better.</p>
+</div>
 <div class="section" id="what-is-context">
 <h2>What is context<a class="headerlink" href="#what-is-context" title="Permalink to this headline">¶</a></h2>
 <p>When something is going to be stated it can be done so in the context of a
@@ -63,13 +104,13 @@ certain language.</p>
 <h2>Initialize a context<a class="headerlink" href="#initialize-a-context" title="Permalink to this headline">¶</a></h2>
 <p>To initialize a context use the <a class="reference internal" href="../reference/context.html#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>
 class.
-The instances to be affected by the <code class="docutils literal notranslate"><span class="pre">Context</span></code> must be defined in the
+The instances to be affected by the context must be defined in the
 initialization, meaning which entity and what relations of it
-should the <code class="docutils literal notranslate"><span class="pre">Context</span></code> act upon. This is called the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview.</p>
+should the context act upon. This is called the context’s purview.</p>
 <p>All the actions like <a class="reference internal" href="#reading-the-translations">reading the translations</a>,
 <a class="reference internal" href="#updating-the-translations">updating the translations</a>, etc only affects the
 objects in the defined purview.</p>
-<p>To initialize a <code class="docutils literal notranslate"><span class="pre">Context</span></code> for an instance and some relations of it:</p>
+<p>To initialize a context for an instance and some relations of it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
 <span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
@@ -84,7 +125,7 @@ objects in the defined purview.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Context initialized!
 </pre></div>
 </div>
-<p>To initialize a <code class="docutils literal notranslate"><span class="pre">Context</span></code> for a queryset and some relations of it:</p>
+<p>To initialize a context for a queryset and some relations of it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
 <span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
@@ -99,7 +140,7 @@ objects in the defined purview.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Context initialized!
 </pre></div>
 </div>
-<p>To initialize a <code class="docutils literal notranslate"><span class="pre">Context</span></code> for a list of instances and some relations of it:</p>
+<p>To initialize a context for a list of instances and some relations of it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
 <span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
@@ -117,11 +158,11 @@ objects in the defined purview.</p>
 <p>The entity must be a model instance, a queryset or a list of model
 instances.
 The model of the entity must be
-<a class="reference internal" href="models.html#translatable-models"><span class="std std-ref">translatable</span></a>.</p>
+<a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p>
 <p>The relations must be an unpacked list of strings.
 They may be separated by <code class="docutils literal notranslate"><span class="pre">__</span></code>s to represent a deeply nested relation.
 The model of the relations must be
-<a class="reference internal" href="models.html#translatable-models"><span class="std std-ref">translatable</span></a>.</p>
+<a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>It is <strong>recommended</strong> for the relations of the entity to be
@@ -135,9 +176,9 @@ in order to reach optimal performance.</p>
 </div>
 <div class="section" id="creating-the-translations">
 <h2>Creating the translations<a class="headerlink" href="#creating-the-translations" title="Permalink to this headline">¶</a></h2>
-<p>To create the translations of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview in a language
+<p>To create the translations of the context’s purview in a language
 use the <a class="reference internal" href="../reference/context.html#translations.context.Context.create" title="translations.context.Context.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a> method.
-This creates the translations using the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview.
+This creates the translations using the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> of the context’s purview.
 It accepts a language code which determines the language to
 create the translation in.</p>
 <p>To create the translations of an instance and some relations of it:</p>
@@ -224,9 +265,9 @@ created. (No need to set all the translatable fields beforehand)</p>
 </div>
 <div class="section" id="reading-the-translations">
 <h2>Reading the translations<a class="headerlink" href="#reading-the-translations" title="Permalink to this headline">¶</a></h2>
-<p>To read the translations of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview in a language
+<p>To read the translations of the context’s purview in a language
 use the <a class="reference internal" href="../reference/context.html#translations.context.Context.read" title="translations.context.Context.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a> method.
-This reads the translations onto the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview.
+This reads the translations onto the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> of the context’s purview.
 It accepts a language code which determines the language to
 read the translation in.</p>
 <p>To read the translations of an instance and some relations of it:</p>
@@ -242,14 +283,18 @@ read the translation in.</p>
     <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
     <span class="c1"># use the instance like before</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
-Deutschland
-Köln
+&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Köln&gt;,
+]&gt;
 </pre></div>
 </div>
 <p>To read the translations of a queryset and some relations of it:</p>
@@ -265,14 +310,21 @@ Köln
     <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
     <span class="c1"># use the queryset like before</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
-Deutschland
-Köln
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europa&gt;,
+    &lt;Continent: Asien&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Köln&gt;,
+]&gt;
 </pre></div>
 </div>
 <p>To read the translations of a list of instances and some relations of it:</p>
@@ -288,14 +340,21 @@ Köln
     <span class="n">context</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
     <span class="c1"># use the list of instances like before</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
-Deutschland
-Köln
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+    &lt;Continent: Europa&gt;,
+    &lt;Continent: Asien&gt;,
+]
+&lt;TranslatableQuerySet [
+    &lt;Country: Deutschland&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Köln&gt;,
+]&gt;
 </pre></div>
 </div>
 <p>The language code must already be declared in the
@@ -356,9 +415,9 @@ a database query will reset previously translated results:</p>
 </div>
 <div class="section" id="updating-the-translations">
 <h2>Updating the translations<a class="headerlink" href="#updating-the-translations" title="Permalink to this headline">¶</a></h2>
-<p>To update the translations of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview in a language
+<p>To update the translations of the context’s purview in a language
 use the <a class="reference internal" href="../reference/context.html#translations.context.Context.update" title="translations.context.Context.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> method.
-This updates the translations using the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview.
+This updates the translations using the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> of the context’s purview.
 It accepts a language code which determines the language to
 update the translation in.</p>
 <p>To update the translations of an instance and some relations of it:</p>
@@ -442,9 +501,9 @@ updated. (No need to initialize all the translatable fields beforehand)</p>
 </div>
 <div class="section" id="deleting-the-translations">
 <h2>Deleting the translations<a class="headerlink" href="#deleting-the-translations" title="Permalink to this headline">¶</a></h2>
-<p>To delete the translations of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview in a language
+<p>To delete the translations of the context’s purview in a language
 use the <a class="reference internal" href="../reference/context.html#translations.context.Context.delete" title="translations.context.Context.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a> method.
-This deletes the translations for the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview.
+This deletes the translations for the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> of the context’s purview.
 It accepts a language code which determines the language to
 delete the translation in.</p>
 <p>To delete the translations of an instance and some relations of it:</p>
@@ -507,9 +566,9 @@ not passed in, it is automatically set to the <a class="reference internal" href
 </div>
 <div class="section" id="resetting-the-translations">
 <h2>Resetting the translations<a class="headerlink" href="#resetting-the-translations" title="Permalink to this headline">¶</a></h2>
-<p>To reset the translations of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview to the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>
+<p>To reset the translations of the context’s purview to the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>
 use the <a class="reference internal" href="../reference/context.html#translations.context.Context.reset" title="translations.context.Context.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> method.
-This resets the translations on the <a class="reference internal" href="models.html#specify-fields"><span class="std std-ref">translatable fields </span></a> of the <code class="docutils literal notranslate"><span class="pre">Context</span></code>’s purview.</p>
+This resets the translations on the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> of the context’s purview.</p>
 <p>To reset the translations of an instance and some relations of it:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
 <span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
@@ -527,13 +586,17 @@ This resets the translations on the <a class="reference internal" href="models.h
 
     <span class="c1"># use the instance like before</span>
     <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europe
-Germany
-Cologne
+&lt;TranslatableQuerySet [
+    &lt;Country: Germany&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Cologne&gt;,
+]&gt;
 </pre></div>
 </div>
 <p>To reset the translations of a queryset and some relations of it:</p>
@@ -552,14 +615,21 @@ Cologne
     <span class="n">context</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
     <span class="c1"># use the queryset like before</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europe
-Germany
-Cologne
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+    &lt;Continent: Europe&gt;,
+    &lt;Continent: Asia&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;Country: Germany&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Cologne&gt;,
+]&gt;
 </pre></div>
 </div>
 <p>To reset the translations of a list of instances and some relations of it:</p>
@@ -578,14 +648,21 @@ Cologne
     <span class="n">context</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
     <span class="c1"># use the list of instances like before</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europe
-Germany
-Cologne
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+    &lt;Continent: Europe&gt;,
+    &lt;Continent: Asia&gt;,
+]
+&lt;TranslatableQuerySet [
+    &lt;Country: Germany&gt;,
+]&gt;
+&lt;TranslatableQuerySet [
+    &lt;City: Cologne&gt;,
+]&gt;
 </pre></div>
 </div>
 </div>
@@ -599,10 +676,10 @@ Cologne
     <ul>
         <li>
           &larr;
-          <a href="querysets.html" title="Previous document">QuerySets</a>
+          <a href="querysets.html" title="Previous document">Guide: QuerySets</a>
         </li>
         <li>
-          <a href="../reference/index.html" title="Next document">Reference</a>
+          <a href="languages.html" title="Next document">Guide: Languages</a>
           &rarr;
         </li>
     </ul>
@@ -641,17 +718,20 @@ Cologne
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="querysets.html">QuerySets</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Guide: Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Guide: Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querysets.html">Guide: QuerySets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Guide: Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="languages.html">Guide: Languages</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
 <div class="relations">
@@ -659,8 +739,8 @@ Cologne
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Guide</a><ul>
-      <li>Previous: <a href="querysets.html" title="previous chapter">QuerySets</a></li>
-      <li>Next: <a href="../reference/index.html" title="next chapter">Reference</a></li>
+      <li>Previous: <a href="querysets.html" title="previous chapter">Guide: QuerySets</a></li>
+      <li>Next: <a href="languages.html" title="next chapter">Guide: Languages</a></li>
   </ul></li>
   </ul></li>
 </ul>

@@ -1,10 +1,32 @@
-*****
-Query
-*****
+**********
+Ref: Query
+**********
 
 .. module:: translations.query
 
 This module contains the query utilities for the Translations app.
+
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
+   Please memorize this dataset in order to understand the examples better.
 
 .. function:: _fetch_translations_query_getter(model, lang)
 
@@ -28,7 +50,7 @@ This module contains the query utilities for the Translations app.
    To fetch the translations query getter specialized for a model and some
    language(s) (a custom language):
 
-   .. testcode:: _fetch_translations_query_getter
+   .. testcode:: _fetch_translations_query_getter.1
 
       from translations.query import _fetch_translations_query_getter
       from sample.models import Continent
@@ -39,7 +61,7 @@ This module contains the query utilities for the Translations app.
       # output
       print(query)
 
-   .. testoutput:: _fetch_translations_query_getter
+   .. testoutput:: _fetch_translations_query_getter.1
 
       (AND:
           (AND:
@@ -52,7 +74,7 @@ This module contains the query utilities for the Translations app.
    To fetch the translations query getter specialized for a model and some
    language(s) (multiple custom languages):
 
-   .. testcode:: _fetch_translations_query_getter
+   .. testcode:: _fetch_translations_query_getter.2
 
       from translations.query import _fetch_translations_query_getter
       from sample.models import Continent
@@ -62,7 +84,7 @@ This module contains the query utilities for the Translations app.
 
       print(query)
 
-   .. testoutput:: _fetch_translations_query_getter
+   .. testoutput:: _fetch_translations_query_getter.2
 
       (AND:
           (AND:
@@ -82,23 +104,13 @@ This module contains the query utilities for the Translations app.
    combine :class:`TQ` objects logically with
    other :class:`~django.db.models.Q` objects.
 
+   .. testsetup:: TQ.1
+
+      create_doc_samples(translations=True)
+
    To use :class:`TQ`:
 
-   .. testsetup:: TQ
-
-      from tests.sample import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
-
-   .. testcode:: TQ
+   .. testcode:: TQ.1
 
       from translations.query import TQ
       from sample.models import Continent
@@ -115,7 +127,7 @@ This module contains the query utilities for the Translations app.
 
       print(continents)
 
-   .. testoutput:: TQ
+   .. testoutput:: TQ.1
 
       <TranslatableQuerySet [
           <Continent: Europe>,
@@ -142,7 +154,7 @@ This module contains the query utilities for the Translations app.
 
       To Initialize a :class:`TQ`:
 
-      .. testcode:: init
+      .. testcode:: TQ.__init__.1
 
          from translations.query import TQ
 
@@ -150,7 +162,7 @@ This module contains the query utilities for the Translations app.
 
          print(tq)
 
-      .. testoutput:: init
+      .. testoutput:: TQ.__init__.1
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -175,10 +187,10 @@ This module contains the query utilities for the Translations app.
 
       To get a copy of a :class:`TQ` object:
 
-      .. testcode:: deepcopy
+      .. testcode:: TQ.__deepcopy__.1
 
-         from translations.query import TQ
          import copy
+         from translations.query import TQ
 
          tq = TQ(countries__cities__name__startswith='Köln')('de')
          cp = copy.deepcopy(tq)
@@ -186,7 +198,7 @@ This module contains the query utilities for the Translations app.
          print(cp)
          print(cp.lang)
 
-      .. testoutput:: deepcopy
+      .. testoutput:: TQ.__deepcopy__.1
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -207,7 +219,7 @@ This module contains the query utilities for the Translations app.
 
       To specialize the :class:`TQ` for some language(s):
 
-      .. testcode:: call
+      .. testcode:: TQ.__call__.1
 
          from translations.query import TQ
 
@@ -216,7 +228,7 @@ This module contains the query utilities for the Translations app.
          print(tq)
          print(tq.lang)
 
-      .. testoutput:: call
+      .. testoutput:: TQ.__call__.1
 
          (AND:
              ('countries__cities__name__startswith', 'Köln'),
@@ -245,7 +257,7 @@ This module contains the query utilities for the Translations app.
       To get the result of logical combination with
       another :class:`~django.db.models.Q` object:
 
-      .. testcode:: combine
+      .. testcode:: TQ._combine.1
 
          from translations.query import TQ
 
@@ -254,7 +266,7 @@ This module contains the query utilities for the Translations app.
 
          print(tq1 | tq2)
 
-      .. testoutput:: combine
+      .. testoutput:: TQ._combine.1
 
          (OR:
              (AND:

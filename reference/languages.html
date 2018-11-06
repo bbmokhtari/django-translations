@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Languages &#8212; Django Translations 1.0.0rc6 documentation</title>
+    <title>Ref: Languages &#8212; Django Translations 1.0.0rc7 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Utilities" href="utils.html" />
-    <link rel="prev" title="Forms" href="forms.html" />
+    <link rel="next" title="Ref: Utilities" href="utils.html" />
+    <link rel="prev" title="Ref: Forms" href="forms.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,10 +38,10 @@
     <ul>
         <li>
           &larr;
-          <a href="forms.html" title="Previous document">Forms</a>
+          <a href="forms.html" title="Previous document">Ref: Forms</a>
         </li>
         <li>
-          <a href="utils.html" title="Next document">Utilities</a>
+          <a href="utils.html" title="Next document">Ref: Utilities</a>
           &rarr;
         </li>
     </ul>
@@ -52,8 +52,22 @@
           <div class="body" role="main">
             
   <div class="section" id="module-translations.languages">
-<span id="languages"></span><h1>Languages<a class="headerlink" href="#module-translations.languages" title="Permalink to this headline">¶</a></h1>
+<span id="ref-languages"></span><h1>Ref: Languages<a class="headerlink" href="#module-translations.languages" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the languages for the Translations app.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The examples are assumed to be executed using these settings.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
+<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">Please keep these settings in mind in order to understand the examples better.</p>
+</div>
 <dl class="function">
 <dt id="translations.languages._get_supported_language">
 <code class="descclassname">translations.languages.</code><code class="descname">_get_supported_language</code><span class="sig-paren">(</span><em>lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_supported_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_supported_language" title="Permalink to this definition">¶</a></dt>
@@ -80,16 +94,6 @@ the <code class="xref py py-data docutils literal notranslate"><span class="pre"
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a custom language code
 (an unaccented language code):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_supported_language</span>
@@ -149,16 +153,6 @@ the <a class="reference internal" href="../glossary.html#term-default-language">
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>
 code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_default_language</span>
@@ -192,16 +186,6 @@ the <a class="reference internal" href="../glossary.html#term-active-language"><
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a>
 code
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>):</p>
@@ -232,16 +216,6 @@ code
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_all_languages</span>
 
@@ -275,16 +249,6 @@ code
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> choices:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_all_choices</span>
 
@@ -319,16 +283,6 @@ code
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translation_languages</span>
 
@@ -363,16 +317,6 @@ code
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> choices:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translation_choices</span>
 
@@ -415,16 +359,6 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a translate language code
 (the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code - assume <code class="docutils literal notranslate"><span class="pre">en</span></code>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translate_language</span>
@@ -476,16 +410,6 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </tr>
 </tbody>
 </table>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of some probe language code(s)
 (the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code - assume <code class="docutils literal notranslate"><span class="pre">en</span></code>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_probe_language</span>
@@ -534,16 +458,6 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 <dt id="translations.languages._TRANSLATE">
 <em class="property">class </em><code class="descclassname">translations.languages.</code><code class="descname">_TRANSLATE</code><a class="reference internal" href="../_modules/translations/languages.html#_TRANSLATE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._TRANSLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class which provides standard translate language codes.</p>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <dl class="attribute">
 <dt id="translations.languages._TRANSLATE.DEFAULT">
 <code class="descname">DEFAULT</code><a class="headerlink" href="#translations.languages._TRANSLATE.DEFAULT" title="Permalink to this definition">¶</a></dt>
@@ -587,16 +501,6 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 <dt id="translations.languages._PROBE">
 <em class="property">class </em><code class="descclassname">translations.languages.</code><code class="descname">_PROBE</code><a class="reference internal" href="../_modules/translations/languages.html#_PROBE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._PROBE" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class which provides standard probe language codes.</p>
-<p>Considering this setting:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
-<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
-<span class="p">)</span>
-</pre></div>
-</div>
 <dl class="attribute">
 <dt id="translations.languages._PROBE.DEFAULT">
 <code class="descname">DEFAULT</code><a class="headerlink" href="#translations.languages._PROBE.DEFAULT" title="Permalink to this definition">¶</a></dt>
@@ -740,10 +644,10 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
     <ul>
         <li>
           &larr;
-          <a href="forms.html" title="Previous document">Forms</a>
+          <a href="forms.html" title="Previous document">Ref: Forms</a>
         </li>
         <li>
-          <a href="utils.html" title="Next document">Utilities</a>
+          <a href="utils.html" title="Next document">Ref: Utilities</a>
           &rarr;
         </li>
     </ul>
@@ -782,21 +686,23 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="models.html">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="querysets.html">QuerySets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query.html">Query</a></li>
-<li class="toctree-l2"><a class="reference internal" href="context.html">Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="forms.html">Forms</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Languages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Ref: Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Ref: Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querysets.html">Ref: QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Ref: Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="context.html">Ref: Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forms.html">Ref: Forms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ref: Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Ref: Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
 <div class="relations">
@@ -804,8 +710,8 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Reference</a><ul>
-      <li>Previous: <a href="forms.html" title="previous chapter">Forms</a></li>
-      <li>Next: <a href="utils.html" title="next chapter">Utilities</a></li>
+      <li>Previous: <a href="forms.html" title="previous chapter">Ref: Forms</a></li>
+      <li>Next: <a href="utils.html" title="next chapter">Ref: Utilities</a></li>
   </ul></li>
   </ul></li>
 </ul>

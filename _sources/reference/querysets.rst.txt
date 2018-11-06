@@ -1,10 +1,32 @@
-*********
-QuerySets
-*********
+**************
+Ref: QuerySets
+**************
 
 .. module:: translations.querysets
 
 This module contains the querysets for the Translations app.
+
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
+   Please memorize this dataset in order to understand the examples better.
 
 .. class:: TranslatableQuerySet
 
@@ -17,23 +39,13 @@ This module contains the querysets for the Translations app.
    :meth:`probe`, :meth:`filter` and :meth:`exclude`
    to query the :class:`TranslatableQuerySet`.
 
+   .. testsetup:: TranslatableQuerySet.1
+
+      create_doc_samples(translations=True)
+
    To use :class:`TranslatableQuerySet`:
 
-   .. testsetup:: TranslatableQuerySet
-
-      from tests.sample import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
-
-   .. testcode:: TranslatableQuerySet
+   .. testcode:: TranslatableQuerySet.1
 
       from sample.models import Continent
 
@@ -51,7 +63,7 @@ This module contains the querysets for the Translations app.
       print(continents[0].countries.all())
       print(continents[0].countries.all()[0].cities.all())
 
-   .. testoutput:: TranslatableQuerySet
+   .. testoutput:: TranslatableQuerySet.1
 
       <TranslatableQuerySet [
           <Continent: Europa>,
@@ -83,23 +95,13 @@ This module contains the querysets for the Translations app.
           's :meth:`~django.db.models.query.QuerySet.__init__` method.
       :type kwargs: dict
 
+      .. testsetup:: TranslatableQuerySet.__init__.1
+
+         create_doc_samples(translations=True)
+
       To initialize a :class:`TranslatableQuerySet`:
 
-      .. testsetup:: init
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      .. testcode:: init
+      .. testcode:: TranslatableQuerySet.__init__.1
 
          from sample.models import Continent
 
@@ -108,7 +110,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: init
+      .. testoutput:: TranslatableQuerySet.__init__.1
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -133,23 +135,13 @@ This module contains the querysets for the Translations app.
       :return: The copy of the current :class:`TranslatableQuerySet`.
       :rtype: TranslatableQuerySet
 
+      .. testsetup:: TranslatableQuerySet._chain.1
+
+         create_doc_samples(translations=True)
+
       To get a copy of the current :class:`TranslatableQuerySet`:
 
-      .. testsetup:: _chain
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      .. testcode:: _chain
+      .. testcode:: TranslatableQuerySet._chain.1
 
          from sample.models import Continent
 
@@ -158,7 +150,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: _chain
+      .. testoutput:: TranslatableQuerySet._chain.1
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -178,24 +170,18 @@ This module contains the querysets for the Translations app.
       in a language
       (specified using the :meth:`translate` method).
 
-      .. testsetup:: _fetch_all
+      .. testsetup:: TranslatableQuerySet._fetch_all.1
 
-         from tests.sample import create_samples
+         create_doc_samples(translations=True)
 
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+      .. testsetup:: TranslatableQuerySet._fetch_all.2
+
+         create_doc_samples(translations=True)
 
       To evaluate the :class:`TranslatableQuerySet`
       (using the :term:`default language`):
 
-      .. testcode:: _fetch_all
+      .. testcode:: TranslatableQuerySet._fetch_all.1
 
          from sample.models import Continent
 
@@ -204,7 +190,7 @@ This module contains the querysets for the Translations app.
          # evaluate the queryset
          print(continents)
 
-      .. testoutput:: _fetch_all
+      .. testoutput:: TranslatableQuerySet._fetch_all.1
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -214,7 +200,7 @@ This module contains the querysets for the Translations app.
       To evaluate the :class:`TranslatableQuerySet`
       (using a custom language):
 
-      .. testcode:: _fetch_all
+      .. testcode:: TranslatableQuerySet._fetch_all.2
 
          from sample.models import Continent
 
@@ -223,7 +209,7 @@ This module contains the querysets for the Translations app.
          # evaluate the queryset
          print(continents)
 
-      .. testoutput:: _fetch_all
+      .. testoutput:: TranslatableQuerySet._fetch_all.2
 
          <TranslatableQuerySet [
              <Continent: Europa>,
@@ -247,23 +233,17 @@ This module contains the querysets for the Translations app.
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      .. testsetup:: translate
+      .. testsetup:: TranslatableQuerySet.translate.1
 
-         from tests.sample import create_samples
+         create_doc_samples(translations=True)
 
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+      .. testsetup:: TranslatableQuerySet.translate.2
+
+         create_doc_samples(translations=True)
 
       To translate the :class:`TranslatableQuerySet` (an instance) in a language:
 
-      .. testcode:: translate
+      .. testcode:: TranslatableQuerySet.translate.1
 
          from sample.models import Continent
 
@@ -272,13 +252,13 @@ This module contains the querysets for the Translations app.
 
          print(europe)
 
-      .. testoutput:: translate
+      .. testoutput:: TranslatableQuerySet.translate.1
 
          Europa
 
       To translate the :class:`TranslatableQuerySet` (a queryset) in a language:
 
-      .. testcode:: translate
+      .. testcode:: TranslatableQuerySet.translate.2
 
          from sample.models import Continent
 
@@ -287,7 +267,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: translate
+      .. testoutput:: TranslatableQuerySet.translate.2
 
          <TranslatableQuerySet [
              <Continent: Europa>,
@@ -318,23 +298,13 @@ This module contains the querysets for the Translations app.
       :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
           pointing to the fields that don't exist.
 
+      .. testsetup:: TranslatableQuerySet.translate_related.1
+
+         create_doc_samples(translations=True)
+
       To translate some :class:`TranslatableQuerySet` relations:
 
-      .. testsetup:: translate_related
-
-         from tests.sample import create_samples
-
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
-
-      .. testcode:: translate_related
+      .. testcode:: TranslatableQuerySet.translate_related.1
 
          from sample.models import Continent
 
@@ -348,7 +318,7 @@ This module contains the querysets for the Translations app.
          print(continents[0].countries.all())
          print(continents[0].countries.all()[0].cities.all())
 
-      .. testoutput:: translate_related
+      .. testoutput:: TranslatableQuerySet.translate_related.1
 
          <TranslatableQuerySet [
              <Continent: Europa>,
@@ -374,10 +344,22 @@ This module contains the querysets for the Translations app.
 
       .. warning::
 
+         .. testsetup:: TranslatableQuerySet.translate_related.warning.1
+
+            create_doc_samples(translations=True)
+
+         .. testsetup:: TranslatableQuerySet.translate_related.warning.2
+
+            create_doc_samples(translations=True)
+
+         .. testsetup:: TranslatableQuerySet.translate_related.warning.3
+
+            create_doc_samples(translations=True)
+
          Any subsequent chained methods on the relations queryset which imply
          a database query will reset previously translated results:
 
-         .. testcode:: translate_related
+         .. testcode:: TranslatableQuerySet.translate_related.warning.1
 
             from sample.models import Continent
 
@@ -388,7 +370,7 @@ This module contains the querysets for the Translations app.
             # Querying after translation
             print(continents[0].countries.exclude(name=''))
 
-         .. testoutput:: translate_related
+         .. testoutput:: TranslatableQuerySet.translate_related.warning.1
 
             <TranslatableQuerySet [
                 <Country: Germany>,
@@ -396,7 +378,7 @@ This module contains the querysets for the Translations app.
 
          In some cases the querying can be done before the translation:
 
-         .. testcode:: translate_related
+         .. testcode:: TranslatableQuerySet.translate_related.warning.2
 
             from django.db.models import Prefetch
             from sample.models import Continent, Country
@@ -413,7 +395,7 @@ This module contains the querysets for the Translations app.
 
             print(continents[0].countries.all())
 
-         .. testoutput:: translate_related
+         .. testoutput:: TranslatableQuerySet.translate_related.warning.2
 
             <TranslatableQuerySet [
                 <Country: Deutschland>,
@@ -421,7 +403,7 @@ This module contains the querysets for the Translations app.
 
          And in some cases the querying must be done anyway, in these cases:
 
-         .. testcode:: translate_related
+         .. testcode:: TranslatableQuerySet.translate_related.warning.3
 
             from sample.models import Continent
 
@@ -432,7 +414,7 @@ This module contains the querysets for the Translations app.
             # Just `translate` the relation again after querying
             print(continents[0].countries.exclude(name='').translate('de'))
 
-         .. testoutput:: translate_related
+         .. testoutput:: TranslatableQuerySet.translate_related.warning.3
 
             <TranslatableQuerySet [
                 <Country: Deutschland>,
@@ -455,24 +437,18 @@ This module contains the querysets for the Translations app.
       :raise ValueError: If the language code is not included in
           the :data:`~django.conf.settings.LANGUAGES` setting.
 
-      .. testsetup:: probe
+      .. testsetup:: TranslatableQuerySet.probe.1
 
-         from tests.sample import create_samples
+         create_doc_samples(translations=True)
 
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+      .. testsetup:: TranslatableQuerySet.probe.2
+
+         create_doc_samples(translations=True)
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
       (a custom language):
 
-      .. testcode:: probe
+      .. testcode:: TranslatableQuerySet.probe.1
 
          from django.db.models import Q
          from sample.models import Continent
@@ -483,7 +459,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: probe
+      .. testoutput:: TranslatableQuerySet.probe.1
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -493,7 +469,7 @@ This module contains the querysets for the Translations app.
       To probe the :class:`TranslatableQuerySet` in some language(s)
       (multiple custom languages):
 
-      .. testcode:: probe
+      .. testcode:: TranslatableQuerySet.probe.2
 
          from django.db.models import Q
          from sample.models import Continent
@@ -504,7 +480,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: probe
+      .. testoutput:: TranslatableQuerySet.probe.2
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -541,24 +517,22 @@ This module contains the querysets for the Translations app.
           's :meth:`~django.db.models.query.QuerySet.filter` method.
       :type kwargs: dict
 
-      .. testsetup:: filter
+      .. testsetup:: TranslatableQuerySet.filter.1
 
-         from tests.sample import create_samples
+         create_doc_samples(translations=True)
 
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+      .. testsetup:: TranslatableQuerySet.filter.2
+
+         create_doc_samples(translations=True)
+
+      .. testsetup:: TranslatableQuerySet.filter.3
+
+         create_doc_samples(translations=True)
 
       To filter the :class:`TranslatableQuerySet`
       (using the :term:`default language`):
 
-      .. testcode:: filter
+      .. testcode:: TranslatableQuerySet.filter.1
 
          from sample.models import Continent
 
@@ -568,7 +542,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: filter
+      .. testoutput:: TranslatableQuerySet.filter.1
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -577,7 +551,7 @@ This module contains the querysets for the Translations app.
       To filter the :class:`TranslatableQuerySet`
       (using a custom language):
 
-      .. testcode:: filter
+      .. testcode:: TranslatableQuerySet.filter.2
 
          from sample.models import Continent
 
@@ -587,7 +561,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: filter
+      .. testoutput:: TranslatableQuerySet.filter.2
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -596,7 +570,7 @@ This module contains the querysets for the Translations app.
       To filter the :class:`TranslatableQuerySet`
       (using multiple custom languages):
 
-      .. testcode:: filter
+      .. testcode:: TranslatableQuerySet.filter.3
 
          from sample.models import Continent
 
@@ -606,7 +580,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: filter
+      .. testoutput:: TranslatableQuerySet.filter.3
 
          <TranslatableQuerySet [
              <Continent: Europe>,
@@ -630,24 +604,22 @@ This module contains the querysets for the Translations app.
           's :meth:`~django.db.models.query.QuerySet.exclude` method.
       :type kwargs: dict
 
-      .. testsetup:: exclude
+      .. testsetup:: TranslatableQuerySet.exclude.1
 
-         from tests.sample import create_samples
+         create_doc_samples(translations=True)
 
-         create_samples(
-             continent_names=['europe', 'asia'],
-             country_names=['germany', 'south korea'],
-             city_names=['cologne', 'seoul'],
-             continent_fields=['name', 'denonym'],
-             country_fields=['name', 'denonym'],
-             city_fields=['name', 'denonym'],
-             langs=['de']
-         )
+      .. testsetup:: TranslatableQuerySet.exclude.2
+
+         create_doc_samples(translations=True)
+
+      .. testsetup:: TranslatableQuerySet.exclude.3
+
+         create_doc_samples(translations=True)
 
       To exclude the :class:`TranslatableQuerySet`
       (using the :term:`default language`):
 
-      .. testcode:: exclude
+      .. testcode:: TranslatableQuerySet.exclude.1
 
          from sample.models import Continent
 
@@ -657,7 +629,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: exclude
+      .. testoutput:: TranslatableQuerySet.exclude.1
 
          <TranslatableQuerySet [
              <Continent: Asia>,
@@ -666,7 +638,7 @@ This module contains the querysets for the Translations app.
       To exclude the :class:`TranslatableQuerySet`
       (using a custom language):
 
-      .. testcode:: exclude
+      .. testcode:: TranslatableQuerySet.exclude.2
 
          from sample.models import Continent
 
@@ -676,7 +648,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: exclude
+      .. testoutput:: TranslatableQuerySet.exclude.2
 
          <TranslatableQuerySet [
              <Continent: Asia>,
@@ -685,7 +657,7 @@ This module contains the querysets for the Translations app.
       To exclude the :class:`TranslatableQuerySet`
       (using multiple custom languages):
 
-      .. testcode:: exclude
+      .. testcode:: TranslatableQuerySet.exclude.3
 
          from sample.models import Continent
 
@@ -695,7 +667,7 @@ This module contains the querysets for the Translations app.
 
          print(continents)
 
-      .. testoutput:: exclude
+      .. testoutput:: TranslatableQuerySet.exclude.3
 
          <TranslatableQuerySet [
              <Continent: Asia>,

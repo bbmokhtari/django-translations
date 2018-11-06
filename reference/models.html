@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Models &#8212; Django Translations 1.0.0rc6 documentation</title>
+    <title>Ref: Models &#8212; Django Translations 1.0.0rc7 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -16,7 +16,7 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Admin" href="admin.html" />
+    <link rel="next" title="Ref: Admin" href="admin.html" />
     <link rel="prev" title="Reference" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
@@ -41,7 +41,7 @@
           <a href="index.html" title="Previous document">Reference</a>
         </li>
         <li>
-          <a href="admin.html" title="Next document">Admin</a>
+          <a href="admin.html" title="Next document">Ref: Admin</a>
           &rarr;
         </li>
     </ul>
@@ -52,7 +52,7 @@
           <div class="body" role="main">
             
   <div class="section" id="module-translations.models">
-<span id="models"></span><h1>Models<a class="headerlink" href="#module-translations.models" title="Permalink to this headline">¶</a></h1>
+<span id="ref-models"></span><h1>Ref: Models<a class="headerlink" href="#module-translations.models" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the models for the Translations app.</p>
 <dl class="class">
 <dt id="translations.models.Translation">
@@ -83,8 +83,8 @@ doing.</p>
 </div>
 <p>To create the translation of a field manually:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 <span class="kn">from</span> <span class="nn">translations.models</span> <span class="kn">import</span> <span class="n">Translation</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 
@@ -110,8 +110,6 @@ doing.</p>
 <dd><p>An abstract model which provides custom translation functionalities.</p>
 <p>Marks the subclasses as translatable and creates some default
 configurations for them based on their structure.</p>
-<p>It also adds the <code class="xref py py-attr docutils literal notranslate"><span class="pre">translations</span></code> relation to the model, just in case
-any one wants to work with the translations of an instance manually.</p>
 <p>To make a model translatable:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.models</span> <span class="k">import</span> <span class="n">Translatable</span>
 </pre></div>
@@ -143,6 +141,8 @@ any one wants to work with the translations of an instance manually.</p>
         <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;continents&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>It also adds the <code class="xref py py-attr docutils literal notranslate"><span class="pre">translations</span></code> relation to the model, just in case
+any one wants to work with the translations of an instance manually.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <code class="xref py py-attr docutils literal notranslate"><span class="pre">translations</span></code> relation is the reverse relation of the
@@ -158,9 +158,14 @@ of the model instances.</p>
 <dl class="attribute">
 <dt id="translations.models.Translatable.TranslatableMeta.fields">
 <code class="descname">fields</code><a class="headerlink" href="#translations.models.Translatable.TranslatableMeta.fields" title="Permalink to this definition">¶</a></dt>
-<dd><p>The names of the fields to use in the translation.
-<code class="docutils literal notranslate"><span class="pre">None</span></code> means use the text based fields automatically.
-<code class="docutils literal notranslate"><span class="pre">[]</span></code> means use no fields.</p>
+<dd><p>The names of the fields to use in the translation.</p>
+<p>By default it is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+This means the translation will use the text based fields
+automatically. (like <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/fields.html#django.db.models.CharField" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">CharField</span></code></a> and
+<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/fields.html#django.db.models.TextField" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextField</span></code></a> - this does not include
+<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/fields.html#django.db.models.EmailField" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">EmailField</span></code></a> or the fields with <code class="docutils literal notranslate"><span class="pre">choices</span></code>)</p>
+<p>If needed, it can be set to nothing.
+This can be done by explicitly setting it to <code class="docutils literal notranslate"><span class="pre">[]</span></code>.</p>
 <p>To set the translatable fields of a model:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="k">class</span> <span class="nc">Continent</span><span class="p">(</span><span class="n">Translatable</span><span class="p">):</span>
 </span>    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span>
@@ -299,7 +304,7 @@ field names listed in <a class="reference internal" href="#translations.models.T
           <a href="index.html" title="Previous document">Reference</a>
         </li>
         <li>
-          <a href="admin.html" title="Next document">Admin</a>
+          <a href="admin.html" title="Next document">Ref: Admin</a>
           &rarr;
         </li>
     </ul>
@@ -338,21 +343,23 @@ field names listed in <a class="reference internal" href="#translations.models.T
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="admin.html">Admin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="querysets.html">QuerySets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query.html">Query</a></li>
-<li class="toctree-l2"><a class="reference internal" href="context.html">Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="forms.html">Forms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="languages.html">Languages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Ref: Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Ref: Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querysets.html">Ref: QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Ref: Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="context.html">Ref: Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forms.html">Ref: Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="languages.html">Ref: Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Ref: Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 
 <div class="relations">
@@ -361,7 +368,7 @@ field names listed in <a class="reference internal" href="#translations.models.T
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Reference</a><ul>
       <li>Previous: <a href="index.html" title="previous chapter">Reference</a></li>
-      <li>Next: <a href="admin.html" title="next chapter">Admin</a></li>
+      <li>Next: <a href="admin.html" title="next chapter">Ref: Admin</a></li>
   </ul></li>
   </ul></li>
 </ul>

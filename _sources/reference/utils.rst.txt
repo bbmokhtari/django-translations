@@ -1,10 +1,32 @@
-*********
-Utilities
-*********
+**************
+Ref: Utilities
+**************
 
 .. module:: translations.utils
 
 This module contains the utilities for the Translations app.
+
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
+   Please memorize this dataset in order to understand the examples better.
 
 .. function:: _get_reverse_relation(model, relation)
 
@@ -29,7 +51,7 @@ This module contains the utilities for the Translations app.
 
    To get the reverse of a model's relation:
 
-   .. testcode:: _get_reverse_relation
+   .. testcode:: _get_reverse_relation.1
 
       from translations.utils import _get_reverse_relation
       from sample.models import Continent
@@ -40,7 +62,7 @@ This module contains the utilities for the Translations app.
 
       print('City can be queried with `{}`'.format(reverse_relation))
 
-   .. testoutput:: _get_reverse_relation
+   .. testoutput:: _get_reverse_relation.1
 
       City can be queried with `country__continent`
 
@@ -69,7 +91,7 @@ This module contains the utilities for the Translations app.
 
    To get the dissected info of a lookup:
 
-   .. testcode:: _get_dissected_lookup
+   .. testcode:: _get_dissected_lookup.1
 
       from translations.utils import _get_dissected_lookup
       from sample.models import Continent
@@ -80,7 +102,7 @@ This module contains the utilities for the Translations app.
 
       print(info)
 
-   .. testoutput:: _get_dissected_lookup
+   .. testoutput:: _get_dissected_lookup.1
 
       {
           'field': 'name',
@@ -93,27 +115,27 @@ This module contains the utilities for the Translations app.
 
 .. function:: _get_relations_hierarchy(*relations)
 
-   Return the :term:`relations hierarchy` of some relations.
+   Return the relations hierarchy of some relations.
 
-   Transforms the relations into a :term:`relations hierarchy`. Each level of
-   :term:`relations hierarchy` contains the relations in that level and each
+   Transforms the relations into a relations hierarchy. Each level of
+   relations hierarchy contains the relations in that level and each
    relation contains certain information, things like whether the relation is
    included or not and what are its nested relations, forming the next level
-   of :term:`relations hierarchy`.
+   of relations hierarchy.
 
-   :param relations: The relations to get the :term:`relations hierarchy`
+   :param relations: The relations to get the relations hierarchy
        of.
        Each relation may be composed of many ``related_query_name``\ s
        separated by :data:`~django.db.models.constants.LOOKUP_SEP`
        (usually ``__``) to represent a deeply nested relation.
    :type relations: list(str)
-   :return: The :term:`relations hierarchy` of the relations.
+   :return: The relations hierarchy of the relations.
    :rtype: dict(str, dict)
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (a first-level relation):
 
-   .. testcode:: _get_relations_hierarchy
+   .. testcode:: _get_relations_hierarchy.1
 
       from translations.utils import _get_relations_hierarchy
 
@@ -122,7 +144,7 @@ This module contains the utilities for the Translations app.
 
       print(hierarchy)
 
-   .. testoutput:: _get_relations_hierarchy
+   .. testoutput:: _get_relations_hierarchy.1
 
       {
           'countries': {
@@ -131,10 +153,10 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (a second-level relation not including the first-level relation):
 
-   .. testcode:: _get_relations_hierarchy
+   .. testcode:: _get_relations_hierarchy.2
 
       from translations.utils import _get_relations_hierarchy
 
@@ -143,7 +165,7 @@ This module contains the utilities for the Translations app.
 
       print(hierarchy)
 
-   .. testoutput:: _get_relations_hierarchy
+   .. testoutput:: _get_relations_hierarchy.2
 
       {
           'countries': {
@@ -157,10 +179,10 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (a second-level relation including the first-level relation):
 
-   .. testcode:: _get_relations_hierarchy
+   .. testcode:: _get_relations_hierarchy.3
 
       from translations.utils import _get_relations_hierarchy
 
@@ -170,7 +192,7 @@ This module contains the utilities for the Translations app.
 
       print(hierarchy)
 
-   .. testoutput:: _get_relations_hierarchy
+   .. testoutput:: _get_relations_hierarchy.3
 
       {
           'countries': {
@@ -184,10 +206,10 @@ This module contains the utilities for the Translations app.
           },
       }
 
-   To get the :term:`relations hierarchy` of some relations
+   To get the relations hierarchy of some relations
    (no relations):
 
-   .. testcode:: _get_relations_hierarchy
+   .. testcode:: _get_relations_hierarchy.4
 
       from translations.utils import _get_relations_hierarchy
 
@@ -196,7 +218,7 @@ This module contains the utilities for the Translations app.
 
       print(hierarchy)
 
-   .. testoutput:: _get_relations_hierarchy
+   .. testoutput:: _get_relations_hierarchy.4
 
       {}
 
@@ -223,24 +245,26 @@ This module contains the utilities for the Translations app.
       even if the iterable is an empty queryset (which the model of can be
       retrieved).
 
-   .. testsetup:: _get_entity_details
+   .. testsetup:: _get_entity_details.1
 
-      from tests.sample import create_samples
+      create_doc_samples(translations=True)
 
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+   .. testsetup:: _get_entity_details.2
+
+      create_doc_samples(translations=True)
+
+   .. testsetup:: _get_entity_details.3
+
+      create_doc_samples(translations=True)
+
+   .. testsetup:: _get_entity_details.4
+
+      create_doc_samples(translations=True)
 
    To get the iteration and type details of an entity
    (a list of instances):
 
-   .. testcode:: _get_entity_details
+   .. testcode:: _get_entity_details.1
 
       from translations.utils import _get_entity_details
       from sample.models import Continent
@@ -253,7 +277,7 @@ This module contains the utilities for the Translations app.
       print('Iterable: {}'.format(details[0]))
       print('Model: {}'.format(details[1]))
 
-   .. testoutput:: _get_entity_details
+   .. testoutput:: _get_entity_details.1
 
       Iterable: True
       Model: <class 'sample.models.Continent'>
@@ -261,7 +285,7 @@ This module contains the utilities for the Translations app.
    To get the iteration and type details of an entity
    (a queryset):
 
-   .. testcode:: _get_entity_details
+   .. testcode:: _get_entity_details.2
 
       from translations.utils import _get_entity_details
       from sample.models import Continent
@@ -274,7 +298,7 @@ This module contains the utilities for the Translations app.
       print('Iterable: {}'.format(details[0]))
       print('Model: {}'.format(details[1]))
 
-   .. testoutput:: _get_entity_details
+   .. testoutput:: _get_entity_details.2
 
       Iterable: True
       Model: <class 'sample.models.Continent'>
@@ -282,7 +306,7 @@ This module contains the utilities for the Translations app.
    To get the iteration and type details of an entity
    (an instance):
 
-   .. testcode:: _get_entity_details
+   .. testcode:: _get_entity_details.3
 
       from translations.utils import _get_entity_details
       from sample.models import Continent
@@ -295,7 +319,7 @@ This module contains the utilities for the Translations app.
       print('Iterable: {}'.format(details[0]))
       print('Model: {}'.format(details[1]))
 
-   .. testoutput:: _get_entity_details
+   .. testoutput:: _get_entity_details.3
 
       Iterable: False
       Model: <class 'sample.models.Continent'>
@@ -303,7 +327,7 @@ This module contains the utilities for the Translations app.
    To get the iteration and type details of an entity
    (an empty list):
 
-   .. testcode:: _get_entity_details
+   .. testcode:: _get_entity_details.4
 
       from translations.utils import _get_entity_details
       from sample.models import Continent
@@ -316,27 +340,27 @@ This module contains the utilities for the Translations app.
       print('Iterable: {}'.format(details[0]))
       print('Model: {}'.format(details[1]))
 
-   .. testoutput:: _get_entity_details
+   .. testoutput:: _get_entity_details.4
 
       Iterable: True
       Model: None
 
 .. function:: _get_purview(entity, hierarchy)
 
-   Return the :term:`purview` of an entity and
-   a :term:`relations hierarchy` of it.
+   Return the purview of an entity and
+   a relations hierarchy of it.
 
    Returns the mapping of the instances specified by the entity and its
    relations, and the query to fetch their translations.
 
-   :param entity: the entity to get the :term:`purview` of.
+   :param entity: the entity to get the purview of.
    :type entity: ~django.db.models.Model or
        ~collections.Iterable(~django.db.models.Model)
-   :param hierarchy: The :term:`relations hierarchy` of the entity to get
-       the :term:`purview` of.
+   :param hierarchy: The relations hierarchy of the entity to get
+       the purview of.
    :type hierarchy: dict(str, dict)
-   :return: The :term:`purview` of the entity and
-       the :term:`relations hierarchy` of it.
+   :return: The purview of the entity and
+       the relations hierarchy of it.
    :rtype: tuple(dict(int, dict(str, ~django.db.models.Model)), \
        ~django.db.models.Q)
    :raise TypeError:
@@ -353,24 +377,14 @@ This module contains the utilities for the Translations app.
    :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
        pointing to the fields that don't exist.
 
-   .. testsetup:: _get_purview
+   .. testsetup:: _get_purview.1
 
-      from tests.sample import create_samples
+      create_doc_samples(translations=True)
 
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+   To get the purview of an entity and
+   a relations hierarchy of it:
 
-   To get the :term:`purview` of an entity and
-   a :term:`relations hierarchy` of it:
-
-   .. testcode:: _get_purview
+   .. testcode:: _get_purview.1
 
       from django.contrib.contenttypes.models import ContentType
       from translations.utils import _get_relations_hierarchy, _get_purview
@@ -397,7 +411,7 @@ This module contains the utilities for the Translations app.
       print(mapping[ct(germany)][oi(germany)] is germany)
       print(mapping[ct(cologne)][oi(cologne)] is cologne)
 
-   .. testoutput:: _get_purview
+   .. testoutput:: _get_purview.1
 
       True
       True
@@ -421,24 +435,14 @@ This module contains the utilities for the Translations app.
        query in the language.
    :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
 
-   .. testsetup:: _get_translations
+   .. testsetup:: _get_translations.1
 
-      from tests.sample import create_samples
-
-      create_samples(
-          continent_names=['europe', 'asia'],
-          country_names=['germany', 'south korea'],
-          city_names=['cologne', 'seoul'],
-          continent_fields=['name', 'denonym'],
-          country_fields=['name', 'denonym'],
-          city_fields=['name', 'denonym'],
-          langs=['de']
-      )
+      create_doc_samples(translations=True)
 
    To get the :class:`~translations.models.Translation` queryset of a query in
    a language:
 
-   .. testcode:: _get_translations
+   .. testcode:: _get_translations.1
 
       from translations.utils import _get_relations_hierarchy, _get_purview, _get_translations
       from sample.models import Continent
@@ -453,7 +457,7 @@ This module contains the utilities for the Translations app.
 
       print(translations)
 
-   .. testoutput:: _get_translations
+   .. testoutput:: _get_translations.1
 
       <QuerySet [
           <Translation: Europe: Europa>,

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Donation &#8212; Django Translations 1.0.0rc7 documentation</title>
+    <title>Installation &#8212; Django Translations 1.0.0rc7 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Glossary" href="glossary.html" />
-    <link rel="prev" title="Contribution" href="contribution.html" />
+    <link rel="next" title="Guide" href="guide/index.html" />
+    <link rel="prev" title="Django Translations" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -38,10 +38,10 @@
     <ul>
         <li>
           &larr;
-          <a href="contribution.html" title="Previous document">Contribution</a>
+          <a href="index.html" title="Previous document">Django Translations</a>
         </li>
         <li>
-          <a href="glossary.html" title="Next document">Glossary</a>
+          <a href="guide/index.html" title="Next document">Guide</a>
           &rarr;
         </li>
     </ul>
@@ -51,21 +51,47 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="donation">
-<h1>Donation<a class="headerlink" href="#donation" title="Permalink to this headline">¶</a></h1>
-<p>By donating to open source projects developers can use more of their time to
-work on them.</p>
-<p>You can donate to Django Translations using either of the following ways:</p>
-<div class="section" id="bitcoin">
-<h2>Bitcoin<a class="headerlink" href="#bitcoin" title="Permalink to this headline">¶</a></h2>
-<p>The bitcoin address to donate to is
-<code class="docutils literal notranslate"><span class="pre">1JL5mNf2cqpgLCpWUuxYgnUfmzobRVqLhV</span></code>.</p>
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic">
+<li><p class="first">Install Django Translations using pip:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ pip install django-translations
+</pre></div>
 </div>
-<div class="section" id="ethereum">
-<h2>Ethereum<a class="headerlink" href="#ethereum" title="Permalink to this headline">¶</a></h2>
-<p>The ethereum address to donate to is
-<code class="docutils literal notranslate"><span class="pre">0x1c36e6c2cb79a13a9191accddbb2eb27ef963447</span></code>.</p>
+</li>
+<li><p class="first">Add <code class="docutils literal notranslate"><span class="pre">translations</span></code> to the <code class="docutils literal notranslate"><span class="pre">INSTALLED_APPS</span></code> in the settings of your
+project:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">+=</span> <span class="p">[</span>
+    <span class="s1">&#39;translations&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
 </div>
+</li>
+<li><p class="first">Run <code class="docutils literal notranslate"><span class="pre">migrate</span></code>:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python manage.py migrate
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure Django internationalization and localization settings:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">USE_I18N</span> <span class="o">=</span> <span class="kc">True</span>          <span class="c1"># use internationalization</span>
+<span class="n">USE_L10N</span> <span class="o">=</span> <span class="kc">True</span>          <span class="c1"># use localization</span>
+
+<span class="n">MIDDLEWARE</span> <span class="o">+=</span> <span class="p">[</span>          <span class="c1"># locale middleware</span>
+    <span class="s1">&#39;django.middleware.locale.LocaleMiddleware&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>  <span class="c1"># default (fallback) language</span>
+<span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>            <span class="c1"># supported languages</span>
+    <span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;English&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">,</span> <span class="s1">&#39;English (Great Britain)&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">,</span> <span class="s1">&#39;German&#39;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;tr&#39;</span><span class="p">,</span> <span class="s1">&#39;Turkish&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Please note that these settings are for Django itself.</p>
+</li>
+</ol>
 </div>
 
 
@@ -76,10 +102,10 @@ work on them.</p>
     <ul>
         <li>
           &larr;
-          <a href="contribution.html" title="Previous document">Contribution</a>
+          <a href="index.html" title="Previous document">Django Translations</a>
         </li>
         <li>
-          <a href="glossary.html" title="Next document">Glossary</a>
+          <a href="guide/index.html" title="Next document">Guide</a>
           &rarr;
         </li>
     </ul>
@@ -118,16 +144,12 @@ work on them.</p>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide/index.html">Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/index.html">Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="howto/index.html">How to</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contribution.html">Contribution</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Donation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#bitcoin">Bitcoin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ethereum">Ethereum</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="donation.html">Donation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 </ul>
 
@@ -135,8 +157,8 @@ work on them.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="contribution.html" title="previous chapter">Contribution</a></li>
-      <li>Next: <a href="glossary.html" title="next chapter">Glossary</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Django Translations</a></li>
+      <li>Next: <a href="guide/index.html" title="next chapter">Guide</a></li>
   </ul></li>
 </ul>
 </div>
@@ -172,7 +194,7 @@ work on them.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/donation.rst.txt"
+      <a href="_sources/installation.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

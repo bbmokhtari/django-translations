@@ -2,11 +2,11 @@
 How to
 ######
 
-Here are some solutions to the common problems the users of this project might
-want to solve.
+Here are the solutions to some common problems the users of
+Django Translations might face.
 
 .. toctree::
    :maxdepth: 2
-   :caption: How To:
+   :caption: How to:
 
    customadmin
