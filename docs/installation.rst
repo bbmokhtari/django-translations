@@ -2,7 +2,7 @@
 Installation
 ############
 
-1. Install the Translations app using pip:
+1. Install Django Translations using pip:
 
    .. code:: bash
 
