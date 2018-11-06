@@ -26,7 +26,7 @@ class TranslatableAdminMixinTest(TestCase):
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertListEqual(
             inlines[0].form.base_fields['field'].choices,
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+            [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )
 
     def test_prepare_translation_inlines_fields_empty(self):
@@ -42,7 +42,7 @@ class TranslatableAdminMixinTest(TestCase):
         inlines = admin.get_inline_instances(request, obj=None)
         self.assertEqual(
             inlines[0].form.base_fields['field'].choices,
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+            [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )
 
     def test_prepare_translation_inlines_languages(self):

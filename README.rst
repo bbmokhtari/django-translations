@@ -113,7 +113,7 @@ This provides specialized translation inlines for the model.
 QuerySet
 ~~~~~~~~
 
-Use the extended ORM capabilities:
+Use the extended queryset capabilities:
 
 .. code:: python
 

@@ -1221,46 +1221,6 @@ class GetPurviewTest(TestCase):
              ' model instances.')
         )
 
-    def test_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('wrong')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            _get_purview(europe, hierarchy)
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Continent has no field named 'wrong'"
-        )
-
-    def test_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        hierarchy = _get_relations_hierarchy('countries__wrong')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            _get_purview(europe, hierarchy)
-
-        self.assertEqual(
-            error.exception.args[0],
-            "Country has no field named 'wrong'"
-        )
-
 
 class GetTranslationsTest(TestCase):
     """Tests for `_get_translations`."""

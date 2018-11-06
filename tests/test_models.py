@@ -251,7 +251,7 @@ class TranslatableTest(TestCase):
     def test_get_translatable_fields_choices_automatic(self):
         self.assertListEqual(
             City._get_translatable_fields_choices(),
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+            [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )
 
     def test_get_translatable_fields_choices_empty(self):
@@ -263,5 +263,5 @@ class TranslatableTest(TestCase):
     def test_get_translatable_fields_choices_explicit(self):
         self.assertListEqual(
             Continent._get_translatable_fields_choices(),
-            [(None, '---------'), ('name', 'name'), ('denonym', 'denonym')]
+            [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )

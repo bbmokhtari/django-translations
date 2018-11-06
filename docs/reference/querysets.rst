@@ -1,6 +1,6 @@
-**************
-Ref: QuerySets
-**************
+********************
+Reference: QuerySets
+********************
 
 .. module:: translations.querysets
 
@@ -289,14 +289,16 @@ This module contains the querysets for the Translations app.
 
       :param relations: The :class:`TranslatableQuerySet` relations
           to translate.
+          Each relation may be divided into separate parts
+          by :data:`~django.db.models.constants.LOOKUP_SEP`
+          (usually ``__``) to represent a deeply nested relation.
+          Each part must be a ``related_name``.
       :type relations: list(str)
       :return: The :class:`TranslatableQuerySet` which the relations of will
           be translated.
       :rtype: TranslatableQuerySet
       :raise TypeError: If the models of the relations are
           not :class:`~translations.models.Translatable`.
-      :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
-          pointing to the fields that don't exist.
 
       .. testsetup:: TranslatableQuerySet.translate_related.1
 

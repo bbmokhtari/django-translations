@@ -50,7 +50,10 @@ def _get_dissected_lookup(model, lookup):
         nest = relation_parts[1:]
 
         try:
-            field = model._meta.get_field(root)
+            if root == 'pk':
+                field = model._meta.pk
+            else:
+                field = model._meta.get_field(root)
         except Exception as e:
             if not dissected['relation'] or nest or dissected['field']:
                 raise e
@@ -167,12 +170,7 @@ def _get_purview(entity, hierarchy):
 
             if hierarchy:
                 for (relation, detail) in hierarchy.items():
-                    try:
-                        value = getattr(obj, relation)
-                    except AttributeError:
-                        # raise when no such rel
-                        model._meta.get_field(relation)
-                        value = None
+                    value = getattr(obj, relation, None)
 
                     if value is not None:
                         if isinstance(value, models.Manager):
