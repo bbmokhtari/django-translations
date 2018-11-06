@@ -137,9 +137,12 @@ To translate some queryset relations:
        <City: Köln>,
    ]>
 
-The relations must be an unpacked list of strings.
-They may be separated by ``__``\ s to represent a deeply nested relation.
-The models of the relations must be :ref:`translatable <models.Translatable>`.
+Each relation may be divided into separate parts
+by :data:`~django.db.models.constants.LOOKUP_SEP`
+(usually ``__``) to represent a deeply nested relation.
+Each part must be a ``related_name``.
+The models of the relations must be
+:ref:`translatable <models.Translatable>`.
 
 .. note::
 

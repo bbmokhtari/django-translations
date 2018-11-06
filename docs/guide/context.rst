@@ -116,9 +116,11 @@ instances.
 The model of the entity must be
 :ref:`translatable <models.Translatable>`.
 
-The relations must be an unpacked list of strings.
-They may be separated by ``__``\ s to represent a deeply nested relation.
-The model of the relations must be
+Each relation may be divided into separate parts
+by :data:`~django.db.models.constants.LOOKUP_SEP`
+(usually ``__``) to represent a deeply nested relation.
+Each part must be a ``related_name``.
+The models of the relations must be
 :ref:`translatable <models.Translatable>`.
 
 .. note::
