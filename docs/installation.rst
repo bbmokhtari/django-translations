@@ -2,60 +2,44 @@
 Installation
 ############
 
-********
-Download
-********
+1. Install the Translations app using pip:
 
-Install the Translations app using pip:
+   .. code:: bash
 
-.. code-block:: bash
+      $ pip install django-translations
 
-   $ pip install django-translations
+2. Add ``translations`` to the ``INSTALLED_APPS`` in the settings of your
+   project:
 
-*****
-Setup
-*****
+   .. code:: python
 
-Add ``translations`` to ``INSTALLED_APPS`` in the settings of your Django
-project:
+      INSTALLED_APPS += [
+          'translations',
+      ]
 
-.. code-block:: python
+3. Run ``migrate``:
 
-   INSTALLED_APPS += [
-       'translations',
-   ]
+   .. code:: bash
 
-*******
-Migrate
-*******
+      $ python manage.py migrate
 
-Run ``migrate``:
+4. Make sure Django Translations settings are set correctly:
 
-.. code-block:: bash
+   .. code:: python
 
-   $ python manage.py migrate
+      USE_I18N = True          # use internationalization
+      USE_L10N = True          # use localization
 
-*********
-Configure
-*********
+      MIDDLEWARE += [          # locale middleware
+          'django.middleware.locale.LocaleMiddleware',
+      ]
 
-Make sure Django Translations settings are set correctly:
+      LANGUAGE_CODE = 'en-us'  # default (fallback) language
+      LANGUAGES = (            # supported languages
+          ('en', 'English'),
+          ('en-gb', 'English (Great Britain)'),
+          ('de', 'German'),
+          ('tr', 'Turkish'),
+      )
 
-.. code-block:: python
-
-   USE_I18N = True          # use internationalization
-   USE_L10N = True          # use localization
-
-   MIDDLEWARE += [          # locale middleware
-       'django.middleware.locale.LocaleMiddleware',
-   ]
-
-   LANGUAGE_CODE = 'en-us'  # default (fallback) language
-   LANGUAGES = (            # supported languages
-       ('en', 'English'),
-       ('en-gb', 'English (Great Britain)'),
-       ('de', 'German'),
-       ('tr', 'Turkish'),
-   )
-
-Please note that these settings are for Django itself.
+   Please note that these settings are for Django itself.

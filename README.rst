@@ -36,7 +36,7 @@ Installation
 
       $ pip install django-translations
 
-2. Add ``translations`` to ``INSTALLED_APPS`` in the settings of your Django
+2. Add ``translations`` to the ``INSTALLED_APPS`` in the settings of your
    project:
 
    .. code:: python
