@@ -138,8 +138,7 @@ To translate some queryset relations:
    ]>
 
 Each relation may be divided into separate parts
-by :data:`~django.db.models.constants.LOOKUP_SEP`
-(usually ``__``) to represent a deeply nested relation.
+by ``__``\ s to represent a deeply nested relation.
 Each part must be a ``related_name``.
 The models of the relations must be
 :ref:`translatable <models.Translatable>`.
@@ -296,6 +295,11 @@ To probe the queryset in multiple custom languages:
 The language code(s) must already be declared in the
 ``LANGUAGES`` setting. It is optional and if it is
 not passed in, it is automatically set to the :term:`active language` code.
+
+Each query lookup may contain some relations.
+Each relation may be divided into separate parts
+by ``__``\ s to represent a deeply nested relation.
+Each part must be a ``related_query_name``.
 
 .. note::
 
