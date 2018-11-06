@@ -9,7 +9,7 @@ we recommend you to read the guide.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Reference:
+   :caption: Guide:
 
    models
    admin

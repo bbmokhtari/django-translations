@@ -7,6 +7,6 @@ Django Translations might face.
 
 .. toctree::
    :maxdepth: 2
-   :caption: How To:
+   :caption: How to:
 
    customadmin
