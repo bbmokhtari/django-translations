@@ -1,6 +1,6 @@
-***********
-Ref: Models
-***********
+*****************
+Reference: Models
+*****************
 
 .. module:: translations.models
 
@@ -183,5 +183,5 @@ This module contains the models for the Translations app.
       .. testoutput:: Translatable._get_translatable_fields_choices.1
 
          (None, '---------')
-         ('name', 'name')
-         ('denonym', 'denonym')
+         ('name', 'Name')
+         ('denonym', 'Denonym')

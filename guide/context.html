@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Guide: Context &#8212; Django Translations 1.0.0rc7 documentation</title>
+    <title>Guide: Context &#8212; Django Translations 1.0.0rc8 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -159,9 +159,10 @@ objects in the defined purview.</p>
 instances.
 The model of the entity must be
 <a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p>
-<p>The relations must be an unpacked list of strings.
-They may be separated by <code class="docutils literal notranslate"><span class="pre">__</span></code>s to represent a deeply nested relation.
-The model of the relations must be
+<p>Each relation may be divided into separate parts
+by <code class="docutils literal notranslate"><span class="pre">__</span></code>s to represent a deeply nested relation.
+Each part must be a <code class="docutils literal notranslate"><span class="pre">related_name</span></code>.
+The models of the relations must be
 <a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

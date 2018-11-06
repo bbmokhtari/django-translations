@@ -1,6 +1,6 @@
-**************
-Ref: Languages
-**************
+********************
+Reference: Languages
+********************
 
 .. module:: translations.languages
 

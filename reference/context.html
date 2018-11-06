@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Ref: Context &#8212; Django Translations 1.0.0rc7 documentation</title>
+    <title>Reference: Context &#8212; Django Translations 1.0.0rc8 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -16,8 +16,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Ref: Forms" href="forms.html" />
-    <link rel="prev" title="Ref: Query" href="query.html" />
+    <link rel="next" title="Reference: Forms" href="forms.html" />
+    <link rel="prev" title="Reference: Query" href="query.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -38,10 +38,10 @@
     <ul>
         <li>
           &larr;
-          <a href="query.html" title="Previous document">Ref: Query</a>
+          <a href="query.html" title="Previous document">Reference: Query</a>
         </li>
         <li>
-          <a href="forms.html" title="Next document">Ref: Forms</a>
+          <a href="forms.html" title="Next document">Reference: Forms</a>
           &rarr;
         </li>
     </ul>
@@ -52,7 +52,7 @@
           <div class="body" role="main">
             
   <div class="section" id="module-translations.context">
-<span id="ref-context"></span><h1>Ref: Context<a class="headerlink" href="#module-translations.context" title="Permalink to this headline">¶</a></h1>
+<span id="reference-context"></span><h1>Reference: Context<a class="headerlink" href="#module-translations.context" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the context managers for the Translations app.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
@@ -168,12 +168,15 @@ the <a class="reference internal" href="#translations.context.Context" title="tr
 <li><strong>entity</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v2.2)"><em>Model</em></a><em> or
 </em><em>Iterable</em><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v2.2)"><em>Model</em></a><em>)</em>) – The entity to initialize the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for.</li>
 <li><strong>relations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>)</em>) – The relations of the entity to initialize
-the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for.</li>
+the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for.
+Each relation may be divided into separate parts
+by <code class="xref py py-data docutils literal notranslate"><span class="pre">LOOKUP_SEP</span></code>
+(usually <code class="docutils literal notranslate"><span class="pre">__</span></code>) to represent a deeply nested relation.
+Each part must be a <code class="docutils literal notranslate"><span class="pre">related_name</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – <ul>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – <ul class="simple">
 <li>If the entity is neither a model instance nor
 an iterable of model instances.</li>
 <li>If the model of the entity is
@@ -181,10 +184,7 @@ not <a class="reference internal" href="models.html#translations.models.Translat
 <li>If the models of the relations are
 not <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a>.</li>
 </ul>
-</li>
-<li><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldDoesNotExist" title="(in Django v2.2)"><strong>FieldDoesNotExist</strong></a> – If a relation is
-pointing to the fields that don’t exist.</li>
-</ul>
+</p>
 </td>
 </tr>
 </tbody>
@@ -858,10 +858,10 @@ the <a class="reference internal" href="../glossary.html#term-default-language">
     <ul>
         <li>
           &larr;
-          <a href="query.html" title="Previous document">Ref: Query</a>
+          <a href="query.html" title="Previous document">Reference: Query</a>
         </li>
         <li>
-          <a href="forms.html" title="Next document">Ref: Forms</a>
+          <a href="forms.html" title="Next document">Reference: Forms</a>
           &rarr;
         </li>
     </ul>
@@ -903,14 +903,14 @@ the <a class="reference internal" href="../glossary.html#term-default-language">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guide/index.html">Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="models.html">Ref: Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="admin.html">Ref: Admin</a></li>
-<li class="toctree-l2"><a class="reference internal" href="querysets.html">Ref: QuerySets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="query.html">Ref: Query</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Ref: Context</a></li>
-<li class="toctree-l2"><a class="reference internal" href="forms.html">Ref: Forms</a></li>
-<li class="toctree-l2"><a class="reference internal" href="languages.html">Ref: Languages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html">Ref: Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html">Reference: Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="admin.html">Reference: Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="querysets.html">Reference: QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="query.html">Reference: Query</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reference: Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forms.html">Reference: Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="languages.html">Reference: Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Reference: Utilities</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../howto/index.html">How to</a></li>
@@ -924,8 +924,8 @@ the <a class="reference internal" href="../glossary.html#term-default-language">
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
   <li><a href="index.html">Reference</a><ul>
-      <li>Previous: <a href="query.html" title="previous chapter">Ref: Query</a></li>
-      <li>Next: <a href="forms.html" title="next chapter">Ref: Forms</a></li>
+      <li>Previous: <a href="query.html" title="previous chapter">Reference: Query</a></li>
+      <li>Next: <a href="forms.html" title="next chapter">Reference: Forms</a></li>
   </ul></li>
   </ul></li>
 </ul>

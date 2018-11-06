@@ -1,6 +1,6 @@
-************
-Ref: Context
-************
+******************
+Reference: Context
+******************
 
 .. module:: translations.context
 
@@ -107,6 +107,10 @@ This module contains the context managers for the Translations app.
           ~collections.Iterable(~django.db.models.Model)
       :param relations: The relations of the entity to initialize
           the :class:`Context` for.
+          Each relation may be divided into separate parts
+          by :data:`~django.db.models.constants.LOOKUP_SEP`
+          (usually ``__``) to represent a deeply nested relation.
+          Each part must be a ``related_name``.
       :type relations: list(str)
       :raise TypeError:
 
@@ -118,9 +122,6 @@ This module contains the context managers for the Translations app.
 
           - If the models of the relations are
             not :class:`~translations.models.Translatable`.
-
-      :raise ~django.core.exceptions.FieldDoesNotExist: If a relation is
-          pointing to the fields that don't exist.
 
       .. testsetup:: Context.__init__.1
 
