@@ -23,7 +23,7 @@ Installation
 
       $ python manage.py migrate
 
-4. Make sure Django Translations settings are set correctly:
+4. Configure Django internationalization and localization settings:
 
    .. code:: python
 
