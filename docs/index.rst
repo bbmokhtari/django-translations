@@ -14,11 +14,12 @@ contribute to the project we recommend you to read the reference.
    :maxdepth: 2
    :caption: Contents:
 
-   install
+   installation
    guide/index
    reference/index
    howto/index
    glossary
+   contribution
    donation
 
 .. rubric:: Indices and tables
