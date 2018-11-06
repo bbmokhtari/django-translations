@@ -35,40 +35,6 @@ class ContextTest(TestCase):
              ' model instances.')
         )
 
-    def test_init_instance_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with Context(europe, 'wrong'):
-                pass
-
-        self.assertEqual(
-            error.exception.args[0], "Continent has no field named 'wrong'")
-
-    def test_init_instance_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        europe = Continent.objects.get(code='EU')
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with Context(europe, 'countries__wrong'):
-                pass
-
-        self.assertEqual(
-            error.exception.args[0], "Country has no field named 'wrong'")
-
     def test_init_queryset_invalid_entity(self):
         class Person:
             def __init__(self, name):
@@ -93,40 +59,6 @@ class ContextTest(TestCase):
             ('`[Behzad, Max]` is neither a model instance nor an iterable of' +
              ' model instances.')
         )
-
-    def test_init_queryset_invalid_simple_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            continent_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with Context(continents, 'wrong'):
-                pass
-
-        self.assertEqual(
-            error.exception.args[0], "Continent has no field named 'wrong'")
-
-    def test_init_queryset_invalid_nested_relation(self):
-        create_samples(
-            continent_names=['europe'],
-            country_names=['germany'],
-            continent_fields=['name', 'denonym'],
-            country_fields=['name', 'denonym'],
-            langs=['de']
-        )
-
-        continents = Continent.objects.all()
-
-        with self.assertRaises(FieldDoesNotExist) as error:
-            with Context(continents, 'countries__wrong'):
-                pass
-
-        self.assertEqual(
-            error.exception.args[0], "Country has no field named 'wrong'")
 
     def test_get_changed_fields_instance_level_0_relation(self):
         create_samples(
