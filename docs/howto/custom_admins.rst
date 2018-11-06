@@ -1,6 +1,6 @@
-***************************************
-How to: Make custom admins translatable
-***************************************
+************************************
+How to: Integrate with custom admins
+************************************
 
 All you have to do is to extend the custom admin you want to make translatable
 with the :class:`~translations.admin.TranslatableAdminMixin` functionalities.

@@ -9,5 +9,5 @@ Django Translations might face.
    :maxdepth: 2
    :caption: How to:
 
-   customadmin
-   drf
+   custom_admins
+   rest_framework
