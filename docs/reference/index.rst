@@ -2,10 +2,10 @@
 Reference
 #########
 
-Here is the reference of the Translations app.
+Here is the reference of Django Translations.
 
-If you want to know how the inner parts of the app work or you want to
-contribute to the project we recommend you to read the reference.
+If you want to know how the inner parts of Django Translations work or you
+want to contribute to it we recommend you to read the reference.
 
 .. toctree::
    :maxdepth: 2

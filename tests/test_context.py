@@ -6,7 +6,7 @@ from translations.context import Context
 
 from sample.models import Continent
 
-from tests.sample import create_samples
+from sample.utils import create_samples
 
 
 class ContextTest(TestCase):

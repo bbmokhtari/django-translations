@@ -1,14 +1,38 @@
-*********
-QuerySets
-*********
+****************
+Guide: QuerySets
+****************
 
 This module provides an in depth knowledge of the Translations querysets.
+
+.. important::
+
+   The examples are assumed to CRUD this dataset.
+
+   +---------------+-------------+-------------+
+   | Type\\Lang    | English     | German      |
+   +===============+=============+=============+
+   | Continent     | Europe      | Europa      |
+   |               +-------------+-------------+
+   |               | Asia        | Asien       |
+   +---------------+-------------+-------------+
+   | Country       | Germany     | Deutschland |
+   |               +-------------+-------------+
+   |               | South Korea | Südkorea    |
+   +---------------+-------------+-------------+
+   | City          | Cologne     | Köln        |
+   |               +-------------+-------------+
+   |               | Seoul       | Seul        |
+   +---------------+-------------+-------------+
+
+   Please memorize this dataset in order to understand the examples better.
 
 Make querysets translatable
 ===========================
 
 To make a queryset translatable
-make sure the queryset model is :ref:`translatable <translatable-models>`.
+make sure the queryset model is :ref:`translatable <models.Translatable>`.
+
+.. _querysets.TranslatableQuerySet.translate:
 
 Translate the queryset
 ======================
@@ -16,27 +40,21 @@ Translate the queryset
 To translate the queryset in a language use the
 :meth:`~translations.querysets.TranslatableQuerySet.translate` method.
 It translates the :ref:`translatable fields \
-<specify-fields>` of the queryset in a language in the evaluation.
+<models.Translatable.TranslatableMeta.fields>` of the queryset in a language in the evaluation.
 It accepts a language code which determines the language to
 translate the queryset in.
 
-.. testsetup:: guide_translate
+.. testsetup:: TranslatableQuerySet.translate.1
 
-   from tests.sample import create_samples
+   create_doc_samples(translations=True)
 
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+.. testsetup:: TranslatableQuerySet.translate.2
 
-To translate an instance:
+   create_doc_samples(translations=True)
 
-.. testcode:: guide_translate
+To translate an instance in a language:
+
+.. testcode:: TranslatableQuerySet.translate.1
 
    from sample.models import Continent
 
@@ -45,13 +63,13 @@ To translate an instance:
 
    print(europe)
 
-.. testoutput:: guide_translate
+.. testoutput:: TranslatableQuerySet.translate.1
 
    Europa
 
-To translate a queryset:
+To translate a queryset in a language:
 
-.. testcode:: guide_translate
+.. testcode:: TranslatableQuerySet.translate.2
 
    from sample.models import Continent
 
@@ -60,7 +78,7 @@ To translate a queryset:
 
    print(continents)
 
-.. testoutput:: guide_translate
+.. testoutput:: TranslatableQuerySet.translate.2
 
    <TranslatableQuerySet [
        <Continent: Europa>,
@@ -74,7 +92,7 @@ not passed in, it is automatically set to the :term:`active language` code.
 .. note::
 
    Translating only affects the :ref:`translatable fields \
-   <specify-fields>` that have a translation.
+   <models.Translatable.TranslatableMeta.fields>` that have a translation.
 
 Translate the queryset relations
 ================================
@@ -82,27 +100,17 @@ Translate the queryset relations
 To translate some queryset relations use the
 :meth:`~translations.querysets.TranslatableQuerySet.translate_related` method.
 It translates the :ref:`translatable fields \
-<specify-fields>` of the queryset relations in the evaluation.
+<models.Translatable.TranslatableMeta.fields>` of the queryset relations in the evaluation.
 It accepts some relations which determines the queryset relations to
 translate.
 
-.. testsetup:: guide_translate_related
+.. testsetup:: TranslatableQuerySet.translate_related.1
 
-   from tests.sample import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To translate some queryset relations:
 
-.. testcode:: guide_translate_related
+.. testcode:: TranslatableQuerySet.translate_related.1
 
    from sample.models import Continent
 
@@ -116,7 +124,7 @@ To translate some queryset relations:
    print(continents[0].countries.all())
    print(continents[0].countries.all()[0].cities.all())
 
-.. testoutput:: guide_translate_related
+.. testoutput:: TranslatableQuerySet.translate_related.1
 
    <TranslatableQuerySet [
        <Continent: Europa>,
@@ -131,7 +139,7 @@ To translate some queryset relations:
 
 The relations must be an unpacked list of strings.
 They may be separated by ``__``\ s to represent a deeply nested relation.
-The models of the relations must be :ref:`translatable <translatable-models>`.
+The models of the relations must be :ref:`translatable <models.Translatable>`.
 
 .. note::
 
@@ -146,10 +154,22 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
 .. warning::
 
+   .. testsetup:: TranslatableQuerySet.translate_related.warning.1
+
+      create_doc_samples(translations=True)
+
+   .. testsetup:: TranslatableQuerySet.translate_related.warning.2
+
+      create_doc_samples(translations=True)
+
+   .. testsetup:: TranslatableQuerySet.translate_related.warning.3
+
+      create_doc_samples(translations=True)
+
    Any subsequent chained methods on the relations queryset which imply
    a database query will reset previously translated results:
 
-   .. testcode:: guide_translate_related
+   .. testcode:: TranslatableQuerySet.translate_related.warning.1
 
       from sample.models import Continent
 
@@ -160,7 +180,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
       # Querying after translation
       print(continents[0].countries.exclude(name=''))
 
-   .. testoutput:: guide_translate_related
+   .. testoutput:: TranslatableQuerySet.translate_related.warning.1
 
       <TranslatableQuerySet [
           <Country: Germany>,
@@ -168,7 +188,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
    In some cases the querying can be done before the translation:
 
-   .. testcode:: guide_translate_related
+   .. testcode:: TranslatableQuerySet.translate_related.warning.2
 
       from django.db.models import Prefetch
       from sample.models import Continent, Country
@@ -185,7 +205,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
       print(continents[0].countries.all())
 
-   .. testoutput:: guide_translate_related
+   .. testoutput:: TranslatableQuerySet.translate_related.warning.2
 
       <TranslatableQuerySet [
           <Country: Deutschland>,
@@ -193,7 +213,7 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
 
    And in some cases the querying must be done anyway, in these cases:
 
-   .. testcode:: guide_translate_related
+   .. testcode:: TranslatableQuerySet.translate_related.warning.3
 
       from sample.models import Continent
 
@@ -204,11 +224,13 @@ The models of the relations must be :ref:`translatable <translatable-models>`.
       # Just `translate` the relation again after querying
       print(continents[0].countries.exclude(name='').translate('de'))
 
-   .. testoutput:: guide_translate_related
+   .. testoutput:: TranslatableQuerySet.translate_related.warning.3
 
       <TranslatableQuerySet [
           <Country: Deutschland>,
       ]>
+
+.. _querysets.TranslatableQuerySet.probe:
 
 Probe (filter, exclude, etc.) the queryset
 ==========================================
@@ -216,27 +238,21 @@ Probe (filter, exclude, etc.) the queryset
 To probe the queryset in some language(s) use the
 :meth:`~translations.querysets.TranslatableQuerySet.probe` method.
 It probes the :ref:`translatable fields \
-<specify-fields>` of the queryset in a language in the evaluation.
+<models.Translatable.TranslatableMeta.fields>` of the queryset in a language in the evaluation.
 It accepts some language code(s) which determines the language(s) to
 probe the queryset in.
 
-.. testsetup:: guide_probe
+.. testsetup:: TranslatableQuerySet.probe.1
 
-   from tests.sample import create_samples
+   create_doc_samples(translations=True)
 
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+.. testsetup:: TranslatableQuerySet.probe.2
+
+   create_doc_samples(translations=True)
 
 To probe the queryset in a custom language:
 
-.. testcode:: guide_probe
+.. testcode:: TranslatableQuerySet.probe.1
 
    from django.db.models import Q
    from sample.models import Continent
@@ -247,7 +263,7 @@ To probe the queryset in a custom language:
 
    print(continents)
 
-.. testoutput:: guide_probe
+.. testoutput:: TranslatableQuerySet.probe.1
 
    <TranslatableQuerySet [
        <Continent: Europe>,
@@ -256,7 +272,7 @@ To probe the queryset in a custom language:
 
 To probe the queryset in multiple custom languages:
 
-.. testcode:: guide_probe
+.. testcode:: TranslatableQuerySet.probe.2
 
    from django.db.models import Q
    from sample.models import Continent
@@ -267,7 +283,7 @@ To probe the queryset in multiple custom languages:
 
    print(continents)
 
-.. testoutput:: guide_probe
+.. testoutput:: TranslatableQuerySet.probe.2
 
    <TranslatableQuerySet [
        <Continent: Europe>,
@@ -280,14 +296,21 @@ not passed in, it is automatically set to the :term:`active language` code.
 
 .. note::
 
+   Please note that the results are returned in the default language.
+   To translate them use the :ref:`translate <querysets.TranslatableQuerySet.translate>` method.
+
+.. note::
+
    Probing only affects the :ref:`translatable fields \
-   <specify-fields>` that have a translation.
+   <models.Translatable.TranslatableMeta.fields>` that have a translation.
 
 .. note::
 
    Make sure to use ``distinct`` on
    the probed queryset when using multiple languages, otherwise it may
    return duplicate results.
+
+.. _query.TQ:
 
 Advanced querying
 =================
@@ -299,23 +322,13 @@ It works just like the normal django ``Q`` object untill you specialize it
 It accepts some language code(s) which determines the language(s) to
 specialize the query in.
 
-.. testsetup:: TQ
+.. testsetup:: TQ.1
 
-   from tests.sample import create_samples
-
-   create_samples(
-       continent_names=['europe', 'asia'],
-       country_names=['germany', 'south korea'],
-       city_names=['cologne', 'seoul'],
-       continent_fields=['name', 'denonym'],
-       country_fields=['name', 'denonym'],
-       city_fields=['name', 'denonym'],
-       langs=['de']
-   )
+   create_doc_samples(translations=True)
 
 To create complex logical combinations of queries for different languages:
 
-.. testcode:: TQ
+.. testcode:: TQ.1
 
    from translations.query import TQ
    from sample.models import Continent
@@ -332,7 +345,7 @@ To create complex logical combinations of queries for different languages:
 
    print(continents)
 
-.. testoutput:: TQ
+.. testoutput:: TQ.1
 
    <TranslatableQuerySet [
        <Continent: Europe>,

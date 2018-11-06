@@ -232,30 +232,61 @@ intersphinx_mapping = {
 # -- Options for doctest extension -------------------------------------------
 
 doctest_global_setup = """
+import builtins
+
 from django.db import connection
 from django.test import TestCase
-import builtins
+
+from sample.utils import create_samples
+
 import beautifier
+
 
 # Turn on the test database for the doctests
 connection.creation.create_test_db(verbosity=0)
 TestCase.setUpClass()
 
+
 # Beautify `testoutput`
 def print(value='', end='\\n'):
     builtins.print(beautifier.beautify(value, False), end=end)
+
+
+# Sample creation
+def create_doc_samples(translations=True):
+    if translations:
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de']
+        )
+    else:
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+        )
+
 """
 
 doctest_global_cleanup = """
+import builtins
+
 from django.db import connection
 from django.test import TestCase
-import builtins
+
 
 # Normalize `testoutput`
 def print(value='', end='\\n'):
     builtins.print(value, end=end)
 
+
 # Turn off the test database for the doctests
 TestCase.tearDownClass()
 connection.creation.destroy_test_db(verbosity=0)
+
 """

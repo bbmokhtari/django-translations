@@ -1,6 +1,6 @@
-*****
-Admin
-*****
+************
+Guide: Admin
+************
 
 This module provides an in depth knowledge of the Translations admin.
 
@@ -9,7 +9,7 @@ Make admin translatable
 
 To make an admin translatable:
 
-1. Make sure the admin model is :ref:`translatable <translatable-models>`.
+1. Make sure the admin model is :ref:`translatable <models.Translatable>`.
 2. Inherit the admin from the :class:`~translations.admin.TranslatableAdmin`.
 
    .. literalinclude:: ../../sample/admin.py
@@ -27,6 +27,11 @@ To make an admin translatable:
    .. literalinclude:: ../../sample/admin.py
       :pyobject: ContinentAdmin
       :emphasize-lines: 2
+
+The ``TranslatableAdmin`` should represent the values for
+the :term:`default language`, and
+the ``TranslationInline`` should represent the values for
+the :term:`translation language`\ s.
 
 .. note::
 

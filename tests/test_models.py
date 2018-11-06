@@ -6,7 +6,7 @@ from translations.models import Translation
 
 from sample.models import Timezone, Continent, City
 
-from tests.sample import create_samples
+from sample.utils import create_samples
 
 
 class TranslationTest(TestCase):

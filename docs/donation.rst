@@ -5,7 +5,7 @@ Donation
 By donating to open source projects developers can use more of their time to
 work on them.
 
-You can donate to the project using either of the following ways:
+You can donate to Django Translations using either of the following ways:
 
 *******
 Bitcoin

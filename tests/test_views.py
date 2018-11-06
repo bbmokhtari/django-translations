@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from sample.models import Continent
 
-from tests.sample import create_samples
+from sample.utils import create_samples
 
 
 class GetContinentListTest(TestCase):
