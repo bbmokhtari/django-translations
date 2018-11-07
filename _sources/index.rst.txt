@@ -4,7 +4,7 @@ Django Translations
 
 Welcome to the Django Translations documentation.
 
-If you're looking for in depth knowledge of Django Translations's capabilities
+If you are looking for in depth knowledge of Django Translations's capabilities
 we recommend you to read the guide.
 
 If you want to know how the inner parts of Django Translations work or you

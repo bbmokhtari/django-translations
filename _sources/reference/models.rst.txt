@@ -31,7 +31,7 @@ This module contains the models for the Translations app.
    .. warning::
 
       Try **not** to work with the :class:`~translations.models.Translation`
-      model directly unless you *really* have to and you know what you're
+      model directly unless you *really* have to and you know what you are
       doing.
 
    .. testsetup:: Translation.1

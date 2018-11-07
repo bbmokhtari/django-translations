@@ -4,7 +4,7 @@ Guide
 
 Here is the guide of Django Translations.
 
-If you're looking for in depth knowledge of Django Translations's capabilities
+If you are looking for in depth knowledge of Django Translations's capabilities
 we recommend you to read the guide.
 
 .. toctree::

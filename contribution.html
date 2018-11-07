@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Contribution &#8212; Django Translations 1.0.0rc8 documentation</title>
+    <title>Contribution &#8212; Django Translations 1.0.0rc9 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -111,6 +111,24 @@ countries and cities.</p>
 <p><a class="reference external" href="http://localhost:8000/sample/continent/1/">http://localhost:8000/sample/continent/1/</a></p>
 <p>This API endpoint is used to show a certain continent and its
 countries and cities.</p>
+<p>The example project supports <code class="docutils literal notranslate"><span class="pre">German</span> <span class="pre">(de)</span></code> and <code class="docutils literal notranslate"><span class="pre">Turkish</span> <span class="pre">(tr)</span></code> languages.</p>
+<p>Change the <em>language</em> settings in your browser and reload the API endpoint,
+or if you are using a rest client like Postman change the <code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code>
+header in your request.
+The API endpoint should show you the response in the requested language.</p>
+</div>
+<div class="section" id="configurations">
+<h2>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h2>
+<p>To change the basic configurations of Django Translations edit
+the <code class="file docutils literal notranslate"><span class="pre">config.py</span></code> file.
+When you are done, generate the configurations file.</p>
+<p>To generate the configurations file change directories into
+the root directory of the cloned repository and run the following command:</p>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ python config.py
+</pre></div>
+</div>
+<p>This generates a file named <code class="file docutils literal notranslate"><span class="pre">config.json</span></code> in
+the root directory of the cloned repository.</p>
 </div>
 <div class="section" id="tests">
 <h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
@@ -123,7 +141,8 @@ countries and cities.</p>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
 <p>To build the documentation:
-(make sure you have created <a class="reference internal" href="#the-example-project">The example project</a>)</p>
+(make sure you have created <a class="reference internal" href="#the-example-project">The example project</a>,
+also make sure to generate the <a class="reference internal" href="#configurations">Configurations</a>)</p>
 <div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>$ make --directory docs html
 </pre></div>
 </div>
@@ -221,6 +240,7 @@ and upload it to PyPI.</li>
 <li class="toctree-l2"><a class="reference internal" href="#report-bugs-request-features">Report bugs/Request features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#code">Code</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#the-example-project">The example project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configurations">Configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#style">Style</a></li>
