@@ -91,6 +91,31 @@ http://localhost:8000/sample/continent/1/
 This API endpoint is used to show a certain continent and its
 countries and cities.
 
+The example project supports ``German (de)`` and ``Turkish (tr)`` languages.
+
+Change the *language* settings in your browser and reload the API endpoint,
+or if you are using a rest client like Postman change the ``Accept-Language``
+header in your request.
+The API endpoint should show you the response in the requested language.
+
+**************
+Configurations
+**************
+
+To change the basic configurations of Django Translations edit
+the :file:`config.py` file.
+When you are done, generate the configurations file.
+
+To generate the configurations file change directories into
+the root directory of the cloned repository and run the following command:
+
+.. code:: bash
+
+   $ python config.py
+
+This generates a file named :file:`config.json` in
+the root directory of the cloned repository.
+
 *****
 Tests
 *****
@@ -107,7 +132,8 @@ Documentation
 *************
 
 To build the documentation:
-(make sure you have created `The example project`_)
+(make sure you have created `The example project`_,
+also make sure to generate the `Configurations`_)
 
 .. code:: bash
 
