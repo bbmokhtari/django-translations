@@ -3,6 +3,16 @@
 This module provides comprehensive information on how to contribute to
 Django Translations.
 
+## Report bugs/Request features
+
+You can report bugs or request features in
+[issues](https://github.com/perplexionist/django-translations/issues).
+
+## Patching
+
+You can submit [pull
+requests](https://github.com/perplexionist/django-translations/pulls).
+
 ## Code
 
 Clone the repository of Django Translations:
