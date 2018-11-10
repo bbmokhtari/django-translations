@@ -121,7 +121,7 @@ Use the queryset extensions:
 ]>
 ```
 
-This provides a powerful yet familiar interface to work with the translations.
+This provides a powerful yet familiar interface to work with the querysets.
 
 ## Context
 
@@ -173,7 +173,7 @@ Use the translation context:
 ]>
 ```
 
-This can CRUD the translations of any object (instance, queryset, list) and their relations.
+This can CRUD the translations of any objects (instance, queryset, list) and their relations.
 
 ## Documentation
 
