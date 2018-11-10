@@ -9,9 +9,17 @@ Django Translations.
 Report bugs/Request features
 ****************************
 
-You can report bugs and request features in `issues`_.
+You can report bugs or request features in `issues`_.
 
 .. _`issues`: https://github.com/perplexionist/django-translations/issues
+
+********
+Patching
+********
+
+You can submit `pull requests`_.
+
+.. _`pull requests`: https://github.com/perplexionist/django-translations/pulls
 
 ****
 Code
@@ -156,14 +164,6 @@ To lint the code:
 .. code:: bash
 
    $ flake8
-
-********
-Patching
-********
-
-You can submit `pull requests`_.
-
-.. _`pull requests`: https://github.com/perplexionist/django-translations/pulls
 
 *******************
 Releasing a version
