@@ -129,9 +129,9 @@ The models of the relations must be
    in order to reach optimal performance.
 
    To do this use
-   :meth:`~django.db.models.query.QuerySet.select_related`,
-   :meth:`~django.db.models.query.QuerySet.prefetch_related` or
-   :func:`~django.db.models.prefetch_related_objects`.
+   ``select_related``,
+   ``prefetch_related`` or
+   ``prefetch_related_objects``.
 
 Creating the translations
 =========================
