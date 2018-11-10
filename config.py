@@ -27,11 +27,6 @@ github = {
     'repo': project['github'],
 }
 
-# donation
-donation = {
-    'btc': '1JL5mNf2cqpgLCpWUuxYgnUfmzobRVqLhV',
-}
-
 # urls
 urls = {
     'source': 'https://github.com/{user}/{repo}'.format(**github),
