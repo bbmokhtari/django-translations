@@ -19,7 +19,7 @@ requests](https://github.com/perplexionist/django-translations/pulls).
 
 Clone the repository of Django Translations:
 
-``` sourceCode bash
+``` bash
 $ git clone https://github.com/perplexionist/django-translations.git
 ```
 
@@ -28,7 +28,7 @@ environment) install the required libraries for working on it. To do
 this change directories into the root directory of the cloned repository
 and run the following command:
 
-``` sourceCode bash
+``` bash
 $ pip install -r requirements_dev.txt
 ```
 
@@ -46,7 +46,7 @@ from here on out run all the commands in that directory:
 
 To create the example project:
 
-``` sourceCode bash
+``` bash
 $ python create.py
 ```
 
@@ -55,26 +55,26 @@ repository.
 
 Run migrations:
 
-``` sourceCode bash
+``` bash
 $ python project/manage.py migrate
 ```
 
 To populate some data for the Sample app:
 
-``` sourceCode bash
+``` bash
 $ python project/manage.py shell
 ```
 
 Then in the python shell:
 
-``` sourceCode python
+``` python
 >>> from sample.utils import create_all
 >>> create_all()
 ```
 
 To run the example project:
 
-``` sourceCode bash
+``` bash
 $ python project/manage.py runserver
 ```
 
@@ -105,7 +105,7 @@ To change the basic configurations of Django Translations edit the
 To generate the configurations file change directories into the root
 directory of the cloned repository and run the following command:
 
-``` sourceCode bash
+``` bash
 $ python config.py
 ```
 
@@ -116,7 +116,7 @@ cloned repository.
 
 To run the tests: (make sure you have created [The example project]())
 
-``` sourceCode bash
+``` bash
 $ python project/manage.py test
 ```
 
@@ -126,13 +126,13 @@ To build the documentation: (make sure you have created [The example
 project](), also make sure to generate the
 [Configurations](#configurations))
 
-``` sourceCode bash
+``` bash
 $ make --directory docs html
 ```
 
 To run tests on the examples of the documentation:
 
-``` sourceCode bash
+``` bash
 $ make --directory docs doctest
 ```
 
@@ -142,7 +142,7 @@ Django Translations uses `flake8` for styling purposes.
 
 To lint the code:
 
-``` sourceCode bash
+``` bash
 $ flake8
 ```
 
