@@ -16,8 +16,8 @@ want to contribute to it we recommend you to read the reference.
 
    installation
    guide/index
-   reference/index
    howto/index
+   reference/index
    contribution
    donation
    glossary
