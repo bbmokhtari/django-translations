@@ -14,7 +14,7 @@ setuptools.setup(
     version=info['release']['name'],
     description=info['project']['desc'],
     long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description_content_type='text/markdown',
     url=info['urls']['source'],
     author=info['author']['name'],
     author_email=info['author']['email'],
