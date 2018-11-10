@@ -18,8 +18,7 @@ Translations
 .. |flake8| image:: https://img.shields.io/badge/flake8-linted-green.svg
             :target: https://travis-ci.com/perplexionist/django-translations
 
-Translations app provides an *easy*, *efficient* and *modular* way of
-translating Django *models*.
+Django model translation for perfectionists with deadlines.
 
 Requirements
 ------------

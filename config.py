@@ -10,7 +10,7 @@ project = {
     'name': 'Django Translations',
     'github': 'django-translations',
     'dist': 'django-translations',
-    'desc': 'An easy, efficient and modular way of translating django models.',
+    'desc': 'Django model translation for perfectionists with deadlines.',
     'logo': 'translation.svg',
 }
 
