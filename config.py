@@ -37,7 +37,13 @@ urls = {
 }
 
 # search optimization
-keywords = ['django', 'model', 'translation', 'internationalization', 'localization']
+keywords = [
+    'django',
+    'model',
+    'translation',
+    'internationalization',
+    'localization',
+]
 
 # ------------------------------------------------------------ Dynamic Content
 
