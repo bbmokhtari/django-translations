@@ -2,6 +2,8 @@
 Contribution
 ############
 
+.. any changes to this module must also be reflected in /CONTRIBUTING.md
+
 This module provides comprehensive information on how to contribute to
 Django Translations.
 
