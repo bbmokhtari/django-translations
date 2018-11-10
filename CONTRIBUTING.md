@@ -1,6 +1,6 @@
 # Contribution
 
-[comment]: <> (any changes to this module must also be reflected in /docs/contribution.rst)
+[comment]: # (any changes to this module must also be reflected in /docs/contribution.rst)
 
 This module provides comprehensive information on how to contribute to
 Django Translations.
