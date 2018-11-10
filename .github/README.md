@@ -1,4 +1,4 @@
-# Translations
+# Django Translations
 
 [![build](https://travis-ci.com/perplexionist/django-translations.svg?branch=master)](https://travis-ci.com/perplexionist/django-translations)
 [![python](https://img.shields.io/badge/python-3.5%7C3.6-0073b7.svg)](https://pypi.org/project/django-translations/)
