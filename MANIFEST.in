@@ -1,3 +1,4 @@
+prune .github
 prune docs
 prune project
 prune sample
@@ -5,10 +6,12 @@ prune tests
 
 graft translations
 
+exclude .flake8
 exclude .travis.yml
+exclude beautifier.py
 exclude config.py
 exclude create.py
+exclude requirements_dev.txt
 
 include config.json
 include LICENSE
-include README.rst

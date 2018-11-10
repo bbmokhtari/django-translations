@@ -2,7 +2,7 @@ import setuptools
 import json
 
 
-with open('README.rst', 'r') as fh:
+with open('./.github/README.md', 'r') as fh:
     long_description = fh.read()
 
 with open('config.json', 'r') as fh:
