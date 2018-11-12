@@ -8,6 +8,23 @@
 
 Django model translation for perfectionists with deadlines.
 
+## Goal
+
+There are two types of content, each of which has its own challenges for translation:
+
+- Static content: This is the content which is defined in the code.
+  _e.g. "Please enter a valid email address."_
+
+  Django already provides a
+  [solution](https://docs.djangoproject.com/en/2.1/topics/i18n/translation/)
+  for translating static content.
+
+- Dynamic content: This is the content which is stored in the database.
+  _(We can't know it beforehand!)_
+
+  Django Translations provides a solution
+  for translating dynamic content.
+
 ## Requirements
 
 - Python (\>=3.5)
