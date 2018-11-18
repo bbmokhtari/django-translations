@@ -1,6 +1,7 @@
 from django.core.management.base import (
     BaseCommand, CommandError, no_translations,
 )
+from django.apps import apps
 from django.db.models import Q
 from django.contrib.contenttypes.models import ContentType
 
@@ -27,6 +28,11 @@ class Command(BaseCommand):
         app_label = options['app_label']
 
         if app_label:
+            for app_config in apps.get_app_configs():
+                if app_config.label == app_label:
+                    break
+            else:
+                raise CommandError('No such app_label: {}'.format(app_label))
             content_types = ContentType.objects.filter(app_label=app_label)
         else:
             content_types = ContentType.objects.all()
