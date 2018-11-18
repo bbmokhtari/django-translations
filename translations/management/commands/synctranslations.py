@@ -36,14 +36,23 @@ class Command(BaseCommand):
     @no_translations
     def handle(self, *app_labels, **options):
 
+        # get arguments
         self.verbosity = options['verbosity']
         self.interactive = options['interactive']
 
+        # collect all the models which will be affected
         content_types = self.get_content_types(*app_labels)
 
+        # handle obsolete translations
         obsolete_translations = self.get_obsolete_translations(*content_types)
         self.log_obsolete_translations(obsolete_translations)
 
+        # quit if there's nothing to do
+        if not obsolete_translations:
+            self.stdout.write('No obsolete translations found!')
+            return
+
+        # ask user if they are sure that they want to synchronize
         run_synchronization = self.get_run_synchronization()
         if run_synchronization:
             obsolete_translations.delete()
@@ -93,7 +102,7 @@ class Command(BaseCommand):
     def log_obsolete_translations(self, obsolete_translations):
         if obsolete_translations and self.verbosity >= 1:
             self.stdout.write(
-                'The translations for the following fields will be deleted:'
+                'Obsolete translations found for the specified fields:'
             )
 
             changes = {}
@@ -113,6 +122,8 @@ class Command(BaseCommand):
                     self.stdout.write('  - Model: {}'.format(model_name))
                     for field in fields:
                         self.stdout.write('    - Field: {}'.format(field))
+
+            self.stdout.write('The obsolete translations will be deleted.')
 
     def get_run_synchronization(self):
         run = None
