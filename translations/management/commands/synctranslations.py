@@ -32,7 +32,9 @@ class Command(BaseCommand):
                 if app_config.label == app_label:
                     break
             else:
-                raise CommandError('No such app_label: {}'.format(app_label))
+                raise CommandError(
+                    "App '{}' is not found.".format(app_label)
+                )
             content_types = ContentType.objects.filter(app_label=app_label)
         else:
             content_types = ContentType.objects.all()
