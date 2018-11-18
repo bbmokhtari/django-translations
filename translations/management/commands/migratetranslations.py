@@ -36,12 +36,14 @@ class Command(BaseCommand):
             model = content_type.model_class()
             if issubclass(model, Translatable):
                 translatable_fields = model._get_translatable_fields_names()
-                new_query = Q(
+                model_query = (
                     Q(content_type=content_type)
                     &
                     ~Q(field__in=translatable_fields)
                 )
-                query |= new_query
+            else:
+                model_query = Q(content_type=content_type)
+            query |= model_query
 
         self.stdout.write(self.style.NOTICE('query: {}'.format(query)))
 
