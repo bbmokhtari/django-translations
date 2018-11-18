@@ -18,7 +18,9 @@ class Command(BaseCommand):
             'args',
             metavar='app_label',
             nargs='*',
-            help='Specify the app label(s) to synchronize translations for.',
+            help=(
+                'Specify the app label(s) to synchronize the translations for.'
+            ),
         )
         parser.add_argument(
             '--noinput', '--no-input',
@@ -109,7 +111,7 @@ class Command(BaseCommand):
                 self.stdout.write('- App: {}'.format(app_name))
                 for model_name, fields in models.items():
                     self.stdout.write('  - Model: {}'.format(model_name))
-                    for field in sorted(fields):
+                    for field in fields:
                         self.stdout.write('    - Field: {}'.format(field))
 
     def get_run_synchronization(self):
