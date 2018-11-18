@@ -55,7 +55,7 @@ class Command(BaseCommand):
         else:
             content_types = ContentType.objects.all()
 
-        # get the translations to synchronize
+        # fetch the translations to delete
         query = Q()
         for content_type in content_types:
             model = content_type.model_class()
@@ -73,7 +73,23 @@ class Command(BaseCommand):
 
         # decide whether to synchronize or not
         if queryset:
-            self.stdout.write('{} translations will be deleted.'.format(len(queryset)))
+            if verbosity >= 1:
+                changes = {}
+                for instance in queryset:
+                    model_name = str(instance.content_type.model_class().__name__)
+                    changes.setdefault(model_name, set())
+                    changes[model_name].add(instance.field)
+                change_list = [
+                    "- '{}' field{} in '{}' model".format(
+                        ', '.join(fields),
+                        's' if len(fields) > 1 else '',
+                        model,
+                    )
+                    for model, fields in changes.items()
+                ]
+                self.stdout.write('the translations for the following fields will be deleted.')
+                self.stdout.write('\n'.join(change_list))
+
             if interactive:
                 run = None
                 try:
