@@ -11,7 +11,7 @@ from translations.models import Translation, Translatable
 
 
 class Command(BaseCommand):
-    help = "Synchronize the translations."
+    help = "Synchronize the translations for apps."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -138,8 +138,8 @@ class Command(BaseCommand):
                 try:
                     run = self.get_yes_no(
                         (
-                            'Are you sure you want to synchronize translations? '
-                            '[Y/n] '
+                            'Are you sure you want to synchronize the '
+                            'translations? [Y/n] '
                         ),
                         default='Y'
                     )
