@@ -10,10 +10,6 @@ from django.contrib.contenttypes.models import ContentType
 from translations.models import Translation, Translatable
 
 
-class NotRunningInTTYException(Exception):
-    pass
-
-
 class Command(BaseCommand):
     help = "Synchronize the translations."
 
