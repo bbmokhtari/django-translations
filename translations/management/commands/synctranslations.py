@@ -71,8 +71,10 @@ class Command(BaseCommand):
             query |= model_query
         queryset = Translation.objects.filter(query)
 
-        # decide whether to synchronize or not
+        # synchronize if there's anything to do so
         if queryset:
+
+            # tell user what will be deleted
             if verbosity >= 1:
                 changes = {}
                 for instance in queryset:
@@ -87,7 +89,7 @@ class Command(BaseCommand):
                     )
                     for model, fields in changes.items()
                 ]
-                self.stdout.write('the translations for the following fields will be deleted.')
+                self.stdout.write('The translations for the following will be deleted:')
                 self.stdout.write('\n'.join(change_list))
 
             if interactive:
@@ -127,8 +129,8 @@ class Command(BaseCommand):
 
             if run:
                 queryset.delete()
-                self.stdout.write(self.style.SUCCESS('Synchronizing translations done.'))
+                self.stdout.write(self.style.SUCCESS('Successfully synchronized translations.'))
             else:
-                self.stdout.write(self.style.SUCCESS('Synchronizing translations cancelled.'))
+                self.stdout.write(self.style.NOTICE('Synchronizing translations cancelled.'))
         else:
             self.stdout.write(self.style.SUCCESS('No translations to synchronize.'))
