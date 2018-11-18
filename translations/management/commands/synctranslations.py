@@ -8,7 +8,7 @@ from translations.models import Translation, Translatable
 
 
 class Command(BaseCommand):
-    help = "Updates translations for apps."
+    help = "Synchronize the translations."
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -45,8 +45,7 @@ class Command(BaseCommand):
                 model_query = Q(content_type=content_type)
             query |= model_query
 
-        self.stdout.write(self.style.NOTICE('query: {}'.format(query)))
-
         queryset = Translation.objects.filter(query)
+        queryset.delete()
 
-        self.stdout.write(self.style.NOTICE('queryset: {}'.format(queryset)))
+        self.stdout.write(self.style.SUCCESS('Translations synchronized successfully.'))
