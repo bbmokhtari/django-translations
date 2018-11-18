@@ -19,9 +19,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'app_label',
-            nargs='?',
-            help='App label of an application to synchronize the state.',
+            'args',
+            metavar='app_label',
+            nargs='*',
+            help='Specify the app label(s) to synchronize translations for.',
         )
         parser.add_argument(
             '--noinput', '--no-input',
@@ -35,27 +36,47 @@ class Command(BaseCommand):
         return super().execute(*args, **options)
 
     @no_translations
-    def handle(self, *args, **options):
+    def handle(self, *app_labels, **options):
 
-        # get arguments
-        verbosity = options['verbosity']
-        interactive = options['interactive']
-        app_label = options['app_label']
+        self.verbosity = options['verbosity']
+        self.interactive = options['interactive']
 
-        # validate app label and get the models (content types)
-        if app_label:
-            for app_config in apps.get_app_configs():
-                if app_config.label == app_label:
-                    break
-            else:
-                raise CommandError(
-                    "App '{}' is not found.".format(app_label)
+        content_types = self.get_content_types(*app_labels)
+
+        obsolete_translations = self.get_obsolete_translations(*content_types)
+        self.log_obsolete_translations(obsolete_translations)
+
+        run_synchronization = self.get_run_synchronization()
+        if run_synchronization:
+            obsolete_translations.delete()
+            self.stdout.write(
+                self.style.SUCCESS(
+                    '\nSuccessfully synchronized translations.'
                 )
-            content_types = ContentType.objects.filter(app_label=app_label)
+            )
+        else:
+            self.stdout.write(
+                '\nCancelled synchronizing translations.'
+            )
+
+    def get_content_types(self, *app_labels):
+        if app_labels:
+            query = Q()
+            for app_label in app_labels:
+                try:
+                    apps.get_app_config(app_label)
+                except LookupError:
+                    raise CommandError(
+                        "App '{}' is not found.".format(app_label)
+                    )
+                else:
+                    query |= Q(app_label=app_label)
+            content_types = ContentType.objects.filter(query)
         else:
             content_types = ContentType.objects.all()
+        return content_types
 
-        # fetch the translations to delete
+    def get_obsolete_translations(self, *content_types):
         query = Q()
         for content_type in content_types:
             model = content_type.model_class()
@@ -69,68 +90,79 @@ class Command(BaseCommand):
             else:
                 model_query = Q(content_type=content_type)
             query |= model_query
-        queryset = Translation.objects.filter(query)
+        return Translation.objects.filter(query)
 
-        # synchronize if there's anything to do so
-        if queryset:
+    def log_obsolete_translations(self, obsolete_translations):
+        if obsolete_translations and self.verbosity >= 1:
+            self.stdout.write(
+                'The translations for the following fields will be deleted:'
+            )
 
-            # tell user what will be deleted
-            if verbosity >= 1:
-                changes = {}
-                for instance in queryset:
-                    model_name = str(instance.content_type.model_class().__name__)
-                    changes.setdefault(model_name, set())
-                    changes[model_name].add(instance.field)
-                change_list = [
-                    "- '{}' field{} in '{}' model".format(
-                        ', '.join(fields),
-                        's' if len(fields) > 1 else '',
-                        model,
-                    )
-                    for model, fields in changes.items()
-                ]
-                self.stdout.write('The translations for the following will be deleted:')
-                self.stdout.write('\n'.join(change_list))
+            changes = {}
+            for translation in obsolete_translations:
+                app = apps.get_app_config(translation.content_type.app_label)
+                app_name = app.name
+                model = translation.content_type.model_class()
+                model_name = model.__name__
 
-            if interactive:
-                run = None
+                changes.setdefault(app_name, {})
+                changes[app_name].setdefault(model_name, set())
+                changes[app_name][model_name].add(translation.field)
+
+            for app_name, models in changes.items():
+                self.stdout.write('- App: {}'.format(app_name))
+                for model_name, fields in models.items():
+                    self.stdout.write('  - Model: {}'.format(model_name))
+                    for field in sorted(fields):
+                        self.stdout.write('    - Field: {}'.format(field))
+
+    def get_run_synchronization(self):
+        run = None
+        if self.interactive:
+            if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
+                run = False
+                self.stdout.write(
+                    "Synchronizing translations skipped due to not running in "
+                    "a TTY. "
+                )
+            else:
                 try:
-                    if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
-                        raise NotRunningInTTYException("Not running in a TTY")
-
-                    while run is None:
-                        raw_value = input(
-                            'Are you sure you want to synchronize '
-                            'translations? [Y/n] '
-                        ).lower()
-
-                        # default
-                        if raw_value == '':
-                            raw_value = 'y'
-
-                        # yes or no?
-                        if raw_value in ['y', 'yes']:
-                            return True
-                        elif raw_value in ['n', 'no']:
-                            return False
-                        else:
-                            return None
+                    run = self.get_yes_no(
+                        (
+                            'Are you sure you want to synchronize translations? '
+                            '[Y/n] '
+                        ),
+                        default='Y'
+                    )
                 except KeyboardInterrupt:
                     self.stderr.write("\nOperation cancelled.")
                     sys.exit(1)
-                except NotRunningInTTYException:
-                    self.stdout.write(
-                        "Synchronizing translations skipped due to not running in a TTY. "
-                        "You can run `manage.py synctranslations` in your project "
-                        "to synchronize translations manually."
-                    )
-            else:
-                run = True
-
-            if run:
-                queryset.delete()
-                self.stdout.write(self.style.SUCCESS('Successfully synchronized translations.'))
-            else:
-                self.stdout.write(self.style.NOTICE('Synchronizing translations cancelled.'))
         else:
-            self.stdout.write(self.style.SUCCESS('No translations to synchronize.'))
+            run = True
+
+        return run
+
+    def get_yes_no(self, message, default=None):
+        if default is not None:
+            valid_default = ['y', 'yes', 'n', 'no']
+            if str(default).lower() not in valid_default:
+                raise ValueError(
+                    "default must be one of: {}".format(valid_default))
+
+        answer = None
+        while answer is None:
+            raw_value = input(message)
+
+            # default
+            if default and raw_value == '':
+                raw_value = default
+
+            # yes or no?
+            raw_value = raw_value.lower()
+            if raw_value in ['y', 'yes']:
+                answer = True
+            elif raw_value in ['n', 'no']:
+                answer = False
+            else:
+                answer = None
+        return answer
