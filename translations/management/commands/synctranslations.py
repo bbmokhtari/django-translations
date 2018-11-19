@@ -149,8 +149,8 @@ class Command(BaseCommand):
             if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
                 run = False
                 self.stdout.write(
-                    "Synchronizing translations skipped due to not running in "
-                    "a TTY. "
+                    'Synchronizing translations skipped due to not running in '
+                    'a TTY. '
                 )
             else:
                 try:
