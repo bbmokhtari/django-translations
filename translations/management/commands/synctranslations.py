@@ -11,7 +11,7 @@ from translations.models import Translation, Translatable
 
 
 class Command(BaseCommand):
-    help = "Synchronize the translations for apps."
+    help = 'Synchronize the translations for apps.'
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -47,26 +47,34 @@ class Command(BaseCommand):
         obsolete_translations = self.get_obsolete_translations(*content_types)
         self.log_obsolete_translations(obsolete_translations)
 
+        # divide initializing synchronization with asking for synchronization
+        self.stdout.write('\n')
+
         # quit if there's nothing to do
         if not obsolete_translations:
-            self.stdout.write('No obsolete translations found!')
+            self.stdout.write('Nothing to synchronize.')
             return
 
         # ask user if they are sure that they want to synchronize
         run_synchronization = self.get_run_synchronization()
+
+        # divide asking for synchronization with actual synchronization
+        self.stdout.write('\n')
+
         if run_synchronization:
             obsolete_translations.delete()
             self.stdout.write(
                 self.style.SUCCESS(
-                    '\nSuccessfully synchronized translations.'
+                    'Successfully synchronized translations.'
                 )
             )
         else:
             self.stdout.write(
-                '\nCancelled synchronizing translations.'
+                'Cancelled synchronizing translations.'
             )
 
     def get_content_types(self, *app_labels):
+        """Return the content types of some apps or all of them."""
         if app_labels:
             query = Q()
             for app_label in app_labels:
@@ -84,48 +92,58 @@ class Command(BaseCommand):
         return content_types
 
     def get_obsolete_translations(self, *content_types):
-        query = Q()
-        for content_type in content_types:
-            model = content_type.model_class()
-            if issubclass(model, Translatable):
-                translatable_fields = model._get_translatable_fields_names()
-                model_query = (
-                    Q(content_type=content_type)
-                    &
-                    ~Q(field__in=translatable_fields)
-                )
-            else:
-                model_query = Q(content_type=content_type)
-            query |= model_query
-        return Translation.objects.filter(query)
+        """Return the obsolete translations of some content types."""
+        if content_types:
+            query = Q()
+            for content_type in content_types:
+                model = content_type.model_class()
+                if issubclass(model, Translatable):
+                    translatable_fields = model._get_translatable_fields_names()
+                    model_query = (
+                        Q(content_type=content_type)
+                        &
+                        ~Q(field__in=translatable_fields)
+                    )
+                else:
+                    model_query = Q(content_type=content_type)
+                query |= model_query
+            obsolete_translations = Translation.objects.filter(query)
+        else:
+            obsolete_translations = Translation.objects.none()
+        return obsolete_translations
 
     def log_obsolete_translations(self, obsolete_translations):
-        if obsolete_translations and self.verbosity >= 1:
-            self.stdout.write(
-                'Obsolete translations found for the specified fields:'
-            )
+        """Log the obsolete translations."""
+        if self.verbosity >= 1:
+            self.stdout.write('Looking for obsolete translations...')
 
-            changes = {}
-            for translation in obsolete_translations:
-                app = apps.get_app_config(translation.content_type.app_label)
-                app_name = app.name
-                model = translation.content_type.model_class()
-                model_name = model.__name__
+            if obsolete_translations:
+                changes = {}
+                for translation in obsolete_translations:
+                    app = apps.get_app_config(translation.content_type.app_label)
+                    app_name = app.name
+                    model = translation.content_type.model_class()
+                    model_name = model.__name__
 
-                changes.setdefault(app_name, {})
-                changes[app_name].setdefault(model_name, set())
-                changes[app_name][model_name].add(translation.field)
+                    changes.setdefault(app_name, {})
+                    changes[app_name].setdefault(model_name, set())
+                    changes[app_name][model_name].add(translation.field)
 
-            for app_name, models in changes.items():
-                self.stdout.write('- App: {}'.format(app_name))
-                for model_name, fields in models.items():
-                    self.stdout.write('  - Model: {}'.format(model_name))
-                    for field in fields:
-                        self.stdout.write('    - Field: {}'.format(field))
+                self.stdout.write(
+                    'Obsolete translations found for the specified fields:'
+                )
 
-            self.stdout.write('The obsolete translations will be deleted.')
+                for app_name, models in changes.items():
+                    self.stdout.write('- App: {}'.format(app_name))
+                    for model_name, fields in models.items():
+                        self.stdout.write('  - Model: {}'.format(model_name))
+                        for field in fields:
+                            self.stdout.write('    - Field: {}'.format(field))
+            else:
+                self.stdout.write('No obsolete translations found.')
 
     def get_run_synchronization(self):
+        """Return whether to run synchronization or not."""
         run = None
         if self.interactive:
             if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
@@ -144,33 +162,28 @@ class Command(BaseCommand):
                         default='Y'
                     )
                 except KeyboardInterrupt:
-                    self.stderr.write("\nOperation cancelled.")
-                    sys.exit(1)
+                    run = False
+                    self.stderr.write('\n')  # move to the next line of stdin
         else:
             run = True
 
         return run
 
     def get_yes_no(self, message, default=None):
-        if default is not None:
-            valid_default = ['y', 'yes', 'n', 'no']
-            if str(default).lower() not in valid_default:
-                raise ValueError(
-                    "default must be one of: {}".format(valid_default))
-
+        """Ask user for yes or no with a message and a default value."""
         answer = None
         while answer is None:
             raw_value = input(message)
 
             # default
-            if default and raw_value == '':
+            if default is not None and raw_value == '':
                 raw_value = default
 
             # yes or no?
             raw_value = raw_value.lower()
-            if raw_value in ['y', 'yes']:
+            if raw_value in ['y', 'yes', True]:
                 answer = True
-            elif raw_value in ['n', 'no']:
+            elif raw_value in ['n', 'no', False]:
                 answer = False
             else:
                 answer = None
