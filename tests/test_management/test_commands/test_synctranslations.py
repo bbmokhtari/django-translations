@@ -3,8 +3,10 @@ from contextlib import ContextDecorator
 
 from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 
 from translations.management.commands.synctranslations import Command
+from translations.models import Translation
 
 from sample.models import Continent, Country, City
 from sample.utils import create_samples
@@ -444,7 +446,6 @@ class CommandTest(TestCase):
     @override_tmeta(Country, fields=[])
     @override_tmeta(City, fields=[])
     def test_get_obsolete_translations_all_content_types_two_fields(self):
-        self.maxDiff = None
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -487,5 +488,49 @@ class CommandTest(TestCase):
                 '<Translation: Seouler: Seüler>',
                 '<Translation: Seoul: Seul>',
                 '<Translation: Seouler: Seullı>'
+            ]
+        )
+
+    def test_get_obsolete_translations_one_content_type_not_translatable(self):
+        user = User.objects.create_user('behzad')
+
+        Translation.objects.create(
+            content_object=user,
+            field='username',
+            language='de',
+            text='behzad',
+        )
+
+        command = Command()
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.get_for_models(User).values())
+        )
+
+        self.assertQuerysetEqual(
+            obsolete_translations.order_by('id'),
+            [
+                '<Translation: behzad: behzad>',
+            ]
+        )
+
+    def test_get_obsolete_translations_all_content_types_not_translatable(self):
+        user = User.objects.create_user('behzad')
+
+        Translation.objects.create(
+            content_object=user,
+            field='username',
+            language='de',
+            text='behzad',
+        )
+
+        command = Command()
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.all())
+        )
+
+        self.assertQuerysetEqual(
+            obsolete_translations.order_by('id'),
+            [
+                '<Translation: behzad: behzad>',
             ]
         )
