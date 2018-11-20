@@ -56,7 +56,7 @@ class Command(BaseCommand):
             return
 
         # ask user if they are sure that they want to synchronize
-        run_synchronization = self.get_run_synchronization()
+        run_synchronization = self.should_run_synchronization()
 
         # divide asking for synchronization with actual synchronization
         self.stdout.write('\n')
@@ -148,7 +148,7 @@ class Command(BaseCommand):
             else:
                 self.stdout.write('No obsolete translations found.')
 
-    def get_run_synchronization(self):
+    def should_run_synchronization(self):
         """Return whether to run synchronization or not."""
         run = None
         if self.interactive:
@@ -160,7 +160,7 @@ class Command(BaseCommand):
                 )
             else:
                 try:
-                    run = self.get_yes_no(
+                    run = self.ask_yes_no(
                         (
                             'Are you sure you want to synchronize the '
                             'translations? [Y/n] '
@@ -175,7 +175,7 @@ class Command(BaseCommand):
 
         return run
 
-    def get_yes_no(self, message, default=None):
+    def ask_yes_no(self, message, default=None):
         """Ask user for yes or no with a message and a default value."""
         answer = None
         while answer is None:
