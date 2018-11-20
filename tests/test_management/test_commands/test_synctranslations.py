@@ -343,3 +343,149 @@ class CommandTest(TestCase):
                 '<Translation: Seouler: Seullı>'
             ]
         )
+
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_get_obsolete_translations_no_content_types_two_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        command = Command()
+        obsolete_translations = command.get_obsolete_translations()
+
+        self.assertQuerysetEqual(
+            obsolete_translations.order_by('id'),
+            []
+        )
+
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_get_obsolete_translations_one_content_type_two_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        command = Command()
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.get_for_models(Continent).values())
+        )
+
+        self.assertQuerysetEqual(
+            obsolete_translations.order_by('id'),
+            [
+                '<Translation: Europe: Europa>',
+                '<Translation: European: Europäisch>',
+                '<Translation: Europe: Avrupa>',
+                '<Translation: European: Avrupalı>',
+                '<Translation: Asia: Asien>',
+                '<Translation: Asian: Asiatisch>',
+                '<Translation: Asia: Asya>',
+                '<Translation: Asian: Asyalı>'
+            ]
+        )
+
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_get_obsolete_translations_two_content_types_two_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        command = Command()
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.get_for_models(Continent, Country).values())
+        )
+
+        self.assertQuerysetEqual(
+            obsolete_translations.order_by('id'),
+            [
+                '<Translation: Europe: Europa>',
+                '<Translation: European: Europäisch>',
+                '<Translation: Europe: Avrupa>',
+                '<Translation: European: Avrupalı>',
+                '<Translation: Germany: Deutschland>',
+                '<Translation: German: Deutsche>',
+                '<Translation: Germany: Almanya>',
+                '<Translation: German: Almanca>',
+                '<Translation: Asia: Asien>',
+                '<Translation: Asian: Asiatisch>',
+                '<Translation: Asia: Asya>',
+                '<Translation: Asian: Asyalı>',
+                '<Translation: South Korea: Südkorea>',
+                '<Translation: South Korean: Südkoreanisch>',
+                '<Translation: South Korea: Güney Kore>',
+                '<Translation: South Korean: Güney Korelı>'
+            ]
+        )
+
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_get_obsolete_translations_all_content_types_two_fields(self):
+        self.maxDiff = None
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        command = Command()
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.all())
+        )
+
+        self.assertQuerysetEqual(
+            obsolete_translations.order_by('id'),
+            [
+                '<Translation: Europe: Europa>',
+                '<Translation: European: Europäisch>',
+                '<Translation: Europe: Avrupa>',
+                '<Translation: European: Avrupalı>',
+                '<Translation: Germany: Deutschland>',
+                '<Translation: German: Deutsche>',
+                '<Translation: Germany: Almanya>',
+                '<Translation: German: Almanca>',
+                '<Translation: Cologne: Köln>',
+                '<Translation: Cologner: Kölner>',
+                '<Translation: Cologne: Koln>',
+                '<Translation: Cologner: Kolnlı>',
+                '<Translation: Asia: Asien>',
+                '<Translation: Asian: Asiatisch>',
+                '<Translation: Asia: Asya>',
+                '<Translation: Asian: Asyalı>',
+                '<Translation: South Korea: Südkorea>',
+                '<Translation: South Korean: Südkoreanisch>',
+                '<Translation: South Korea: Güney Kore>',
+                '<Translation: South Korean: Güney Korelı>',
+                '<Translation: Seoul: Seül>',
+                '<Translation: Seouler: Seüler>',
+                '<Translation: Seoul: Seul>',
+                '<Translation: Seouler: Seullı>'
+            ]
+        )
