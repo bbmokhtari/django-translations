@@ -1,10 +1,10 @@
 # Django Translations
 
-[![build](https://travis-ci.com/perplexionist/django-translations.svg?branch=master)](https://travis-ci.com/perplexionist/django-translations)
+[![build](https://travis-ci.com/bbmokhtari/django-translations.svg?branch=master)](https://travis-ci.com/bbmokhtari/django-translations)
 [![python](https://img.shields.io/badge/python-3.5%7C3.6-0073b7.svg)](https://pypi.org/project/django-translations/)
 [![pypi](https://img.shields.io/badge/pypi-1.0.0-f9d35f.svg)](https://pypi.org/project/django-translations/)
 [![django](https://img.shields.io/badge/django-2.0%7C2.1-0C4B33.svg)](https://pypi.org/project/django-translations/)
-[![flake8](https://img.shields.io/badge/flake8-linted-green.svg)](https://travis-ci.com/perplexionist/django-translations)
+[![flake8](https://img.shields.io/badge/flake8-linted-green.svg)](https://travis-ci.com/bbmokhtari/django-translations)
 
 Django model translation for perfectionists with deadlines.
 
@@ -107,7 +107,7 @@ class ContinentAdmin(TranslatableAdmin):
 
 This provides specialized translation inlines for the model.
 
-![image](https://raw.githubusercontent.com/perplexionist/django-translations/master/docs/_static/admin.png)
+![image](https://raw.githubusercontent.com/bbmokhtari/django-translations/master/docs/_static/admin.png)
 
 ## QuerySet
 
@@ -195,4 +195,4 @@ This can CRUD the translations of any objects (instance, queryset, list) and the
 ## Documentation
 
 For more interesting capabilities browse through the
-[documentation](http://perplexionist.github.io/django-translations).
+[documentation](http://bbmokhtari.github.io/django-translations).

@@ -18,7 +18,7 @@ project = {
 author = {
     'name': 'Behzad B. Mokhtari',
     'email': 'behzad.public@gmail.com',
-    'github': 'perplexionist',
+    'github': 'bbmokhtari',
 }
 
 # github

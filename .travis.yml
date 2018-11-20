@@ -125,7 +125,7 @@ jobs:
       deploy:
         provider: pypi
         skip-cleanup: true
-        user: perplexionist
+        user: bbmokhtari
         password: $PYPI_PASSWORD
         distributions: "sdist bdist_wheel"
         on:
