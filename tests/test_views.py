@@ -4,7 +4,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 from sample.models import Continent
-
 from sample.utils import create_samples
 
 

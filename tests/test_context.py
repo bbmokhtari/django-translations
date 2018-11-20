@@ -4,7 +4,6 @@ from django.utils.translation import override
 from translations.context import Context
 
 from sample.models import Continent
-
 from sample.utils import create_samples
 
 
