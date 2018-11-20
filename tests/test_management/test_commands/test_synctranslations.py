@@ -2,6 +2,7 @@ from io import StringIO
 from contextlib import ContextDecorator
 
 from django.test import TestCase
+from django.core.management import call_command
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 
@@ -534,3 +535,441 @@ class CommandTest(TestCase):
                 '<Translation: behzad: behzad>',
             ]
         )
+
+    def test_log_obsolete_translations_no_content_types_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        out = StringIO()
+        command = Command(stdout=out)
+        obsolete_translations = command.get_obsolete_translations()
+        command.verbosity=1
+        command.log_obsolete_translations(obsolete_translations)
+
+        self.assertEqual(
+            out.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+        )
+
+    def test_log_obsolete_translations_one_content_type_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        out = StringIO()
+        command = Command(stdout=out)
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.get_for_models(Continent).values())
+        )
+        command.verbosity=1
+        command.log_obsolete_translations(obsolete_translations)
+
+        self.assertEqual(
+            out.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+        )
+
+    def test_log_obsolete_translations_two_content_types_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        out = StringIO()
+        command = Command(stdout=out)
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.get_for_models(Continent, Country).values())
+        )
+        command.verbosity=1
+        command.log_obsolete_translations(obsolete_translations)
+
+        self.assertEqual(
+            out.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+        )
+
+    def test_log_obsolete_translations_all_content_types_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        out = StringIO()
+        command = Command(stdout=out)
+        obsolete_translations = command.get_obsolete_translations(
+            *list(ContentType.objects.all())
+        )
+        command.verbosity=1
+        command.log_obsolete_translations(obsolete_translations)
+
+        self.assertEqual(
+            out.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+        )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_log_obsolete_translations_no_content_types_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations()
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         []
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_log_obsolete_translations_one_content_type_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: European: Europäisch>',
+    #             '<Translation: European: Avrupalı>',
+    #             '<Translation: Asian: Asiatisch>',
+    #             '<Translation: Asian: Asyalı>'
+    #         ]
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_log_obsolete_translations_two_content_types_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent, Country).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: European: Europäisch>',
+    #             '<Translation: European: Avrupalı>',
+    #             '<Translation: German: Deutsche>',
+    #             '<Translation: German: Almanca>',
+    #             '<Translation: Asian: Asiatisch>',
+    #             '<Translation: Asian: Asyalı>',
+    #             '<Translation: South Korean: Südkoreanisch>',
+    #             '<Translation: South Korean: Güney Korelı>'
+    #         ]
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_log_obsolete_translations_all_content_types_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: European: Europäisch>',
+    #             '<Translation: European: Avrupalı>',
+    #             '<Translation: German: Deutsche>',
+    #             '<Translation: German: Almanca>',
+    #             '<Translation: Cologner: Kölner>',
+    #             '<Translation: Cologner: Kolnlı>',
+    #             '<Translation: Asian: Asiatisch>',
+    #             '<Translation: Asian: Asyalı>',
+    #             '<Translation: South Korean: Südkoreanisch>',
+    #             '<Translation: South Korean: Güney Korelı>',
+    #             '<Translation: Seouler: Seüler>',
+    #             '<Translation: Seouler: Seullı>'
+    #         ]
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_log_obsolete_translations_no_content_types_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations()
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         []
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_log_obsolete_translations_one_content_type_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: Europe: Europa>',
+    #             '<Translation: European: Europäisch>',
+    #             '<Translation: Europe: Avrupa>',
+    #             '<Translation: European: Avrupalı>',
+    #             '<Translation: Asia: Asien>',
+    #             '<Translation: Asian: Asiatisch>',
+    #             '<Translation: Asia: Asya>',
+    #             '<Translation: Asian: Asyalı>'
+    #         ]
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_log_obsolete_translations_two_content_types_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent, Country).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: Europe: Europa>',
+    #             '<Translation: European: Europäisch>',
+    #             '<Translation: Europe: Avrupa>',
+    #             '<Translation: European: Avrupalı>',
+    #             '<Translation: Germany: Deutschland>',
+    #             '<Translation: German: Deutsche>',
+    #             '<Translation: Germany: Almanya>',
+    #             '<Translation: German: Almanca>',
+    #             '<Translation: Asia: Asien>',
+    #             '<Translation: Asian: Asiatisch>',
+    #             '<Translation: Asia: Asya>',
+    #             '<Translation: Asian: Asyalı>',
+    #             '<Translation: South Korea: Südkorea>',
+    #             '<Translation: South Korean: Südkoreanisch>',
+    #             '<Translation: South Korea: Güney Kore>',
+    #             '<Translation: South Korean: Güney Korelı>'
+    #         ]
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_log_obsolete_translations_all_content_types_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: Europe: Europa>',
+    #             '<Translation: European: Europäisch>',
+    #             '<Translation: Europe: Avrupa>',
+    #             '<Translation: European: Avrupalı>',
+    #             '<Translation: Germany: Deutschland>',
+    #             '<Translation: German: Deutsche>',
+    #             '<Translation: Germany: Almanya>',
+    #             '<Translation: German: Almanca>',
+    #             '<Translation: Cologne: Köln>',
+    #             '<Translation: Cologner: Kölner>',
+    #             '<Translation: Cologne: Koln>',
+    #             '<Translation: Cologner: Kolnlı>',
+    #             '<Translation: Asia: Asien>',
+    #             '<Translation: Asian: Asiatisch>',
+    #             '<Translation: Asia: Asya>',
+    #             '<Translation: Asian: Asyalı>',
+    #             '<Translation: South Korea: Südkorea>',
+    #             '<Translation: South Korean: Südkoreanisch>',
+    #             '<Translation: South Korea: Güney Kore>',
+    #             '<Translation: South Korean: Güney Korelı>',
+    #             '<Translation: Seoul: Seül>',
+    #             '<Translation: Seouler: Seüler>',
+    #             '<Translation: Seoul: Seul>',
+    #             '<Translation: Seouler: Seullı>'
+    #         ]
+    #     )
+
+    # def test_log_obsolete_translations_one_content_type_not_translatable(self):
+    #     user = User.objects.create_user('behzad')
+
+    #     Translation.objects.create(
+    #         content_object=user,
+    #         field='username',
+    #         language='de',
+    #         text='behzad',
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(User).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: behzad: behzad>',
+    #         ]
+    #     )
+
+    # def test_log_obsolete_translations_all_content_types_not_translatable(self):
+    #     user = User.objects.create_user('behzad')
+
+    #     Translation.objects.create(
+    #         content_object=user,
+    #         field='username',
+    #         language='de',
+    #         text='behzad',
+    #     )
+
+    #     out = StringIO()
+    #     command = Command(stdout=out)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         out.getvalue(),
+    #         [
+    #             '<Translation: behzad: behzad>',
+    #         ]
+    #     )
