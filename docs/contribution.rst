@@ -13,7 +13,7 @@ Report bugs/Request features
 
 You can report bugs or request features in `issues`_.
 
-.. _`issues`: https://github.com/perplexionist/django-translations/issues
+.. _`issues`: https://github.com/bbmokhtari/django-translations/issues
 
 ********
 Patching
@@ -21,7 +21,7 @@ Patching
 
 You can submit `pull requests`_.
 
-.. _`pull requests`: https://github.com/perplexionist/django-translations/pulls
+.. _`pull requests`: https://github.com/bbmokhtari/django-translations/pulls
 
 ****
 Code
@@ -31,7 +31,7 @@ Clone the repository of Django Translations:
 
 .. code:: bash
 
-   $ git clone https://github.com/perplexionist/django-translations.git
+   $ git clone https://github.com/bbmokhtari/django-translations.git
 
 After cloning the repository (and preferably creating a virtual environment)
 install the required libraries for working on it.
