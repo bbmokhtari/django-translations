@@ -133,11 +133,17 @@ class Command(BaseCommand):
                     'Obsolete translations found for the specified fields:'
                 )
 
-                for app_name, models in changes.items():
+                for app_name, models in sorted(
+                        changes.items(),
+                        key=lambda x: x[0]):
                     self.stdout.write('- App: {}'.format(app_name))
-                    for model_name, fields in models.items():
+                    for model_name, fields in sorted(
+                            models.items(),
+                            key=lambda x: x[0]):
                         self.stdout.write('  - Model: {}'.format(model_name))
-                        for field in fields:
+                        for field in sorted(
+                                fields,
+                                key=lambda x: x[0]):
                             self.stdout.write('    - Field: {}'.format(field))
             else:
                 self.stdout.write('No obsolete translations found.')
