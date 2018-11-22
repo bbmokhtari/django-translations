@@ -943,3 +943,12 @@ class CommandTest(TestCase):
             '  - Model: User\n'
             '    - Field: username\n'
         )
+
+    def test_should_run_synchronization_not_interactive(self):
+        command = Command()
+        command.interactive = False
+
+        self.assertEqual(
+            command.should_run_synchronization(),
+            True
+        )
