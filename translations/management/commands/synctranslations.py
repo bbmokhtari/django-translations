@@ -153,11 +153,15 @@ class Command(BaseCommand):
         run = None
         if self.interactive:
             if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
-                run = False
-                self.stdout.write(
-                    'Synchronizing translations skipped due to not running in '
-                    'a TTY. '
+                self.stderr.write(
+                    "Synchronizing translations failed due to not running in "
+                    "a TTY."
                 )
+                self.stderr.write(
+                    "If you are sure about synchronization you can run "
+                    "it with the '--no-input' flag."
+                )
+                sys.exit(1)
             else:
                 try:
                     run = self.ask_yes_no(
@@ -168,8 +172,9 @@ class Command(BaseCommand):
                         default='Y'
                     )
                 except KeyboardInterrupt:
-                    run = False
                     self.stderr.write('\n')  # move to the next line of stdin
+                    self.stderr.write("\nOperation cancelled.")
+                    sys.exit(1)
         else:
             run = True
 

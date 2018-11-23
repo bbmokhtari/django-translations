@@ -953,13 +953,36 @@ class CommandTest(TestCase):
             True
         )
 
-    def test_should_run_synchronization_not_tty(self):
+    def test_should_run_synchronization_interactive_not_tty(self):
+        stdin = StringIO()
         stdout = StringIO()
-        command = Command(stdout=stdout)
+        stderr = StringIO()
+        command = Command(stdout=stdout, stderr=stderr)
         command.interactive = True
-        command.stdin = StringIO()
+        command.stdin = stdin
+
+        with self.assertRaises(SystemExit) as error:
+            command.should_run_synchronization()
 
         self.assertEqual(
-            command.should_run_synchronization(),
-            False
+            error.exception.code,
+            1
         )
+        self.assertEqual(
+            stderr.getvalue(),
+            "Synchronizing translations failed due to not running in "
+            "a TTY.\n"
+            "If you are sure about synchronization you can run "
+            "it with the '--no-input' flag.\n"
+        )
+
+    # def test_should_run_synchronization_interactive_tty(self):
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     command.interactive = True
+    #     command.stdin = StringIO()
+
+    #     self.assertEqual(
+    #         command.should_run_synchronization(),
+    #         False
+    #     )
