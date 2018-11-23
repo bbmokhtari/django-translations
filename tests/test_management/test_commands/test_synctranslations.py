@@ -49,8 +49,8 @@ class CommandTest(TestCase):
     """Tests for `Command`."""
 
     def test_execute(self):
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         command.run_from_argv(['manage.py', 'synctranslations'])
 
         self.assertIs(
@@ -547,14 +547,14 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations()
         command.verbosity=1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'No obsolete translations found.\n'
         )
@@ -570,8 +570,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(Continent).values())
         )
@@ -579,7 +579,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'No obsolete translations found.\n'
         )
@@ -595,8 +595,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(Continent, Country).values())
         )
@@ -604,7 +604,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'No obsolete translations found.\n'
         )
@@ -620,8 +620,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.all())
         )
@@ -629,7 +629,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'No obsolete translations found.\n'
         )
@@ -648,14 +648,14 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations()
         command.verbosity=1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'No obsolete translations found.\n'
         )
@@ -674,8 +674,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(Continent).values())
         )
@@ -683,7 +683,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: sample\n'
@@ -705,8 +705,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(Continent, Country).values())
         )
@@ -714,7 +714,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: sample\n'
@@ -738,8 +738,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.all())
         )
@@ -747,7 +747,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: sample\n'
@@ -773,14 +773,14 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations()
         command.verbosity=1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'No obsolete translations found.\n'
         )
@@ -799,8 +799,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(Continent).values())
         )
@@ -808,7 +808,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: sample\n'
@@ -831,8 +831,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(Continent, Country).values())
         )
@@ -840,7 +840,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: sample\n'
@@ -866,8 +866,8 @@ class CommandTest(TestCase):
             langs=['de', 'tr']
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.all())
         )
@@ -875,7 +875,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: sample\n'
@@ -900,8 +900,8 @@ class CommandTest(TestCase):
             text='behzad',
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.get_for_models(User).values())
         )
@@ -909,7 +909,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: django.contrib.auth\n'
@@ -927,8 +927,8 @@ class CommandTest(TestCase):
             text='behzad',
         )
 
-        out = StringIO()
-        command = Command(stdout=out)
+        stdout = StringIO()
+        command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
             *list(ContentType.objects.all())
         )
@@ -936,7 +936,7 @@ class CommandTest(TestCase):
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
-            out.getvalue(),
+            stdout.getvalue(),
             'Looking for obsolete translations...\n'
             'Obsolete translations found for the specified fields:\n'
             '- App: django.contrib.auth\n'
@@ -951,4 +951,15 @@ class CommandTest(TestCase):
         self.assertEqual(
             command.should_run_synchronization(),
             True
+        )
+
+    def test_should_run_synchronization_not_tty(self):
+        stdout = StringIO()
+        command = Command(stdout=stdout)
+        command.interactive = True
+        command.stdin = StringIO()
+
+        self.assertEqual(
+            command.should_run_synchronization(),
+            False
         )
