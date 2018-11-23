@@ -70,7 +70,9 @@ class Command(BaseCommand):
             )
         else:
             self.stdout.write(
-                'Cancelled synchronizing translations.'
+                self.style.NOTICE(
+                    'Cancelled synchronizing translations.'
+                )
             )
 
     def get_content_types(self, *app_labels):
@@ -172,8 +174,9 @@ class Command(BaseCommand):
                         default='Y'
                     )
                 except KeyboardInterrupt:
-                    self.stderr.write('\n')  # move to the next line of stdin
-                    self.stderr.write("\nOperation cancelled.")
+                    self.stdout.write('\n')  # move to the next line of stdin
+                    self.stdout.write('\n')  # move another line for division
+                    self.stderr.write("Operation cancelled.")
                     sys.exit(1)
         else:
             run = True

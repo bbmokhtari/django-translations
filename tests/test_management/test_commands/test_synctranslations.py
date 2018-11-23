@@ -1,5 +1,6 @@
 from io import StringIO
 from contextlib import ContextDecorator
+from unittest.mock import patch
 
 from django.test import TestCase
 from django.core.management import call_command
@@ -11,6 +12,16 @@ from translations.models import Translation
 
 from sample.models import Continent, Country, City
 from sample.utils import create_samples
+
+
+def mock_ask_yes_no_return_yes(*args, **kwargs):
+    return True
+
+def mock_ask_yes_no_return_no(*args, **kwargs):
+    return False
+
+def mock_ask_yes_no_raise_interruption(*args, **kwargs):
+    raise KeyboardInterrupt
 
 
 class override_tmeta(ContextDecorator):
@@ -976,13 +987,76 @@ class CommandTest(TestCase):
             "it with the '--no-input' flag.\n"
         )
 
-    # def test_should_run_synchronization_interactive_tty(self):
-    #     stdout = StringIO()
-    #     command = Command(stdout=stdout)
-    #     command.interactive = True
-    #     command.stdin = StringIO()
+    @patch(
+        'translations.management.commands.synctranslations.Command.ask_yes_no',
+        new=mock_ask_yes_no_return_yes
+    )
+    def test_should_run_synchronization_interactive_tty_yes(self):
+        class PsudeoTTY(object):
+            def __init__(self):
+                pass
+            def isatty(self):
+                return True
 
-    #     self.assertEqual(
-    #         command.should_run_synchronization(),
-    #         False
-    #     )
+        stdin = PsudeoTTY()
+        stdout = StringIO()
+        command = Command(stdout=stdout)
+        command.interactive = True
+        command.stdin = stdin
+
+        self.assertEqual(
+            command.should_run_synchronization(),
+            True
+        )
+
+    @patch(
+        'translations.management.commands.synctranslations.Command.ask_yes_no',
+        new=mock_ask_yes_no_return_no
+    )
+    def test_should_run_synchronization_interactive_tty_no(self):
+        class PsudeoTTY(object):
+            def __init__(self):
+                pass
+            def isatty(self):
+                return True
+
+        stdin = PsudeoTTY()
+        stdout = StringIO()
+        command = Command(stdout=stdout)
+        command.interactive = True
+        command.stdin = stdin
+
+        self.assertEqual(
+            command.should_run_synchronization(),
+            False
+        )
+
+    @patch(
+        'translations.management.commands.synctranslations.Command.ask_yes_no',
+        new=mock_ask_yes_no_raise_interruption
+    )
+    def test_should_run_synchronization_interactive_tty_interrupt(self):
+        class PsudeoTTY(object):
+            def __init__(self):
+                pass
+            def isatty(self):
+                return True
+
+        stdin = PsudeoTTY()
+        stdout = StringIO()
+        stderr = StringIO()
+        command = Command(stdout=stdout, stderr=stderr)
+        command.interactive = True
+        command.stdin = stdin
+
+        with self.assertRaises(SystemExit) as error:
+            command.should_run_synchronization()
+
+        self.assertEqual(
+            error.exception.code,
+            1
+        )
+        self.assertEqual(
+            stderr.getvalue(),
+            "Operation cancelled.\n"
+        )
