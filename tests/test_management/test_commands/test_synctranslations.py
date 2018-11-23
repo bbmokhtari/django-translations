@@ -14,14 +14,10 @@ from sample.models import Continent, Country, City
 from sample.utils import create_samples
 
 
-def mock_ask_yes_no_return_yes(*args, **kwargs):
-    return True
-
-def mock_ask_yes_no_return_no(*args, **kwargs):
-    return False
-
-def mock_ask_yes_no_raise_interruption(*args, **kwargs):
-    raise KeyboardInterrupt
+def get_raiser(error):
+    def _raiser(*args, **kwargs):
+        raise error
+    return _raiser
 
 
 class override_tmeta(ContextDecorator):
@@ -989,7 +985,7 @@ class CommandTest(TestCase):
 
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
-        new=mock_ask_yes_no_return_yes
+        new=lambda *args, **kwargs: True
     )
     def test_should_run_synchronization_interactive_tty_yes(self):
         class PsudeoTTY(object):
@@ -1011,7 +1007,7 @@ class CommandTest(TestCase):
 
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
-        new=mock_ask_yes_no_return_no
+        new=lambda *args, **kwargs: False
     )
     def test_should_run_synchronization_interactive_tty_no(self):
         class PsudeoTTY(object):
@@ -1033,7 +1029,7 @@ class CommandTest(TestCase):
 
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
-        new=mock_ask_yes_no_raise_interruption
+        new=get_raiser(KeyboardInterrupt)
     )
     def test_should_run_synchronization_interactive_tty_interrupt(self):
         class PsudeoTTY(object):
@@ -1059,4 +1055,40 @@ class CommandTest(TestCase):
         self.assertEqual(
             stderr.getvalue(),
             "Operation cancelled.\n"
+        )
+
+    @patch('builtins.input', new=lambda *args: 'yes')
+    def test_ask_yes_no_input_yes(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            True
+        )
+
+    @patch('builtins.input', new=lambda *args: 'no')
+    def test_ask_yes_no_input_no(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            False
+        )
+
+    @patch('builtins.input', new=lambda *args: 'y')
+    def test_ask_yes_no_input_y(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            True
+        )
+
+    @patch('builtins.input', new=lambda *args: 'n')
+    def test_ask_yes_no_input_n(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            False
         )

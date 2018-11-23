@@ -187,17 +187,17 @@ class Command(BaseCommand):
         """Ask user for yes or no with a message and a default value."""
         answer = None
         while answer is None:
-            raw_value = input(message)
+            value = input(message)
 
             # default
-            if default is not None and raw_value == '':
-                raw_value = default
+            if default is not None and value == '':
+                value = default
 
             # yes or no?
-            raw_value = raw_value.lower()
-            if raw_value in ['y', 'yes', True]:
+            value = value.lower()
+            if value in ['y', 'yes', True]:
                 answer = True
-            elif raw_value in ['n', 'no', False]:
+            elif value in ['n', 'no', False]:
                 answer = False
             else:
                 answer = None
