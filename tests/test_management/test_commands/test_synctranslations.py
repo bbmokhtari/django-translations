@@ -1053,8 +1053,7 @@ class CommandTest(TestCase):
         )
         self.assertEqual(
             stderr.getvalue(),
-            "Synchronizing translations failed due to not running in "
-            "a TTY.\n"
+            "Synchronization failed due to not running in a TTY.\n"
             "If you are sure about synchronization you can run "
             "it with the '--no-input' flag.\n"
         )
@@ -1132,3 +1131,450 @@ class CommandTest(TestCase):
             stderr.getvalue(),
             "Operation cancelled.\n"
         )
+
+    # def test_handle_no_app_labels_no_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     call_command('synctranslations', stdout=stdout)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'No obsolete translations found.\n'
+    #         '\n'
+    #         'Nothing to synchronize.'
+    #     )
+
+    # def test_handle_one_content_type_no_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'No obsolete translations found.\n'
+    #     )
+
+    # def test_handle_two_content_types_no_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent, Country).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'No obsolete translations found.\n'
+    #     )
+
+    # def test_handle_all_content_types_no_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'No obsolete translations found.\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_handle_no_content_types_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations()
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'No obsolete translations found.\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_handle_one_content_type_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: sample\n'
+    #         '  - Model: Continent\n'
+    #         '    - Field: denonym\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_handle_two_content_types_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent, Country).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: sample\n'
+    #         '  - Model: Continent\n'
+    #         '    - Field: denonym\n'
+    #         '  - Model: Country\n'
+    #         '    - Field: denonym\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=['name'])
+    # @override_tmeta(Country, fields=['name'])
+    # @override_tmeta(City, fields=['name'])
+    # def test_handle_all_content_types_one_field(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: sample\n'
+    #         '  - Model: City\n'
+    #         '    - Field: denonym\n'
+    #         '  - Model: Continent\n'
+    #         '    - Field: denonym\n'
+    #         '  - Model: Country\n'
+    #         '    - Field: denonym\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_handle_no_content_types_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations()
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'No obsolete translations found.\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_handle_one_content_type_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: sample\n'
+    #         '  - Model: Continent\n'
+    #         '    - Field: denonym\n'
+    #         '    - Field: name\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_handle_two_content_types_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(Continent, Country).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: sample\n'
+    #         '  - Model: Continent\n'
+    #         '    - Field: denonym\n'
+    #         '    - Field: name\n'
+    #         '  - Model: Country\n'
+    #         '    - Field: denonym\n'
+    #         '    - Field: name\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # @override_tmeta(Continent, fields=[])
+    # @override_tmeta(Country, fields=[])
+    # @override_tmeta(City, fields=[])
+    # def test_handle_all_content_types_two_fields(self):
+    #     create_samples(
+    #         continent_names=['europe', 'asia'],
+    #         country_names=['germany', 'south korea'],
+    #         city_names=['cologne', 'seoul'],
+    #         continent_fields=['name', 'denonym'],
+    #         country_fields=['name', 'denonym'],
+    #         city_fields=['name', 'denonym'],
+    #         langs=['de', 'tr']
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: sample\n'
+    #         '  - Model: City\n'
+    #         '    - Field: denonym\n'
+    #         '    - Field: name\n'
+    #         '  - Model: Continent\n'
+    #         '    - Field: denonym\n'
+    #         '    - Field: name\n'
+    #         '  - Model: Country\n'
+    #         '    - Field: denonym\n'
+    #         '    - Field: name\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # def test_handle_one_content_type_not_translatable(self):
+    #     user = User.objects.create_user('behzad')
+
+    #     Translation.objects.create(
+    #         content_object=user,
+    #         field='username',
+    #         language='de',
+    #         text='behzad',
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.get_for_models(User).values())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: django.contrib.auth\n'
+    #         '  - Model: User\n'
+    #         '    - Field: username\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )
+
+    # def test_handle_all_content_types_not_translatable(self):
+    #     user = User.objects.create_user('behzad')
+
+    #     Translation.objects.create(
+    #         content_object=user,
+    #         field='username',
+    #         language='de',
+    #         text='behzad',
+    #     )
+
+    #     stdout = StringIO()
+    #     command = Command(stdout=stdout)
+    #     obsolete_translations = command.get_obsolete_translations(
+    #         *list(ContentType.objects.all())
+    #     )
+    #     command.verbosity=1
+    #     command.log_obsolete_translations(obsolete_translations)
+
+    #     self.assertEqual(
+    #         stdout.getvalue(),
+    #         'Looking for obsolete translations...\n'
+    #         'Obsolete translations found for the specified fields:\n'
+    #         '- App: django.contrib.auth\n'
+    #         '  - Model: User\n'
+    #         '    - Field: username\n'
+    #         +
+    #         command.style.WARNING(
+    #             'Obsolete translations will be deleted in the '
+    #             'synchronization process.'
+    #         ) + '\n'
+    #     )

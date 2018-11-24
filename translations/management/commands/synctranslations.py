@@ -141,8 +141,7 @@ class Command(BaseCommand):
         if self.interactive:
             if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
                 self.stderr.write(
-                    "Synchronizing translations failed due to not running in "
-                    "a TTY."
+                    "Synchronization failed due to not running in a TTY."
                 )
                 self.stderr.write(
                     "If you are sure about synchronization you can run "
@@ -185,25 +184,23 @@ class Command(BaseCommand):
         # divide initializing synchronization with asking for synchronization
         self.stdout.write('\n')
 
-        # quit if there's nothing to do
-        if not obsolete_translations:
-            self.stdout.write('Nothing to synchronize.')
-            return
+        if obsolete_translations:
+            # ask user if they are sure that they want to synchronize
+            run_synchronization = self.should_run_synchronization()
 
-        # ask user if they are sure that they want to synchronize
-        run_synchronization = self.should_run_synchronization()
+            # divide asking for synchronization with actual synchronization
+            self.stdout.write('\n')
 
-        # divide asking for synchronization with actual synchronization
-        self.stdout.write('\n')
-
-        if run_synchronization:
-            obsolete_translations.delete()
-            self.stdout.write(
-                self.style.SUCCESS(
-                    'Successfully synchronized translations.'
+            if run_synchronization:
+                obsolete_translations.delete()
+            else:
+                self.stdout.write(
+                    'Synchronization cancelled.'
                 )
+                return
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                'Synchronization successful.'
             )
-        else:
-            self.stdout.write(
-                'Cancelled synchronizing translations.'
-            )
+        )
