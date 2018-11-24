@@ -147,6 +147,13 @@ class Command(BaseCommand):
                                 fields,
                                 key=lambda x: x[0]):
                             self.stdout.write('    - Field: {}'.format(field))
+
+                self.stdout.write(
+                    self.style.WARNING(
+                        'Obsolete translations will be deleted in the '
+                        'synchronization process.'
+                    )
+                )
             else:
                 self.stdout.write('No obsolete translations found.')
 

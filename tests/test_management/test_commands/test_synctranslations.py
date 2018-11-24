@@ -696,6 +696,11 @@ class CommandTest(TestCase):
             '- App: sample\n'
             '  - Model: Continent\n'
             '    - Field: denonym\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -729,6 +734,11 @@ class CommandTest(TestCase):
             '    - Field: denonym\n'
             '  - Model: Country\n'
             '    - Field: denonym\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -764,6 +774,11 @@ class CommandTest(TestCase):
             '    - Field: denonym\n'
             '  - Model: Country\n'
             '    - Field: denonym\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     @override_tmeta(Continent, fields=[])
@@ -822,6 +837,11 @@ class CommandTest(TestCase):
             '  - Model: Continent\n'
             '    - Field: denonym\n'
             '    - Field: name\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     @override_tmeta(Continent, fields=[])
@@ -857,6 +877,11 @@ class CommandTest(TestCase):
             '  - Model: Country\n'
             '    - Field: denonym\n'
             '    - Field: name\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     @override_tmeta(Continent, fields=[])
@@ -895,6 +920,11 @@ class CommandTest(TestCase):
             '  - Model: Country\n'
             '    - Field: denonym\n'
             '    - Field: name\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     def test_log_obsolete_translations_one_content_type_not_translatable(self):
@@ -922,6 +952,11 @@ class CommandTest(TestCase):
             '- App: django.contrib.auth\n'
             '  - Model: User\n'
             '    - Field: username\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     def test_log_obsolete_translations_all_content_types_not_translatable(self):
@@ -949,6 +984,11 @@ class CommandTest(TestCase):
             '- App: django.contrib.auth\n'
             '  - Model: User\n'
             '    - Field: username\n'
+            +
+            command.style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
         )
 
     def test_should_run_synchronization_not_interactive(self):
