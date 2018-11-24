@@ -1585,3 +1585,371 @@ class CommandTest(TestCase):
             '\n'
             'Synchronization cancelled.\n'
         )
+
+    @patch('builtins.input', new=lambda *args: 'y')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_no_app_labels_two_fields_input_yes(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations', stdout=stdout)
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'y')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_one_app_label_two_fields_input_yes(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations',
+            'sample',
+            stdout=stdout
+        )
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'y')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_two_app_labels_two_fields_input_yes(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations',
+            'sample', 'translations',
+            stdout=stdout
+        )
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'y')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_all_app_labels_two_fields_input_yes(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations',
+            'admin', 'auth', 'contenttypes', 'sessions',
+            'sample', 'translations',
+            stdout=stdout
+        )
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'n')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_no_app_labels_two_fields_input_no(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations', stdout=stdout)
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            'Synchronization cancelled.\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'n')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_one_app_label_two_fields_input_no(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations',
+            'sample',
+            stdout=stdout
+        )
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            'Synchronization cancelled.\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'n')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_two_app_labels_two_fields_input_no(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations',
+            'sample', 'translations',
+            stdout=stdout
+        )
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            'Synchronization cancelled.\n'
+        )
+
+    @patch('builtins.input', new=lambda *args: 'n')
+    @override_tmeta(Continent, fields=[])
+    @override_tmeta(Country, fields=[])
+    @override_tmeta(City, fields=[])
+    def test_handle_all_app_labels_two_fields_input_no(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
+
+        stdout = StringIO()
+        call_command('synctranslations',
+            'admin', 'auth', 'contenttypes', 'sessions',
+            'sample', 'translations',
+            stdout=stdout
+        )
+
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'Obsolete translations found for the specified fields:\n'
+            '- App: sample\n'
+            '  - Model: City\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Continent\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            '  - Model: Country\n'
+            '    - Field: denonym\n'
+            '    - Field: name\n'
+            +
+            Command().style.WARNING(
+                'Obsolete translations will be deleted in the '
+                'synchronization process.'
+            ) + '\n'
+            '\n'
+            '\n'
+            'Synchronization cancelled.\n'
+        )
