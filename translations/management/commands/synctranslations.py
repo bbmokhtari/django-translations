@@ -58,11 +58,11 @@ class Command(BaseCommand):
             for content_type in content_types:
                 model = content_type.model_class()
                 if issubclass(model, Translatable):
-                    translatable_fields = model._get_translatable_fields_names()
+                    trans_fields = model._get_translatable_fields_names()
                     model_query = (
                         Q(content_type=content_type)
                         &
-                        ~Q(field__in=translatable_fields)
+                        ~Q(field__in=trans_fields)
                     )
                 else:
                     model_query = Q(content_type=content_type)
@@ -80,7 +80,9 @@ class Command(BaseCommand):
             if obsolete_translations:
                 changes = {}
                 for translation in obsolete_translations:
-                    app = apps.get_app_config(translation.content_type.app_label)
+                    app = apps.get_app_config(
+                        translation.content_type.app_label
+                    )
                     app_name = app.name
                     model = translation.content_type.model_class()
                     model_name = model.__name__

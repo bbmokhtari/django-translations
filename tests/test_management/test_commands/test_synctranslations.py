@@ -183,7 +183,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent).values())
+            *list(
+                ContentType.objects.get_for_models(Continent).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -204,7 +206,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent, Country).values())
+            *list(
+                ContentType.objects.get_for_models(Continent, Country).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -225,7 +229,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -271,7 +277,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent).values())
+            *list(
+                ContentType.objects.get_for_models(Continent).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -300,7 +308,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent, Country).values())
+            *list(
+                ContentType.objects.get_for_models(Continent, Country).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -333,7 +343,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -392,7 +404,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent).values())
+            *list(
+                ContentType.objects.get_for_models(Continent).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -425,7 +439,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent, Country).values())
+            *list(
+                ContentType.objects.get_for_models(Continent, Country).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -466,7 +482,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -499,7 +517,7 @@ class CommandTest(TestCase):
             ]
         )
 
-    def test_get_obsolete_translations_one_content_type_not_translatable(self):
+    def test_get_obsolete_translations_one_content_type_not_trans(self):
         user = User.objects.create_user('behzad')
 
         Translation.objects.create(
@@ -511,7 +529,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(User).values())
+            *list(
+                ContentType.objects.get_for_models(User).values()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -521,7 +541,7 @@ class CommandTest(TestCase):
             ]
         )
 
-    def test_get_obsolete_translations_all_content_types_not_translatable(self):
+    def test_get_obsolete_translations_all_content_types_not_trans(self):
         user = User.objects.create_user('behzad')
 
         Translation.objects.create(
@@ -533,7 +553,9 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
 
         self.assertQuerysetEqual(
@@ -557,7 +579,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations()
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -580,9 +602,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent).values())
+            *list(
+                ContentType.objects.get_for_models(Continent).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -605,9 +629,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent, Country).values())
+            *list(
+                ContentType.objects.get_for_models(Continent, Country).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -630,9 +656,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -658,7 +686,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations()
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -684,9 +712,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent).values())
+            *list(
+                ContentType.objects.get_for_models(Continent).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -720,9 +750,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent, Country).values())
+            *list(
+                ContentType.objects.get_for_models(Continent, Country).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -758,9 +790,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -798,7 +832,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations()
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -824,9 +858,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent).values())
+            *list(
+                ContentType.objects.get_for_models(Continent).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -861,9 +897,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(Continent, Country).values())
+            *list(
+                ContentType.objects.get_for_models(Continent, Country).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -901,9 +939,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -927,7 +967,7 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
-    def test_log_obsolete_translations_one_content_type_not_translatable(self):
+    def test_log_obsolete_translations_one_content_type_not_trans(self):
         user = User.objects.create_user('behzad')
 
         Translation.objects.create(
@@ -940,9 +980,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.get_for_models(User).values())
+            *list(
+                ContentType.objects.get_for_models(User).values()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -959,7 +1001,7 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
-    def test_log_obsolete_translations_all_content_types_not_translatable(self):
+    def test_log_obsolete_translations_all_content_types_not_trans(self):
         user = User.objects.create_user('behzad')
 
         Translation.objects.create(
@@ -972,9 +1014,11 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(ContentType.objects.all())
+            *list(
+                ContentType.objects.all()
+            )
         )
-        command.verbosity=1
+        command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
         self.assertEqual(
@@ -1064,8 +1108,6 @@ class CommandTest(TestCase):
     )
     def test_should_run_synchronization_interactive_tty_yes(self):
         class PsudeoTTY(object):
-            def __init__(self):
-                pass
             def isatty(self):
                 return True
 
@@ -1086,8 +1128,6 @@ class CommandTest(TestCase):
     )
     def test_should_run_synchronization_interactive_tty_no(self):
         class PsudeoTTY(object):
-            def __init__(self):
-                pass
             def isatty(self):
                 return True
 
@@ -1108,8 +1148,6 @@ class CommandTest(TestCase):
     )
     def test_should_run_synchronization_interactive_tty_interrupt(self):
         class PsudeoTTY(object):
-            def __init__(self):
-                pass
             def isatty(self):
                 return True
 
@@ -1144,7 +1182,10 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations', stdout=stdout)
+        call_command(
+            'synctranslations',
+            stdout=stdout
+        )
 
         self.assertEqual(
             stdout.getvalue(),
@@ -1169,7 +1210,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample',
             stdout=stdout
         )
@@ -1197,7 +1239,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample', 'translations',
             stdout=stdout
         )
@@ -1225,7 +1268,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'admin', 'auth', 'contenttypes', 'sessions',
             'sample', 'translations',
             stdout=stdout
@@ -1258,7 +1302,10 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations', stdout=stdout)
+        call_command(
+            'synctranslations',
+            stdout=stdout
+        )
 
         self.assertEqual(
             stdout.getvalue(),
@@ -1300,7 +1347,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample',
             stdout=stdout
         )
@@ -1345,7 +1393,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample', 'translations',
             stdout=stdout
         )
@@ -1390,7 +1439,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'admin', 'auth', 'contenttypes', 'sessions',
             'sample', 'translations',
             stdout=stdout
@@ -1436,7 +1486,10 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations', stdout=stdout)
+        call_command(
+            'synctranslations',
+            stdout=stdout
+        )
 
         self.assertEqual(
             stdout.getvalue(),
@@ -1475,7 +1528,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample',
             stdout=stdout
         )
@@ -1517,7 +1571,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample', 'translations',
             stdout=stdout
         )
@@ -1559,7 +1614,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'admin', 'auth', 'contenttypes', 'sessions',
             'sample', 'translations',
             stdout=stdout
@@ -1607,7 +1663,10 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations', stdout=stdout, stderr=stderr)
+            call_command(
+                'synctranslations',
+                stdout=stdout, stderr=stderr
+            )
 
         self.assertEqual(
             error.exception.code,
@@ -1659,7 +1718,8 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations',
+            call_command(
+                'synctranslations',
                 'sample',
                 stdout=stdout, stderr=stderr
             )
@@ -1714,7 +1774,8 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations',
+            call_command(
+                'synctranslations',
                 'sample', 'translations',
                 stdout=stdout, stderr=stderr
             )
@@ -1769,7 +1830,8 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations',
+            call_command(
+                'synctranslations',
                 'admin', 'auth', 'contenttypes', 'sessions',
                 'sample', 'translations',
                 stdout=stdout, stderr=stderr
@@ -1820,7 +1882,10 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations', stdout=stdout)
+        call_command(
+            'synctranslations',
+            stdout=stdout
+        )
 
         self.assertEqual(
             stdout.getvalue(),
@@ -1865,7 +1930,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample',
             stdout=stdout
         )
@@ -1913,7 +1979,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample', 'translations',
             stdout=stdout
         )
@@ -1961,7 +2028,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'admin', 'auth', 'contenttypes', 'sessions',
             'sample', 'translations',
             stdout=stdout
@@ -2010,7 +2078,10 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations', stdout=stdout)
+        call_command(
+            'synctranslations',
+            stdout=stdout
+        )
 
         self.assertEqual(
             stdout.getvalue(),
@@ -2052,7 +2123,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample',
             stdout=stdout
         )
@@ -2097,7 +2169,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'sample', 'translations',
             stdout=stdout
         )
@@ -2142,7 +2215,8 @@ class CommandTest(TestCase):
         )
 
         stdout = StringIO()
-        call_command('synctranslations',
+        call_command(
+            'synctranslations',
             'admin', 'auth', 'contenttypes', 'sessions',
             'sample', 'translations',
             stdout=stdout
@@ -2193,7 +2267,10 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations', stdout=stdout, stderr=stderr)
+            call_command(
+                'synctranslations',
+                stdout=stdout, stderr=stderr
+            )
 
         self.assertEqual(
             error.exception.code,
@@ -2248,7 +2325,8 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations',
+            call_command(
+                'synctranslations',
                 'sample',
                 stdout=stdout, stderr=stderr
             )
@@ -2306,7 +2384,8 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations',
+            call_command(
+                'synctranslations',
                 'sample', 'translations',
                 stdout=stdout, stderr=stderr
             )
@@ -2364,7 +2443,8 @@ class CommandTest(TestCase):
         stdout = StringIO()
         stderr = StringIO()
         with self.assertRaises(SystemExit) as error:
-            call_command('synctranslations',
+            call_command(
+                'synctranslations',
                 'admin', 'auth', 'contenttypes', 'sessions',
                 'sample', 'translations',
                 stdout=stdout, stderr=stderr
