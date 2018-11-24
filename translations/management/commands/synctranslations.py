@@ -33,46 +33,6 @@ class Command(BaseCommand):
         self.stdin = options.get('stdin', sys.stdin)  # Used for testing
         return super().execute(*args, **options)
 
-    @no_translations
-    def handle(self, *app_labels, **options):
-
-        # get arguments
-        self.verbosity = options['verbosity']
-        self.interactive = options['interactive']
-
-        # collect all the models which will be affected
-        content_types = self.get_content_types(*app_labels)
-
-        # handle obsolete translations
-        obsolete_translations = self.get_obsolete_translations(*content_types)
-        self.log_obsolete_translations(obsolete_translations)
-
-        # divide initializing synchronization with asking for synchronization
-        self.stdout.write('\n')
-
-        # quit if there's nothing to do
-        if not obsolete_translations:
-            self.stdout.write('Nothing to synchronize.')
-            return
-
-        # ask user if they are sure that they want to synchronize
-        run_synchronization = self.should_run_synchronization()
-
-        # divide asking for synchronization with actual synchronization
-        self.stdout.write('\n')
-
-        if run_synchronization:
-            obsolete_translations.delete()
-            self.stdout.write(
-                self.style.SUCCESS(
-                    'Successfully synchronized translations.'
-                )
-            )
-        else:
-            self.stdout.write(
-                'Cancelled synchronizing translations.'
-            )
-
     def get_content_types(self, *app_labels):
         """Return the content types of some apps or all of them."""
         if app_labels:
@@ -155,6 +115,26 @@ class Command(BaseCommand):
             else:
                 self.stdout.write('No obsolete translations found.')
 
+    def ask_yes_no(self, message, default=None):
+        """Ask user for yes or no with a message and a default value."""
+        answer = None
+        while answer is None:
+            value = input(message)
+
+            # default
+            if default is not None and value == '':
+                value = default
+
+            # yes or no?
+            value = value.lower()
+            if value in ['y', 'yes', True]:
+                answer = True
+            elif value in ['n', 'no', False]:
+                answer = False
+            else:
+                answer = None
+        return answer
+
     def should_run_synchronization(self):
         """Return whether to run synchronization or not."""
         run = None
@@ -188,22 +168,42 @@ class Command(BaseCommand):
 
         return run
 
-    def ask_yes_no(self, message, default=None):
-        """Ask user for yes or no with a message and a default value."""
-        answer = None
-        while answer is None:
-            value = input(message)
+    @no_translations
+    def handle(self, *app_labels, **options):
 
-            # default
-            if default is not None and value == '':
-                value = default
+        # get arguments
+        self.verbosity = options['verbosity']
+        self.interactive = options['interactive']
 
-            # yes or no?
-            value = value.lower()
-            if value in ['y', 'yes', True]:
-                answer = True
-            elif value in ['n', 'no', False]:
-                answer = False
-            else:
-                answer = None
-        return answer
+        # collect all the models which will be affected
+        content_types = self.get_content_types(*app_labels)
+
+        # handle obsolete translations
+        obsolete_translations = self.get_obsolete_translations(*content_types)
+        self.log_obsolete_translations(obsolete_translations)
+
+        # divide initializing synchronization with asking for synchronization
+        self.stdout.write('\n')
+
+        # quit if there's nothing to do
+        if not obsolete_translations:
+            self.stdout.write('Nothing to synchronize.')
+            return
+
+        # ask user if they are sure that they want to synchronize
+        run_synchronization = self.should_run_synchronization()
+
+        # divide asking for synchronization with actual synchronization
+        self.stdout.write('\n')
+
+        if run_synchronization:
+            obsolete_translations.delete()
+            self.stdout.write(
+                self.style.SUCCESS(
+                    'Successfully synchronized translations.'
+                )
+            )
+        else:
+            self.stdout.write(
+                'Cancelled synchronizing translations.'
+            )

@@ -991,6 +991,42 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch('builtins.input', new=lambda *args: 'yes')
+    def test_ask_yes_no_input_yes(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            True
+        )
+
+    @patch('builtins.input', new=lambda *args: 'no')
+    def test_ask_yes_no_input_no(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            False
+        )
+
+    @patch('builtins.input', new=lambda *args: 'y')
+    def test_ask_yes_no_input_y(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            True
+        )
+
+    @patch('builtins.input', new=lambda *args: 'n')
+    def test_ask_yes_no_input_n(self):
+        command = Command()
+
+        self.assertEqual(
+            command.ask_yes_no('message'),
+            False
+        )
+
     def test_should_run_synchronization_not_interactive(self):
         command = Command()
         command.interactive = False
@@ -1095,40 +1131,4 @@ class CommandTest(TestCase):
         self.assertEqual(
             stderr.getvalue(),
             "Operation cancelled.\n"
-        )
-
-    @patch('builtins.input', new=lambda *args: 'yes')
-    def test_ask_yes_no_input_yes(self):
-        command = Command()
-
-        self.assertEqual(
-            command.ask_yes_no('message'),
-            True
-        )
-
-    @patch('builtins.input', new=lambda *args: 'no')
-    def test_ask_yes_no_input_no(self):
-        command = Command()
-
-        self.assertEqual(
-            command.ask_yes_no('message'),
-            False
-        )
-
-    @patch('builtins.input', new=lambda *args: 'y')
-    def test_ask_yes_no_input_y(self):
-        command = Command()
-
-        self.assertEqual(
-            command.ask_yes_no('message'),
-            True
-        )
-
-    @patch('builtins.input', new=lambda *args: 'n')
-    def test_ask_yes_no_input_n(self):
-        command = Command()
-
-        self.assertEqual(
-            command.ask_yes_no('message'),
-            False
         )
