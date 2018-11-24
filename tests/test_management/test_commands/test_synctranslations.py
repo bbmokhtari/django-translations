@@ -1132,102 +1132,115 @@ class CommandTest(TestCase):
             "Operation cancelled.\n"
         )
 
-    # def test_handle_no_app_labels_no_fields(self):
-    #     create_samples(
-    #         continent_names=['europe', 'asia'],
-    #         country_names=['germany', 'south korea'],
-    #         city_names=['cologne', 'seoul'],
-    #         continent_fields=['name', 'denonym'],
-    #         country_fields=['name', 'denonym'],
-    #         city_fields=['name', 'denonym'],
-    #         langs=['de', 'tr']
-    #     )
+    def test_handle_no_app_labels_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
 
-    #     stdout = StringIO()
-    #     call_command('synctranslations', stdout=stdout)
+        stdout = StringIO()
+        call_command('synctranslations', stdout=stdout)
 
-    #     self.assertEqual(
-    #         stdout.getvalue(),
-    #         'Looking for obsolete translations...\n'
-    #         'No obsolete translations found.\n'
-    #         '\n'
-    #         'Nothing to synchronize.'
-    #     )
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
 
-    # def test_handle_one_content_type_no_fields(self):
-    #     create_samples(
-    #         continent_names=['europe', 'asia'],
-    #         country_names=['germany', 'south korea'],
-    #         city_names=['cologne', 'seoul'],
-    #         continent_fields=['name', 'denonym'],
-    #         country_fields=['name', 'denonym'],
-    #         city_fields=['name', 'denonym'],
-    #         langs=['de', 'tr']
-    #     )
+    def test_handle_one_app_label_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
 
-    #     stdout = StringIO()
-    #     command = Command(stdout=stdout)
-    #     obsolete_translations = command.get_obsolete_translations(
-    #         *list(ContentType.objects.get_for_models(Continent).values())
-    #     )
-    #     command.verbosity=1
-    #     command.log_obsolete_translations(obsolete_translations)
+        stdout = StringIO()
+        call_command('synctranslations',
+            'sample',
+            stdout=stdout
+        )
 
-    #     self.assertEqual(
-    #         stdout.getvalue(),
-    #         'Looking for obsolete translations...\n'
-    #         'No obsolete translations found.\n'
-    #     )
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
 
-    # def test_handle_two_content_types_no_fields(self):
-    #     create_samples(
-    #         continent_names=['europe', 'asia'],
-    #         country_names=['germany', 'south korea'],
-    #         city_names=['cologne', 'seoul'],
-    #         continent_fields=['name', 'denonym'],
-    #         country_fields=['name', 'denonym'],
-    #         city_fields=['name', 'denonym'],
-    #         langs=['de', 'tr']
-    #     )
+    def test_handle_two_app_labels_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
 
-    #     stdout = StringIO()
-    #     command = Command(stdout=stdout)
-    #     obsolete_translations = command.get_obsolete_translations(
-    #         *list(ContentType.objects.get_for_models(Continent, Country).values())
-    #     )
-    #     command.verbosity=1
-    #     command.log_obsolete_translations(obsolete_translations)
+        stdout = StringIO()
+        call_command('synctranslations',
+            'sample', 'translations',
+            stdout=stdout
+        )
 
-    #     self.assertEqual(
-    #         stdout.getvalue(),
-    #         'Looking for obsolete translations...\n'
-    #         'No obsolete translations found.\n'
-    #     )
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
 
-    # def test_handle_all_content_types_no_fields(self):
-    #     create_samples(
-    #         continent_names=['europe', 'asia'],
-    #         country_names=['germany', 'south korea'],
-    #         city_names=['cologne', 'seoul'],
-    #         continent_fields=['name', 'denonym'],
-    #         country_fields=['name', 'denonym'],
-    #         city_fields=['name', 'denonym'],
-    #         langs=['de', 'tr']
-    #     )
+    def test_handle_all_app_labels_no_fields(self):
+        create_samples(
+            continent_names=['europe', 'asia'],
+            country_names=['germany', 'south korea'],
+            city_names=['cologne', 'seoul'],
+            continent_fields=['name', 'denonym'],
+            country_fields=['name', 'denonym'],
+            city_fields=['name', 'denonym'],
+            langs=['de', 'tr']
+        )
 
-    #     stdout = StringIO()
-    #     command = Command(stdout=stdout)
-    #     obsolete_translations = command.get_obsolete_translations(
-    #         *list(ContentType.objects.all())
-    #     )
-    #     command.verbosity=1
-    #     command.log_obsolete_translations(obsolete_translations)
+        stdout = StringIO()
+        call_command('synctranslations',
+            'admin', 'auth', 'contenttypes', 'sessions',
+            'sample', 'translations',
+            stdout=stdout
+        )
 
-    #     self.assertEqual(
-    #         stdout.getvalue(),
-    #         'Looking for obsolete translations...\n'
-    #         'No obsolete translations found.\n'
-    #     )
+        self.assertEqual(
+            stdout.getvalue(),
+            'Looking for obsolete translations...\n'
+            'No obsolete translations found.\n'
+            '\n'
+            +
+            Command().style.SUCCESS(
+                'Synchronization successful.'
+            ) + '\n'
+        )
 
     # @override_tmeta(Continent, fields=['name'])
     # @override_tmeta(Country, fields=['name'])
