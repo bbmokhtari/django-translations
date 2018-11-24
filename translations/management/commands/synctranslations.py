@@ -70,9 +70,7 @@ class Command(BaseCommand):
             )
         else:
             self.stdout.write(
-                self.style.NOTICE(
-                    'Cancelled synchronizing translations.'
-                )
+                'Cancelled synchronizing translations.'
             )
 
     def get_content_types(self, *app_labels):
