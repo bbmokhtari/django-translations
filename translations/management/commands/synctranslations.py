@@ -11,6 +11,11 @@ from translations.models import Translation, Translatable
 
 
 class Command(BaseCommand):
+    """
+    The command which synchronizes the translation objects with
+    the configurations.
+    """
+
     help = 'Synchronize the translations for apps.'
 
     def add_arguments(self, parser):
