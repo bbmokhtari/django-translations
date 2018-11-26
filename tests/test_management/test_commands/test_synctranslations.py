@@ -168,7 +168,9 @@ class CommandTest(TestCase):
         )
 
         command = Command()
-        obsolete_translations = command.get_obsolete_translations()
+        obsolete_translations = command.get_obsolete_translations(
+            ContentType.objects.none()
+        )
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
@@ -188,9 +190,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent).values()
-            )
+            ContentType.objects.get_for_models(Continent).values()
         )
 
         self.assertQuerysetEqual(
@@ -211,9 +211,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent, Country).values()
-            )
+            ContentType.objects.get_for_models(Continent, Country).values()
         )
 
         self.assertQuerysetEqual(
@@ -234,9 +232,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
 
         self.assertQuerysetEqual(
@@ -259,7 +255,9 @@ class CommandTest(TestCase):
         )
 
         command = Command()
-        obsolete_translations = command.get_obsolete_translations()
+        obsolete_translations = command.get_obsolete_translations(
+            ContentType.objects.none()
+        )
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
@@ -282,9 +280,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent).values()
-            )
+            ContentType.objects.get_for_models(Continent).values()
         )
 
         self.assertQuerysetEqual(
@@ -313,9 +309,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent, Country).values()
-            )
+            ContentType.objects.get_for_models(Continent, Country).values()
         )
 
         self.assertQuerysetEqual(
@@ -348,9 +342,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
 
         self.assertQuerysetEqual(
@@ -386,7 +378,9 @@ class CommandTest(TestCase):
         )
 
         command = Command()
-        obsolete_translations = command.get_obsolete_translations()
+        obsolete_translations = command.get_obsolete_translations(
+            ContentType.objects.none()
+        )
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
@@ -409,9 +403,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent).values()
-            )
+            ContentType.objects.get_for_models(Continent).values()
         )
 
         self.assertQuerysetEqual(
@@ -444,9 +436,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent, Country).values()
-            )
+            ContentType.objects.get_for_models(Continent, Country).values()
         )
 
         self.assertQuerysetEqual(
@@ -487,9 +477,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
 
         self.assertQuerysetEqual(
@@ -534,9 +522,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(User).values()
-            )
+            ContentType.objects.get_for_models(User).values()
         )
 
         self.assertQuerysetEqual(
@@ -558,9 +544,7 @@ class CommandTest(TestCase):
 
         command = Command()
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
 
         self.assertQuerysetEqual(
@@ -583,7 +567,9 @@ class CommandTest(TestCase):
 
         stdout = StringIO()
         command = Command(stdout=stdout)
-        obsolete_translations = command.get_obsolete_translations()
+        obsolete_translations = command.get_obsolete_translations(
+            ContentType.objects.none()
+        )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
@@ -607,9 +593,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent).values()
-            )
+            ContentType.objects.get_for_models(Continent).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -634,9 +618,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent, Country).values()
-            )
+            ContentType.objects.get_for_models(Continent, Country).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -661,9 +643,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -690,7 +670,9 @@ class CommandTest(TestCase):
 
         stdout = StringIO()
         command = Command(stdout=stdout)
-        obsolete_translations = command.get_obsolete_translations()
+        obsolete_translations = command.get_obsolete_translations(
+            ContentType.objects.none()
+        )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
@@ -717,9 +699,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent).values()
-            )
+            ContentType.objects.get_for_models(Continent).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -755,9 +735,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent, Country).values()
-            )
+            ContentType.objects.get_for_models(Continent, Country).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -795,9 +773,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -836,7 +812,9 @@ class CommandTest(TestCase):
 
         stdout = StringIO()
         command = Command(stdout=stdout)
-        obsolete_translations = command.get_obsolete_translations()
+        obsolete_translations = command.get_obsolete_translations(
+            ContentType.objects.none()
+        )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
 
@@ -863,9 +841,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent).values()
-            )
+            ContentType.objects.get_for_models(Continent).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -902,9 +878,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(Continent, Country).values()
-            )
+            ContentType.objects.get_for_models(Continent, Country).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -944,9 +918,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -985,9 +957,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.get_for_models(User).values()
-            )
+            ContentType.objects.get_for_models(User).values()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)
@@ -1019,9 +989,7 @@ class CommandTest(TestCase):
         stdout = StringIO()
         command = Command(stdout=stdout)
         obsolete_translations = command.get_obsolete_translations(
-            *list(
-                ContentType.objects.all()
-            )
+            ContentType.objects.all()
         )
         command.verbosity = 1
         command.log_obsolete_translations(obsolete_translations)

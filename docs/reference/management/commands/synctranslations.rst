@@ -42,7 +42,7 @@ This module contains the synctranslations command for the Translations app.
       the :class:`~django.contrib.contenttypes.models.ContentType`\ s
       in all apps.
 
-   .. method:: get_obsolete_translations(*content_types)
+   .. method:: get_obsolete_translations(content_types)
 
       Return the obsolete translations of some
       :class:`~django.contrib.contenttypes.models.ContentType`\ s.
@@ -53,16 +53,29 @@ This module contains the synctranslations command for the Translations app.
 
    .. method:: log_obsolete_translations(obsolete_translations)
 
-      Log the obsolete translations.
+      Log the details of some obsolete translations.
+
+      Logs the models and the fields details of the obsolete translations.
 
    .. method:: ask_yes_no(message, default=None)
 
       Ask the user for yes or no with a message and a default value.
 
+      Prompts the user with the message asking them for a yes or no answer,
+      optionally a default value can be set for the answer.
+
    .. method:: should_run_synchronization()
 
       Return whether to run the synchronization or not.
 
+      Determines whether the synchronization should run or not.
+      It does so by making sure that the user is aware of the risks.
+      If the user is using a TTY it asks them whether they are sure or not and
+      if the user is *NOT* using a TTY they have to explicitly declare
+      that they are sure in the command.
+
    .. method:: handle(*app_labels, **options)
 
       Run the :class:`Command` with the configured arguments.
+
+      Synchronizes the translation objects with the configurations.

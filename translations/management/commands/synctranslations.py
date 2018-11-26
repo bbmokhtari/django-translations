@@ -64,8 +64,8 @@ class Command(BaseCommand):
             content_types = ContentType.objects.all()
         return content_types
 
-    def get_obsolete_translations(self, *content_types):
-        """Return the obsolete translations of some `ContentTypes`."""
+    def get_obsolete_translations(self, content_types):
+        """Return the obsolete translations of some `ContentType`\ s."""
         if content_types:
             query = Q()
             for content_type in content_types:
@@ -86,7 +86,7 @@ class Command(BaseCommand):
         return obsolete_translations
 
     def log_obsolete_translations(self, obsolete_translations):
-        """Log the obsolete translations."""
+        """Log the details of some obsolete translations."""
         if self.verbosity >= 1:
             self.stdout.write('Looking for obsolete translations...')
 
@@ -193,7 +193,7 @@ class Command(BaseCommand):
         content_types = self.get_content_types(*app_labels)
 
         # handle obsolete translations
-        obsolete_translations = self.get_obsolete_translations(*content_types)
+        obsolete_translations = self.get_obsolete_translations(content_types)
         self.log_obsolete_translations(obsolete_translations)
 
         # divide initializing synchronization with asking for synchronization
