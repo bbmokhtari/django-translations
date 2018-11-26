@@ -11,6 +11,10 @@ This module contains the synctranslations command for the Translations app.
    The command which synchronizes the translation objects with
    the configurations.
 
+   .. attribute:: help
+
+      The command's help text.
+
    .. method:: execute(*args, **options)
 
       Execute the :class:`Command`
