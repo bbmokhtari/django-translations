@@ -1,6 +1,7 @@
 """
 This module contains the synctranslations command for the Translations app.
 """
+
 import sys
 
 from django.core.management.base import (
@@ -30,7 +31,9 @@ class Command(BaseCommand):
         return super().execute(*args, **options)
 
     def add_arguments(self, parser):
-        """Add the arguments which the `ArgumentParser` accepts."""
+        """
+        Add the arguments which the `Command` accepts on an `ArgumentParser`.
+        """
         parser.add_argument(
             'args',
             metavar='app_label',
@@ -65,7 +68,7 @@ class Command(BaseCommand):
         return content_types
 
     def get_obsolete_translations(self, content_types):
-        """Return the obsolete translations of some `ContentType`\ s."""
+        r"""Return the obsolete translations of some `ContentType`\ s."""
         if content_types:
             query = Q()
             for content_type in content_types:
