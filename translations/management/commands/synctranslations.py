@@ -1,3 +1,6 @@
+"""
+This module contains the synctranslations command for the Translations app.
+"""
 import sys
 
 from django.core.management.base import (
@@ -10,6 +13,9 @@ from django.contrib.contenttypes.models import ContentType
 from translations.models import Translation, Translatable
 
 
+__docformat__ = 'restructuredtext'
+
+
 class Command(BaseCommand):
     """
     The command which synchronizes the translation objects with
@@ -18,7 +24,13 @@ class Command(BaseCommand):
 
     help = 'Synchronize the translations for apps.'
 
+    def execute(self, *args, **options):
+        """Execute the `Command` with `BaseCommand` arguments."""
+        self.stdin = options.get('stdin', sys.stdin)  # Used for testing
+        return super().execute(*args, **options)
+
     def add_arguments(self, parser):
+        """Add the arguments which the parser accepts."""
         parser.add_argument(
             'args',
             metavar='app_label',
@@ -33,10 +45,6 @@ class Command(BaseCommand):
             dest='interactive',
             help='Tells Django to NOT prompt the user for input of any kind.',
         )
-
-    def execute(self, *args, **options):
-        self.stdin = options.get('stdin', sys.stdin)  # Used for testing
-        return super().execute(*args, **options)
 
     def get_content_types(self, *app_labels):
         """Return the content types of some apps or all of them."""
@@ -123,7 +131,7 @@ class Command(BaseCommand):
                 self.stdout.write('No obsolete translations found.')
 
     def ask_yes_no(self, message, default=None):
-        """Ask user for yes or no with a message and a default value."""
+        """Ask the user for yes or no with a message and a default value."""
         answer = None
         while answer is None:
             value = input(message)
@@ -143,7 +151,7 @@ class Command(BaseCommand):
         return answer
 
     def should_run_synchronization(self):
-        """Return whether to run synchronization or not."""
+        """Return whether to run the synchronization or not."""
         run = None
         if self.interactive:
             if hasattr(self.stdin, 'isatty') and not self.stdin.isatty():
@@ -176,7 +184,7 @@ class Command(BaseCommand):
 
     @no_translations
     def handle(self, *app_labels, **options):
-
+        """Run the `Command` with the configured arguments."""
         # get arguments
         self.verbosity = options['verbosity']
         self.interactive = options['interactive']

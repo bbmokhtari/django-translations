@@ -11,34 +11,35 @@ This module contains the synctranslations command for the Translations app.
    The command which synchronizes the translation objects with
    the configurations.
 
-   .. method:: add_arguments(self, parser)
+   .. method:: execute(*args, **options)
 
-      pass
+      Execute the :class:`Command`
+      with :class:`~django.core.management.base.BaseCommand` arguments.
 
-   .. method:: execute(self, *args, **options)
+   .. method:: add_arguments(parser)
 
-      pass
+      Add the arguments which the parser accepts.
 
-   .. method:: get_content_types(self, *app_labels)
+   .. method:: get_content_types(*app_labels)
 
       Return the content types of some apps or all of them.
 
-   .. method:: get_obsolete_translations(self, *content_types)
+   .. method:: get_obsolete_translations(*content_types)
 
       Return the obsolete translations of some content types.
 
-   .. method:: log_obsolete_translations(self, obsolete_translations)
+   .. method:: log_obsolete_translations(obsolete_translations)
 
       Log the obsolete translations.
 
-   .. method:: ask_yes_no(self, message, default=None)
+   .. method:: ask_yes_no(message, default=None)
 
-      Ask user for yes or no with a message and a default value.
+      Ask the user for yes or no with a message and a default value.
 
-   .. method:: should_run_synchronization(self)
+   .. method:: should_run_synchronization()
 
-      Return whether to run synchronization or not.
+      Return whether to run the synchronization or not.
 
-   .. method:: handle(self, *app_labels, **options)
+   .. method:: handle(*app_labels, **options)
 
-      pass
+      Run the :class:`Command` with the configured arguments.
