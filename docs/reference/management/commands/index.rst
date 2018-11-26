@@ -9,3 +9,5 @@ This module contains the commands for the Translations app.
 .. toctree::
    :maxdepth: 2
    :caption: Commands:
+
+   synctranslations
