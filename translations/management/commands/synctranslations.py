@@ -30,7 +30,7 @@ class Command(BaseCommand):
         return super().execute(*args, **options)
 
     def add_arguments(self, parser):
-        """Add the arguments which the parser accepts."""
+        """Add the arguments which the `ArgumentParser` accepts."""
         parser.add_argument(
             'args',
             metavar='app_label',
@@ -47,7 +47,7 @@ class Command(BaseCommand):
         )
 
     def get_content_types(self, *app_labels):
-        """Return the content types of some apps or all of them."""
+        r"""Return the `ContentType`\ s in some apps or all of them."""
         if app_labels:
             query = Q()
             for app_label in app_labels:
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         return content_types
 
     def get_obsolete_translations(self, *content_types):
-        """Return the obsolete translations of some content types."""
+        """Return the obsolete translations of some `ContentTypes`."""
         if content_types:
             query = Q()
             for content_type in content_types:
