@@ -19,3 +19,4 @@ want to contribute to it we recommend you to read the reference.
    forms
    languages
    utils
+   management/index
