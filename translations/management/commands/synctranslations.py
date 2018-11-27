@@ -19,16 +19,16 @@ __docformat__ = 'restructuredtext'
 
 class Command(BaseCommand):
     """
-    The command which synchronizes the translation objects with
-    the configurations.
+    The command which synchronizes the translations with
+    the apps models configurations.
     """
 
-    help = 'Synchronize the translations for apps.'
+    help = 'Synchronize the translations with the apps models configurations.'
 
     def execute(self, *args, **options):
         """Execute the `Command` with `BaseCommand` arguments."""
         self.stdin = options.get('stdin', sys.stdin)  # Used for testing
-        return super().execute(*args, **options)
+        return super(Command, self).execute(*args, **options)
 
     def add_arguments(self, parser):
         """

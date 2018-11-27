@@ -8,8 +8,8 @@ This module contains the synctranslations command for the Translations app.
 
 .. class:: Command
 
-   The command which synchronizes the translation objects with
-   the configurations.
+   The command which synchronizes the translations with
+   the apps models configurations.
 
    .. attribute:: help
 
@@ -133,10 +133,10 @@ This module contains the synctranslations command for the Translations app.
       This is an overriden version of
       the :class:`~django.core.management.base.BaseCommand`\ 's
       :meth:`~django.core.management.base.BaseCommand.handle` method.
-      It synchronizes the translation objects with the configurations of the apps.
+      It synchronizes the translations with the apps models configurations.
 
-      :param app_labels: The apps to synchronize the translation objects with
-         the configurations of.
+      :param app_labels: The apps to synchronize the translations with
+         the models configurations of.
       :type app_labels: list(str)
       :param options: The configured options of the :class:`Command`.
       :type options: dict(str, str)
