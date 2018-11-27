@@ -5,7 +5,7 @@ This module contains the synctranslations command for the Translations app.
 import sys
 
 from django.core.management.base import (
-    BaseCommand, CommandError, no_translations,
+    BaseCommand, CommandError,
 )
 from django.apps import apps
 from django.db.models import Q
@@ -185,7 +185,6 @@ class Command(BaseCommand):
 
         return run
 
-    @no_translations
     def handle(self, *app_labels, **options):
         """Run the `Command` with the configured arguments."""
         # get arguments
