@@ -25,14 +25,31 @@ This module contains the synctranslations command for the Translations app.
       :meth:`~django.core.management.base.BaseCommand.execute` method.
       It defines the standard input on the :class:`Command`.
 
+      :param args: The arguments of
+          the :class:`~django.core.management.base.BaseCommand`\
+          's :meth:`~django.core.management.base.BaseCommand.execute` method.
+      :type args: list
+      :param options: The keyword arguments of
+          the :class:`~django.core.management.base.BaseCommand`\
+          's :meth:`~django.core.management.base.BaseCommand.execute` method.
+      :type options: dict
+      :return: The return value of
+          the :class:`~django.core.management.base.BaseCommand`\
+          's :meth:`~django.core.management.base.BaseCommand.execute` method.
+      :rtype: str or None
+
    .. method:: add_arguments(parser)
 
-      Add the arguments which the :class:`Command` accepts
+      Add the arguments that the :class:`Command` accepts
       on an :class:`~argparse.ArgumentParser`.
 
       Defines the different types of arguments
       that the :class:`Command` accepts
       on the :class:`~argparse.ArgumentParser`.
+
+      :param parser: The parser to add the arguments
+         that the :class:`Command` accepts on.
+      :type parser: ~argparse.ArgumentParser
 
    .. method:: get_content_types(*app_labels)
 
@@ -46,6 +63,14 @@ This module contains the synctranslations command for the Translations app.
       the :class:`~django.contrib.contenttypes.models.ContentType`\ s
       in all apps.
 
+      :param app_labels: The apps in which to get
+         the :class:`~django.contrib.contenttypes.models.ContentType`\ s.
+      :type app_labels: list(str)
+      :return: The :class:`~django.contrib.contenttypes.models.ContentType`\ s
+         in the apps.
+      :rtype: ~django.db.models.query.QuerySet(\
+         ~django.contrib.contenttypes.models.ContentType)
+
    .. method:: get_obsolete_translations(content_types)
 
       Return the obsolete translations of some
@@ -55,11 +80,24 @@ This module contains the synctranslations command for the Translations app.
       the :class:`~django.contrib.contenttypes.models.ContentType`\ s
       based on the current configurations of their models.
 
+      :param content_types:
+         The :class:`~django.contrib.contenttypes.models.ContentType`\ s
+         to get the obsolete translations of.
+      :type content_types: ~django.db.models.query.QuerySet(\
+         ~django.contrib.contenttypes.models.ContentType)
+      :return: The obsolete translations of
+         the :class:`~django.contrib.contenttypes.models.ContentType`\ s.
+      :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
+
    .. method:: log_obsolete_translations(obsolete_translations)
 
       Log the details of some obsolete translations.
 
-      Logs the models and the fields details of the obsolete translations.
+      Logs the model and field details of the obsolete translations.
+
+      :param obsolete_translations: The obsolete translations to log
+         the details of.
+      :type obsolete_translations: ~django.db.models.query.QuerySet(~translations.models.Translation)
 
    .. method:: ask_yes_no(message, default=None)
 
@@ -67,6 +105,13 @@ This module contains the synctranslations command for the Translations app.
 
       Prompts the user with the message asking them for a yes or no answer,
       optionally a default value can be set for the answer.
+
+      :param message: The question to ask the user for yes or no with.
+      :type message: str
+      :param default: The default value for the answer.
+      :type default: str or bool or None
+      :return: The user's yes or no answer.
+      :rtype: bool
 
    .. method:: should_run_synchronization()
 
@@ -78,8 +123,20 @@ This module contains the synctranslations command for the Translations app.
       if the user is *NOT* using a TTY they have to explicitly declare
       that they are sure in the command.
 
+      :return: whether to run the synchronization or not.
+      :rtype: bool
+
    .. method:: handle(*app_labels, **options)
 
       Run the :class:`Command` with the configured arguments.
 
-      Synchronizes the translation objects with the configurations.
+      This is an overriden version of
+      the :class:`~django.core.management.base.BaseCommand`\ 's
+      :meth:`~django.core.management.base.BaseCommand.handle` method.
+      It synchronizes the translation objects with the configurations of the apps.
+
+      :param app_labels: The apps to synchronize the translation objects with
+         the configurations of.
+      :type app_labels: list(str)
+      :param options: The configured options of the :class:`Command`.
+      :type options: dict(str, str)

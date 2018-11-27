@@ -32,7 +32,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         """
-        Add the arguments which the `Command` accepts on an `ArgumentParser`.
+        Add the arguments that the `Command` accepts on an `ArgumentParser`.
         """
         parser.add_argument(
             'args',
