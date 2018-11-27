@@ -1,2 +1,12 @@
 Django Translations 1.0.2 release notes
 ---------------------------------------
+
+Features
+^^^^^^^^
+
+The features in this release are listed below.
+
+CI
+""
+
+- New CI/CD/Deploy settings for GitHub, Travis CI, PyPI, Docs, etc.
