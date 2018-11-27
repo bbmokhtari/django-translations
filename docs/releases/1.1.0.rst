@@ -1,2 +1,25 @@
 Django Translations 1.1.0 release notes
 ---------------------------------------
+
+Features
+^^^^^^^^
+
+The features in this release are listed below.
+
+Management
+""""""""""
+
+- The ``synctranslations`` command has been added to
+  synchronize the translations with
+  the apps models configurations. (issue #53)
+
+Bug Fixes
+^^^^^^^^^
+
+The bug fixes in this release are listed below.
+
+Models
+""""""
+
+- Fixed the bug for obsolete translations after changing
+  the apps models configurations. (issue #53)
