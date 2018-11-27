@@ -86,18 +86,19 @@ This module contains the synctranslations command for the Translations app.
          from translations.management.commands.synctranslations import Command
 
          command = Command()
-         content_types = command.get_content_types('sample')
+         content_types = command.get_content_types('sample').values_list(
+            'app_label', 'model')
 
-         print(content_types)
+         print(sorted(content_types))
 
       .. testoutput:: Command.get_content_types.1
 
-         <QuerySet [
-             <ContentType: city>,
-             <ContentType: continent>,
-             <ContentType: country>,
-             <ContentType: timezone>,
-         ]>
+         [
+             ('sample', 'city'),
+             ('sample', 'continent'),
+             ('sample', 'country'),
+             ('sample', 'timezone'),
+         ]
 
       To get the :class:`~django.contrib.contenttypes.models.ContentType`\ s
       (in all apps):
@@ -107,25 +108,26 @@ This module contains the synctranslations command for the Translations app.
          from translations.management.commands.synctranslations import Command
 
          command = Command()
-         content_types = command.get_content_types()
+         content_types = command.get_content_types().values_list(
+            'app_label', 'model')
 
-         print(content_types)
+         print(sorted(content_types))
 
       .. testoutput:: Command.get_content_types.2
 
-        <QuerySet [
-            <ContentType: log entry>,
-            <ContentType: permission>,
-            <ContentType: group>,
-            <ContentType: user>,
-            <ContentType: content type>,
-            <ContentType: session>,
-            <ContentType: translation>,
-            <ContentType: city>,
-            <ContentType: continent>,
-            <ContentType: country>,
-            <ContentType: timezone>,
-        ]>
+        [
+            ('admin', 'logentry'),
+            ('auth', 'group'),
+            ('auth', 'permission'),
+            ('auth', 'user'),
+            ('contenttypes', 'contenttype'),
+            ('sample', 'city'),
+            ('sample', 'continent'),
+            ('sample', 'country'),
+            ('sample', 'timezone'),
+            ('sessions', 'session'),
+            ('translations', 'translation'),
+        ]
 
    .. method:: get_obsolete_translations(content_types)
 
