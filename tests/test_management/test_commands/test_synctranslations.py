@@ -2124,6 +2124,7 @@ class CommandTest(TestCase):
             "If you are sure about synchronization you can run "
             "it with the '--no-input' flag.\n"
         )
+
     @patch(
         'translations.management.commands.synctranslations.Command.execute',
         new=override_execute_with_tty
