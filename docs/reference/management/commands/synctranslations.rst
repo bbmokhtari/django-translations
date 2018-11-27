@@ -11,6 +11,13 @@ This module contains the synctranslations command for the Translations app.
    The command which synchronizes the translations with
    the apps models configurations.
 
+   To use the :mod:`~translations.management.commands.synctranslations`
+   command:
+
+   .. code-block:: shell
+
+      $ python manage.py synctranslations
+
    .. attribute:: help
 
       The command's help text.
@@ -71,6 +78,55 @@ This module contains the synctranslations command for the Translations app.
       :rtype: ~django.db.models.query.QuerySet(\
          ~django.contrib.contenttypes.models.ContentType)
 
+      To get the :class:`~django.contrib.contenttypes.models.ContentType`\ s
+      (in some apps):
+
+      .. testcode:: Command.get_content_types.1
+
+         from translations.management.commands.synctranslations import Command
+
+         command = Command()
+         content_types = command.get_content_types('sample')
+
+         print(content_types)
+
+      .. testoutput:: Command.get_content_types.1
+
+         <QuerySet [
+             <ContentType: city>,
+             <ContentType: continent>,
+             <ContentType: country>,
+             <ContentType: timezone>,
+         ]>
+
+      To get the :class:`~django.contrib.contenttypes.models.ContentType`\ s
+      (in all apps):
+
+      .. testcode:: Command.get_content_types.2
+
+         from translations.management.commands.synctranslations import Command
+
+         command = Command()
+         content_types = command.get_content_types()
+
+         print(content_types)
+
+      .. testoutput:: Command.get_content_types.2
+
+        <QuerySet [
+            <ContentType: log entry>,
+            <ContentType: permission>,
+            <ContentType: group>,
+            <ContentType: user>,
+            <ContentType: content type>,
+            <ContentType: session>,
+            <ContentType: translation>,
+            <ContentType: city>,
+            <ContentType: continent>,
+            <ContentType: country>,
+            <ContentType: timezone>,
+        ]>
+
    .. method:: get_obsolete_translations(content_types)
 
       Return the obsolete translations of some
@@ -89,6 +145,23 @@ This module contains the synctranslations command for the Translations app.
          the :class:`~django.contrib.contenttypes.models.ContentType`\ s.
       :rtype: ~django.db.models.query.QuerySet(~translations.models.Translation)
 
+      To get the obsolete translations of
+      some :class:`~django.contrib.contenttypes.models.ContentType`\ s:
+
+      .. testcode:: Command.get_obsolete_translations.1
+
+         from translations.management.commands.synctranslations import Command
+
+         command = Command()
+         content_types = command.get_content_types('sample')
+         obsolete_translations = command.get_obsolete_translations(content_types)
+
+         print(obsolete_translations)
+
+      .. testoutput:: Command.get_obsolete_translations.1
+
+         <QuerySet []>
+
    .. method:: log_obsolete_translations(obsolete_translations)
 
       Log the details of some obsolete translations.
@@ -97,7 +170,8 @@ This module contains the synctranslations command for the Translations app.
 
       :param obsolete_translations: The obsolete translations to log
          the details of.
-      :type obsolete_translations: ~django.db.models.query.QuerySet(~translations.models.Translation)
+      :type obsolete_translations: ~django.db.models.query.QuerySet(\
+         ~translations.models.Translation)
 
    .. method:: ask_yes_no(message, default=None)
 
