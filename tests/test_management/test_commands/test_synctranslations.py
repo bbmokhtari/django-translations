@@ -14,6 +14,11 @@ from sample.models import Continent, Country, City
 from sample.utils import create_samples
 
 
+class PsudeoTTY(object):
+    def isatty(self):
+        return True
+
+
 def get_raiser(error):
     def _raiser(*args, **kwargs):
         raise error
@@ -22,6 +27,11 @@ def get_raiser(error):
 
 def override_execute_with_not_tty(self, *args, **options):
     self.stdin = StringIO()
+    return super(Command, self).execute(*args, **options)
+
+
+def override_execute_with_tty(self, *args, **options):
+    self.stdin = PsudeoTTY()
     return super(Command, self).execute(*args, **options)
 
 
@@ -1080,10 +1090,6 @@ class CommandTest(TestCase):
         new=lambda *args, **kwargs: True
     )
     def test_should_run_synchronization_interactive_tty_yes(self):
-        class PsudeoTTY(object):
-            def isatty(self):
-                return True
-
         stdin = PsudeoTTY()
         stdout = StringIO()
         command = Command(stdout=stdout)
@@ -1100,10 +1106,6 @@ class CommandTest(TestCase):
         new=lambda *args, **kwargs: False
     )
     def test_should_run_synchronization_interactive_tty_no(self):
-        class PsudeoTTY(object):
-            def isatty(self):
-                return True
-
         stdin = PsudeoTTY()
         stdout = StringIO()
         command = Command(stdout=stdout)
@@ -1120,10 +1122,6 @@ class CommandTest(TestCase):
         new=get_raiser(KeyboardInterrupt)
     )
     def test_should_run_synchronization_interactive_tty_interrupt(self):
-        class PsudeoTTY(object):
-            def isatty(self):
-                return True
-
         stdin = PsudeoTTY()
         stdout = StringIO()
         stderr = StringIO()
@@ -1143,6 +1141,10 @@ class CommandTest(TestCase):
             "Operation cancelled.\n"
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_not_tty
+    )
     def test_handle_no_app_labels_no_fields(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1171,6 +1173,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_not_tty
+    )
     def test_handle_one_app_label_no_fields(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1200,6 +1206,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_not_tty
+    )
     def test_handle_two_app_labels_no_fields(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1229,6 +1239,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_not_tty
+    )
     def test_handle_all_app_labels_no_fields(self):
         create_samples(
             continent_names=['europe', 'asia'],
@@ -1259,6 +1273,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1304,6 +1322,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1350,6 +1372,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1396,6 +1422,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1443,6 +1473,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1485,6 +1519,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1528,6 +1566,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1571,6 +1613,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=['name'])
     @override_tmeta(Country, fields=['name'])
@@ -1615,6 +1661,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
@@ -1670,6 +1720,10 @@ class CommandTest(TestCase):
             'Operation cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
@@ -1727,6 +1781,10 @@ class CommandTest(TestCase):
         )
 
     @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
+    @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
     )
@@ -1782,6 +1840,10 @@ class CommandTest(TestCase):
             'Operation cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
@@ -2062,7 +2124,10 @@ class CommandTest(TestCase):
             "If you are sure about synchronization you can run "
             "it with the '--no-input' flag.\n"
         )
-
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2111,6 +2176,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2160,6 +2229,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2209,6 +2282,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'y')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2259,6 +2336,10 @@ class CommandTest(TestCase):
             ) + '\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2304,6 +2385,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2350,6 +2435,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2396,6 +2485,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch('builtins.input', new=lambda *args: 'n')
     @override_tmeta(Continent, fields=[])
     @override_tmeta(Country, fields=[])
@@ -2443,6 +2536,10 @@ class CommandTest(TestCase):
             'Synchronization cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
@@ -2501,6 +2598,10 @@ class CommandTest(TestCase):
             'Operation cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
@@ -2561,6 +2662,10 @@ class CommandTest(TestCase):
         )
 
     @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
+    @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
     )
@@ -2619,6 +2724,10 @@ class CommandTest(TestCase):
             'Operation cancelled.\n'
         )
 
+    @patch(
+        'translations.management.commands.synctranslations.Command.execute',
+        new=override_execute_with_tty
+    )
     @patch(
         'translations.management.commands.synctranslations.Command.ask_yes_no',
         new=get_raiser(KeyboardInterrupt)
