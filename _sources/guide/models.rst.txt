@@ -61,3 +61,28 @@ This can be done by explicitly setting it to ``[]``.
 .. literalinclude:: ../../sample/models.py
    :pyobject: Timezone
    :emphasize-lines: 1, 15-16
+
+Changing the models and fields configurations
+=============================================
+
+To synchronize the translations with the apps models configurations run
+the :mod:`~translations.management.commands.synctranslations` command.
+
+.. code-block:: shell
+
+   $ python manage.py synctranslations
+
+This is useful in the cases when you decide to change the configurations of
+the models and fields later on, but you have already defined some translations
+for them and the translations are obsolete now.
+
+.. note::
+
+   Since this command deletes the obsolete translations which are not useful
+   any more based on the current models and fields configurations,
+   it has to make sure that you are aware of the risks.
+
+   So you either have to run it in a TTY environment and respond *yes* when it
+   asks you if you are sure,
+   or you have to declare that you are sure explicitly while calling
+   the command using the ``--no-input`` option.

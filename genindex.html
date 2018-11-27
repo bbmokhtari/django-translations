@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; Django Translations 1.0.2 documentation</title>
+    <title>Index &#8212; Django Translations 1.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -52,6 +52,8 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#L"><strong>L</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
@@ -136,11 +138,15 @@
         <li><a href="reference/languages.html#translations.languages._TRANSLATE.ACTIVE">(translations.languages._TRANSLATE attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="glossary.html#term-active-language"><strong>active language</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.add_arguments">add_arguments() (translations.management.commands.synctranslations.Command method)</a>
+</li>
       <li><a href="reference/languages.html#translations.languages._PROBE.ALL">ALL (translations.languages._PROBE attribute)</a>
+</li>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.ask_yes_no">ask_yes_no() (translations.management.commands.synctranslations.Command method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -148,10 +154,12 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="reference/context.html#translations.context.Context">Context (class in translations.context)</a>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command">Command (class in translations.management.commands.synctranslations)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/context.html#translations.context.Context">Context (class in translations.context)</a>
+</li>
       <li><a href="reference/context.html#translations.context.Context.create">create() (translations.context.Context method)</a>
 </li>
   </ul></td>
@@ -183,6 +191,10 @@
       <li><a href="reference/querysets.html#translations.querysets.TranslatableQuerySet.exclude">exclude() (translations.querysets.TranslatableQuerySet method)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.execute">execute() (translations.management.commands.synctranslations.Command method)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="F">F</h2>
@@ -202,9 +214,33 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/forms.html#translations.forms.generate_translation_form">generate_translation_form() (in module translations.forms)</a>
 </li>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.get_content_types">get_content_types() (translations.management.commands.synctranslations.Command method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.get_obsolete_translations">get_obsolete_translations() (translations.management.commands.synctranslations.Command method)</a>
+</li>
       <li><a href="reference/models.html#translations.models.Translatable.get_translatable_fields">get_translatable_fields() (translations.models.Translatable class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.handle">handle() (translations.management.commands.synctranslations.Command method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.help">help (translations.management.commands.synctranslations.Command attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.log_obsolete_translations">log_obsolete_translations() (translations.management.commands.synctranslations.Command method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -245,6 +281,10 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="reference/management/commands/synctranslations.html#translations.management.commands.synctranslations.Command.should_run_synchronization">should_run_synchronization() (translations.management.commands.synctranslations.Command method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="glossary.html#term-supported-language"><strong>supported language</strong></a>
 </li>
   </ul></td>
@@ -273,12 +313,12 @@
 </li>
       <li><a href="reference/models.html#translations.models.Translation">Translation (class in translations.models)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/languages.html#translations.languages._PROBE.TRANSLATION">TRANSLATION (translations.languages._PROBE attribute)</a>
 </li>
       <li><a href="glossary.html#term-translation-language"><strong>translation language</strong></a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="reference/admin.html#translations.admin.TranslationInline">TranslationInline (class in translations.admin)</a>
 </li>
       <li><a href="reference/admin.html#module-translations.admin">translations.admin (module)</a>
@@ -288,6 +328,12 @@
       <li><a href="reference/forms.html#module-translations.forms">translations.forms (module)</a>
 </li>
       <li><a href="reference/languages.html#module-translations.languages">translations.languages (module)</a>
+</li>
+      <li><a href="reference/management/index.html#module-translations.management">translations.management (module)</a>
+</li>
+      <li><a href="reference/management/commands/index.html#module-translations.management.commands">translations.management.commands (module)</a>
+</li>
+      <li><a href="reference/management/commands/synctranslations.html#module-translations.management.commands.synctranslations">translations.management.commands.synctranslations (module)</a>
 </li>
       <li><a href="reference/models.html#module-translations.models">translations.models (module)</a>
 </li>
@@ -358,6 +404,7 @@
 <li class="toctree-l1"><a class="reference internal" href="contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="donation.html">Donation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="releases/index.html">Release Notes</a></li>
 </ul>
 
 <div class="relations">

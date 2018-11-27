@@ -1,0 +1,453 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Reference: synctranslations &#8212; Django Translations 1.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Contribution" href="../../../contribution.html" />
+    <link rel="prev" title="Reference: Commands" href="index.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+    <link rel="apple-touch-icon" href="../../../_static/translation.svg" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+              <div class="related top">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="index.html" title="Previous document">Reference: Commands</a>
+        </li>
+        <li>
+          <a href="../../../contribution.html" title="Next document">Contribution</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-translations.management.commands.synctranslations">
+<span id="reference-synctranslations"></span><h1>Reference: synctranslations<a class="headerlink" href="#module-translations.management.commands.synctranslations" title="Permalink to this headline">¶</a></h1>
+<p>This module contains the synctranslations command for the Translations app.</p>
+<dl class="class">
+<dt id="translations.management.commands.synctranslations.Command">
+<em class="property">class </em><code class="descclassname">translations.management.commands.synctranslations.</code><code class="descname">Command</code><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command which synchronizes the translations with
+the apps models configurations.</p>
+<p>To use the <a class="reference internal" href="#module-translations.management.commands.synctranslations" title="translations.management.commands.synctranslations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">synctranslations</span></code></a>
+command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python manage.py synctranslations
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="translations.management.commands.synctranslations.Command.help">
+<code class="descname">help</code><a class="headerlink" href="#translations.management.commands.synctranslations.Command.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>The command’s help text.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.execute">
+<code class="descname">execute</code><span class="sig-paren">(</span><em>*args</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.execute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a>
+with <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code> arguments.</p>
+<p>This is an overriden version of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code>’s
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">execute()</span></code> method.
+It defines the standard input on the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – The arguments of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code>’s <code class="xref py py-meth docutils literal notranslate"><span class="pre">execute()</span></code> method.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – The keyword arguments of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code>’s <code class="xref py py-meth docutils literal notranslate"><span class="pre">execute()</span></code> method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The return value of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code>’s <code class="xref py py-meth docutils literal notranslate"><span class="pre">execute()</span></code> method.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a> or <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.add_arguments">
+<code class="descname">add_arguments</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.add_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.add_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the arguments that the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a> accepts
+on an <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></a>.</p>
+<p>Defines the different types of arguments
+that the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a> accepts
+on the <a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ArgumentParser</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parser</strong> (<a class="reference external" href="https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser" title="(in Python v3.7)"><em>ArgumentParser</em></a>) – The parser to add the arguments
+that the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a> accepts on.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.get_content_types">
+<code class="descname">get_content_types</code><span class="sig-paren">(</span><em>*app_labels</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.get_content_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.get_content_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+in some apps or all of them.</p>
+<p>If the app labels are passed in it returns
+the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+in those apps,
+if nothing is passed in it returns
+the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+in all apps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>app_labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>)</em>) – The apps in which to get
+the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+in the apps.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet" title="(in Django v2.2)">QuerySet</a>(<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)">ContentType</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>To get the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+(in some apps):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.management.commands.synctranslations</span> <span class="kn">import</span> <span class="n">Command</span>
+
+<span class="n">command</span> <span class="o">=</span> <span class="n">Command</span><span class="p">()</span>
+<span class="n">content_types</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">get_content_types</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span>
+   <span class="s1">&#39;app_label&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">content_types</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+    (&#39;sample&#39;, &#39;city&#39;),
+    (&#39;sample&#39;, &#39;continent&#39;),
+    (&#39;sample&#39;, &#39;country&#39;),
+    (&#39;sample&#39;, &#39;timezone&#39;),
+]
+</pre></div>
+</div>
+<p>To get the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+(in all apps):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.management.commands.synctranslations</span> <span class="kn">import</span> <span class="n">Command</span>
+
+<span class="n">command</span> <span class="o">=</span> <span class="n">Command</span><span class="p">()</span>
+<span class="n">content_types</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">get_content_types</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span>
+   <span class="s1">&#39;app_label&#39;</span><span class="p">,</span> <span class="s1">&#39;model&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">content_types</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
+    (&#39;admin&#39;, &#39;logentry&#39;),
+    (&#39;auth&#39;, &#39;group&#39;),
+    (&#39;auth&#39;, &#39;permission&#39;),
+    (&#39;auth&#39;, &#39;user&#39;),
+    (&#39;contenttypes&#39;, &#39;contenttype&#39;),
+    (&#39;sample&#39;, &#39;city&#39;),
+    (&#39;sample&#39;, &#39;continent&#39;),
+    (&#39;sample&#39;, &#39;country&#39;),
+    (&#39;sample&#39;, &#39;timezone&#39;),
+    (&#39;sessions&#39;, &#39;session&#39;),
+    (&#39;translations&#39;, &#39;translation&#39;),
+]
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.get_obsolete_translations">
+<code class="descname">get_obsolete_translations</code><span class="sig-paren">(</span><em>content_types</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.get_obsolete_translations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.get_obsolete_translations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the obsolete translations of some
+<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s.</p>
+<p>Returns the obsolete translations of
+the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+based on the current configurations of their models.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>content_types</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet" title="(in Django v2.2)"><em>QuerySet</em></a><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><em>ContentType</em></a><em>)</em>) – The <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s
+to get the obsolete translations of.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The obsolete translations of
+the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet" title="(in Django v2.2)">QuerySet</a>(<a class="reference internal" href="../../models.html#translations.models.Translation" title="translations.models.Translation">Translation</a>)</td>
+</tr>
+</tbody>
+</table>
+<p>To get the obsolete translations of
+some <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/contrib/contenttypes.html#django.contrib.contenttypes.models.ContentType" title="(in Django v2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ContentType</span></code></a>s:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.management.commands.synctranslations</span> <span class="kn">import</span> <span class="n">Command</span>
+
+<span class="n">command</span> <span class="o">=</span> <span class="n">Command</span><span class="p">()</span>
+<span class="n">content_types</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">get_content_types</span><span class="p">(</span><span class="s1">&#39;sample&#39;</span><span class="p">)</span>
+<span class="n">obsolete_translations</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">get_obsolete_translations</span><span class="p">(</span><span class="n">content_types</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">obsolete_translations</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;QuerySet []&gt;
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.log_obsolete_translations">
+<code class="descname">log_obsolete_translations</code><span class="sig-paren">(</span><em>obsolete_translations</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.log_obsolete_translations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.log_obsolete_translations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log the details of some obsolete translations.</p>
+<p>Logs the model and field details of the obsolete translations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obsolete_translations</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet" title="(in Django v2.2)"><em>QuerySet</em></a><em>(</em><a class="reference internal" href="../../models.html#translations.models.Translation" title="translations.models.Translation"><em>Translation</em></a><em>)</em>) – The obsolete translations to log
+the details of.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.ask_yes_no">
+<code class="descname">ask_yes_no</code><span class="sig-paren">(</span><em>message</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.ask_yes_no"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.ask_yes_no" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ask the user for yes or no with a message and a default value.</p>
+<p>Prompts the user with the message asking them for a yes or no answer,
+optionally a default value can be set for the answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The question to ask the user for yes or no with.</li>
+<li><strong>default</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The default value for the answer.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The user’s yes or no answer.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.should_run_synchronization">
+<code class="descname">should_run_synchronization</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.should_run_synchronization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.should_run_synchronization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return whether to run the synchronization or not.</p>
+<p>Determines whether the synchronization should run or not.
+It does so by making sure that the user is aware of the risks.
+If the user is using a TTY it asks them whether they are sure or not and
+if the user is <em>NOT</em> using a TTY they have to explicitly declare
+that they are sure in the command.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether to run the synchronization or not.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="translations.management.commands.synctranslations.Command.handle">
+<code class="descname">handle</code><span class="sig-paren">(</span><em>*app_labels</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/translations/management/commands/synctranslations.html#Command.handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.management.commands.synctranslations.Command.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a> with the configured arguments.</p>
+<p>This is an overriden version of
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseCommand</span></code>’s
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">handle()</span></code> method.
+It synchronizes the translations with the apps models configurations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>app_labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>)</em>) – The apps to synchronize the translations with
+the models configurations of.</li>
+<li><strong>options</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>)</em>) – The configured options of the <a class="reference internal" href="#translations.management.commands.synctranslations.Command" title="translations.management.commands.synctranslations.Command"><code class="xref py py-class docutils literal notranslate"><span class="pre">Command</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+              <div class="related bottom">
+                &nbsp;
+  <nav id="rellinks">
+    <ul>
+        <li>
+          &larr;
+          <a href="index.html" title="Previous document">Reference: Commands</a>
+        </li>
+        <li>
+          <a href="../../../contribution.html" title="Next document">Contribution</a>
+          &rarr;
+        </li>
+    </ul>
+  </nav>
+              </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<p class="logo">
+  <a href="../../../index.html">
+    <img class="logo" src="../../../_static/translation.svg" alt="Logo"/>
+    
+    <h1 class="logo logo-name">Django Translations</h1>
+    
+  </a>
+</p>
+
+
+
+<p class="blurb">Django model translation for perfectionists with deadlines.</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=bbmokhtari&repo=django-translations&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../guide/index.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../howto/index.html">How to</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../models.html">Reference: Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../admin.html">Reference: Admin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../querysets.html">Reference: QuerySets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../query.html">Reference: Query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../context.html">Reference: Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../forms.html">Reference: Forms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../languages.html">Reference: Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils.html">Reference: Utilities</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">Reference: Management</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contribution.html">Contribution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../donation.html">Donation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../releases/index.html">Release Notes</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Reference</a><ul>
+  <li><a href="../index.html">Reference: Management</a><ul>
+  <li><a href="index.html">Reference: Commands</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Reference: Commands</a></li>
+      <li>Next: <a href="../../../contribution.html" title="next chapter">Contribution</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Behzad B. Mokhtari.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/reference/management/commands/synctranslations.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/bbmokhtari/django-translations" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

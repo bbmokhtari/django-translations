@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Guide: Models &#8212; Django Translations 1.0.2 documentation</title>
+    <title>Guide: Models &#8212; Django Translations 1.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -189,6 +189,27 @@ This can be done by explicitly setting it to <code class="docutils literal notra
 </span></pre></div>
 </div>
 </div>
+<div class="section" id="changing-the-models-and-fields-configurations">
+<h2>Changing the models and fields configurations<a class="headerlink" href="#changing-the-models-and-fields-configurations" title="Permalink to this headline">¶</a></h2>
+<p>To synchronize the translations with the apps models configurations run
+the <a class="reference internal" href="../reference/management/commands/synctranslations.html#module-translations.management.commands.synctranslations" title="translations.management.commands.synctranslations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">synctranslations</span></code></a> command.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python manage.py synctranslations
+</pre></div>
+</div>
+<p>This is useful in the cases when you decide to change the configurations of
+the models and fields later on, but you have already defined some translations
+for them and the translations are obsolete now.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Since this command deletes the obsolete translations which are not useful
+any more based on the current models and fields configurations,
+it has to make sure that you are aware of the risks.</p>
+<p class="last">So you either have to run it in a TTY environment and respond <em>yes</em> when it
+asks you if you are sure,
+or you have to declare that you are sure explicitly while calling
+the command using the <code class="docutils literal notranslate"><span class="pre">--no-input</span></code> option.</p>
+</div>
+</div>
 </div>
 
 
@@ -255,6 +276,7 @@ This can be done by explicitly setting it to <code class="docutils literal notra
 <li class="toctree-l1"><a class="reference internal" href="../contribution.html">Contribution</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../donation.html">Donation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../releases/index.html">Release Notes</a></li>
 </ul>
 
 <div class="relations">

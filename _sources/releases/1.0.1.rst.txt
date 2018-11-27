@@ -1,0 +1,15 @@
+Django Translations 1.0.1 release notes
+---------------------------------------
+
+*November 12, 2018*
+
+Features
+^^^^^^^^
+
+The features in this release are listed below.
+
+Documentation
+"""""""""""""
+
+- Updated the README so the viewers of the GitHub page or the PyPI page
+  know what the goal of the project is instantly.
