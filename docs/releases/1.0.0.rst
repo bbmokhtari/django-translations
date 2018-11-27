@@ -1,6 +1,8 @@
 Django Translations 1.0.0 release notes
 ---------------------------------------
 
+*November 11, 2018*
+
 Features
 ^^^^^^^^
 
