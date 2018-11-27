@@ -3,7 +3,6 @@ from django.db.models import Q
 from django.utils.translation import override
 
 from sample.models import Continent
-
 from sample.utils import create_samples
 
 

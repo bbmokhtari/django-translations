@@ -26,8 +26,8 @@ jobs:
       install:
         - pip install django~=2.1.0
         - pip install djangorestframework~=3.0
-      before_script: python create.py && python project/manage.py migrate
-      script: python project/manage.py test
+      before_script: python create.py
+      script: python project/manage.py test -v 3
     - name: "Python 3.5, Django 2.1, SQLite - Unit Test"
       python: 3.5
       env: EXAMPLE_ENGINE=sqlite3
@@ -35,8 +35,8 @@ jobs:
       install:
         - pip install django~=2.1.0
         - pip install djangorestframework~=3.0
-      before_script: python create.py && python project/manage.py migrate
-      script: python project/manage.py test
+      before_script: python create.py
+      script: python project/manage.py test -v 3
     - name: "Python 3.6, Django 2.0, SQLite - Unit Test"
       python: 3.6
       env: EXAMPLE_ENGINE=sqlite3
@@ -44,8 +44,8 @@ jobs:
       install:
         - pip install django~=2.0.0
         - pip install djangorestframework~=3.0
-      before_script: python create.py && python project/manage.py migrate
-      script: python project/manage.py test
+      before_script: python create.py
+      script: python project/manage.py test -v 3
     - name: "Python 3.5, Django 2.0, SQLite - Unit Test"
       python: 3.5
       env: EXAMPLE_ENGINE=sqlite3
@@ -53,8 +53,8 @@ jobs:
       install:
         - pip install django~=2.0.0
         - pip install djangorestframework~=3.0
-      before_script: python create.py && python project/manage.py migrate
-      script: python project/manage.py test
+      before_script: python create.py
+      script: python project/manage.py test -v 3
     - stage: doc test
       name: "Python 3.6, Django 2.1, SQLite - Doc Test"
       python: 3.6
@@ -64,7 +64,7 @@ jobs:
         - pip install django~=2.1.0
         - pip install djangorestframework~=3.0
         - pip install sphinx
-      before_script: python create.py && python config.py && python project/manage.py migrate
+      before_script: python create.py && python config.py
       script: make --directory docs doctest
     - name: "Python 3.5, Django 2.1, SQLite - Doc Test"
       python: 3.5
@@ -74,7 +74,7 @@ jobs:
         - pip install django~=2.1.0
         - pip install djangorestframework~=3.0
         - pip install sphinx
-      before_script: python create.py && python config.py && python project/manage.py migrate
+      before_script: python create.py && python config.py
       script: make --directory docs doctest
     - name: "Python 3.6, Django 2.0, SQLite - Doc Test"
       python: 3.6
@@ -84,7 +84,7 @@ jobs:
         - pip install django~=2.0.0
         - pip install djangorestframework~=3.0
         - pip install sphinx
-      before_script: python create.py && python config.py && python project/manage.py migrate
+      before_script: python create.py && python config.py
       script: make --directory docs doctest
     - name: "Python 3.5, Django 2.0, SQLite - Doc Test"
       python: 3.5
@@ -94,7 +94,7 @@ jobs:
         - pip install django~=2.0.0
         - pip install djangorestframework~=3.0
         - pip install sphinx
-      before_script: python create.py && python config.py && python project/manage.py migrate
+      before_script: python create.py && python config.py
       script: make --directory docs doctest
     - stage: deploy
       name: "Generate Docs & Upload to GitHub Pages"

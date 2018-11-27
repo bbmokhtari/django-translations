@@ -5,7 +5,6 @@ from django.db import utils
 from translations.models import Translation
 
 from sample.models import Timezone, Continent, City
-
 from sample.utils import create_samples
 
 

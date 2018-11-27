@@ -7,7 +7,6 @@ from translations.utils import _get_reverse_relation, _get_dissected_lookup, \
     _get_purview, _get_translations
 
 from sample.models import Continent, Country, City
-
 from sample.utils import create_samples
 
 

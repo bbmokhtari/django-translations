@@ -1,0 +1,51 @@
+Django Translations 1.0.0 release notes
+---------------------------------------
+
+*November 11, 2018*
+
+Features
+^^^^^^^^
+
+The features in this release are listed below.
+
+Models
+""""""
+
+- Make models translatable
+- Specify models’ translatable fields
+
+Admin
+"""""
+
+- Make admin translatable
+
+QuerySets
+"""""""""
+
+- Make querysets translatable
+- Translate the queryset
+- Translate the queryset relations
+- Probe (filter, exclude, etc.) the queryset
+- Advanced querying (with ``TQ``)
+
+Context
+"""""""
+
+- Initialize a context
+- Create the translations
+- Read the translations
+- Update the translations
+- Delete the translations
+- Reset the translations
+
+Languages
+"""""""""
+
+- Translate Languages
+- Probe Languages
+
+How To
+""""""
+
+- Integrate with Rest Framework
+- Integrate with custom admins
