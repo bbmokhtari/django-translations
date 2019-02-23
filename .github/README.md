@@ -196,3 +196,7 @@ This can CRUD the translations of any objects (instance, queryset, list) and the
 
 For more interesting capabilities browse through the
 [documentation](http://bbmokhtari.github.io/django-translations).
+
+## By The Way
+
+If you liked this library please consider giving it a star! ⭐️
