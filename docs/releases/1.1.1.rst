@@ -1,0 +1,14 @@
+Django Translations 1.1.1 release notes
+---------------------------------------
+
+*March 15, 2019*
+
+Bug Fixes
+^^^^^^^^^
+
+The bug fixes in this release are listed below.
+
+Models
+""""""
+
+- Fixed the bug for non-autofield primary key fields. (issue #57)
