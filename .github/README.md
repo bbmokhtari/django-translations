@@ -168,8 +168,8 @@ Use the translation context:
 ...     print(continents[0].countries.all()[0].cities.all())
 :
 <TranslatableQuerySet [
-    <Continent: Europa>,
     <Continent: Asien>,
+    <Continent: Europa>,
 ]>
 <TranslatableQuerySet [
     <Country: Deutschland>,
@@ -179,8 +179,8 @@ Use the translation context:
 ]>
 :
 <TranslatableQuerySet [
-    <Continent: Europe>,
     <Continent: Asia>,
+    <Continent: Europe>,
 ]>
 <TranslatableQuerySet [
     <Country: Germany>,

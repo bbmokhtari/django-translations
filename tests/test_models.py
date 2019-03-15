@@ -17,7 +17,7 @@ class TranslationTest(TestCase):
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=None,
-                object_id=europe.id,
+                object_id=europe.pk,
                 field='name',
                 language='de',
                 text='Europa',
@@ -67,7 +67,7 @@ class TranslationTest(TestCase):
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=europe.id,
+                object_id=europe.pk,
                 field=None,
                 language='de',
                 text='Europa',
@@ -85,7 +85,7 @@ class TranslationTest(TestCase):
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=europe.id,
+                object_id=europe.pk,
                 field='name',
                 language=None,
                 text='Europa',
@@ -103,7 +103,7 @@ class TranslationTest(TestCase):
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=europe.id,
+                object_id=europe.pk,
                 field='name',
                 language='de',
                 text=None,
@@ -119,7 +119,7 @@ class TranslationTest(TestCase):
         continent_ct = ContentType.objects.get_for_model(Continent)
         translation = Translation.objects.create(
             content_type=continent_ct,
-            object_id=europe.id,
+            object_id=europe.pk,
             field='name',
             language='de',
             text='Europa'
@@ -135,7 +135,7 @@ class TranslationTest(TestCase):
         continent_ct = ContentType.objects.get_for_model(Continent)
         Translation.objects.create(
             content_type=continent_ct,
-            object_id=europe.id,
+            object_id=europe.pk,
             field='name',
             language='de',
             text='Europa'
@@ -144,7 +144,7 @@ class TranslationTest(TestCase):
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_type=continent_ct,
-                object_id=europe.id,
+                object_id=europe.pk,
                 field='name',
                 language='de',
                 text='Europa'

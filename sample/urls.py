@@ -11,7 +11,7 @@ urlpatterns = [
         name='continent_list'
     ),
     path(
-        'continent/<int:pk>/',
+        'continent/<str:pk>/',
         views.ContinentView.as_view(),
         name='continent_detail'
     ),

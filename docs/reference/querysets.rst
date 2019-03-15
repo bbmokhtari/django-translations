@@ -113,8 +113,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet.__init__.1
 
          <TranslatableQuerySet [
-             <Continent: Europe>,
              <Continent: Asia>,
+             <Continent: Europe>,
          ]>
 
    .. method:: _chain(**kwargs)
@@ -153,8 +153,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet._chain.1
 
          <TranslatableQuerySet [
-             <Continent: Europe>,
              <Continent: Asia>,
+             <Continent: Europe>,
          ]>
 
    .. method:: _fetch_all()
@@ -193,8 +193,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet._fetch_all.1
 
          <TranslatableQuerySet [
-             <Continent: Europe>,
              <Continent: Asia>,
+             <Continent: Europe>,
          ]>
 
       To evaluate the :class:`TranslatableQuerySet`
@@ -212,8 +212,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet._fetch_all.2
 
          <TranslatableQuerySet [
-             <Continent: Europa>,
              <Continent: Asien>,
+             <Continent: Europa>,
          ]>
 
    .. method:: translate(lang=None)
@@ -270,8 +270,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet.translate.2
 
          <TranslatableQuerySet [
-             <Continent: Europa>,
              <Continent: Asien>,
+             <Continent: Europa>,
          ]>
 
       .. note::
@@ -323,8 +323,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet.translate_related.1
 
          <TranslatableQuerySet [
-             <Continent: Europa>,
              <Continent: Asien>,
+             <Continent: Europa>,
          ]>
          <TranslatableQuerySet [
              <Country: Deutschland>,
@@ -464,8 +464,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet.probe.1
 
          <TranslatableQuerySet [
-             <Continent: Europe>,
              <Continent: Asia>,
+             <Continent: Europe>,
          ]>
 
       To probe the :class:`TranslatableQuerySet` in some language(s)
@@ -485,8 +485,8 @@ This module contains the querysets for the Translations app.
       .. testoutput:: TranslatableQuerySet.probe.2
 
          <TranslatableQuerySet [
-             <Continent: Europe>,
              <Continent: Asia>,
+             <Continent: Europe>,
          ]>
 
       .. note::

@@ -50,7 +50,7 @@ This module contains the models for the Translations app.
 
       translation = Translation.objects.create(
           content_type=ContentType.objects.get_for_model(Continent),
-          object_id=europe.id,
+          object_id=europe.pk,
           field='name',
           language='de',
           text='Europa',
@@ -76,7 +76,7 @@ This module contains the models for the Translations app.
 
    .. literalinclude:: ../../sample/models.py
       :pyobject: Continent
-      :lines: 1-25
+      :lines: 1-26
       :emphasize-lines: 1
 
    It also adds the :attr:`translations` relation to the model, just in case
@@ -111,7 +111,7 @@ This module contains the models for the Translations app.
 
          .. literalinclude:: ../../sample/models.py
             :pyobject: Continent
-            :emphasize-lines: 1, 27-28
+            :emphasize-lines: 1, 28-29
 
    .. classmethod:: get_translatable_fields(cls)
 
