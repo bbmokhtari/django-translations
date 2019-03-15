@@ -160,7 +160,7 @@ def _get_purview(entity, hierarchy):
                         field: getattr(obj, field) for field in
                         type(obj)._get_translatable_fields_names()
                     }
-                object_id = str(obj.id)
+                object_id = str(obj.pk)
                 instances[object_id] = obj
                 nonlocal query
                 query |= models.Q(
