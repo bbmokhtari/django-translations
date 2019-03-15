@@ -393,9 +393,6 @@ This module contains the utilities for the Translations app.
       def ct(obj):
           return ContentType.objects.get_for_model(type(obj)).id
 
-      def oi(obj):
-          return str(obj.id)
-
       continents = Continent.objects.all()
       hierarchy = _get_relations_hierarchy('countries',
                                            'countries__cities')
@@ -407,9 +404,9 @@ This module contains the utilities for the Translations app.
       germany = europe.countries.all()[0]
       cologne = germany.cities.all()[0]
 
-      print(mapping[ct(europe)][oi(europe)] is europe)
-      print(mapping[ct(germany)][oi(germany)] is germany)
-      print(mapping[ct(cologne)][oi(cologne)] is cologne)
+      print(mapping[ct(europe)][str(europe.pk)] is europe)
+      print(mapping[ct(germany)][str(germany.pk)] is germany)
+      print(mapping[ct(cologne)][str(cologne.id)] is cologne)
 
    .. testoutput:: _get_purview.1
 

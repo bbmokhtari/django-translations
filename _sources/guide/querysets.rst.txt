@@ -81,8 +81,8 @@ To translate a queryset in a language:
 .. testoutput:: TranslatableQuerySet.translate.2
 
    <TranslatableQuerySet [
-       <Continent: Europa>,
        <Continent: Asien>,
+       <Continent: Europa>,
    ]>
 
 The language code must already be declared in the
@@ -127,8 +127,8 @@ To translate some queryset relations:
 .. testoutput:: TranslatableQuerySet.translate_related.1
 
    <TranslatableQuerySet [
-       <Continent: Europa>,
        <Continent: Asien>,
+       <Continent: Europa>,
    ]>
    <TranslatableQuerySet [
        <Country: Deutschland>,
@@ -268,8 +268,8 @@ To probe the queryset in a custom language:
 .. testoutput:: TranslatableQuerySet.probe.1
 
    <TranslatableQuerySet [
-       <Continent: Europe>,
        <Continent: Asia>,
+       <Continent: Europe>,
    ]>
 
 To probe the queryset in multiple custom languages:
@@ -288,8 +288,8 @@ To probe the queryset in multiple custom languages:
 .. testoutput:: TranslatableQuerySet.probe.2
 
    <TranslatableQuerySet [
-       <Continent: Europe>,
        <Continent: Asia>,
+       <Continent: Europe>,
    ]>
 
 The language code(s) must already be declared in the

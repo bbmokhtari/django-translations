@@ -6,13 +6,14 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Reference: Models &#8212; Django Translations 1.1.0 documentation</title>
+    <title>Reference: Models &#8212; Django Translations 1.1.1 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Reference: Admin" href="admin.html" />
@@ -89,7 +90,7 @@ doing.</p>
 
 <span class="n">translation</span> <span class="o">=</span> <span class="n">Translation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">content_type</span><span class="o">=</span><span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span><span class="n">Continent</span><span class="p">),</span>
-    <span class="n">object_id</span><span class="o">=</span><span class="n">europe</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">object_id</span><span class="o">=</span><span class="n">europe</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
     <span class="n">field</span><span class="o">=</span><span class="s1">&#39;name&#39;</span><span class="p">,</span>
     <span class="n">language</span><span class="o">=</span><span class="s1">&#39;de&#39;</span><span class="p">,</span>
     <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Europa&#39;</span><span class="p">,</span>
@@ -130,6 +131,7 @@ configurations for them based on their structure.</p>
         <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;the code of the continent&#39;</span><span class="p">),</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -183,6 +185,7 @@ This can be done by explicitly setting it to <code class="docutils literal notra
         <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">&#39;the code of the continent&#39;</span><span class="p">),</span>
         <span class="n">max_length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -399,10 +402,10 @@ field names listed in <a class="reference internal" href="#translations.models.T
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Behzad B. Mokhtari.
+      &copy;2019, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
