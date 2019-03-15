@@ -74,8 +74,8 @@ This module contains the context managers for the Translations app.
 
       :
       <TranslatableQuerySet [
-          <Continent: Europa>,
           <Continent: Asien>,
+          <Continent: Europa>,
       ]>
       <TranslatableQuerySet [
           <Country: Deutschland>,
@@ -85,8 +85,8 @@ This module contains the context managers for the Translations app.
       ]>
       :
       <TranslatableQuerySet [
-          <Continent: Europe>,
           <Continent: Asia>,
+          <Continent: Europe>,
       ]>
       <TranslatableQuerySet [
           <Country: Germany>,
@@ -448,8 +448,8 @@ This module contains the context managers for the Translations app.
       .. testoutput:: Context.read.2
 
          <TranslatableQuerySet [
-             <Continent: Europa>,
              <Continent: Asien>,
+             <Continent: Europa>,
          ]>
          <TranslatableQuerySet [
              <Country: Deutschland>,
@@ -846,8 +846,8 @@ This module contains the context managers for the Translations app.
       .. testoutput:: Context.reset.2
 
          <TranslatableQuerySet [
-             <Continent: Europe>,
              <Continent: Asia>,
+             <Continent: Europe>,
          ]>
          <TranslatableQuerySet [
              <Country: Germany>,

@@ -17,7 +17,7 @@ To make a model translatable inherit it from the
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Continent
-   :lines: 1-25
+   :lines: 1-26
    :emphasize-lines: 1
 
 .. note::
@@ -43,7 +43,7 @@ declared inside the ``Translatable`` model.
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Continent
-   :emphasize-lines: 1, 27-28
+   :emphasize-lines: 1, 28-29
 
 By default the ``fields`` attribute is set to ``None``.
 This means the translation will use the text based fields

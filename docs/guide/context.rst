@@ -323,8 +323,8 @@ To read the translations of a queryset and some relations of it:
 .. testoutput:: Context.read.2
 
    <TranslatableQuerySet [
-       <Continent: Europa>,
        <Continent: Asien>,
+       <Continent: Europa>,
    ]>
    <TranslatableQuerySet [
        <Country: Deutschland>,
@@ -715,8 +715,8 @@ To reset the translations of a queryset and some relations of it:
 .. testoutput:: Context.reset.2
 
    <TranslatableQuerySet [
-       <Continent: Europe>,
        <Continent: Asia>,
+       <Continent: Europe>,
    ]>
    <TranslatableQuerySet [
        <Country: Germany>,
