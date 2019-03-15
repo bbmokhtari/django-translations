@@ -603,7 +603,7 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 }
             }
         )
@@ -633,10 +633,10 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 },
                 ct_country.id: {
-                    str(germany.id): germany
+                    str(germany.pk): germany
                 }
             }
         )
@@ -669,7 +669,7 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 },
                 ct_city.id: {
                     str(cologne.id): cologne
@@ -706,10 +706,10 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 },
                 ct_country.id: {
-                    str(germany.id): germany
+                    str(germany.pk): germany
                 },
                 ct_city.id: {
                     str(cologne.id): cologne
@@ -740,8 +740,8 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
             }
         )
@@ -776,12 +776,12 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
                 ct_country.id: {
-                    str(germany.id): germany,
-                    str(south_korea.id): south_korea
+                    str(germany.pk): germany,
+                    str(south_korea.pk): south_korea
                 },
             }
         )
@@ -820,8 +820,8 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
                 ct_city.id: {
                     str(cologne.id): cologne,
@@ -865,12 +865,12 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
                 ct_country.id: {
-                    str(germany.id): germany,
-                    str(south_korea.id): south_korea
+                    str(germany.pk): germany,
+                    str(south_korea.pk): south_korea
                 },
                 ct_city.id: {
                     str(cologne.id): cologne,
@@ -898,7 +898,7 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 }
             }
         )
@@ -928,10 +928,10 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 },
                 ct_country.id: {
-                    str(germany.id): germany
+                    str(germany.pk): germany
                 }
             }
         )
@@ -964,7 +964,7 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 },
                 ct_city.id: {
                     str(cologne.id): cologne
@@ -1001,10 +1001,10 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe
+                    str(europe.pk): europe
                 },
                 ct_country.id: {
-                    str(germany.id): germany
+                    str(germany.pk): germany
                 },
                 ct_city.id: {
                     str(cologne.id): cologne
@@ -1035,8 +1035,8 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
             }
         )
@@ -1071,12 +1071,12 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
                 ct_country.id: {
-                    str(germany.id): germany,
-                    str(south_korea.id): south_korea
+                    str(germany.pk): germany,
+                    str(south_korea.pk): south_korea
                 },
             }
         )
@@ -1115,8 +1115,8 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
                 ct_city.id: {
                     str(cologne.id): cologne,
@@ -1160,12 +1160,12 @@ class GetPurviewTest(TestCase):
             mapping,
             {
                 ct_continent.id: {
-                    str(europe.id): europe,
-                    str(asia.id): asia
+                    str(europe.pk): europe,
+                    str(asia.pk): asia
                 },
                 ct_country.id: {
-                    str(germany.id): germany,
-                    str(south_korea.id): south_korea
+                    str(germany.pk): germany,
+                    str(south_korea.pk): south_korea
                 },
                 ct_city.id: {
                     str(cologne.id): cologne,

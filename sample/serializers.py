@@ -15,7 +15,7 @@ class CountrySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Country
-        fields = ('id', 'name', 'denonym', 'code', 'cities',)
+        fields = ('name', 'denonym', 'code', 'cities',)
 
 
 class ContinentSerializer(serializers.ModelSerializer):
@@ -23,4 +23,4 @@ class ContinentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Continent
-        fields = ('id', 'name', 'denonym', 'code', 'countries',)
+        fields = ('name', 'denonym', 'code', 'countries',)

@@ -39,6 +39,7 @@ class Continent(Translatable):
         help_text=_('the code of the continent'),
         max_length=2,
         unique=True,
+        primary_key=True,
     )
 
     def __str__(self):
@@ -69,6 +70,7 @@ class Country(Translatable):
         help_text=_('the code of the country'),
         max_length=2,
         unique=True,
+        primary_key=True,
     )
     continent = models.ForeignKey(
         verbose_name=_('continent'),

@@ -38,13 +38,11 @@ class GetContinentListTest(TestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
-                    'id': europe.id,
                     'code': 'EU',
                     'name': 'Europe',
                     'denonym': 'European',
                     'countries': [
                         {
-                            'id': germany.id,
                             'code': 'DE',
                             'name': 'Germany',
                             'denonym': 'German',
@@ -59,13 +57,11 @@ class GetContinentListTest(TestCase):
                     ]
                 },
                 {
-                    'id': asia.id,
                     'code': 'AS',
                     'name': 'Asia',
                     'denonym': 'Asian',
                     'countries': [
                         {
-                            'id': south_korea.id,
                             'code': 'KR',
                             'name': 'South Korea',
                             'denonym': 'South Korean',
@@ -110,13 +106,11 @@ class GetContinentListTest(TestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
-                    'id': europe.id,
                     'code': 'EU',
                     'name': 'Europa',
                     'denonym': 'Europäisch',
                     'countries': [
                         {
-                            'id': germany.id,
                             'code': 'DE',
                             'name': 'Deutschland',
                             'denonym': 'Deutsche',
@@ -131,13 +125,11 @@ class GetContinentListTest(TestCase):
                     ]
                 },
                 {
-                    'id': asia.id,
                     'code': 'AS',
                     'name': 'Asien',
                     'denonym': 'Asiatisch',
                     'countries': [
                         {
-                            'id': south_korea.id,
                             'code': 'KR',
                             'name': 'Südkorea',
                             'denonym': 'Südkoreanisch',
@@ -182,13 +174,11 @@ class GetContinentListTest(TestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
-                    'id': europe.id,
                     'code': 'EU',
                     'name': 'Europa',
                     'denonym': 'Europäisch',
                     'countries': [
                         {
-                            'id': germany.id,
                             'code': 'DE',
                             'name': 'Deutschland',
                             'denonym': 'Deutsche',
@@ -203,13 +193,11 @@ class GetContinentListTest(TestCase):
                     ]
                 },
                 {
-                    'id': asia.id,
                     'code': 'AS',
                     'name': 'Asien',
                     'denonym': 'Asiatisch',
                     'countries': [
                         {
-                            'id': south_korea.id,
                             'code': 'KR',
                             'name': 'Südkorea',
                             'denonym': 'Südkoreanisch',
@@ -246,20 +234,18 @@ class GetContinentDetailTest(TestCase):
         cologne = germany.cities.all()[0]
 
         response = self.client.get(
-            reverse('sample:continent_detail', args=(europe.id,)),
+            reverse('sample:continent_detail', args=(europe.pk,)),
             HTTP_ACCEPT_LANGUAGE='en'
         )
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
             json.loads(response.content.decode('utf-8')),
             {
-                'id': europe.id,
                 'code': 'EU',
                 'name': 'Europe',
                 'denonym': 'European',
                 'countries': [
                     {
-                        'id': germany.id,
                         'code': 'DE',
                         'name': 'Germany',
                         'denonym': 'German',
@@ -291,20 +277,18 @@ class GetContinentDetailTest(TestCase):
         cologne = germany.cities.all()[0]
 
         response = self.client.get(
-            reverse('sample:continent_detail', args=(europe.id,)),
+            reverse('sample:continent_detail', args=(europe.pk,)),
             HTTP_ACCEPT_LANGUAGE='de'
         )
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
             json.loads(response.content.decode('utf-8')),
             {
-                'id': europe.id,
                 'code': 'EU',
                 'name': 'Europa',
                 'denonym': 'Europäisch',
                 'countries': [
                     {
-                        'id': germany.id,
                         'code': 'DE',
                         'name': 'Deutschland',
                         'denonym': 'Deutsche',
@@ -336,20 +320,18 @@ class GetContinentDetailTest(TestCase):
         cologne = germany.cities.all()[0]
 
         response = self.client.get(
-            reverse('sample:continent_detail', args=(europe.id,)),
+            reverse('sample:continent_detail', args=(europe.pk,)),
             HTTP_ACCEPT_LANGUAGE='de-at'
         )
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
             json.loads(response.content.decode('utf-8')),
             {
-                'id': europe.id,
                 'code': 'EU',
                 'name': 'Europa',
                 'denonym': 'Europäisch',
                 'countries': [
                     {
-                        'id': germany.id,
                         'code': 'DE',
                         'name': 'Deutschland',
                         'denonym': 'Deutsche',
