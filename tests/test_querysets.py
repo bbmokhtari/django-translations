@@ -2305,3 +2305,9 @@ class TranslatableQuerySetTest(TestCase):
             error.exception.args[0],
             '`xx` is not a supported language.'
         )
+
+    def test_fetch_latest(self):
+        Continent.objects.latest('pk')
+
+    def test_fetch_earliest(self):
+        Continent.objects.earliest('pk')
