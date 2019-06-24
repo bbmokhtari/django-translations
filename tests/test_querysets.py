@@ -2307,7 +2307,17 @@ class TranslatableQuerySetTest(TestCase):
         )
 
     def test_fetch_latest(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
         Continent.objects.latest('pk')
 
     def test_fetch_earliest(self):
+        create_samples(
+            continent_names=['europe'],
+            continent_fields=['name', 'denonym'],
+            langs=['de']
+        )
         Continent.objects.earliest('pk')
