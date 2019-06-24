@@ -111,11 +111,14 @@ def _get_relations_hierarchy(*relations):
 
 def _get_entity_details(entity):
     """Return the iteration and type details of an entity."""
-    error_message = '`{}` is neither {} nor {}.'.format(
-        entity,
-        'a model instance',
-        'an iterable of model instances',
-    )
+
+    def error_message():
+        # Lazy in case str(entity) performs database queries
+        return '`{}` is neither {} nor {}.'.format(
+            entity,
+            'a model instance',
+            'an iterable of model instances',
+        )
 
     if isinstance(entity, models.Model):
         model = type(entity)
@@ -125,12 +128,12 @@ def _get_entity_details(entity):
             if isinstance(entity[0], models.Model):
                 model = type(entity[0])
             else:
-                raise TypeError(error_message)
+                raise TypeError(error_message())
         else:
             model = None
         iterable = True
     else:
-        raise TypeError(error_message)
+        raise TypeError(error_message())
 
     return (iterable, model)
 
