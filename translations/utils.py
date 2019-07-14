@@ -5,6 +5,7 @@ from django.db.models.query import prefetch_related_objects
 from django.db.models.constants import LOOKUP_SEP
 from django.core.exceptions import FieldError
 from django.contrib.contenttypes.models import ContentType
+from django.utils.functional import SimpleLazyObject
 
 import translations.models
 
@@ -111,10 +112,13 @@ def _get_relations_hierarchy(*relations):
 
 def _get_entity_details(entity):
     """Return the iteration and type details of an entity."""
-    error_message = '`{}` is neither {} nor {}.'.format(
-        entity,
-        'a model instance',
-        'an iterable of model instances',
+
+    error_message = SimpleLazyObject(
+        lambda: '`{}` is neither {} nor {}.'.format(
+            entity,
+            'a model instance',
+            'an iterable of model instances',
+        )
     )
 
     if isinstance(entity, models.Model):
