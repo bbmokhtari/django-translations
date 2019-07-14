@@ -113,7 +113,8 @@ def _get_relations_hierarchy(*relations):
 def _get_entity_details(entity):
     """Return the iteration and type details of an entity."""
 
-    error_message = SimpleLazyObject(lambda: '`{}` is neither {} nor {}.'.format(
+    error_message = SimpleLazyObject(
+        lambda: '`{}` is neither {} nor {}.'.format(
             entity,
             'a model instance',
             'an iterable of model instances',
