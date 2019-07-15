@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Guide: QuerySets &#8212; Django Translations 1.1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>Guide: QuerySets &#8212; Django Translations 1.1.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -55,45 +53,45 @@
 <h1>Guide: QuerySets<a class="headerlink" href="#guide-querysets" title="Permalink to this headline">¶</a></h1>
 <p>This module provides an in depth knowledge of the Translations querysets.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="admonition-title">Important</p>
 <p>The examples are assumed to CRUD this dataset.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="37%" />
-<col width="32%" />
-<col width="32%" />
+<col style="width: 37%" />
+<col style="width: 32%" />
+<col style="width: 32%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Type\Lang</th>
-<th class="head">English</th>
-<th class="head">German</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type\Lang</p></th>
+<th class="head"><p>English</p></th>
+<th class="head"><p>German</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td rowspan="2">Continent</td>
-<td>Europe</td>
-<td>Europa</td>
+<tbody>
+<tr class="row-even"><td rowspan="2"><p>Continent</p></td>
+<td><p>Europe</p></td>
+<td><p>Europa</p></td>
 </tr>
-<tr class="row-odd"><td>Asia</td>
-<td>Asien</td>
+<tr class="row-odd"><td><p>Asia</p></td>
+<td><p>Asien</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2">Country</td>
-<td>Germany</td>
-<td>Deutschland</td>
+<tr class="row-even"><td rowspan="2"><p>Country</p></td>
+<td><p>Germany</p></td>
+<td><p>Deutschland</p></td>
 </tr>
-<tr class="row-odd"><td>South Korea</td>
-<td>Südkorea</td>
+<tr class="row-odd"><td><p>South Korea</p></td>
+<td><p>Südkorea</p></td>
 </tr>
-<tr class="row-even"><td rowspan="2">City</td>
-<td>Cologne</td>
-<td>Köln</td>
+<tr class="row-even"><td rowspan="2"><p>City</p></td>
+<td><p>Cologne</p></td>
+<td><p>Köln</p></td>
 </tr>
-<tr class="row-odd"><td>Seoul</td>
-<td>Seul</td>
+<tr class="row-odd"><td><p>Seoul</p></td>
+<td><p>Seul</p></td>
 </tr>
 </tbody>
 </table>
-<p class="last">Please memorize this dataset in order to understand the examples better.</p>
+<p>Please memorize this dataset in order to understand the examples better.</p>
 </div>
 <div class="section" id="make-querysets-translatable">
 <h2>Make querysets translatable<a class="headerlink" href="#make-querysets-translatable" title="Permalink to this headline">¶</a></h2>
@@ -108,24 +106,24 @@ It translates the <a class="reference internal" href="models.html#models-transla
 It accepts a language code which determines the language to
 translate the queryset in.</p>
 <p>To translate an instance in a language:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="c1"># translate the instance</span>
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">europe</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Europa
 </pre></div>
 </div>
 <p>To translate a queryset in a language:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="c1"># translate the queryset</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -138,8 +136,8 @@ translate the queryset in.</p>
 <code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code> setting. It is optional and if it is
 not passed in, it is automatically set to the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Translating only affects the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
+<p class="admonition-title">Note</p>
+<p>Translating only affects the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
 </div>
 </div>
 <div class="section" id="translate-the-queryset-relations">
@@ -150,7 +148,7 @@ It translates the <a class="reference internal" href="models.html#models-transla
 It accepts some relations which determines the queryset relations to
 translate.</p>
 <p>To translate some queryset relations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="c1"># translate the queryset relations</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
@@ -158,9 +156,9 @@ translate.</p>
     <span class="s1">&#39;countries__cities&#39;</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -181,27 +179,27 @@ Each part must be a <code class="docutils literal notranslate"><span class="pre"
 The models of the relations must be
 <a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>It is <strong>recommended</strong> for the queryset relations to be
 prefetched before translating them,
 in order to reach optimal performance.</p>
-<p class="last">To do this use
+<p>To do this use
 <code class="docutils literal notranslate"><span class="pre">select_related</span></code>,
 <code class="docutils literal notranslate"><span class="pre">prefetch_related</span></code> or
 <code class="docutils literal notranslate"><span class="pre">prefetch_related_objects</span></code>.</p>
 </div>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
+<p class="admonition-title">Warning</p>
 <p>Any subsequent chained methods on the relations queryset which imply
 a database query will reset previously translated results:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
     <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
 <span class="c1"># Querying after translation</span>
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -210,8 +208,8 @@ a database query will reset previously translated results:</p>
 </pre></div>
 </div>
 <p>In some cases the querying can be done before the translation:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Prefetch</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Prefetch</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
 
 <span class="c1"># Querying before translation</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
@@ -223,7 +221,7 @@ a database query will reset previously translated results:</p>
     <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -232,17 +230,17 @@ a database query will reset previously translated results:</p>
 </pre></div>
 </div>
 <p>And in some cases the querying must be done anyway, in these cases:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
     <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
 <span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>
 
 <span class="c1"># Just `translate` the relation again after querying</span>
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">countries</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="last highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
     &lt;Country: Deutschland&gt;,
 ]&gt;
 </pre></div>
@@ -257,14 +255,14 @@ It probes the <a class="reference internal" href="models.html#models-translatabl
 It accepts some language code(s) which determines the language(s) to
 probe the queryset in.</p>
 <p>To probe the queryset in a custom language:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="c1"># probe the queryset</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
     <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Europa&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Asien&#39;</span><span class="p">))</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -274,14 +272,14 @@ probe the queryset in.</p>
 </pre></div>
 </div>
 <p>To probe the queryset in multiple custom languages:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="c1"># probe the queryset</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
     <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Europa&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Asien&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -298,17 +296,17 @@ Each relation may be divided into separate parts
 by <code class="docutils literal notranslate"><span class="pre">__</span></code>s to represent a deeply nested relation.
 Each part must be a <code class="docutils literal notranslate"><span class="pre">related_query_name</span></code>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Please note that the results are returned in the default language.
+<p class="admonition-title">Note</p>
+<p>Please note that the results are returned in the default language.
 To translate them use the <a class="reference internal" href="#querysets-translatablequeryset-translate"><span class="std std-ref">translate</span></a> method.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Probing only affects the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
+<p class="admonition-title">Note</p>
+<p>Probing only affects the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Make sure to use <code class="docutils literal notranslate"><span class="pre">distinct</span></code> on
+<p class="admonition-title">Note</p>
+<p>Make sure to use <code class="docutils literal notranslate"><span class="pre">distinct</span></code> on
 the probed queryset when using multiple languages, otherwise it may
 return duplicate results.</p>
 </div>
@@ -322,8 +320,8 @@ It works just like the normal django <code class="docutils literal notranslate">
 It accepts some language code(s) which determines the language(s) to
 specialize the query in.</p>
 <p>To create complex logical combinations of queries for different languages:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.query</span> <span class="kn">import</span> <span class="n">TQ</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.query</span> <span class="k">import</span> <span class="n">TQ</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
     <span class="n">TQ</span><span class="p">(</span>
@@ -335,7 +333,7 @@ specialize the query in.</p>
     <span class="p">)(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span>   <span class="c1"># use German for this query</span>
 <span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">continents</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;TranslatableQuerySet [
@@ -347,8 +345,8 @@ specialize the query in.</p>
 <code class="docutils literal notranslate"><span class="pre">LANGUAGES</span></code> setting. It is optional and if it is
 not passed in, it is automatically set to the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">TQ</span></code> objects act exactly like <code class="docutils literal notranslate"><span class="pre">Q</span></code> objects,
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">TQ</span></code> objects act exactly like <code class="docutils literal notranslate"><span class="pre">Q</span></code> objects,
 untill they are called using some language(s).</p>
 </div>
 </div>
@@ -433,13 +431,11 @@ untill they are called using some language(s).</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -460,7 +456,7 @@ untill they are called using some language(s).</p>
       &copy;2019, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

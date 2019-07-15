@@ -1,12 +1,10 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Guide: Languages &#8212; Django Translations 1.1.1 documentation</title>
+    <meta charset="utf-8" />
+    <title>Guide: Languages &#8212; Django Translations 1.1.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -55,7 +53,7 @@
 <h1>Guide: Languages<a class="headerlink" href="#guide-languages" title="Permalink to this headline">¶</a></h1>
 <p>This module provides an in depth knowledge of the Translations languages.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="admonition-title">Important</p>
 <p>The examples are assumed to be executed using these settings.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LANGUAGE_CODE</span> <span class="o">=</span> <span class="s1">&#39;en-us&#39;</span>
 <span class="n">LANGUAGES</span> <span class="o">=</span> <span class="p">(</span>
@@ -66,7 +64,7 @@
 <span class="p">)</span>
 </pre></div>
 </div>
-<p class="last">Please keep these settings in mind in order to understand the examples better.</p>
+<p>Please keep these settings in mind in order to understand the examples better.</p>
 </div>
 <div class="section" id="what-are-languages">
 <h2>What are languages?<a class="headerlink" href="#what-are-languages" title="Permalink to this headline">¶</a></h2>
@@ -83,12 +81,12 @@ the <a class="reference internal" href="querysets.html#querysets-translatableque
 <p>To access standard translate language codes use
 the <a class="reference internal" href="../reference/languages.html#translations.languages.translate" title="translations.languages.translate"><code class="xref py py-data docutils literal notranslate"><span class="pre">translate</span></code></a> object.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">translate</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">translate</span>
 
 <span class="c1"># get the default language</span>
 <span class="n">default</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">DEFAULT</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>en
@@ -96,12 +94,12 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">translate</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">translate</span>
 
 <span class="c1"># get the active language</span>
 <span class="n">active</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">ACTIVE</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">active</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">active</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>en
@@ -116,12 +114,12 @@ the <a class="reference internal" href="querysets.html#querysets-translatableque
 <p>To access standard probe language codes use
 the <a class="reference internal" href="../reference/languages.html#translations.languages.probe" title="translations.languages.probe"><code class="xref py py-data docutils literal notranslate"><span class="pre">probe</span></code></a> object.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the default language</span>
 <span class="n">default</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">DEFAULT</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">default</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>en
@@ -129,12 +127,12 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the active language</span>
 <span class="n">active</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">ACTIVE</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">active</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">active</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>en
@@ -142,12 +140,12 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> and <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> codes.
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the default and active language</span>
 <span class="n">defact</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">DEFAULT_ACTIVE</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">defact</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">defact</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>en
@@ -155,12 +153,12 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> and <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> codes.
 (assume <code class="docutils literal notranslate"><span class="pre">de</span></code>)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the default and active language</span>
 <span class="n">defact</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">DEFAULT_ACTIVE</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">defact</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">defact</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
@@ -170,12 +168,12 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </pre></div>
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the translation language</span>
 <span class="n">translation</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">TRANSLATION</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
@@ -186,12 +184,12 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </pre></div>
 </div>
 <p>To get all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
 
 <span class="c1"># get all the language</span>
 <span class="nb">all</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">ALL</span>
 
-<span class="k">print</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[
@@ -284,13 +282,11 @@ the <a class="reference internal" href="../reference/languages.html#translations
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
@@ -311,7 +307,7 @@ the <a class="reference internal" href="../reference/languages.html#translations
       &copy;2019, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
