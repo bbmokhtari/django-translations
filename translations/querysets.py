@@ -76,6 +76,9 @@ class TranslatableQuerySet(query.QuerySet):
 
     def filter(self, *args, **kwargs):
         """Filter the `TranslatableQuerySet`."""
+        if not (args or kwargs):
+            return super(TranslatableQuerySet, self).filter()
+
         query = _fetch_translations_query_getter(
             self.model,
             self._trans_prob
@@ -84,6 +87,9 @@ class TranslatableQuerySet(query.QuerySet):
 
     def exclude(self, *args, **kwargs):
         """Exclude the `TranslatableQuerySet`."""
+        if not (args or kwargs):
+            return super(TranslatableQuerySet, self).exclude()
+
         query = _fetch_translations_query_getter(
             self.model,
             self._trans_prob
