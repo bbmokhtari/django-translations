@@ -1,0 +1,24 @@
+Django Translations 1.1.2 release notes
+---------------------------------------
+
+*July 15, 2019*
+
+Bug Fixes
+^^^^^^^^^
+
+The bug fixes in this release are listed below.
+
+CI/CD
+"""""
+
+- Travis build updated. (pr #62)
+
+Performance
+"""""""""""
+
+- Reduce database queries. (pr #61)
+
+QuerySets
+"""""""""
+
+- ``latest`` and ``earliest`` bugs fixed. (pr #60)
