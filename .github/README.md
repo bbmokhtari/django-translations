@@ -8,6 +8,10 @@
 
 Django model translation for perfectionists with deadlines.
 
+## Support the project
+
+If you liked this project please consider giving it a star! ⭐️
+
 ## Goal
 
 There are two types of content, each of which has its own challenges for translation:
@@ -196,7 +200,3 @@ This can CRUD the translations of any objects (instance, queryset, list) and the
 
 For more interesting capabilities browse through the
 [documentation](http://bbmokhtari.github.io/django-translations).
-
-## Support the project
-
-If you liked this repo please consider giving it a star! ⭐️
