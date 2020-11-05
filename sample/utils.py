@@ -669,6 +669,14 @@ LANGS = []
 
 
 def handle_fields_consistency(fields, excluded, consistent):
+    """
+    Consistency fields.
+
+    Args:
+        fields: (list): write your description
+        excluded: (list): write your description
+        consistent: (list): write your description
+    """
     # extract fields
     extracted_fields = []
     for field in fields:
@@ -692,6 +700,14 @@ def handle_fields_consistency(fields, excluded, consistent):
 
 
 def handle_langs_consistency(translations, lang_consistent, field_consistent):
+    """
+    Consistency translations.
+
+    Args:
+        translations: (dict): write your description
+        lang_consistent: (list): write your description
+        field_consistent: (str): write your description
+    """
     # extract langs
     extracted_langs = []
     for translation_lang, translation_fields in translations.items():
@@ -767,6 +783,18 @@ def create_samples(
         continent_names=None, country_names=None, city_names=None,
         continent_fields=None, country_fields=None, city_fields=None,
         langs=None):
+    """
+    Creates a list of the samples.
+
+    Args:
+        continent_names: (str): write your description
+        country_names: (str): write your description
+        city_names: (str): write your description
+        continent_fields: (array): write your description
+        country_fields: (array): write your description
+        city_fields: (array): write your description
+        langs: (todo): write your description
+    """
 
     # initialize areas
     continent_names = continent_names if continent_names is not None else []
@@ -840,6 +868,11 @@ def create_samples(
 
 
 def create_all():
+    """
+    Creates a new dataset : parameter. : class
+
+    Args:
+    """
     create_samples(
         continent_names=CONTINENTS,
         country_names=COUNTRIES,
@@ -852,6 +885,11 @@ def create_all():
 
 
 def creator(**kwargs):
+    """
+    Create a translations object.
+
+    Args:
+    """
     # these two are handled automatically - but needed in recursive calls
     samples = kwargs.get('samples', SAMPLES)
     parent = kwargs.get('parent', {})
@@ -870,6 +908,12 @@ def creator(**kwargs):
 
     # dict sorter function
     def sorter(x):
+        """
+        Return the sorter
+
+        Args:
+            x: (todo): write your description
+        """
         return x[0]
 
     for name in names[:]:

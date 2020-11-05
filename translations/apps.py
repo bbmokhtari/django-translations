@@ -7,6 +7,12 @@ class TranslationsConfig(AppConfig):
     verbose_name = _('translations')
 
     def ready(self):
+        """
+        Determine if all django models.
+
+        Args:
+            self: (todo): write your description
+        """
         try:
             # cache all content types at the start
             from django.contrib.contenttypes.models import ContentType

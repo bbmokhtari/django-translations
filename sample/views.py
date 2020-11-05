@@ -9,6 +9,12 @@ class ContinentListView(generics.ListAPIView):
     serializer_class = ContinentSerializer
 
     def get_queryset(self):
+        """
+        Return queryset.
+
+        Args:
+            self: (todo): write your description
+        """
         queryset = super(ContinentListView, self).get_queryset()
         return queryset.translate_related(
             'countries',
@@ -21,6 +27,12 @@ class ContinentView(generics.RetrieveAPIView):
     serializer_class = ContinentSerializer
 
     def get_queryset(self):
+        """
+        Return the queryset of the queryset.
+
+        Args:
+            self: (todo): write your description
+        """
         queryset = super(ContinentView, self).get_queryset()
         return queryset.translate_related(
             'countries',

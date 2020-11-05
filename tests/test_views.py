@@ -11,6 +11,12 @@ class GetContinentListTest(TestCase):
     """Tests for `get_continent_list`."""
 
     def test_fallback(self):
+        """
+        Test for fallback
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -79,6 +85,12 @@ class GetContinentListTest(TestCase):
         )
 
     def test_language(self):
+        """
+        This function returns the language.
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -147,6 +159,12 @@ class GetContinentListTest(TestCase):
         )
 
     def test_accent_not_exists(self):
+        """
+        Test if the existence exists.
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -219,6 +237,12 @@ class GetContinentDetailTest(TestCase):
     """Tests for `get_continent_detail`."""
 
     def test_fallback(self):
+        """
+        Test for fallback
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -262,6 +286,12 @@ class GetContinentDetailTest(TestCase):
         )
 
     def test_language(self):
+        """
+        This function to see if the language
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
@@ -305,6 +335,12 @@ class GetContinentDetailTest(TestCase):
         )
 
     def test_accent_not_exists(self):
+        """
+        Test if a user has not in - test.
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             country_names=['germany', 'south korea'],
