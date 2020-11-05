@@ -12,6 +12,12 @@ class TranslationTest(TestCase):
     """Tests for `Translation`."""
 
     def test_content_type_none(self):
+        """
+        Create a content type.
+
+        Args:
+            self: (todo): write your description
+        """
         europe = Continent.objects.create(name='Europe', code='EU')
 
         with self.assertRaises(utils.IntegrityError) as error:
@@ -30,6 +36,12 @@ class TranslationTest(TestCase):
         )
 
     def test_object_id_none(self):
+        """
+        Test if the content id of the content type
+
+        Args:
+            self: (todo): write your description
+        """
         continent_ct = ContentType.objects.get_for_model(Continent)
 
         with self.assertRaises(utils.IntegrityError) as error:
@@ -47,6 +59,12 @@ class TranslationTest(TestCase):
         )
 
     def test_content_object_none(self):
+        """
+        Test if the object. content object.
+
+        Args:
+            self: (todo): write your description
+        """
         with self.assertRaises(utils.IntegrityError) as error:
             Translation.objects.create(
                 content_object=None,
@@ -61,6 +79,12 @@ class TranslationTest(TestCase):
         )
 
     def test_field_none(self):
+        """
+        Create a new field with the content field.
+
+        Args:
+            self: (todo): write your description
+        """
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
 
@@ -79,6 +103,12 @@ class TranslationTest(TestCase):
         )
 
     def test_language_none(self):
+        """
+        Create a new language for a language.
+
+        Args:
+            self: (todo): write your description
+        """
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
 
@@ -97,6 +127,12 @@ class TranslationTest(TestCase):
         )
 
     def test_text_none(self):
+        """
+        Create the content of the content of content type.
+
+        Args:
+            self: (todo): write your description
+        """
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
 
@@ -115,6 +151,12 @@ class TranslationTest(TestCase):
         )
 
     def test_str(self):
+        """
+        Generate a string of the content
+
+        Args:
+            self: (todo): write your description
+        """
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         translation = Translation.objects.create(
@@ -131,6 +173,12 @@ class TranslationTest(TestCase):
         )
 
     def test_uniqueness(self):
+        """
+        Test for uniqueness
+
+        Args:
+            self: (todo): write your description
+        """
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
         Translation.objects.create(
@@ -164,6 +212,12 @@ class TranslatableTest(TestCase):
     """Tests for `Translatable`."""
 
     def test_one_translations_rel(self):
+        """
+        Determine translations of translations.
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe'],
             continent_fields=['name', 'denonym'],
@@ -181,6 +235,12 @@ class TranslatableTest(TestCase):
         )
 
     def test_two_translations_rel(self):
+        """
+        Determine what translations are in the given a list of translations.
+
+        Args:
+            self: (todo): write your description
+        """
         create_samples(
             continent_names=['europe', 'asia'],
             continent_fields=['name', 'denonym'],
@@ -206,6 +266,12 @@ class TranslatableTest(TestCase):
         )
 
     def test_get_translatable_fields_automatic(self):
+        """
+        Get fields for a list of translatable.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             City.get_translatable_fields(),
             [
@@ -215,12 +281,24 @@ class TranslatableTest(TestCase):
         )
 
     def test_get_translatable_fields_empty(self):
+        """
+        Get the list of the field has been added list.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             Timezone.get_translatable_fields(),
             []
         )
 
     def test_get_translatable_fields_explicit(self):
+        """
+        Get the fields of the fields.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             Continent.get_translatable_fields(),
             [
@@ -230,36 +308,72 @@ class TranslatableTest(TestCase):
         )
 
     def test_get_translatable_fields_names_automatic(self):
+        """
+        Returns the list of fields of the model fields.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             City._get_translatable_fields_names(),
             ['name', 'denonym']
         )
 
     def test_get_translatable_fields_names_empty(self):
+        """
+        Method to see if the fields are empty
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             Timezone._get_translatable_fields_names(),
             []
         )
 
     def test_get_translatable_fields_names_explicit(self):
+        """
+        Returns a list of fields of the user has_get_fields.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             Continent._get_translatable_fields_names(),
             ['name', 'denonym']
         )
 
     def test_get_translatable_fields_choices_automatic(self):
+        """
+        Get the list of the fields to use.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             City._get_translatable_fields_choices(),
             [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]
         )
 
     def test_get_translatable_fields_choices_empty(self):
+        """
+        Get the list of field fields for this field.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             Timezone._get_translatable_fields_choices(),
             [(None, '---------')]
         )
 
     def test_get_translatable_fields_choices_explicit(self):
+        """
+        Returns the list of the fields to be used fields.
+
+        Args:
+            self: (todo): write your description
+        """
         self.assertListEqual(
             Continent._get_translatable_fields_choices(),
             [(None, '---------'), ('name', 'Name'), ('denonym', 'Denonym')]

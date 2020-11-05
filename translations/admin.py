@@ -35,6 +35,14 @@ class TranslatableAdmin(TranslatableAdminMixin, admin.ModelAdmin):
     """The admin which represents the `Translatable` instances."""
 
     def get_inline_instances(self, request, obj=None):
+        """
+        Returns the list of the instance.
+
+        Args:
+            self: (todo): write your description
+            request: (todo): write your description
+            obj: (todo): write your description
+        """
         inlines = list(
             super(TranslatableAdmin, self).get_inline_instances(request, obj)
         )

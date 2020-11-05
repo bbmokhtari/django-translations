@@ -47,6 +47,13 @@ def _get_dissected_lookup(model, lookup):
     }
 
     def _fill_dissected(model, *relation_parts):
+        """
+        Fill in the given relation.
+
+        Args:
+            model: (todo): write your description
+            relation_parts: (str): write your description
+        """
         root = relation_parts[0]
         nest = relation_parts[1:]
 
@@ -90,6 +97,13 @@ def _get_relations_hierarchy(*relations):
     hierarchy = {}
 
     def _fill_hierarchy(hierarchy, *relation_parts):
+        """
+        Fill the hierarchy with the hierarchy.
+
+        Args:
+            hierarchy: (todo): write your description
+            relation_parts: (str): write your description
+        """
         root = relation_parts[0]
         nest = relation_parts[1:]
 
@@ -145,6 +159,14 @@ def _get_purview(entity, hierarchy):
     query = models.Q()
 
     def _fill_entity(entity, hierarchy, included=True):
+        """
+        Fetches the entity with the given entity.
+
+        Args:
+            entity: (todo): write your description
+            hierarchy: (dict): write your description
+            included: (list): write your description
+        """
         iterable, model = _get_entity_details(entity)
 
         if model is None:
@@ -158,6 +180,12 @@ def _get_purview(entity, hierarchy):
                 raise TypeError('`{}` is not Translatable!'.format(model))
 
         def _fill_obj(obj):
+            """
+            Fet with the given object.
+
+            Args:
+                obj: (todo): write your description
+            """
             if included:
                 if not hasattr(obj, '_default_translatable_fields'):
                     obj._default_translatable_fields = {

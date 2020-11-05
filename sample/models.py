@@ -12,6 +12,12 @@ class Timezone(Translatable):
     )
 
     def __str__(self):
+        """
+        Return the string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.name
 
     class Meta:
@@ -43,6 +49,12 @@ class Continent(Translatable):
     )
 
     def __str__(self):
+        """
+        Return the string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.name
 
     class Meta:
@@ -81,6 +93,12 @@ class Country(Translatable):
     )
 
     def __str__(self):
+        """
+        Return the string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.name
 
     class Meta:
@@ -112,6 +130,12 @@ class City(Translatable):
     )
 
     def __str__(self):
+        """
+        Return the string representation of this object.
+
+        Args:
+            self: (todo): write your description
+        """
         return self.name
 
     class Meta:

@@ -20,6 +20,11 @@ def _fetch_translations_query_getter(model, lang):
     default = _get_default_language()
 
     def _get_translations_query(*args, **kwargs):
+        """
+        Get translations query.
+
+        Args:
+        """
         connector = kwargs.pop('_connector', None)
         negated = kwargs.pop('_negated', False)
 

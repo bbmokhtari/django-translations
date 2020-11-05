@@ -21,9 +21,24 @@ class Context:
         self.mapping, self.query = _get_purview(entity, hierarchy)
 
     def __enter__(self):
+        """
+        Decor function.
+
+        Args:
+            self: (todo): write your description
+        """
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
+        """
+        Exit the given exception.
+
+        Args:
+            self: (todo): write your description
+            exc_type: (todo): write your description
+            exc_value: (todo): write your description
+            traceback: (todo): write your description
+        """
         pass
 
     def _get_changed_fields(self):
