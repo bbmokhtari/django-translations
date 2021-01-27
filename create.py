@@ -5,6 +5,7 @@ import shutil
 settings = """
 
 # Set the root directory of the repo as the search path
+import os
 import sys
 sys.path.insert(0, os.path.dirname(BASE_DIR))
 
