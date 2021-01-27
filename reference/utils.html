@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Reference: Utilities &#8212; Django Translations 1.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reference: Utilities &#8212; Django Translations 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Reference: Management" href="management/index.html" />
@@ -93,9 +93,9 @@
 </table>
 <p>Please memorize this dataset in order to understand the examples better.</p>
 </div>
-<dl class="function">
+<dl class="py function">
 <dt id="translations.utils._get_reverse_relation">
-<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_reverse_relation</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">relation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_reverse_relation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_reverse_relation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_reverse_relation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">relation</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_reverse_relation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_reverse_relation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the reverse of a model’s relation.</p>
 <p>Processes the model’s relation which points from the model to the target
 model and returns the reverse relation which points from the target model
@@ -103,9 +103,9 @@ back to the model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><em>type</em></a><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)"><em>Model</em></a><em>)</em>) – The model which contains the relation and the reverse
+<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)"><em>type</em></a><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)"><em>Model</em></a><em>)</em>) – The model which contains the relation and the reverse
 relation points to.</p></li>
-<li><p><strong>relation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The relation of the model to get the reverse of.
+<li><p><strong>relation</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The relation of the model to get the reverse of.
 It may be divided into separate parts
 by <code class="xref py py-data docutils literal notranslate"><span class="pre">LOOKUP_SEP</span></code>
 (usually <code class="docutils literal notranslate"><span class="pre">__</span></code>) to represent a deeply nested relation.
@@ -116,16 +116,16 @@ Each part must be a <code class="docutils literal notranslate"><span class="pre"
 <dd class="field-even"><p>The reverse of the model’s relation.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldDoesNotExist" title="(in Django v3.0)"><strong>FieldDoesNotExist</strong></a> – If the relation is
+<dd class="field-even"><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldDoesNotExist" title="(in Django v4.0)"><strong>FieldDoesNotExist</strong></a> – If the relation is
 pointing to the fields that don’t exist.</p>
 </dd>
 </dl>
 <p>To get the reverse of a model’s relation:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_reverse_relation</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_reverse_relation</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># get the reverse relation</span>
 <span class="n">reverse_relation</span> <span class="o">=</span> <span class="n">_get_reverse_relation</span><span class="p">(</span><span class="n">Continent</span><span class="p">,</span>
@@ -139,9 +139,9 @@ pointing to the fields that don’t exist.</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.utils._get_dissected_lookup">
-<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_dissected_lookup</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">lookup</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_dissected_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_dissected_lookup" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_dissected_lookup</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">lookup</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_dissected_lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_dissected_lookup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dissected info of a lookup.</p>
 <p>Dissects the lookup and returns comprehensive information about it,
 like what relations does it follow, what field name and
@@ -150,8 +150,8 @@ or not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><em>type</em></a><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)"><em>Model</em></a><em>)</em>) – The model which the lookup acts on.</p></li>
-<li><p><strong>lookup</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The lookup of the model to get the dissected info of.
+<li><p><strong>model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)"><em>type</em></a><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)"><em>Model</em></a><em>)</em>) – The model which the lookup acts on.</p></li>
+<li><p><strong>lookup</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The lookup of the model to get the dissected info of.
 It may be divided into separate parts
 by <code class="xref py py-data docutils literal notranslate"><span class="pre">LOOKUP_SEP</span></code>
 (usually <code class="docutils literal notranslate"><span class="pre">__</span></code>) to represent a deeply nested relation.
@@ -162,20 +162,20 @@ Each part must be a <code class="docutils literal notranslate"><span class="pre"
 <dd class="field-even"><p>The dissected info of the lookup.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
-<li><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldDoesNotExist" title="(in Django v3.0)"><strong>FieldDoesNotExist</strong></a> – If the relation is
+<li><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldDoesNotExist" title="(in Django v4.0)"><strong>FieldDoesNotExist</strong></a> – If the relation is
 pointing to the fields that don’t exist.</p></li>
-<li><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldError" title="(in Django v3.0)"><strong>FieldError</strong></a> – If the lookup is not
+<li><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/exceptions.html#django.core.exceptions.FieldError" title="(in Django v4.0)"><strong>FieldError</strong></a> – If the lookup is not
 supported.</p></li>
 </ul>
 </dd>
 </dl>
 <p>To get the dissected info of a lookup:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_dissected_lookup</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_dissected_lookup</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># get the dissected lookup</span>
 <span class="n">info</span> <span class="o">=</span> <span class="n">_get_dissected_lookup</span><span class="p">(</span><span class="n">Continent</span><span class="p">,</span>
@@ -196,9 +196,9 @@ supported.</p></li>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.utils._get_relations_hierarchy">
-<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_relations_hierarchy</code><span class="sig-paren">(</span><em class="sig-param">*relations</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_relations_hierarchy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_relations_hierarchy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_relations_hierarchy</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">relations</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_relations_hierarchy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_relations_hierarchy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the relations hierarchy of some relations.</p>
 <p>Transforms the relations into a relations hierarchy. Each level of
 relations hierarchy contains the relations in that level and each
@@ -207,7 +207,7 @@ included or not and what are its nested relations, forming the next level
 of relations hierarchy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>relations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>)</em>) – The relations to get the relations hierarchy
+<dd class="field-odd"><p><strong>relations</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>)</em>) – The relations to get the relations hierarchy
 of.
 Each relation may be divided into separate parts
 by <code class="xref py py-data docutils literal notranslate"><span class="pre">LOOKUP_SEP</span></code>
@@ -217,12 +217,12 @@ by <code class="xref py py-data docutils literal notranslate"><span class="pre">
 <dd class="field-even"><p>The relations hierarchy of the relations.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a>)</p>
 </dd>
 </dl>
 <p>To get the relations hierarchy of some relations
 (a first-level relation):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_relations_hierarchy</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_relations_hierarchy</span>
 
 <span class="c1"># get the relations hierarchy</span>
 <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">_get_relations_hierarchy</span><span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">)</span>
@@ -240,7 +240,7 @@ by <code class="xref py py-data docutils literal notranslate"><span class="pre">
 </div>
 <p>To get the relations hierarchy of some relations
 (a second-level relation not including the first-level relation):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_relations_hierarchy</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_relations_hierarchy</span>
 
 <span class="c1"># get the relations hierarchy</span>
 <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">_get_relations_hierarchy</span><span class="p">(</span><span class="s1">&#39;countries__cities&#39;</span><span class="p">)</span>
@@ -263,7 +263,7 @@ by <code class="xref py py-data docutils literal notranslate"><span class="pre">
 </div>
 <p>To get the relations hierarchy of some relations
 (a second-level relation including the first-level relation):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_relations_hierarchy</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_relations_hierarchy</span>
 
 <span class="c1"># get the relations hierarchy</span>
 <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">_get_relations_hierarchy</span><span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span>
@@ -287,7 +287,7 @@ by <code class="xref py py-data docutils literal notranslate"><span class="pre">
 </div>
 <p>To get the relations hierarchy of some relations
 (no relations):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_relations_hierarchy</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_relations_hierarchy</span>
 
 <span class="c1"># get the relations hierarchy</span>
 <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">_get_relations_hierarchy</span><span class="p">()</span>
@@ -300,9 +300,9 @@ by <code class="xref py py-data docutils literal notranslate"><span class="pre">
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.utils._get_entity_details">
-<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_entity_details</code><span class="sig-paren">(</span><em class="sig-param">entity</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_entity_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_entity_details" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_entity_details</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_entity_details"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_entity_details" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the iteration and type details of an entity.</p>
 <p>If the entity is an iterable it returns the entity as iterable and the
 type of the first object in the iteration (since it assumes all the
@@ -310,17 +310,17 @@ objects in the iteration are of the same type), otherwise it returns the
 entity as not iterable and the type of the entity.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>entity</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)"><em>Model</em></a><em> or
-</em><em>Iterable</em><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)"><em>Model</em></a><em>)</em>) – The entity to get the details of.</p>
+<dd class="field-odd"><p><strong>entity</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)"><em>Model</em></a><em> or
+</em><em>Iterable</em><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)"><em>Model</em></a><em>)</em>) – The entity to get the details of.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The details of the entity as (iterable, model).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)">type</a>(<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)">Model</a>))</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)">bool</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)">type</a>(<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)">Model</a>))</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – If the entity is neither a model instance nor
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – If the entity is neither a model instance nor
 an iterable of model instances.</p>
 </dd>
 </dl>
@@ -332,8 +332,8 @@ retrieved).</p>
 </div>
 <p>To get the iteration and type details of an entity
 (a list of instances):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_entity_details</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_entity_details</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 
@@ -350,8 +350,8 @@ Model: &lt;class &#39;sample.models.Continent&#39;&gt;
 </div>
 <p>To get the iteration and type details of an entity
 (a queryset):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_entity_details</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_entity_details</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 
@@ -368,8 +368,8 @@ Model: &lt;class &#39;sample.models.Continent&#39;&gt;
 </div>
 <p>To get the iteration and type details of an entity
 (an instance):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_entity_details</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_entity_details</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 
@@ -386,8 +386,8 @@ Model: &lt;class &#39;sample.models.Continent&#39;&gt;
 </div>
 <p>To get the iteration and type details of an entity
 (an empty list):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_entity_details</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_entity_details</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">empty</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -404,9 +404,9 @@ Model: None
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.utils._get_purview">
-<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_purview</code><span class="sig-paren">(</span><em class="sig-param">entity</em>, <em class="sig-param">hierarchy</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_purview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_purview" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_purview</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">hierarchy</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_purview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_purview" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the purview of an entity and
 a relations hierarchy of it.</p>
 <p>Returns the mapping of the instances specified by the entity and its
@@ -414,9 +414,9 @@ relations, and the query to fetch their translations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>entity</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)"><em>Model</em></a><em> or
-</em><em>Iterable</em><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)"><em>Model</em></a><em>)</em>) – the entity to get the purview of.</p></li>
-<li><p><strong>hierarchy</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>)</em>) – The relations hierarchy of the entity to get
+<li><p><strong>entity</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)"><em>Model</em></a><em> or
+</em><em>Iterable</em><em>(</em><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)"><em>Model</em></a><em>)</em>) – the entity to get the purview of.</p></li>
+<li><p><strong>hierarchy</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a><em>)</em>) – The relations hierarchy of the entity to get
 the purview of.
 Each relation in the hierarchy must be a <code class="docutils literal notranslate"><span class="pre">related_name</span></code>.</p></li>
 </ul>
@@ -426,10 +426,10 @@ Each relation in the hierarchy must be a <code class="docutils literal notransla
 the relations hierarchy of it.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v3.0)">Model</a>)), <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v3.0)">Q</a>)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)">int</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/instances.html#django.db.models.Model" title="(in Django v4.0)">Model</a>)), <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v4.0)">Q</a>)</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.7)"><strong>TypeError</strong></a> – <ul class="simple">
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <ul class="simple">
 <li><p>If the entity is neither a model instance nor
 an iterable of model instances.</p></li>
 <li><p>If the model of the entity is
@@ -442,9 +442,9 @@ not <a class="reference internal" href="models.html#translations.models.Translat
 </dl>
 <p>To get the purview of an entity and
 a relations hierarchy of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="k">import</span> <span class="n">ContentType</span>
-<span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_relations_hierarchy</span><span class="p">,</span> <span class="n">_get_purview</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span><span class="p">,</span> <span class="n">City</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib.contenttypes.models</span> <span class="kn">import</span> <span class="n">ContentType</span>
+<span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_relations_hierarchy</span><span class="p">,</span> <span class="n">_get_purview</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span><span class="p">,</span> <span class="n">City</span>
 
 <span class="k">def</span> <span class="nf">ct</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ContentType</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_for_model</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span><span class="o">.</span><span class="n">id</span>
@@ -472,9 +472,9 @@ True
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.utils._get_translations">
-<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_translations</code><span class="sig-paren">(</span><em class="sig-param">query</em>, <em class="sig-param">lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_translations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_translations" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.utils.</code><code class="sig-name descname">_get_translations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">lang</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/utils.html#_get_translations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.utils._get_translations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> queryset of a query in
 a language.</p>
 <p>Queries the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> model using
@@ -482,9 +482,9 @@ the provided query in the specified language and returns the queryset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>query</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v3.0)"><em>Q</em></a>) – The query to fetch
+<li><p><strong>query</strong> (<a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v4.0)"><em>Q</em></a>) – The query to fetch
 the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> queryset of.</p></li>
-<li><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The language to fetch
+<li><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The language to fetch
 the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> queryset in.</p></li>
 </ul>
 </dd>
@@ -493,13 +493,13 @@ the <a class="reference internal" href="models.html#translations.models.Translat
 query in the language.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet" title="(in Django v3.0)">QuerySet</a>(<a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation">Translation</a>)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.query.QuerySet" title="(in Django v4.0)">QuerySet</a>(<a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation">Translation</a>)</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> queryset of a query in
 a language:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="k">import</span> <span class="n">_get_relations_hierarchy</span><span class="p">,</span> <span class="n">_get_purview</span><span class="p">,</span> <span class="n">_get_translations</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.utils</span> <span class="kn">import</span> <span class="n">_get_relations_hierarchy</span><span class="p">,</span> <span class="n">_get_purview</span><span class="p">,</span> <span class="n">_get_translations</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">_get_relations_hierarchy</span><span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span>
@@ -623,7 +623,7 @@ a language:</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -637,10 +637,10 @@ a language:</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Behzad B. Mokhtari.
+      &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

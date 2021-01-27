@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Guide: QuerySets &#8212; Django Translations 1.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guide: QuerySets &#8212; Django Translations 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Guide: Context" href="context.html" />
@@ -106,7 +106,7 @@ It translates the <a class="reference internal" href="models.html#models-transla
 It accepts a language code which determines the language to
 translate the queryset in.</p>
 <p>To translate an instance in a language:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># translate the instance</span>
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
@@ -118,7 +118,7 @@ translate the queryset in.</p>
 </pre></div>
 </div>
 <p>To translate a queryset in a language:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># translate the queryset</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
@@ -148,7 +148,7 @@ It translates the <a class="reference internal" href="models.html#models-transla
 It accepts some relations which determines the queryset relations to
 translate.</p>
 <p>To translate some queryset relations:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># translate the queryset relations</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
@@ -192,7 +192,7 @@ in order to reach optimal performance.</p>
 <p class="admonition-title">Warning</p>
 <p>Any subsequent chained methods on the relations queryset which imply
 a database query will reset previously translated results:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
     <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
@@ -208,8 +208,8 @@ a database query will reset previously translated results:</p>
 </pre></div>
 </div>
 <p>In some cases the querying can be done before the translation:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Prefetch</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Prefetch</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
 
 <span class="c1"># Querying before translation</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
@@ -230,7 +230,7 @@ a database query will reset previously translated results:</p>
 </pre></div>
 </div>
 <p>And in some cases the querying must be done anyway, in these cases:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">translate_related</span><span class="p">(</span>
     <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
@@ -255,8 +255,8 @@ It probes the <a class="reference internal" href="models.html#models-translatabl
 It accepts some language code(s) which determines the language(s) to
 probe the queryset in.</p>
 <p>To probe the queryset in a custom language:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># probe the queryset</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">probe</span><span class="p">(</span><span class="s1">&#39;de&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
@@ -272,8 +272,8 @@ probe the queryset in.</p>
 </pre></div>
 </div>
 <p>To probe the queryset in multiple custom languages:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Q</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># probe the queryset</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">probe</span><span class="p">([</span><span class="s1">&#39;en&#39;</span><span class="p">,</span> <span class="s1">&#39;de&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
@@ -320,8 +320,8 @@ It works just like the normal django <code class="docutils literal notranslate">
 It accepts some language code(s) which determines the language(s) to
 specialize the query in.</p>
 <p>To create complex logical combinations of queries for different languages:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.query</span> <span class="k">import</span> <span class="n">TQ</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.query</span> <span class="kn">import</span> <span class="n">TQ</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
     <span class="n">TQ</span><span class="p">(</span>
@@ -439,7 +439,7 @@ untill they are called using some language(s).</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -453,10 +453,10 @@ untill they are called using some language(s).</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Behzad B. Mokhtari.
+      &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Guide: Context &#8212; Django Translations 1.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guide: Context &#8212; Django Translations 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Guide: Languages" href="languages.html" />
@@ -109,8 +109,8 @@ should the context act upon. This is called the context’s purview.</p>
 <a class="reference internal" href="#updating-the-translations">updating the translations</a>, etc only affects the
 objects in the defined purview.</p>
 <p>To initialize a context for an instance and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -124,8 +124,8 @@ objects in the defined purview.</p>
 </pre></div>
 </div>
 <p>To initialize a context for a queryset and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -139,8 +139,8 @@ objects in the defined purview.</p>
 </pre></div>
 </div>
 <p>To initialize a context for a list of instances and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -181,8 +181,8 @@ This creates the translations using the <a class="reference internal" href="mode
 It accepts a language code which determines the language to
 create the translation in.</p>
 <p>To create the translations of an instance and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -204,8 +204,8 @@ create the translation in.</p>
 </pre></div>
 </div>
 <p>To create the translations of a queryset and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -227,8 +227,8 @@ create the translation in.</p>
 </pre></div>
 </div>
 <p>To create the translations of a list of instances and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -270,8 +270,8 @@ This reads the translations onto the <a class="reference internal" href="models.
 It accepts a language code which determines the language to
 read the translation in.</p>
 <p>To read the translations of an instance and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -297,8 +297,8 @@ read the translation in.</p>
 </pre></div>
 </div>
 <p>To read the translations of a queryset and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -327,8 +327,8 @@ read the translation in.</p>
 </pre></div>
 </div>
 <p>To read the translations of a list of instances and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -369,8 +369,8 @@ changed. (It remains what it was before)</p>
 <p class="admonition-title">Warning</p>
 <p>Any methods on the relations queryset which imply
 a database query will reset previously translated results:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
     <span class="s1">&#39;countries&#39;</span><span class="p">,</span>
@@ -388,9 +388,9 @@ a database query will reset previously translated results:</p>
 </pre></div>
 </div>
 <p>In some cases the querying can be done before the translation:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="k">import</span> <span class="n">Prefetch</span>
-<span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Prefetch</span>
+<span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span><span class="p">,</span> <span class="n">Country</span>
 
 <span class="c1"># querying before translation</span>
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span>
@@ -420,8 +420,8 @@ This updates the translations using the <a class="reference internal" href="mode
 It accepts a language code which determines the language to
 update the translation in.</p>
 <p>To update the translations of an instance and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -443,8 +443,8 @@ update the translation in.</p>
 </pre></div>
 </div>
 <p>To update the translations of a queryset and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -466,8 +466,8 @@ update the translation in.</p>
 </pre></div>
 </div>
 <p>To update the translations of a list of instances and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -506,8 +506,8 @@ This deletes the translations for the <a class="reference internal" href="models
 It accepts a language code which determines the language to
 delete the translation in.</p>
 <p>To delete the translations of an instance and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -524,8 +524,8 @@ delete the translation in.</p>
 </pre></div>
 </div>
 <p>To delete the translations of a queryset and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -542,8 +542,8 @@ delete the translation in.</p>
 </pre></div>
 </div>
 <p>To delete the translations of a list of instances and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -569,8 +569,8 @@ not passed in, it is automatically set to the <a class="reference internal" href
 use the <a class="reference internal" href="../reference/context.html#translations.context.Context.reset" title="translations.context.Context.reset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reset()</span></code></a> method.
 This resets the translations on the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> of the context’s purview.</p>
 <p>To reset the translations of an instance and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">europe</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="s1">&#39;EU&#39;</span><span class="p">)</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -599,8 +599,8 @@ This resets the translations on the <a class="reference internal" href="models.h
 </pre></div>
 </div>
 <p>To reset the translations of a queryset and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -632,8 +632,8 @@ This resets the translations on the <a class="reference internal" href="models.h
 </pre></div>
 </div>
 <p>To reset the translations of a list of instances and some relations of it:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="k">import</span> <span class="n">Context</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.context</span> <span class="kn">import</span> <span class="n">Context</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="n">continents</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Continent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
 <span class="n">relations</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;countries&#39;</span><span class="p">,</span> <span class="s1">&#39;countries__cities&#39;</span><span class="p">,)</span>
@@ -754,7 +754,7 @@ This resets the translations on the <a class="reference internal" href="models.h
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -768,10 +768,10 @@ This resets the translations on the <a class="reference internal" href="models.h
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Behzad B. Mokhtari.
+      &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

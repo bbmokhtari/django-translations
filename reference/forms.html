@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Reference: Forms &#8212; Django Translations 1.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reference: Forms &#8212; Django Translations 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Reference: Languages" href="languages.html" />
@@ -52,9 +52,9 @@
   <div class="section" id="module-translations.forms">
 <span id="reference-forms"></span><h1>Reference: Forms<a class="headerlink" href="#module-translations.forms" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the form utilities for the Translations app.</p>
-<dl class="function">
+<dl class="py function">
 <dt id="translations.forms.generate_translation_form">
-<code class="sig-prename descclassname">translations.forms.</code><code class="sig-name descname">generate_translation_form</code><span class="sig-paren">(</span><em class="sig-param">translatable</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/forms.html#generate_translation_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.forms.generate_translation_form" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.forms.</code><code class="sig-name descname">generate_translation_form</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">translatable</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/forms.html#generate_translation_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.forms.generate_translation_form" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> form based on
 a <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a> model and
 the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a>s.</p>
@@ -63,7 +63,7 @@ the translatable fields of the <a class="reference internal" href="models.html#t
 model and the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a>s and returns it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>translatable</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><em>type</em></a><em>(</em><a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><em>Translatable</em></a><em>)</em>) – The <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a> model to
+<dd class="field-odd"><p><strong>translatable</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)"><em>type</em></a><em>(</em><a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><em>Translatable</em></a><em>)</em>) – The <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a> model to
 generate the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> form based on.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -72,17 +72,17 @@ on the <a class="reference internal" href="models.html#translations.models.Trans
 the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a>s.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)">type</a>(<a class="reference external" href="https://django.readthedocs.io/en/latest/topics/forms/modelforms.html#django.forms.ModelForm" title="(in Django v3.0)">ModelForm</a>(<a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation">Translation</a>))</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.9)">type</a>(<a class="reference external" href="https://django.readthedocs.io/en/latest/topics/forms/modelforms.html#django.forms.ModelForm" title="(in Django v4.0)">ModelForm</a>(<a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation">Translation</a>))</p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code is not supported.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code is not supported.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> form based on
 a <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a> model and
 the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a>s:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.forms</span> <span class="k">import</span> <span class="n">generate_translation_form</span>
-<span class="kn">from</span> <span class="nn">sample.models</span> <span class="k">import</span> <span class="n">Continent</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.forms</span> <span class="kn">import</span> <span class="n">generate_translation_form</span>
+<span class="kn">from</span> <span class="nn">sample.models</span> <span class="kn">import</span> <span class="n">Continent</span>
 
 <span class="c1"># get the translation form</span>
 <span class="n">form</span> <span class="o">=</span> <span class="n">generate_translation_form</span><span class="p">(</span><span class="n">Continent</span><span class="p">)</span>
@@ -199,7 +199,7 @@ the <a class="reference internal" href="../glossary.html#term-translation-langua
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -213,10 +213,10 @@ the <a class="reference internal" href="../glossary.html#term-translation-langua
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Behzad B. Mokhtari.
+      &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

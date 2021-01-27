@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Guide: Admin &#8212; Django Translations 1.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guide: Admin &#8212; Django Translations 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Guide: QuerySets" href="querysets.html" />
@@ -58,7 +58,7 @@
 <ol class="arabic">
 <li><p>Make sure the admin model is <a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p></li>
 <li><p>Inherit the admin from the <a class="reference internal" href="../reference/admin.html#translations.admin.TranslatableAdmin" title="translations.admin.TranslatableAdmin"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranslatableAdmin</span></code></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.admin</span> <span class="k">import</span> <span class="n">TranslatableAdmin</span><span class="p">,</span> <span class="n">TranslationInline</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.admin</span> <span class="kn">import</span> <span class="n">TranslatableAdmin</span><span class="p">,</span> <span class="n">TranslationInline</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="k">class</span> <span class="nc">ContinentAdmin</span><span class="p">(</span><span class="n">TranslatableAdmin</span><span class="p">):</span>
@@ -67,7 +67,7 @@
 </div>
 </li>
 <li><p>Add <a class="reference internal" href="../reference/admin.html#translations.admin.TranslationInline" title="translations.admin.TranslationInline"><code class="xref py py-class docutils literal notranslate"><span class="pre">TranslationInline</span></code></a> as its inline.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.admin</span> <span class="k">import</span> <span class="n">TranslatableAdmin</span><span class="p">,</span> <span class="n">TranslationInline</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.admin</span> <span class="kn">import</span> <span class="n">TranslatableAdmin</span><span class="p">,</span> <span class="n">TranslationInline</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ContinentAdmin</span><span class="p">(</span><span class="n">TranslatableAdmin</span><span class="p">):</span>
@@ -178,7 +178,7 @@ external library. In that case check out <a class="reference internal" href="../
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -192,10 +192,10 @@ external library. In that case check out <a class="reference internal" href="../
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Behzad B. Mokhtari.
+      &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

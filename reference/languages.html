@@ -1,17 +1,17 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Reference: Languages &#8212; Django Translations 1.1.2 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reference: Languages &#8212; Django Translations 1.2.0 documentation</title>
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Reference: Utilities" href="utils.html" />
@@ -66,9 +66,9 @@
 </div>
 <p>Please keep these settings in mind in order to understand the examples better.</p>
 </div>
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_supported_language">
-<code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_supported_language</code><span class="sig-paren">(</span><em class="sig-param">lang</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_supported_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_supported_language" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_supported_language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_supported_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_supported_language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a custom language code.</p>
 <p>Searches the <code class="xref py py-data docutils literal notranslate"><span class="pre">LANGUAGES</span></code> in the settings for
 the custom language code, if the exact custom language code is found, it
@@ -78,23 +78,23 @@ found, it returns it, otherwise it throws an error stating there is no
 such language supported in the settings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The custom language code to get
+<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – The custom language code to get
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the custom language code.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the language code is not specified in
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the language code is not specified in
 the <code class="xref py py-data docutils literal notranslate"><span class="pre">LANGUAGES</span></code> setting.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a custom language code
 (an unaccented language code):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_supported_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_supported_language</span>
 
 <span class="c1"># get the supported language</span>
 <span class="n">custom</span> <span class="o">=</span> <span class="n">_get_supported_language</span><span class="p">(</span><span class="s1">&#39;en&#39;</span><span class="p">)</span>
@@ -107,7 +107,7 @@ the <code class="xref py py-data docutils literal notranslate"><span class="pre"
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a custom language code
 (an existing accented language code):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_supported_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_supported_language</span>
 
 <span class="c1"># get the supported language</span>
 <span class="n">custom</span> <span class="o">=</span> <span class="n">_get_supported_language</span><span class="p">(</span><span class="s1">&#39;en-gb&#39;</span><span class="p">)</span>
@@ -120,7 +120,7 @@ the <code class="xref py py-data docutils literal notranslate"><span class="pre"
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a custom language code
 (a non-existing accented language code):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_supported_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_supported_language</span>
 
 <span class="c1"># get the supported language</span>
 <span class="n">custom</span> <span class="o">=</span> <span class="n">_get_supported_language</span><span class="p">(</span><span class="s1">&#39;en-us&#39;</span><span class="p">)</span>
@@ -133,7 +133,7 @@ the <code class="xref py py-data docutils literal notranslate"><span class="pre"
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_default_language">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_default_language</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_default_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_default_language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>
@@ -144,15 +144,15 @@ code.</p>
 the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code is not supported.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code is not supported.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>
 code:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_default_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_default_language</span>
 
 <span class="c1"># get the default language</span>
 <span class="n">default</span> <span class="o">=</span> <span class="n">_get_default_language</span><span class="p">()</span>
@@ -165,7 +165,7 @@ code:</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_active_language">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_active_language</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_active_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_active_language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a>
@@ -176,16 +176,16 @@ code.</p>
 the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code is not supported.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code is not supported.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a>
 code
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_active_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_active_language</span>
 
 <span class="c1"># get the active language</span>
 <span class="n">active</span> <span class="o">=</span> <span class="n">_get_active_language</span><span class="p">()</span>
@@ -198,7 +198,7 @@ code
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_all_languages">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_all_languages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_all_languages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_all_languages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes.</p>
@@ -207,11 +207,11 @@ code
 <dd class="field-odd"><p>All the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>)</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>)</p>
 </dd>
 </dl>
 <p>To get all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_all_languages</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_all_languages</span>
 
 <span class="c1"># get all the languages</span>
 <span class="n">languages</span> <span class="o">=</span> <span class="n">_get_all_languages</span><span class="p">()</span>
@@ -229,7 +229,7 @@ code
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_all_choices">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_all_choices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_all_choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_all_choices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> choices.</p>
@@ -238,11 +238,11 @@ code
 <dd class="field-odd"><p>All the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> choices.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>))</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>))</p>
 </dd>
 </dl>
 <p>To get all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> choices:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_all_choices</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_all_choices</span>
 
 <span class="c1"># get all the language choices</span>
 <span class="n">choices</span> <span class="o">=</span> <span class="n">_get_all_choices</span><span class="p">()</span>
@@ -261,7 +261,7 @@ code
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_translation_languages">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_translation_languages</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_translation_languages"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_translation_languages" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes.</p>
@@ -270,11 +270,11 @@ code
 <dd class="field-odd"><p>The <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>)</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>)</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_translation_languages</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translation_languages</span>
 
 <span class="c1"># get the translation languages</span>
 <span class="n">languages</span> <span class="o">=</span> <span class="n">_get_translation_languages</span><span class="p">()</span>
@@ -291,7 +291,7 @@ code
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_translation_choices">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_translation_choices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_translation_choices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_translation_choices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> choices.</p>
@@ -300,14 +300,14 @@ code
 <dd class="field-odd"><p>The <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> choices.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>))</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)">list</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a>))</p>
 </dd>
 <dt class="field-odd">Raises</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code is not supported.</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code is not supported.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> choices:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_translation_choices</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translation_choices</span>
 
 <span class="c1"># get the translation language choices</span>
 <span class="n">choices</span> <span class="o">=</span> <span class="n">_get_translation_choices</span><span class="p">()</span>
@@ -325,16 +325,16 @@ code
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_translate_language">
-<code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_translate_language</code><span class="sig-paren">(</span><em class="sig-param">lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_translate_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_translate_language" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_translate_language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_translate_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_translate_language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a translate language code.</p>
 <p>If the translate language code is passed in, it returns
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of it, otherwise it returns
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The translate language code to get
+<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The translate language code to get
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> means use the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 </dd>
@@ -342,15 +342,15 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 <dd class="field-even"><p>The <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the translate language code.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the translate language code is not supported.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the translate language code is not supported.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a translate language code
 (the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code - assume <code class="docutils literal notranslate"><span class="pre">en</span></code>):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_translate_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translate_language</span>
 
 <span class="c1"># get the translate language</span>
 <span class="n">translate</span> <span class="o">=</span> <span class="n">_get_translate_language</span><span class="p">()</span>
@@ -363,7 +363,7 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of a translate language code
 (a custom language code):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_translate_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_translate_language</span>
 
 <span class="c1"># get the translate language</span>
 <span class="n">translate</span> <span class="o">=</span> <span class="n">_get_translate_language</span><span class="p">(</span><span class="s1">&#39;en-us&#39;</span><span class="p">)</span>
@@ -376,16 +376,16 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="translations.languages._get_probe_language">
-<code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_probe_language</code><span class="sig-paren">(</span><em class="sig-param">lang=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_probe_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_probe_language" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_get_probe_language</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/languages.html#_get_probe_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._get_probe_language" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of some probe language code(s).</p>
 <p>If the probe language code(s) is (are) passed in, it returns
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of it (them), otherwise it returns
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code of the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – The probe language code(s) to get
+<dd class="field-odd"><p><strong>lang</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.9)"><em>None</em></a>) – The probe language code(s) to get
 the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> means use the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 </dd>
@@ -393,15 +393,15 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 <dd class="field-even"><p>The <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of the probe language code(s).</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
 </dd>
 <dt class="field-even">Raises</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.7)"><strong>ValueError</strong></a> – If the probe language code(s) is (are) not supported.</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.9)"><strong>ValueError</strong></a> – If the probe language code(s) is (are) not supported.</p>
 </dd>
 </dl>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of some probe language code(s)
 (the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code - assume <code class="docutils literal notranslate"><span class="pre">en</span></code>):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_probe_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_probe_language</span>
 
 <span class="c1"># get the probe language</span>
 <span class="n">probe</span> <span class="o">=</span> <span class="n">_get_probe_language</span><span class="p">()</span>
@@ -414,7 +414,7 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of some probe language code(s)
 (a custom language code):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_probe_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_probe_language</span>
 
 <span class="c1"># get the probe language</span>
 <span class="n">probe</span> <span class="o">=</span> <span class="n">_get_probe_language</span><span class="p">(</span><span class="s1">&#39;en-us&#39;</span><span class="p">)</span>
@@ -427,7 +427,7 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> code(s) of some probe language code(s)
 (multiple custom language codes):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">_get_probe_language</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">_get_probe_language</span>
 
 <span class="c1"># get the probe language</span>
 <span class="n">probe</span> <span class="o">=</span> <span class="n">_get_probe_language</span><span class="p">([</span><span class="s1">&#39;en-us&#39;</span><span class="p">,</span> <span class="s1">&#39;en-gb&#39;</span><span class="p">])</span>
@@ -443,16 +443,16 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="translations.languages._TRANSLATE">
 <em class="property">class </em><code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_TRANSLATE</code><a class="reference internal" href="../_modules/translations/languages.html#_TRANSLATE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._TRANSLATE" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class which provides standard translate language codes.</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._TRANSLATE.DEFAULT">
 <code class="sig-name descname">DEFAULT</code><a class="headerlink" href="#translations.languages._TRANSLATE.DEFAULT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">translate</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">translate</span>
 
 <span class="c1"># get the default language</span>
 <span class="n">default</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">DEFAULT</span>
@@ -465,13 +465,13 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._TRANSLATE.ACTIVE">
 <code class="sig-name descname">ACTIVE</code><a class="headerlink" href="#translations.languages._TRANSLATE.ACTIVE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>)</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">translate</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">translate</span>
 
 <span class="c1"># get the active language</span>
 <span class="n">active</span> <span class="o">=</span> <span class="n">translate</span><span class="o">.</span><span class="n">ACTIVE</span>
@@ -486,16 +486,16 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="translations.languages._PROBE">
 <em class="property">class </em><code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">_PROBE</code><a class="reference internal" href="../_modules/translations/languages.html#_PROBE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.languages._PROBE" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class which provides standard probe language codes.</p>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._PROBE.DEFAULT">
 <code class="sig-name descname">DEFAULT</code><a class="headerlink" href="#translations.languages._PROBE.DEFAULT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> code.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the default language</span>
 <span class="n">default</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">DEFAULT</span>
@@ -508,13 +508,13 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._PROBE.ACTIVE">
 <code class="sig-name descname">ACTIVE</code><a class="headerlink" href="#translations.languages._PROBE.ACTIVE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> code.
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>)</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the active language</span>
 <span class="n">active</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">ACTIVE</span>
@@ -527,13 +527,13 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._PROBE.DEFAULT_ACTIVE">
 <code class="sig-name descname">DEFAULT_ACTIVE</code><a class="headerlink" href="#translations.languages._PROBE.DEFAULT_ACTIVE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> and <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> codes.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> and <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> codes.
 (assume <code class="docutils literal notranslate"><span class="pre">en</span></code>)</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the default and active language</span>
 <span class="n">defact</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">DEFAULT_ACTIVE</span>
@@ -546,7 +546,7 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 <p>To get the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a> and <a class="reference internal" href="../glossary.html#term-active-language"><span class="xref std std-term">active language</span></a> codes.
 (assume <code class="docutils literal notranslate"><span class="pre">de</span></code>)</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the default and active language</span>
 <span class="n">defact</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">DEFAULT_ACTIVE</span>
@@ -562,12 +562,12 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._PROBE.TRANSLATION">
 <code class="sig-name descname">TRANSLATION</code><a class="headerlink" href="#translations.languages._PROBE.TRANSLATION" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes.</p>
 <p>To get the <a class="reference internal" href="../glossary.html#term-translation-language"><span class="xref std std-term">translation language</span></a> codes.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
 
 <span class="c1"># get the translation language</span>
 <span class="n">translation</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">TRANSLATION</span>
@@ -584,12 +584,12 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 </div>
 </dd></dl>
 
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="translations.languages._PROBE.ALL">
 <code class="sig-name descname">ALL</code><a class="headerlink" href="#translations.languages._PROBE.ALL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes.</p>
 <p>To get all the <a class="reference internal" href="../glossary.html#term-supported-language"><span class="xref std std-term">supported language</span></a> codes.</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="k">import</span> <span class="n">probe</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">translations.languages</span> <span class="kn">import</span> <span class="n">probe</span>
 
 <span class="c1"># get all the language</span>
 <span class="nb">all</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">ALL</span>
@@ -609,14 +609,14 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
 
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="translations.languages.translate">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">translate</code><a class="headerlink" href="#translations.languages.translate" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object which provides standard translate language codes.</p>
 <p>An instance of <a class="reference internal" href="#translations.languages._TRANSLATE" title="translations.languages._TRANSLATE"><code class="xref py py-class docutils literal notranslate"><span class="pre">_TRANSLATE</span></code></a></p>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="translations.languages.probe">
 <code class="sig-prename descclassname">translations.languages.</code><code class="sig-name descname">probe</code><a class="headerlink" href="#translations.languages.probe" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object which provides standard probe language codes.</p>
@@ -716,7 +716,7 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -730,10 +730,10 @@ the <a class="reference internal" href="../glossary.html#term-supported-language
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2019, Behzad B. Mokhtari.
+      &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
