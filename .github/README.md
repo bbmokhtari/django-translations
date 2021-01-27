@@ -1,10 +1,8 @@
 # Django Translations
 
 [![build](https://travis-ci.com/bbmokhtari/django-translations.svg?branch=master)](https://travis-ci.com/bbmokhtari/django-translations)
-[![python](https://img.shields.io/badge/python-3.5%7C3.6-0073b7.svg)](https://pypi.org/project/django-translations/)
-[![pypi](https://img.shields.io/badge/pypi-1.0.0-f9d35f.svg)](https://pypi.org/project/django-translations/)
-[![django](https://img.shields.io/badge/django-2.0%7C2.1-0C4B33.svg)](https://pypi.org/project/django-translations/)
-[![flake8](https://img.shields.io/badge/flake8-linted-green.svg)](https://travis-ci.com/bbmokhtari/django-translations)
+[![python](https://img.shields.io/badge/python-%3E%3D3.6%2C%20%3C4-0073b7)](https://pypi.org/project/django-translations/)
+[![django](https://img.shields.io/badge/django-%3E%3D2.0%2C%20%3C4-0C4B33)](https://pypi.org/project/django-translations/)
 
 Django model translation for perfectionists with deadlines.
 
@@ -31,8 +29,8 @@ Currently, this project is incompatible with PostgreSQL.
 
 ## Requirements
 
-- Python (\>=3.5)
-- Django (\>=2.0)
+- Python (\>=3.6, \<4)
+- Django (\>=2.0, \<4)
 
 ## Installation
 
