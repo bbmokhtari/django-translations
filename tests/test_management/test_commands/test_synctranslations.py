@@ -14,7 +14,7 @@ from sample.models import Continent, Country, City
 from sample.utils import create_samples
 
 
-class PsudeoTTY(object):
+class PsudeoTTY:
     def isatty(self):
         return True
 
