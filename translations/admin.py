@@ -10,7 +10,7 @@ from translations.forms import generate_translation_form
 __docformat__ = 'restructuredtext'
 
 
-class TranslatableAdminMixin(object):
+class TranslatableAdminMixin:
     """An admin mixin which provides custom translation functionalities."""
 
     def prepare_translation_inlines(self, inlines, inline_type):

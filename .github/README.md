@@ -14,7 +14,7 @@ There are two types of content, each of which has its own challenges for transla
   _e.g. "Please enter a valid email address."_
 
   Django already provides a
-  [solution](https://docs.djangoproject.com/en/2.1/topics/i18n/translation/)
+  [solution](https://docs.djangoproject.com/en/2.2/topics/i18n/translation/)
   for translating static content.
 
 - Dynamic content: This is the content which is stored in the database.
@@ -30,7 +30,7 @@ Currently, this project is incompatible with PostgreSQL.
 ## Requirements
 
 - Python (\>=3.6, \<4)
-- Django (\>=2.0, \<4)
+- Django (\>=2.2, \<4)
 
 ## Installation
 
