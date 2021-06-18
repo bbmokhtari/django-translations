@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reference: Context &#8212; Django Translations 1.2.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Reference: Context &#8212; Django Translations 1.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -49,7 +50,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-translations.context">
+  <section id="module-translations.context">
 <span id="reference-context"></span><h1>Reference: Context<a class="headerlink" href="#module-translations.context" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the context managers for the Translations app.</p>
 <div class="admonition important">
@@ -94,8 +95,8 @@
 <p>Please memorize this dataset in order to understand the examples better.</p>
 </div>
 <dl class="py class">
-<dt id="translations.context.Context">
-<em class="property">class </em><code class="sig-prename descclassname">translations.context.</code><code class="sig-name descname">Context</code><a class="reference internal" href="../_modules/translations/context.html#Context"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">translations.context.</span></span><span class="sig-name descname"><span class="pre">Context</span></span><a class="reference internal" href="../_modules/translations/context.html#Context"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context" title="Permalink to this definition">¶</a></dt>
 <dd><p>A context manager which provides custom translation functionalities.</p>
 <p>Provides CRUD functionalities like
 <a class="reference internal" href="#translations.context.Context.create" title="translations.context.Context.create"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create()</span></code></a>, <a class="reference internal" href="#translations.context.Context.read" title="translations.context.Context.read"><code class="xref py py-meth docutils literal notranslate"><span class="pre">read()</span></code></a>, <a class="reference internal" href="#translations.context.Context.update" title="translations.context.Context.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> and <a class="reference internal" href="#translations.context.Context.delete" title="translations.context.Context.delete"><code class="xref py py-meth docutils literal notranslate"><span class="pre">delete()</span></code></a>
@@ -153,8 +154,8 @@ to manage the <a class="reference internal" href="#translations.context.Context"
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="translations.context.Context.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">relations</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">relations</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a> for an entity and some relations of it.</p>
 <p>Defines the entity and the relations of it as
 the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview.</p>
@@ -244,8 +245,8 @@ in order to reach optimal performance.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.context.Context._get_changed_fields">
-<code class="sig-name descname">_get_changed_fields</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context._get_changed_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context._get_changed_fields" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context._get_changed_fields">
+<span class="sig-name descname"><span class="pre">_get_changed_fields</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context._get_changed_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context._get_changed_fields" title="Permalink to this definition">¶</a></dt>
 <dd><p>Yield the info about the changed fields in
 the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview.</p>
 <p>Yields the info about the changed fields in
@@ -289,8 +290,8 @@ the <a class="reference internal" href="#translations.context.Context" title="tr
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.context.Context.create">
-<code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.create" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context.create" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview in
 a language.</p>
 <p>Creates the translations using the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
@@ -390,8 +391,8 @@ created. (No need to set all the translatable fields beforehand)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.context.Context.read">
-<code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.read" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview in
 a language.</p>
 <p>Reads the translations onto the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
@@ -550,8 +551,8 @@ a database query will reset previously translated results:</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.context.Context.update">
-<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.update" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview in
 a language.</p>
 <p>Updates the translations using the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
@@ -646,8 +647,8 @@ updated. (No need to initialize all the translatable fields beforehand)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.context.Context.delete">
-<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.delete" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview in
 a language.</p>
 <p>Deletes the translations for the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
@@ -721,8 +722,8 @@ a language.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.context.Context.reset">
-<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.context.Context.reset" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.context.Context.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/context.html#Context.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.context.Context.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the translations of the <a class="reference internal" href="#translations.context.Context" title="translations.context.Context"><code class="xref py py-class docutils literal notranslate"><span class="pre">Context</span></code></a>‘s purview to
 the <a class="reference internal" href="../glossary.html#term-default-language"><span class="xref std std-term">default language</span></a>.</p>
 <p>Resets the translations on the <a class="reference internal" href="models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TranslatableMeta.fields</span> </code></a> of the
@@ -830,7 +831,7 @@ the <a class="reference internal" href="../glossary.html#term-default-language">
 
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
@@ -940,7 +941,7 @@ the <a class="reference internal" href="../glossary.html#term-default-language">
       &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

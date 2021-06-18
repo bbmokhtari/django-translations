@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guide: QuerySets &#8212; Django Translations 1.2.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Guide: QuerySets &#8212; Django Translations 1.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -49,7 +50,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="guide-querysets">
+  <section id="guide-querysets">
 <h1>Guide: QuerySets<a class="headerlink" href="#guide-querysets" title="Permalink to this headline">¶</a></h1>
 <p>This module provides an in depth knowledge of the Translations querysets.</p>
 <div class="admonition important">
@@ -93,12 +94,12 @@
 </table>
 <p>Please memorize this dataset in order to understand the examples better.</p>
 </div>
-<div class="section" id="make-querysets-translatable">
+<section id="make-querysets-translatable">
 <h2>Make querysets translatable<a class="headerlink" href="#make-querysets-translatable" title="Permalink to this headline">¶</a></h2>
 <p>To make a queryset translatable
 make sure the queryset model is <a class="reference internal" href="models.html#models-translatable"><span class="std std-ref">translatable</span></a>.</p>
-</div>
-<div class="section" id="translate-the-queryset">
+</section>
+<section id="translate-the-queryset">
 <span id="querysets-translatablequeryset-translate"></span><h2>Translate the queryset<a class="headerlink" href="#translate-the-queryset" title="Permalink to this headline">¶</a></h2>
 <p>To translate the queryset in a language use the
 <a class="reference internal" href="../reference/querysets.html#translations.querysets.TranslatableQuerySet.translate" title="translations.querysets.TranslatableQuerySet.translate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translate()</span></code></a> method.
@@ -139,8 +140,8 @@ not passed in, it is automatically set to the <a class="reference internal" href
 <p class="admonition-title">Note</p>
 <p>Translating only affects the <a class="reference internal" href="models.html#models-translatable-translatablemeta-fields"><span class="std std-ref">translatable fields </span></a> that have a translation.</p>
 </div>
-</div>
-<div class="section" id="translate-the-queryset-relations">
+</section>
+<section id="translate-the-queryset-relations">
 <h2>Translate the queryset relations<a class="headerlink" href="#translate-the-queryset-relations" title="Permalink to this headline">¶</a></h2>
 <p>To translate some queryset relations use the
 <a class="reference internal" href="../reference/querysets.html#translations.querysets.TranslatableQuerySet.translate_related" title="translations.querysets.TranslatableQuerySet.translate_related"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translate_related()</span></code></a> method.
@@ -246,8 +247,8 @@ a database query will reset previously translated results:</p>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="probe-filter-exclude-etc-the-queryset">
+</section>
+<section id="probe-filter-exclude-etc-the-queryset">
 <span id="querysets-translatablequeryset-probe"></span><h2>Probe (filter, exclude, etc.) the queryset<a class="headerlink" href="#probe-filter-exclude-etc-the-queryset" title="Permalink to this headline">¶</a></h2>
 <p>To probe the queryset in some language(s) use the
 <a class="reference internal" href="../reference/querysets.html#translations.querysets.TranslatableQuerySet.probe" title="translations.querysets.TranslatableQuerySet.probe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">probe()</span></code></a> method.
@@ -310,8 +311,8 @@ To translate them use the <a class="reference internal" href="#querysets-transla
 the probed queryset when using multiple languages, otherwise it may
 return duplicate results.</p>
 </div>
-</div>
-<div class="section" id="advanced-querying">
+</section>
+<section id="advanced-querying">
 <span id="query-tq"></span><h2>Advanced querying<a class="headerlink" href="#advanced-querying" title="Permalink to this headline">¶</a></h2>
 <p>To encapsulate translation queries as objects that can then be combined
 logically (using <cite>&amp;</cite> and <cite>|</cite>) use the <a class="reference internal" href="../reference/query.html#translations.query.TQ" title="translations.query.TQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">TQ</span></code></a> class.
@@ -349,8 +350,8 @@ not passed in, it is automatically set to the <a class="reference internal" href
 <p><code class="docutils literal notranslate"><span class="pre">TQ</span></code> objects act exactly like <code class="docutils literal notranslate"><span class="pre">Q</span></code> objects,
 untill they are called using some language(s).</p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -456,7 +457,7 @@ untill they are called using some language(s).</p>
       &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

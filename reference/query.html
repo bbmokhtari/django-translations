@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reference: Query &#8212; Django Translations 1.2.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Reference: Query &#8212; Django Translations 1.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -49,7 +50,7 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-translations.query">
+  <section id="module-translations.query">
 <span id="reference-query"></span><h1>Reference: Query<a class="headerlink" href="#module-translations.query" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the query utilities for the Translations app.</p>
 <div class="admonition important">
@@ -94,8 +95,8 @@
 <p>Please memorize this dataset in order to understand the examples better.</p>
 </div>
 <dl class="py function">
-<dt id="translations.query._fetch_translations_query_getter">
-<code class="sig-prename descclassname">translations.query.</code><code class="sig-name descname">_fetch_translations_query_getter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">lang</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#_fetch_translations_query_getter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.query._fetch_translations_query_getter" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.query._fetch_translations_query_getter">
+<span class="sig-prename descclassname"><span class="pre">translations.query.</span></span><span class="sig-name descname"><span class="pre">_fetch_translations_query_getter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lang</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#_fetch_translations_query_getter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.query._fetch_translations_query_getter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the translations query getter specialized for a model and some
 language(s).</p>
 <p>Returns the function that can be used to convert lookups and queries of the
@@ -162,8 +163,8 @@ language(s) (multiple custom languages):</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="translations.query.TQ">
-<em class="property">class </em><code class="sig-prename descclassname">translations.query.</code><code class="sig-name descname">TQ</code><a class="reference internal" href="../_modules/translations/query.html#TQ"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.query.TQ" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.query.TQ">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">translations.query.</span></span><span class="sig-name descname"><span class="pre">TQ</span></span><a class="reference internal" href="../_modules/translations/query.html#TQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.query.TQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encapsulate translation queries as objects that can then be combined
 logically (using <cite>&amp;</cite> and <cite>|</cite>).</p>
 <p>Provides functionalities like <a class="reference internal" href="#translations.query.TQ.__call__" title="translations.query.TQ.__call__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__call__()</span></code></a> to Specialize
@@ -193,8 +194,8 @@ other <a class="reference external" href="https://django.readthedocs.io/en/lates
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="translations.query.TQ.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.query.TQ.__init__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.query.TQ.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.query.TQ.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a <a class="reference internal" href="#translations.query.TQ" title="translations.query.TQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">TQ</span></code></a> with <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Q</span></code></a> arguments.</p>
 <p>This is an overriden version of
 the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Q</span></code></a>‘s
@@ -227,8 +228,8 @@ the <a class="reference external" href="https://django.readthedocs.io/en/latest/
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.query.TQ.__deepcopy__">
-<code class="sig-name descname">__deepcopy__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">memodict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ.__deepcopy__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.query.TQ.__deepcopy__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.query.TQ.__deepcopy__">
+<span class="sig-name descname"><span class="pre">__deepcopy__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memodict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ.__deepcopy__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.query.TQ.__deepcopy__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the <a class="reference internal" href="#translations.query.TQ" title="translations.query.TQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">TQ</span></code></a> object.</p>
 <p>This is an overriden version of
 the <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Q</span></code></a>‘s
@@ -268,8 +269,8 @@ de
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.query.TQ.__call__">
-<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lang</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.query.TQ.__call__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.query.TQ.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.query.TQ.__call__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specialize the <a class="reference internal" href="#translations.query.TQ" title="translations.query.TQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">TQ</span></code></a> for some language(s).</p>
 <p>Causes the <a class="reference internal" href="#translations.query.TQ" title="translations.query.TQ"><code class="xref py py-class docutils literal notranslate"><span class="pre">TQ</span></code></a> to be queried in the specified language(s).</p>
 <dl class="field-list simple">
@@ -300,8 +301,8 @@ de
 </dd></dl>
 
 <dl class="py method">
-<dt id="translations.query.TQ._combine">
-<code class="sig-name descname">_combine</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em>, <em class="sig-param"><span class="n">conn</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ._combine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.query.TQ._combine" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.query.TQ._combine">
+<span class="sig-name descname"><span class="pre">_combine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/query.html#TQ._combine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.query.TQ._combine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the result of logical combination with
 another <a class="reference external" href="https://django.readthedocs.io/en/latest/ref/models/querysets.html#django.db.models.Q" title="(in Django v4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Q</span></code></a> object.</p>
 <p>This is an overriden version of
@@ -348,7 +349,7 @@ another <a class="reference external" href="https://django.readthedocs.io/en/lat
 
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
@@ -458,7 +459,7 @@ another <a class="reference external" href="https://django.readthedocs.io/en/lat
       &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

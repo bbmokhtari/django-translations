@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reference: Admin &#8212; Django Translations 1.2.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Reference: Admin &#8212; Django Translations 1.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -49,19 +50,19 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-translations.admin">
+  <section id="module-translations.admin">
 <span id="reference-admin"></span><h1>Reference: Admin<a class="headerlink" href="#module-translations.admin" title="Permalink to this headline">¶</a></h1>
 <p>This module contains the admins for the Translations app.</p>
 <dl class="py class">
-<dt id="translations.admin.TranslatableAdminMixin">
-<em class="property">class </em><code class="sig-prename descclassname">translations.admin.</code><code class="sig-name descname">TranslatableAdminMixin</code><a class="reference internal" href="../_modules/translations/admin.html#TranslatableAdminMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.admin.TranslatableAdminMixin" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.admin.TranslatableAdminMixin">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">translations.admin.</span></span><span class="sig-name descname"><span class="pre">TranslatableAdminMixin</span></span><a class="reference internal" href="../_modules/translations/admin.html#TranslatableAdminMixin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.admin.TranslatableAdminMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>An admin mixin which provides custom translation functionalities.</p>
 <p>Provides functionalities like <a class="reference internal" href="#translations.admin.TranslatableAdminMixin.prepare_translation_inlines" title="translations.admin.TranslatableAdminMixin.prepare_translation_inlines"><code class="xref py py-meth docutils literal notranslate"><span class="pre">prepare_translation_inlines()</span></code></a> to
 prepare the translation inlines of a type in some inlines based on the
 admin model.</p>
 <dl class="py method">
-<dt id="translations.admin.TranslatableAdminMixin.prepare_translation_inlines">
-<code class="sig-name descname">prepare_translation_inlines</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inlines</span></em>, <em class="sig-param"><span class="n">inline_type</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/admin.html#TranslatableAdminMixin.prepare_translation_inlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.admin.TranslatableAdminMixin.prepare_translation_inlines" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.admin.TranslatableAdminMixin.prepare_translation_inlines">
+<span class="sig-name descname"><span class="pre">prepare_translation_inlines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inlines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inline_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/translations/admin.html#TranslatableAdminMixin.prepare_translation_inlines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.admin.TranslatableAdminMixin.prepare_translation_inlines" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prepare the translation inlines of a type in some inlines based on the
 admin model.</p>
 <p>Searches the inlines for the translation inlines of the specified
@@ -107,8 +108,8 @@ admin translatable. It can be used to make any admin translatable.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="translations.admin.TranslatableAdmin">
-<em class="property">class </em><code class="sig-prename descclassname">translations.admin.</code><code class="sig-name descname">TranslatableAdmin</code><a class="reference internal" href="../_modules/translations/admin.html#TranslatableAdmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.admin.TranslatableAdmin" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.admin.TranslatableAdmin">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">translations.admin.</span></span><span class="sig-name descname"><span class="pre">TranslatableAdmin</span></span><a class="reference internal" href="../_modules/translations/admin.html#TranslatableAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.admin.TranslatableAdmin" title="Permalink to this definition">¶</a></dt>
 <dd><p>The admin which represents the <a class="reference internal" href="models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a>
 instances.</p>
 <p>Manages creating, reading, updating and deleting
@@ -124,8 +125,8 @@ the <a class="reference internal" href="models.html#translations.models.Translat
 </dd></dl>
 
 <dl class="py class">
-<dt id="translations.admin.TranslationInline">
-<em class="property">class </em><code class="sig-prename descclassname">translations.admin.</code><code class="sig-name descname">TranslationInline</code><a class="reference internal" href="../_modules/translations/admin.html#TranslationInline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#translations.admin.TranslationInline" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="translations.admin.TranslationInline">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">translations.admin.</span></span><span class="sig-name descname"><span class="pre">TranslationInline</span></span><a class="reference internal" href="../_modules/translations/admin.html#TranslationInline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#translations.admin.TranslationInline" title="Permalink to this definition">¶</a></dt>
 <dd><p>The inline which represents the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> instances.</p>
 <p>Manages creating, reading, updating and deleting
 the <a class="reference internal" href="models.html#translations.models.Translation" title="translations.models.Translation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translation</span></code></a> instances.</p>
@@ -139,7 +140,7 @@ the <a class="reference internal" href="models.html#translations.models.Translat
 </div>
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
@@ -249,7 +250,7 @@ the <a class="reference internal" href="models.html#translations.models.Translat
       &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

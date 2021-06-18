@@ -4,11 +4,12 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guide: Models &#8212; Django Translations 1.2.0 documentation</title>
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Guide: Models &#8212; Django Translations 1.3.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/jquery.js"></script>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/doctools.js"></script>
@@ -49,10 +50,10 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="guide-models">
+  <section id="guide-models">
 <h1>Guide: Models<a class="headerlink" href="#guide-models" title="Permalink to this headline">¶</a></h1>
 <p>This module provides an in depth knowledge of the Translations models.</p>
-<div class="section" id="make-models-translatable">
+<section id="make-models-translatable">
 <span id="models-translatable"></span><h2>Make models translatable<a class="headerlink" href="#make-models-translatable" title="Permalink to this headline">¶</a></h2>
 <p>To make a model translatable inherit it from the
 <a class="reference internal" href="../reference/models.html#translations.models.Translatable" title="translations.models.Translatable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Translatable</span></code></a> abstract model.</p>
@@ -98,8 +99,8 @@ is no need to migrate afterwards.</p>
 accidentally instead of the <code class="docutils literal notranslate"><span class="pre">Translatable</span></code>
 model.</p>
 </div>
-</div>
-<div class="section" id="specify-models-translatable-fields">
+</section>
+<section id="specify-models-translatable-fields">
 <span id="models-translatable-translatablemeta-fields"></span><h2>Specify models’ translatable fields<a class="headerlink" href="#specify-models-translatable-fields" title="Permalink to this headline">¶</a></h2>
 <p>To specify the model’s translatable fields specify the
 <a class="reference internal" href="../reference/models.html#translations.models.Translatable.TranslatableMeta.fields" title="translations.models.Translatable.TranslatableMeta.fields"><code class="xref py py-attr docutils literal notranslate"><span class="pre">fields</span></code></a> attribute
@@ -189,8 +190,8 @@ This can be done by explicitly setting it to <code class="docutils literal notra
 </span><span class="hll">        <span class="n">fields</span> <span class="o">=</span> <span class="p">[]</span>
 </span></pre></div>
 </div>
-</div>
-<div class="section" id="changing-the-models-and-fields-configurations">
+</section>
+<section id="changing-the-models-and-fields-configurations">
 <h2>Changing the models and fields configurations<a class="headerlink" href="#changing-the-models-and-fields-configurations" title="Permalink to this headline">¶</a></h2>
 <p>To synchronize the translations with the apps models configurations run
 the <a class="reference internal" href="../reference/management/commands/synctranslations.html#module-translations.management.commands.synctranslations" title="translations.management.commands.synctranslations"><code class="xref py py-mod docutils literal notranslate"><span class="pre">synctranslations</span></code></a> command.</p>
@@ -210,8 +211,8 @@ asks you if you are sure,
 or you have to declare that you are sure explicitly while calling
 the command using the <code class="docutils literal notranslate"><span class="pre">--no-input</span></code> option.</p>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
           </div>
@@ -317,7 +318,7 @@ the command using the <code class="docutils literal notranslate"><span class="pr
       &copy;2021, Behzad B. Mokhtari.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
