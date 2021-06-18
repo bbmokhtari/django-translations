@@ -29,15 +29,6 @@ jobs:
         - pip install djangorestframework~=3.0
       before_script: python create.py
       script: python project/manage.py test -v 3
-    - name: "Python 3.6, Django 3.0, SQLite - Unit Test"
-      python: 3.6
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
-        - pip install djangorestframework~=3.0
-      before_script: python create.py
-      script: python project/manage.py test -v 3
     - name: "Python 3.6, Django 3.1, SQLite - Unit Test"
       python: 3.6
       env: EXAMPLE_ENGINE=sqlite3
@@ -53,15 +44,6 @@ jobs:
       before_install: skip
       install:
         - pip install django~=2.2.0
-        - pip install djangorestframework~=3.0
-      before_script: python create.py
-      script: python project/manage.py test -v 3
-    - name: "Python 3.7, Django 3.0, SQLite - Unit Test"
-      python: 3.7
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
         - pip install djangorestframework~=3.0
       before_script: python create.py
       script: python project/manage.py test -v 3
@@ -83,15 +65,6 @@ jobs:
         - pip install djangorestframework~=3.0
       before_script: python create.py
       script: python project/manage.py test -v 3
-    - name: "Python 3.8, Django 3.0, SQLite - Unit Test"
-      python: 3.8
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
-        - pip install djangorestframework~=3.0
-      before_script: python create.py
-      script: python project/manage.py test -v 3
     - name: "Python 3.8, Django 3.1, SQLite - Unit Test"
       python: 3.8
       env: EXAMPLE_ENGINE=sqlite3
@@ -107,15 +80,6 @@ jobs:
       before_install: skip
       install:
         - pip install django~=2.2.0
-        - pip install djangorestframework~=3.0
-      before_script: python create.py
-      script: python project/manage.py test -v 3
-    - name: "Python 3.9, Django 3.0, SQLite - Unit Test"
-      python: 3.9
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
         - pip install djangorestframework~=3.0
       before_script: python create.py
       script: python project/manage.py test -v 3
@@ -135,16 +99,6 @@ jobs:
       before_install: skip
       install:
         - pip install django~=2.2.0
-        - pip install djangorestframework~=3.0
-        - pip install sphinx
-      before_script: python create.py && python config.py
-      script: make --directory docs doctest
-    - name: "Python 3.6, Django 3.0, SQLite - Doc Test"
-      python: 3.6
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
         - pip install djangorestframework~=3.0
         - pip install sphinx
       before_script: python create.py && python config.py
@@ -169,16 +123,6 @@ jobs:
         - pip install sphinx
       before_script: python create.py && python config.py
       script: make --directory docs doctest
-    - name: "Python 3.7, Django 3.0, SQLite - Doc Test"
-      python: 3.7
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
-        - pip install djangorestframework~=3.0
-        - pip install sphinx
-      before_script: python create.py && python config.py
-      script: make --directory docs doctest
     - name: "Python 3.7, Django 3.1, SQLite - Doc Test"
       python: 3.7
       env: EXAMPLE_ENGINE=sqlite3
@@ -199,16 +143,6 @@ jobs:
         - pip install sphinx
       before_script: python create.py && python config.py
       script: make --directory docs doctest
-    - name: "Python 3.8, Django 3.0, SQLite - Doc Test"
-      python: 3.8
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
-        - pip install djangorestframework~=3.0
-        - pip install sphinx
-      before_script: python create.py && python config.py
-      script: make --directory docs doctest
     - name: "Python 3.8, Django 3.1, SQLite - Doc Test"
       python: 3.8
       env: EXAMPLE_ENGINE=sqlite3
@@ -225,16 +159,6 @@ jobs:
       before_install: skip
       install:
         - pip install django~=2.2.0
-        - pip install djangorestframework~=3.0
-        - pip install sphinx
-      before_script: python create.py && python config.py
-      script: make --directory docs doctest
-    - name: "Python 3.9, Django 3.0, SQLite - Doc Test"
-      python: 3.9
-      env: EXAMPLE_ENGINE=sqlite3
-      before_install: skip
-      install:
-        - pip install django~=3.0.0
         - pip install djangorestframework~=3.0
         - pip install sphinx
       before_script: python create.py && python config.py
