@@ -1,6 +1,7 @@
 """This module contains the models for the Translations app."""
 
 from django.db import models
+from django.db.models.functions import Cast
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, \
@@ -63,10 +64,41 @@ class Translation(models.Model):
         verbose_name_plural = _('translations')
 
 
+class _CustomGenericRelation(GenericRelation):
+    "Add the Cast needed by PostgreSQL"
+
+    def get_joining_columns(self, reverse_join: bool = False):
+        # Sort out whether these columns need casting.
+        source = (self.reverse_related_fields if reverse_join
+                  else self.related_fields)
+        columns = []
+        for lhs_field, rhs_field in source:
+            if lhs_field.get_internal_type() == rhs_field.get_internal_type():
+                columns.append((lhs_field.column, rhs_field.column))
+            # If the internal types do not match, they will be added in
+            # get_extra_restriction.
+        return tuple(columns)
+
+    def get_extra_restriction(self, where_class, alias, remote_alias):
+        condition = super().get_extra_restriction(
+                where_class, alias, remote_alias)
+
+        for lhs_field, rhs_field in self.reverse_related_fields:
+            if lhs_field.get_internal_type() != rhs_field.get_internal_type():
+                assert alias is not None
+                lookup = lhs_field.get_lookup("exact")(
+                    Cast(lhs_field.get_col(alias),
+                         output_field=models.TextField()),
+                    rhs_field.get_col(remote_alias))
+                condition.add(lookup, "AND")
+
+        return condition
+
+
 class Translatable(models.Model):
     """An abstract model which provides custom translation functionalities."""
     objects = TranslatableQuerySet.as_manager()
-    translations = GenericRelation(
+    translations = _CustomGenericRelation(
         Translation,
         content_type_field='content_type',
         object_id_field='object_id',
