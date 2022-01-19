@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
-from django.db import utils
+from django.db import connection, utils
 
 from translations.models import Translation
 
@@ -10,6 +10,19 @@ from sample.utils import create_samples
 
 class TranslationTest(TestCase):
     """Tests for `Translation`."""
+
+    def setUp(self):
+        self._integrity_error_not_null = {
+            "postgresql": ('null value in column "{field}" of relation ' +
+                           '"{table}" violates not-null constraint'),
+            "sqlite": "NOT NULL constraint_failed: {table}.{field}",
+        }.get(connection.vendor)
+        self._integrity_error_unique = {
+            "postgresql": ('duplicate key value violates unique constraint ' +
+                           '"{table}_content_type_id_object_i_82ea2ee3_uniq"'),
+            "sqlite": ('UNIQUE constraint failed: {table}.content_type_id, ' +
+                       '{table}.object_id, {table}.field, {table}.language'),
+        }.get(connection.vendor)
 
     def test_content_type_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
@@ -24,9 +37,11 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            ('NOT NULL constraint failed: translations_translation' +
-             '.content_type_id'),
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_not_null.format(
+                table="translations_translation",
+                field="content_type_id",
+            ),
         )
 
     def test_object_id_none(self):
@@ -42,8 +57,11 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.object_id',
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_not_null.format(
+                table="translations_translation",
+                field="object_id",
+            ),
         )
 
     def test_content_object_none(self):
@@ -56,8 +74,11 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.object_id',
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_not_null.format(
+                table="translations_translation",
+                field="object_id",
+            ),
         )
 
     def test_field_none(self):
@@ -74,8 +95,11 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.field',
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_not_null.format(
+                table="translations_translation",
+                field="field",
+            ),
         )
 
     def test_language_none(self):
@@ -92,8 +116,11 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.language',
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_not_null.format(
+                table="translations_translation",
+                field="language",
+            ),
         )
 
     def test_text_none(self):
@@ -110,8 +137,11 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.text',
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_not_null.format(
+                table="translations_translation",
+                field="text",
+            ),
         )
 
     def test_str(self):
@@ -151,12 +181,10 @@ class TranslationTest(TestCase):
             )
 
         self.assertEqual(
-            error.exception.args[0],
-            ('UNIQUE constraint failed: ' +
-             'translations_translation.content_type_id, ' +
-             'translations_translation.object_id, ' +
-             'translations_translation.field, ' +
-             'translations_translation.language'),
+            error.exception.args[0].split("\n")[0],
+            self._integrity_error_unique.format(
+                table="translations_translation",
+            ),
         )
 
 
