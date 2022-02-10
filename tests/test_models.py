@@ -15,7 +15,7 @@ class TranslationTest(TestCase):
         self._integrity_error_not_null = {
             "postgresql": ('null value in column "{field}" of relation ' +
                            '"{table}" violates not-null constraint'),
-            "sqlite": "NOT NULL constraint_failed: {table}.{field}",
+            "sqlite": "NOT NULL constraint failed: {table}.{field}",
         }.get(connection.vendor)
         self._integrity_error_unique = {
             "postgresql": ('duplicate key value violates unique constraint ' +
