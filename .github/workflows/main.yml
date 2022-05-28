@@ -83,4 +83,62 @@ jobs:
       run: |
         make --directory docs doctest
 
-  # TODO: deployment
+  deploy-docs:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [lint, test, docs-test]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.6"
+
+    - name: Install Dependencies
+      run: |
+        pip install django~=${{ matrix.django-version }}.0 djangorestframework~=3.0 sphinx
+
+    - name: Configure
+      run: |
+        python config.py
+
+    - name: Build docs
+      run: |
+        make --directory docs html
+
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: docs/_build/html
+
+  deploy-pypi:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [lint, test, docs-test]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.6"
+
+    - name: Configure
+      run: |
+        python config.py
+
+    - name: Build package
+      run: |
+        python setup.py sdist bdist_wheel
+
+    - name: Publish package
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
