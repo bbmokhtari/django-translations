@@ -23,10 +23,6 @@ There are two types of content, each of which has its own challenges for transla
   Django Translations provides a solution
   for translating dynamic content.
 
-## Compatibility
-
-Currently, this project is incompatible with PostgreSQL.
-
 ## Requirements
 
 - Python (\>=3.6, \<4)
