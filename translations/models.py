@@ -5,11 +5,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, \
     GenericRelation
-try:
-    from django.utils.translation import ugettext_lazy as _
-except ImportError:
-    from django.utils.translation import gettext_lazy as _
-
+from django.utils.translation import gettext_lazy as _
 from translations.querysets import TranslatableQuerySet
 
 
