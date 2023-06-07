@@ -79,9 +79,8 @@ class _CustomGenericRelation(GenericRelation):
             # get_extra_restriction.
         return tuple(columns)
 
-    def get_extra_restriction(self, where_class, alias, remote_alias):
-        condition = super().get_extra_restriction(
-                where_class, alias, remote_alias)
+    def get_extra_restriction(self, alias, remote_alias):
+        condition = super().get_extra_restriction(alias, remote_alias)
 
         for lhs_field, rhs_field in self.reverse_related_fields:
             if lhs_field.get_internal_type() != rhs_field.get_internal_type():
