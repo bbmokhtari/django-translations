@@ -1,8 +1,8 @@
 # Django Translations
 
 [![build](https://travis-ci.com/bbmokhtari/django-translations.svg?branch=master)](https://travis-ci.com/bbmokhtari/django-translations)
-[![python](https://img.shields.io/badge/python-%3E%3D3.6%2C%20%3C4-0073b7)](https://pypi.org/project/django-translations/)
-[![django](https://img.shields.io/badge/django-%3E%3D2.2%2C%20%3C4-0C4B33)](https://pypi.org/project/django-translations/)
+[![python](https://img.shields.io/badge/python-%3E%3D3.8%2C%20%3C4-0073b7)](https://pypi.org/project/django-translations/)
+[![django](https://img.shields.io/badge/django-%3E%3D4.0%2C%20%3C5-0C4B33)](https://pypi.org/project/django-translations/)
 
 Django model translation for perfectionists with deadlines.
 
@@ -14,7 +14,7 @@ There are two types of content, each of which has its own challenges for transla
   _e.g. "Please enter a valid email address."_
 
   Django already provides a
-  [solution](https://docs.djangoproject.com/en/2.2/topics/i18n/translation/)
+  [solution](https://docs.djangoproject.com/en/4.2/topics/i18n/translation/)
   for translating static content.
 
 - Dynamic content: This is the content which is stored in the database.
@@ -25,8 +25,8 @@ There are two types of content, each of which has its own challenges for transla
 
 ## Requirements
 
-- Python (\>=3.6, \<4)
-- Django (\>=2.2, \<4)
+- Python (\>=3.8, \<4)
+- Django (\>=4, \<5)
 
 ## Installation
 
