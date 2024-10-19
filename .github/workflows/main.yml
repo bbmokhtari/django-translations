@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: "3.9"
       - name: Install dependencies
-        run: pip install flake8~=3.0
+        run: pip install flake8~=3.9
       - name: Run Flake8
         run: flake8
   test-units:
@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install django~=${{ matrix.django-version }}
-          pip install djangorestframework~=3.0
+          pip install djangorestframework~=3.13
       - name: Create example project
         run: python create.py
       - name: Run and test units
@@ -72,8 +72,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install django~=${{ matrix.django-version }}
-          pip install djangorestframework~=3.0
-          pip install sphinx~=1.0
+          pip install djangorestframework~=3.13
+          pip install sphinx~=7.4
       - name: Create example project
         run: python create.py
       - name: Create configurations file
@@ -97,8 +97,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install django~=2.2
-          pip install djangorestframework~=3.0
-          pip install sphinx~=1.0
+          pip install djangorestframework~=3.13
+          pip install sphinx~=7.4
       - name: Create example project
         run: python create.py
       - name: Create configurations file
