@@ -177,7 +177,8 @@ class TranslatableTest(TestCase):
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_two_translations_rel(self):
@@ -195,14 +196,16 @@ class TranslatableTest(TestCase):
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
-            ]
+            ],
+            transform=repr
         )
         self.assertQuerysetEqual(
             asia.translations.order_by('id'),
             [
                 '<Translation: Asia: Asien>',
                 '<Translation: Asian: Asiatisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_get_translatable_fields_automatic(self):

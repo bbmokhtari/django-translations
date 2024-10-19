@@ -1244,7 +1244,8 @@ class GetTranslationsTest(TestCase):
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_instance_level_1_relation_with_lang(self):
@@ -1271,7 +1272,8 @@ class GetTranslationsTest(TestCase):
                 '<Translation: European: Europäisch>',
                 '<Translation: Germany: Deutschland>',
                 '<Translation: German: Deutsche>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_instance_level_2_relation_with_lang(self):
@@ -1298,7 +1300,8 @@ class GetTranslationsTest(TestCase):
                 '<Translation: European: Europäisch>',
                 '<Translation: Cologne: Köln>',
                 '<Translation: Cologner: Kölner>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_instance_level_1_2_relation_with_lang(self):
@@ -1327,7 +1330,8 @@ class GetTranslationsTest(TestCase):
                 '<Translation: German: Deutsche>',
                 '<Translation: Cologne: Köln>',
                 '<Translation: Cologner: Kölner>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_queryset_level_0_relation_with_lang(self):
@@ -1352,7 +1356,8 @@ class GetTranslationsTest(TestCase):
                 '<Translation: European: Europäisch>',
                 '<Translation: Asia: Asien>',
                 '<Translation: Asian: Asiatisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_queryset_level_1_relation_with_lang(self):
@@ -1383,7 +1388,8 @@ class GetTranslationsTest(TestCase):
                 '<Translation: Asian: Asiatisch>',
                 '<Translation: South Korea: Südkorea>',
                 '<Translation: South Korean: Südkoreanisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_queryset_level_2_relation_with_lang(self):
@@ -1414,7 +1420,8 @@ class GetTranslationsTest(TestCase):
                 '<Translation: Asian: Asiatisch>',
                 '<Translation: Seoul: Seül>',
                 '<Translation: Seouler: Seüler>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_queryset_level_1_2_relation_with_lang(self):
@@ -1449,5 +1456,6 @@ class GetTranslationsTest(TestCase):
                 '<Translation: South Korean: Südkoreanisch>',
                 '<Translation: Seoul: Seül>',
                 '<Translation: Seouler: Seüler>',
-            ]
+            ],
+            transform=repr
         )

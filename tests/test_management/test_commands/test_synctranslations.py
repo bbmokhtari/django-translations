@@ -184,7 +184,8 @@ class CommandTest(TestCase):
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     def test_get_obsolete_translations_one_content_type_no_fields(self):
@@ -205,7 +206,8 @@ class CommandTest(TestCase):
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     def test_get_obsolete_translations_two_content_types_no_fields(self):
@@ -226,7 +228,8 @@ class CommandTest(TestCase):
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     def test_get_obsolete_translations_all_content_types_no_fields(self):
@@ -247,7 +250,8 @@ class CommandTest(TestCase):
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -271,7 +275,8 @@ class CommandTest(TestCase):
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -300,7 +305,8 @@ class CommandTest(TestCase):
                 '<Translation: European: Avrupalı>',
                 '<Translation: Asian: Asiatisch>',
                 '<Translation: Asian: Asyalı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -333,7 +339,8 @@ class CommandTest(TestCase):
                 '<Translation: Asian: Asyalı>',
                 '<Translation: South Korean: Südkoreanisch>',
                 '<Translation: South Korean: Güney Korelı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -370,7 +377,8 @@ class CommandTest(TestCase):
                 '<Translation: South Korean: Güney Korelı>',
                 '<Translation: Seouler: Seüler>',
                 '<Translation: Seouler: Seullı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -394,7 +402,8 @@ class CommandTest(TestCase):
 
         self.assertQuerysetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -427,7 +436,8 @@ class CommandTest(TestCase):
                 '<Translation: Asian: Asiatisch>',
                 '<Translation: Asia: Asya>',
                 '<Translation: Asian: Asyalı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -468,7 +478,8 @@ class CommandTest(TestCase):
                 '<Translation: South Korean: Südkoreanisch>',
                 '<Translation: South Korea: Güney Kore>',
                 '<Translation: South Korean: Güney Korelı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -517,7 +528,8 @@ class CommandTest(TestCase):
                 '<Translation: Seouler: Seüler>',
                 '<Translation: Seoul: Seul>',
                 '<Translation: Seouler: Seullı>'
-            ]
+            ],
+            transform=repr
         )
 
     def test_get_obsolete_translations_one_content_type_not_trans(self):
@@ -539,7 +551,8 @@ class CommandTest(TestCase):
             obsolete_translations.order_by('id'),
             [
                 '<Translation: behzad: behzad>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_get_obsolete_translations_all_content_types_not_trans(self):
@@ -561,7 +574,8 @@ class CommandTest(TestCase):
             obsolete_translations.order_by('id'),
             [
                 '<Translation: behzad: behzad>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_log_obsolete_translations_no_content_types_no_fields(self):
