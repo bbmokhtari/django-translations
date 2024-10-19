@@ -29,42 +29,42 @@ Currently, this project is incompatible with PostgreSQL.
 
 ## Requirements
 
-- Python (\>=3.6, \<4)
+- Python (\>=3.8, \<4)
 - Django (\>=2.2, \<4)
 
 ## Installation
 
 1.  Install Django Translations using pip:
-    
-    ``` bash
+
+    ```bash
     $ pip install django-translations
     ```
 
 2.  Add `translations` to the `INSTALLED_APPS` in the settings of your
     project:
-    
-    ``` python
+
+    ```python
     INSTALLED_APPS += [
         'translations',
     ]
     ```
 
 3.  Run `migrate`:
-    
-    ``` bash
+
+    ```bash
     $ python manage.py migrate
     ```
 
 4.  Configure Django internationalization and localization settings:
-    
-    ``` python
+
+    ```python
     USE_I18N = True          # use internationalization
     USE_L10N = True          # use localization
-    
+
     MIDDLEWARE += [          # locale middleware
         'django.middleware.locale.LocaleMiddleware',
     ]
-    
+
     LANGUAGE_CODE = 'en-us'  # default (fallback) language
     LANGUAGES = (            # supported languages
         ('en', 'English'),
@@ -73,7 +73,7 @@ Currently, this project is incompatible with PostgreSQL.
         ('tr', 'Turkish'),
     )
     ```
-    
+
     Please note that these settings are for Django itself.
 
 ## Basic Usage
@@ -82,7 +82,7 @@ Currently, this project is incompatible with PostgreSQL.
 
 Inherit `Translatable` in any model you want translated:
 
-``` python
+```python
 from translations.models import Translatable
 
 class Continent(Translatable):
@@ -100,7 +100,7 @@ No migrations needed afterwards.
 
 Use the admin extensions:
 
-``` python
+```python
 from translations.admin import TranslatableAdmin, TranslationInline
 
 class ContinentAdmin(TranslatableAdmin):
@@ -115,7 +115,7 @@ This provides specialized translation inlines for the model.
 
 Use the queryset extensions:
 
-``` python
+```python
 >>> from sample.models import Continent
 >>> continents = Continent.objects.all(
 ... ).distinct(           # familiar distinct
@@ -146,7 +146,7 @@ This provides a powerful yet familiar interface to work with the querysets.
 
 Use the translation context:
 
-``` python
+```python
 >>> from translations.context import Context
 >>> from sample.models import Continent
 >>> continents = Continent.objects.all()
@@ -157,12 +157,12 @@ Use the translation context:
 ...     print(continents)
 ...     print(continents[0].countries.all())
 ...     print(continents[0].countries.all()[0].cities.all())
-... 
+...
 ...     continents[0].countries.all()[0].name = 'Change the name'
 ...     context.update('de')  # update the translations from the context
-... 
+...
 ...     context.delete('de')  # delete the translations of the context
-... 
+...
 ...     context.reset()       # reset the translations of the context
 ...     print(':')            # use the objects like before
 ...     print(continents)
@@ -202,6 +202,7 @@ For more interesting capabilities browse through the
 ## Support the project
 
 To support the project you can:
+
 - ⭐️: [Star](http://github.com/bbmokhtari/django-translations/) it on GitHub.
 - 💻: [Contribute](https://bbmokhtari.github.io/django-translations/contribution.html) to the code base.
 - ☕️: [Buy](https://bbmokhtari.github.io/django-translations/donation.html) the maintainers coffee.
