@@ -48,7 +48,8 @@ keywords = [
 # ------------------------------------------------------------ Dynamic Content
 
 release = {
-    'name': os.environ.get('TRAVIS_TAG', ''),  # e.g. `1.0.0rc2`
+    # e.g. `1.0.0rc2`
+    'name': os.environ.get('GITHUB_REF', '').replace("refs/tags/", ""),
     'version': '',                             # e.g. `1.0.0`
     'status': '',                              # e.g. `rc`
     'classifier': '',                          # e.g. `5 - Production/Stable`

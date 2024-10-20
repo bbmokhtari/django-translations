@@ -7,7 +7,6 @@ prune tests
 graft translations
 
 exclude .flake8
-exclude .travis.yml
 exclude beautifier.py
 exclude config.py
 exclude create.py

@@ -1,8 +1,7 @@
 # Django Translations
 
-[![build](https://travis-ci.com/bbmokhtari/django-translations.svg?branch=master)](https://travis-ci.com/bbmokhtari/django-translations)
-[![python](https://img.shields.io/badge/python-%3E%3D3.6%2C%20%3C4-0073b7)](https://pypi.org/project/django-translations/)
-[![django](https://img.shields.io/badge/django-%3E%3D2.2%2C%20%3C4-0C4B33)](https://pypi.org/project/django-translations/)
+[![django](https://img.shields.io/badge/django-%3E%3D2.2%2C%20%3C6.0-0C4B33)](https://pypi.org/project/django-translations/)
+[![python](https://img.shields.io/badge/python-%3E%3D3.7%2C%20%3C4.0-0073b7)](https://pypi.org/project/django-translations/)
 
 Django model translation for perfectionists with deadlines.
 
