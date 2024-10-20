@@ -1,4 +1,4 @@
-from django.test import TransactionTestCase
+from django.test import TestCase
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
 
@@ -8,7 +8,7 @@ from sample.models import Timezone, Continent, City
 from sample.utils import create_samples
 
 
-class TranslationTest(TransactionTestCase):
+class TranslationTest(TestCase):
     """Tests for `Translation`."""
 
     def test_content_type_none(self):
@@ -160,7 +160,7 @@ class TranslationTest(TransactionTestCase):
         )
 
 
-class TranslatableTest(TransactionTestCase):
+class TranslatableTest(TestCase):
     """Tests for `Translatable`."""
 
     def test_one_translations_rel(self):
@@ -172,7 +172,7 @@ class TranslatableTest(TransactionTestCase):
 
         europe = Continent.objects.get(code='EU')
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             europe.translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -191,7 +191,7 @@ class TranslatableTest(TransactionTestCase):
         europe = Continent.objects.get(code='EU')
         asia = Continent.objects.get(code='AS')
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             europe.translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -199,7 +199,7 @@ class TranslatableTest(TransactionTestCase):
             ],
             transform=repr
         )
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             asia.translations.order_by('id'),
             [
                 '<Translation: Asia: Asien>',

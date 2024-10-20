@@ -1,4 +1,4 @@
-from django.test import TransactionTestCase
+from django.test import TestCase
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 
@@ -10,7 +10,7 @@ from sample.models import Continent, Country, City
 from sample.utils import create_samples
 
 
-class GetReverseRelationTest(TransactionTestCase):
+class GetReverseRelationTest(TestCase):
     """Tests for `_get_reverse_relation`."""
 
     def test_simple_relation(self):
@@ -65,7 +65,7 @@ class GetReverseRelationTest(TransactionTestCase):
         )
 
 
-class GetDissectedLookupTest(TransactionTestCase):
+class GetDissectedLookupTest(TestCase):
     """Tests for `_get_dissected_lookup`."""
 
     def test_nrel_yfield_ntranslatable_nlookup(self):
@@ -226,7 +226,7 @@ class GetDissectedLookupTest(TransactionTestCase):
         )
 
 
-class GetRelationsHierarchyTest(TransactionTestCase):
+class GetRelationsHierarchyTest(TestCase):
     """Tests for `_get_relations_hierarchy`."""
 
     def test_level_0_relation(self):
@@ -487,7 +487,7 @@ class GetRelationsHierarchyTest(TransactionTestCase):
         )
 
 
-class GetEntityDetailsTest(TransactionTestCase):
+class GetEntityDetailsTest(TestCase):
     """Tests for `_get_entity_details`."""
 
     def test_iterable(self):
@@ -581,7 +581,7 @@ class GetEntityDetailsTest(TransactionTestCase):
         )
 
 
-class GetPurviewTest(TransactionTestCase):
+class GetPurviewTest(TestCase):
     """Tests for `_get_purview`."""
 
     def test_instance_level_0_relation(self):
@@ -1221,7 +1221,7 @@ class GetPurviewTest(TransactionTestCase):
         )
 
 
-class GetTranslationsTest(TransactionTestCase):
+class GetTranslationsTest(TestCase):
     """Tests for `_get_translations`."""
 
     def test_instance_level_0_relation_with_lang(self):
@@ -1239,7 +1239,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy()
         mapping, query = _get_purview(europe, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1265,7 +1265,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy(*lvl_1)
         mapping, query = _get_purview(europe, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1293,7 +1293,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy(*lvl_2)
         mapping, query = _get_purview(europe, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1321,7 +1321,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
         mapping, query = _get_purview(europe, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1349,7 +1349,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy()
         mapping, query = _get_purview(continents, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1377,7 +1377,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy(*lvl_1)
         mapping, query = _get_purview(continents, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1409,7 +1409,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy(*lvl_2)
         mapping, query = _get_purview(continents, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -1441,7 +1441,7 @@ class GetTranslationsTest(TransactionTestCase):
         hierarchy = _get_relations_hierarchy(*lvl_1_2)
         mapping, query = _get_purview(continents, hierarchy)
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             _get_translations(query, 'de').order_by('id'),
             [
                 '<Translation: Europe: Europa>',

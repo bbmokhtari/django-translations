@@ -2,7 +2,7 @@ from io import StringIO
 from contextlib import ContextDecorator
 from unittest.mock import patch
 
-from django.test import TransactionTestCase
+from django.test import TestCase
 from django.core.management import call_command
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
@@ -67,7 +67,7 @@ class override_tmeta(ContextDecorator):
             delattr(self.model, '_cached_translatable_fields_names')
 
 
-class CommandTest(TransactionTestCase):
+class CommandTest(TestCase):
     """Tests for `Command`."""
 
     def test_execute(self):
@@ -182,7 +182,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.none()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [],
             transform=repr
@@ -204,7 +204,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(Continent).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [],
             transform=repr
@@ -226,7 +226,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(Continent, Country).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [],
             transform=repr
@@ -248,7 +248,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [],
             transform=repr
@@ -273,7 +273,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.none()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [],
             transform=repr
@@ -298,7 +298,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(Continent).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: European: Europäisch>',
@@ -328,7 +328,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(Continent, Country).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: European: Europäisch>',
@@ -362,7 +362,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: European: Europäisch>',
@@ -400,7 +400,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.none()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [],
             transform=repr
@@ -425,7 +425,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(Continent).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -459,7 +459,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(Continent, Country).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -501,7 +501,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -547,7 +547,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.get_for_models(User).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: behzad: behzad>',
@@ -570,7 +570,7 @@ class CommandTest(TransactionTestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: behzad: behzad>',
