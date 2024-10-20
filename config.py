@@ -47,9 +47,13 @@ keywords = [
 
 # ------------------------------------------------------------ Dynamic Content
 
+github_ref = os.environ.get('GITHUB_REF', '')
+print(github_ref)
+tag = github_ref.replace("refs/tags/", "")
+
 release = {
     # e.g. `1.0.0rc2`
-    'name': os.environ.get('GITHUB_REF', '').replace("refs/tags/", ""),
+    'name': tag,
     'version': '',                             # e.g. `1.0.0`
     'status': '',                              # e.g. `rc`
     'classifier': '',                          # e.g. `5 - Production/Stable`
