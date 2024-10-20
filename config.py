@@ -48,7 +48,6 @@ keywords = [
 # ------------------------------------------------------------ Dynamic Content
 
 github_ref = os.environ.get('GITHUB_REF', '')
-print(github_ref)
 tag = github_ref.replace("refs/tags/", "")
 
 release = {
@@ -67,22 +66,24 @@ if release['name']:
         r'(?:(?P<status>a|b|rc|\.dev|\.post)(?P<status_no>\d+))?' +
         r'$'
     )
-    components = pattern.match(release['name']).groupdict()
-    release['version'] = components['version']
-    release['status'] = components['status']
+    components = pattern.match(release['name'])
+    if components:
+        components = components.groupdict()
+        release['version'] = components['version']
+        release['status'] = components['status']
 
-    if release['status'] == '.dev':
-        release['classifier'] = '2 - Pre-Alpha'
-    elif release['status'] == 'a':
-        release['classifier'] = '3 - Alpha'
-    elif release['status'] == 'b':
-        release['classifier'] = '4 - Beta'
-    elif release['status'] == 'rc':
-        release['classifier'] = '5 - Production/Stable'
-    elif release['status'] is None or release['status'] == '.post':
-        release['classifier'] = '6 - Mature'
-    else:
-        raise Exception('Release must have a development status.')
+        if release['status'] == '.dev':
+            release['classifier'] = '2 - Pre-Alpha'
+        elif release['status'] == 'a':
+            release['classifier'] = '3 - Alpha'
+        elif release['status'] == 'b':
+            release['classifier'] = '4 - Beta'
+        elif release['status'] == 'rc':
+            release['classifier'] = '5 - Production/Stable'
+        elif release['status'] is None or release['status'] == '.post':
+            release['classifier'] = '6 - Mature'
+        else:
+            raise Exception('Release must have a development status.')
 
 
 # --------------------------------------------------------------------- Output
