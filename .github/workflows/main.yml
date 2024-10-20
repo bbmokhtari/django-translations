@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.6"]
+        python-version: ["3.7"]
         django-version: ["2.2"]
     env:
       EXAMPLE_ENGINE: sqlite3
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.6"]
+        python-version: ["3.7"]
         django-version: ["2.2"]
     env:
       EXAMPLE_ENGINE: sqlite3
