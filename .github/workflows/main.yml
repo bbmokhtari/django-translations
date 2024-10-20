@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.7"]
+        flake8-version: ["5.0"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -27,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install flake8~=3.9
+          pip install flake8~=${{ matrix.flake8-version }}
       - name: Run Flake8
         run: flake8
   test-units:
