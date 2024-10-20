@@ -72,7 +72,7 @@ This module contains the models for the Translations app.
    To make a model translatable:
 
    .. literalinclude:: ../../sample/models.py
-      :lines: 4
+      :lines: 7
 
    .. literalinclude:: ../../sample/models.py
       :pyobject: Continent

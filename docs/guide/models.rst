@@ -13,7 +13,7 @@ To make a model translatable inherit it from the
 :class:`~translations.models.Translatable` abstract model.
 
 .. literalinclude:: ../../sample/models.py
-   :lines: 4
+   :lines: 7
 
 .. literalinclude:: ../../sample/models.py
    :pyobject: Continent
