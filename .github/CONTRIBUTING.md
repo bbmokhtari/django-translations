@@ -85,7 +85,7 @@ Check API endpoints:
 This API endpoint is used to show a list of continents and their
 respective countries and cities.
 
-<http://localhost:8000/sample/continent/1/>
+<http://localhost:8000/sample/continent/EU/>
 
 This API endpoint is used to show a certain continent and its countries
 and cities.
