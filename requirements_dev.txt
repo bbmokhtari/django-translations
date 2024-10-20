@@ -1,4 +1,4 @@
-Django~=2.2
-Sphinx~=7.4
-flake8~=3.9
+Django~=4.2
+Sphinx~=5.3
+flake8~=5.0
 djangorestframework~=3.13

@@ -348,8 +348,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
-        django-version: ["2.2"]
+        python-version: ["3.9"]
+        django-version: ["4.2"]
         djangorestframework-version: ["3.1"]
         sphinx-version: ["5.3"]
     needs: [lint, test-units, test-docs, build-docs]
@@ -386,7 +386,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.9"]
     needs: [upload-docs]
     if: startsWith(github.ref, 'refs/tags/')
     env:
