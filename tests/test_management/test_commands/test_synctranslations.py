@@ -2,7 +2,7 @@ from io import StringIO
 from contextlib import ContextDecorator
 from unittest.mock import patch
 
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.core.management import call_command
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
@@ -67,7 +67,7 @@ class override_tmeta(ContextDecorator):
             delattr(self.model, '_cached_translatable_fields_names')
 
 
-class CommandTest(TestCase):
+class CommandTest(TransactionTestCase):
     """Tests for `Command`."""
 
     def test_execute(self):

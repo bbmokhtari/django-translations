@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
 
@@ -8,7 +8,7 @@ from sample.models import Timezone, Continent, City
 from sample.utils import create_samples
 
 
-class TranslationTest(TestCase):
+class TranslationTest(TransactionTestCase):
     """Tests for `Translation`."""
 
     def test_content_type_none(self):
@@ -160,7 +160,7 @@ class TranslationTest(TestCase):
         )
 
 
-class TranslatableTest(TestCase):
+class TranslatableTest(TransactionTestCase):
     """Tests for `Translatable`."""
 
     def test_one_translations_rel(self):
