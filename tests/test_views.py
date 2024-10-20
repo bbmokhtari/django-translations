@@ -1,13 +1,13 @@
 import json
 
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.urls import reverse
 
 from sample.models import Continent
 from sample.utils import create_samples
 
 
-class GetContinentListTest(TestCase):
+class GetContinentListTest(TranslationTestCase):
     """Tests for `get_continent_list`."""
 
     def test_fallback(self):
@@ -215,7 +215,7 @@ class GetContinentListTest(TestCase):
         )
 
 
-class GetContinentDetailTest(TestCase):
+class GetContinentDetailTest(TranslationTestCase):
     """Tests for `get_continent_detail`."""
 
     def test_fallback(self):

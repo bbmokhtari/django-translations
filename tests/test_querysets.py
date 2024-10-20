@@ -1,4 +1,5 @@
-from django.test import TestCase, override_settings
+from django.test import override_settings
+from tests.test_case import TranslationTestCase
 from django.db.models import Q
 from django.utils.translation import override
 
@@ -6,7 +7,7 @@ from sample.models import Continent
 from sample.utils import create_samples
 
 
-class TranslatableQuerySetTest(TestCase):
+class TranslatableQuerySetTest(TranslationTestCase):
     """Tests for `TranslatableQuerySet`."""
 
     @override_settings(LANGUAGE_CODE='en-us')
@@ -69,7 +70,7 @@ class TranslatableQuerySetTest(TestCase):
         )
 
         europe = Continent.objects.translate(
-            ).get(code='EU')
+        ).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -95,7 +96,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_1 = ('countries',)
 
         europe = Continent.objects.translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -122,7 +123,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         europe = Continent.objects.translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_2).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -149,7 +150,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         europe = Continent.objects.translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1_2).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -278,7 +279,7 @@ class TranslatableQuerySetTest(TestCase):
 
         europe = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).get(code='EU')
+        ).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
 
@@ -306,7 +307,7 @@ class TranslatableQuerySetTest(TestCase):
 
         europe = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -335,7 +336,7 @@ class TranslatableQuerySetTest(TestCase):
 
         europe = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_2).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -363,7 +364,7 @@ class TranslatableQuerySetTest(TestCase):
 
         europe = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1_2).get(code='EU')
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -532,7 +533,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_1 = ('countries',)
 
         continents = Continent.objects.translate(
-            ).translate_related(*lvl_1)
+        ).translate_related(*lvl_1)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -568,7 +569,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         continents = Continent.objects.translate(
-            ).translate_related(*lvl_2)
+        ).translate_related(*lvl_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -604,7 +605,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.translate(
-            ).translate_related(*lvl_1_2)
+        ).translate_related(*lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -815,7 +816,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(*lvl_1)
+        ).translate_related(*lvl_1)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -853,7 +854,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(*lvl_2)
+        ).translate_related(*lvl_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -890,7 +891,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(*lvl_1_2)
+        ).translate_related(*lvl_1_2)
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1677,7 +1678,7 @@ class TranslatableQuerySetTest(TestCase):
         )
 
         continents = Continent.objects.translate(
-            ).translate('en-us')
+        ).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -1713,7 +1714,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_1 = ('countries',)
 
         continents = Continent.objects.translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -1750,7 +1751,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_2 = ('countries__cities',)
 
         continents = Continent.objects.translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_2).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -1787,7 +1788,7 @@ class TranslatableQuerySetTest(TestCase):
         lvl_1_2 = ('countries', 'countries__cities',)
 
         continents = Continent.objects.translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1_2).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -1966,7 +1967,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate('en-us')
+        ).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
         cologne = germany.cities.all()[0]
@@ -2004,7 +2005,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -2043,7 +2044,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_2).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]
@@ -2081,7 +2082,7 @@ class TranslatableQuerySetTest(TestCase):
 
         continents = Continent.objects.prefetch_related(
             *lvl_1_2).translate(
-            ).translate_related(
+        ).translate_related(
             *lvl_1_2).translate('en-us')
         europe = [x for x in continents if x.code == 'EU'][0]
         germany = europe.countries.all()[0]

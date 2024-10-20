@@ -1,4 +1,4 @@
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.contrib.admin import site
 
 from sample.models import Timezone, Continent, City
@@ -18,7 +18,7 @@ request = MockRequest()
 request.user = MockSuperUser()
 
 
-class TranslatableAdminMixinTest(TestCase):
+class TranslatableAdminMixinTest(TranslationTestCase):
     """Tests for `TranslatableAdminMixin`."""
 
     def test_prepare_translation_inlines_fields_automatic(self):

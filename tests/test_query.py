@@ -1,6 +1,6 @@
 import copy
 
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.db.models import Q
 from django.utils.translation import override
 
@@ -9,7 +9,7 @@ from translations.query import _fetch_translations_query_getter, TQ
 from sample.models import Continent
 
 
-class FetchTranslationsQueryGetterTest(TestCase):
+class FetchTranslationsQueryGetterTest(TranslationTestCase):
     """Tests for `_fetch_translations_query_getter`."""
 
     def test_lookup_nrel_yfield_ntrans_nsupp_strlang(self):
@@ -2373,8 +2373,8 @@ class FetchTranslationsQueryGetterTest(TestCase):
                     countries=1,
                 )(
                     ['en', 'de']
-                    )
-                ).children[0].children[0].children,
+                )
+            ).children[0].children[0].children,
             [
                 ('countries', 1),
             ]
@@ -2545,7 +2545,7 @@ class FetchTranslationsQueryGetterTest(TestCase):
         )
 
 
-class TQTest(TestCase):
+class TQTest(TranslationTestCase):
     """Tests for `_fetch_translations_query_getter`."""
 
     def test_init(self):

@@ -2,7 +2,7 @@ from io import StringIO
 from contextlib import ContextDecorator
 from unittest.mock import patch
 
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.core.management import call_command
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
@@ -67,7 +67,7 @@ class override_tmeta(ContextDecorator):
             delattr(self.model, '_cached_translatable_fields_names')
 
 
-class CommandTest(TestCase):
+class CommandTest(TranslationTestCase):
     """Tests for `Command`."""
 
     def test_execute(self):
@@ -182,9 +182,10 @@ class CommandTest(TestCase):
             ContentType.objects.none()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     def test_get_obsolete_translations_one_content_type_no_fields(self):
@@ -203,9 +204,10 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(Continent).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     def test_get_obsolete_translations_two_content_types_no_fields(self):
@@ -224,9 +226,10 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(Continent, Country).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     def test_get_obsolete_translations_all_content_types_no_fields(self):
@@ -245,9 +248,10 @@ class CommandTest(TestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -269,9 +273,10 @@ class CommandTest(TestCase):
             ContentType.objects.none()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -293,14 +298,15 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(Continent).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: European: Europäisch>',
                 '<Translation: European: Avrupalı>',
                 '<Translation: Asian: Asiatisch>',
                 '<Translation: Asian: Asyalı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -322,7 +328,7 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(Continent, Country).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: European: Europäisch>',
@@ -333,7 +339,8 @@ class CommandTest(TestCase):
                 '<Translation: Asian: Asyalı>',
                 '<Translation: South Korean: Südkoreanisch>',
                 '<Translation: South Korean: Güney Korelı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=['name'])
@@ -355,7 +362,7 @@ class CommandTest(TestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: European: Europäisch>',
@@ -370,7 +377,8 @@ class CommandTest(TestCase):
                 '<Translation: South Korean: Güney Korelı>',
                 '<Translation: Seouler: Seüler>',
                 '<Translation: Seouler: Seullı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -392,9 +400,10 @@ class CommandTest(TestCase):
             ContentType.objects.none()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
-            []
+            [],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -416,7 +425,7 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(Continent).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -427,7 +436,8 @@ class CommandTest(TestCase):
                 '<Translation: Asian: Asiatisch>',
                 '<Translation: Asia: Asya>',
                 '<Translation: Asian: Asyalı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -449,7 +459,7 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(Continent, Country).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -468,7 +478,8 @@ class CommandTest(TestCase):
                 '<Translation: South Korean: Südkoreanisch>',
                 '<Translation: South Korea: Güney Kore>',
                 '<Translation: South Korean: Güney Korelı>'
-            ]
+            ],
+            transform=repr
         )
 
     @override_tmeta(Continent, fields=[])
@@ -490,7 +501,7 @@ class CommandTest(TestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
@@ -517,7 +528,8 @@ class CommandTest(TestCase):
                 '<Translation: Seouler: Seüler>',
                 '<Translation: Seoul: Seul>',
                 '<Translation: Seouler: Seullı>'
-            ]
+            ],
+            transform=repr
         )
 
     def test_get_obsolete_translations_one_content_type_not_trans(self):
@@ -535,11 +547,12 @@ class CommandTest(TestCase):
             ContentType.objects.get_for_models(User).values()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: behzad: behzad>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_get_obsolete_translations_all_content_types_not_trans(self):
@@ -557,11 +570,12 @@ class CommandTest(TestCase):
             ContentType.objects.all()
         )
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             obsolete_translations.order_by('id'),
             [
                 '<Translation: behzad: behzad>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_log_obsolete_translations_no_content_types_no_fields(self):

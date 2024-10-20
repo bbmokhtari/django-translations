@@ -22,4 +22,5 @@ Please ensure the following steps have been taken:
 - [ ] Have you run the documentation tests?
 
 ## Note:
-Please ensure that once the PR is submitted, you check Travis CI for build issues and submit an update to your PR as soon as possible.
+
+Please ensure that once the PR is submitted, you check CI for build issues and submit an update to your PR as soon as possible.

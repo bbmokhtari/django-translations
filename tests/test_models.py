@@ -1,4 +1,4 @@
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.contrib.contenttypes.models import ContentType
 from django.db import utils
 
@@ -8,7 +8,7 @@ from sample.models import Timezone, Continent, City
 from sample.utils import create_samples
 
 
-class TranslationTest(TestCase):
+class TranslationTest(TranslationTestCase):
     """Tests for `Translation`."""
 
     def test_content_type_none(self):
@@ -160,7 +160,7 @@ class TranslationTest(TestCase):
         )
 
 
-class TranslatableTest(TestCase):
+class TranslatableTest(TranslationTestCase):
     """Tests for `Translatable`."""
 
     def test_one_translations_rel(self):
@@ -172,12 +172,13 @@ class TranslatableTest(TestCase):
 
         europe = Continent.objects.get(code='EU')
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             europe.translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_two_translations_rel(self):
@@ -190,19 +191,21 @@ class TranslatableTest(TestCase):
         europe = Continent.objects.get(code='EU')
         asia = Continent.objects.get(code='AS')
 
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             europe.translations.order_by('id'),
             [
                 '<Translation: Europe: Europa>',
                 '<Translation: European: Europäisch>',
-            ]
+            ],
+            transform=repr
         )
-        self.assertQuerysetEqual(
+        self.assertQuerySetEqual(
             asia.translations.order_by('id'),
             [
                 '<Translation: Asia: Asien>',
                 '<Translation: Asian: Asiatisch>',
-            ]
+            ],
+            transform=repr
         )
 
     def test_get_translatable_fields_automatic(self):

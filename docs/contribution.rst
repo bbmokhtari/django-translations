@@ -171,7 +171,7 @@ To lint the code:
 Releasing a version
 *******************
 
-Creating a git tag automatically causes Travis CI to:
+Creating a git tag automatically causes CI to:
 
 - Lint the code
 - Run unit tests

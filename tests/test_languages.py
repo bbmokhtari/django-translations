@@ -1,4 +1,5 @@
-from django.test import TestCase, override_settings
+from django.test import override_settings
+from tests.test_case import TranslationTestCase
 from django.utils.translation import override
 
 from translations.languages import _get_supported_language, \
@@ -9,7 +10,7 @@ from translations.languages import _get_supported_language, \
     translate, probe
 
 
-class GetsupportedLanguageTest(TestCase):
+class GetsupportedLanguageTest(TranslationTestCase):
     """Tests for `_get_supported_language`."""
 
     def test_unaccented(self):
@@ -40,7 +41,7 @@ class GetsupportedLanguageTest(TestCase):
         )
 
 
-class GetDefaultLanguageTest(TestCase):
+class GetDefaultLanguageTest(TranslationTestCase):
     """Tests for `_get_default_language`."""
 
     @override_settings(LANGUAGE_CODE='en')
@@ -75,7 +76,7 @@ class GetDefaultLanguageTest(TestCase):
         )
 
 
-class GetActiveLanguageTest(TestCase):
+class GetActiveLanguageTest(TranslationTestCase):
     """Tests for `_get_active_language`."""
 
     @override(language='en', deactivate=True)
@@ -110,7 +111,7 @@ class GetActiveLanguageTest(TestCase):
         )
 
 
-class GetAllLanguagesTest(TestCase):
+class GetAllLanguagesTest(TranslationTestCase):
     """Tests for `_get_all_languages`."""
 
     def test_get_all_languages(self):
@@ -125,7 +126,7 @@ class GetAllLanguagesTest(TestCase):
         )
 
 
-class GetAllChoicesTest(TestCase):
+class GetAllChoicesTest(TranslationTestCase):
     """Tests for `_get_all_choices`."""
 
     def test_get_all_choices(self):
@@ -141,7 +142,7 @@ class GetAllChoicesTest(TestCase):
         )
 
 
-class GetTranslationLanguagesTest(TestCase):
+class GetTranslationLanguagesTest(TranslationTestCase):
     """Tests for `_get_translation_languages`."""
 
     @override_settings(LANGUAGE_CODE='en')
@@ -188,7 +189,7 @@ class GetTranslationLanguagesTest(TestCase):
         )
 
 
-class GetTranslationChoicesTest(TestCase):
+class GetTranslationChoicesTest(TranslationTestCase):
     """Tests for `_get_translation_choices`."""
 
     @override_settings(LANGUAGE_CODE='en')
@@ -238,7 +239,7 @@ class GetTranslationChoicesTest(TestCase):
         )
 
 
-class GetTranslateLanguageTest(TestCase):
+class GetTranslateLanguageTest(TranslationTestCase):
     """Tests for `_get_translate_language`."""
 
     @override(language='en', deactivate=True)
@@ -300,7 +301,7 @@ class GetTranslateLanguageTest(TestCase):
         )
 
 
-class GetProbeLanguageTest(TestCase):
+class GetProbeLanguageTest(TranslationTestCase):
     """Tests for `_get_probe_language`."""
 
     @override(language='en', deactivate=True)
@@ -389,7 +390,7 @@ class GetProbeLanguageTest(TestCase):
         )
 
 
-class TranslateTest(TestCase):
+class TranslateTest(TranslationTestCase):
     """Tests for `_TRANSLATE`."""
 
     @override_settings(LANGUAGE_CODE='en')
@@ -455,7 +456,7 @@ class TranslateTest(TestCase):
         )
 
 
-class ProbeTest(TestCase):
+class ProbeTest(TranslationTestCase):
     """Tests for `_PROBE`."""
 
     @override_settings(LANGUAGE_CODE='en')
