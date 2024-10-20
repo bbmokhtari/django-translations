@@ -30,7 +30,7 @@ Currently, this project is incompatible with PostgreSQL.
 ## Requirements
 
 - Python (\>=3.7, \<4)
-- Django (\>=2.2, \<4)
+- Django (\>=2.2, \<5)
 
 ## Installation
 
