@@ -10,6 +10,9 @@ jobs:
   lint:
     name: Lint with Flake8
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -20,7 +23,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           pip install --upgrade pip
@@ -61,6 +64,7 @@ jobs:
       matrix:
         python-version: ["3.7"]
         django-version: ["2.2"]
+        sphinx-version: ["5.3"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -77,7 +81,7 @@ jobs:
           pip install --upgrade pip
           pip install django~=${{ matrix.django-version }}
           pip install djangorestframework~=3.13
-          pip install sphinx~=7.4
+          pip install sphinx~=${{ matrix.sphinx-version }}
       - name: Create example project
         run: python create.py
       - name: Create configurations file
@@ -87,6 +91,10 @@ jobs:
   build-docs:
     name: Build documentations for GitHub Pages
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7"]
+        sphinx-version: ["5.3"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -97,13 +105,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install django~=2.2
           pip install djangorestframework~=3.13
-          pip install sphinx~=7.4
+          pip install sphinx~=${{ matrix.sphinx-version }}
       - name: Create example project
         run: python create.py
       - name: Create configurations file
@@ -117,6 +125,9 @@ jobs:
   deploy-pypi:
     name: Build and deploy package to PyPI
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7"]
     needs: [lint, test-units, test-docs, build-docs]
     if: startsWith(github.ref, 'refs/tags/')
     env:
@@ -130,7 +141,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.9"
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           pip install --upgrade pip
