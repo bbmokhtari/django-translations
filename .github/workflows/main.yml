@@ -32,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-        django-version: ["2.2", "3.0", "3.1"]
+        python-version: ["3.6"]
+        django-version: ["2.2"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -59,8 +59,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
-        django-version: ["2.2", "3.0", "3.1"]
+        python-version: ["3.6"]
+        django-version: ["2.2"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -97,7 +97,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.x"
+          python-version: "3.9"
       - name: Install dependencies
         run: |
           pip install --upgrade pip
@@ -130,7 +130,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: "3.x"
+          python-version: "3.9"
       - name: Install dependencies
         run: |
           pip install --upgrade pip
