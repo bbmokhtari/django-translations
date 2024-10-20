@@ -1,4 +1,4 @@
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 
@@ -10,7 +10,7 @@ from sample.models import Continent, Country, City
 from sample.utils import create_samples
 
 
-class GetReverseRelationTest(TestCase):
+class GetReverseRelationTest(TranslationTestCase):
     """Tests for `_get_reverse_relation`."""
 
     def test_simple_relation(self):
@@ -65,7 +65,7 @@ class GetReverseRelationTest(TestCase):
         )
 
 
-class GetDissectedLookupTest(TestCase):
+class GetDissectedLookupTest(TranslationTestCase):
     """Tests for `_get_dissected_lookup`."""
 
     def test_nrel_yfield_ntranslatable_nlookup(self):
@@ -226,7 +226,7 @@ class GetDissectedLookupTest(TestCase):
         )
 
 
-class GetRelationsHierarchyTest(TestCase):
+class GetRelationsHierarchyTest(TranslationTestCase):
     """Tests for `_get_relations_hierarchy`."""
 
     def test_level_0_relation(self):
@@ -487,7 +487,7 @@ class GetRelationsHierarchyTest(TestCase):
         )
 
 
-class GetEntityDetailsTest(TestCase):
+class GetEntityDetailsTest(TranslationTestCase):
     """Tests for `_get_entity_details`."""
 
     def test_iterable(self):
@@ -581,7 +581,7 @@ class GetEntityDetailsTest(TestCase):
         )
 
 
-class GetPurviewTest(TestCase):
+class GetPurviewTest(TranslationTestCase):
     """Tests for `_get_purview`."""
 
     def test_instance_level_0_relation(self):
@@ -1221,7 +1221,7 @@ class GetPurviewTest(TestCase):
         )
 
 
-class GetTranslationsTest(TestCase):
+class GetTranslationsTest(TranslationTestCase):
     """Tests for `_get_translations`."""
 
     def test_instance_level_0_relation_with_lang(self):

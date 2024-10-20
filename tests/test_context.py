@@ -1,4 +1,4 @@
-from django.test import TestCase
+from tests.test_case import TranslationTestCase
 from django.utils.translation import override
 
 from translations.context import Context
@@ -7,7 +7,7 @@ from sample.models import Continent
 from sample.utils import create_samples
 
 
-class ContextTest(TestCase):
+class ContextTest(TranslationTestCase):
     """Tests for `Context`."""
 
     def test_init_instance_invalid_entity(self):

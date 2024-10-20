@@ -1,11 +1,12 @@
-from django.test import TestCase, override_settings
+from django.test import override_settings
+from tests.test_case import TranslationTestCase
 
 from translations.forms import generate_translation_form
 
 from sample.models import Timezone, Continent, City
 
 
-class GenerateTranslationFormTest(TestCase):
+class GenerateTranslationFormTest(TranslationTestCase):
 
     def test_field_choices_automatic(self):
         form = generate_translation_form(City)
