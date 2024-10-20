@@ -17,7 +17,7 @@ project = {
 # author
 author = {
     'name': 'Behzad B. Mokhtari',
-    'email': 'behzad.public@gmail.com',
+    'email': 'bbmokhtari.global@gmail.com',
     'github': 'bbmokhtari',
 }
 
