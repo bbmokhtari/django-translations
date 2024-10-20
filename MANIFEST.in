@@ -14,3 +14,4 @@ exclude requirements_dev.txt
 
 include config.json
 include LICENSE
+include .github/README.md
