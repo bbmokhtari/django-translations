@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.7", "3.8"]
         flake8-version: ["5.0"]
     env:
       EXAMPLE_ENGINE: sqlite3
@@ -36,8 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.7", "3.8"]
         django-version: ["2.2"]
+        djangorestframework-version: ["3.1"]
     env:
       EXAMPLE_ENGINE: sqlite3
     permissions:
@@ -53,7 +54,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install django~=${{ matrix.django-version }}
-          pip install djangorestframework~=3.13
+          pip install djangorestframework~=${{ matrix.djangorestframework-version }}
       - name: Create example project
         run: python create.py
       - name: Run and test units
@@ -63,8 +64,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.7", "3.8"]
         django-version: ["2.2"]
+        djangorestframework-version: ["3.1"]
         sphinx-version: ["5.3"]
     env:
       EXAMPLE_ENGINE: sqlite3
@@ -81,7 +83,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install django~=${{ matrix.django-version }}
-          pip install djangorestframework~=3.13
+          pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install sphinx~=${{ matrix.sphinx-version }}
       - name: Create example project
         run: python create.py
@@ -90,11 +92,13 @@ jobs:
       - name: Run and test documentations
         run: make --directory docs doctest
   build-docs:
-    name: Build documentations for GitHub Pages
+    name: Build documentations
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.7", "3.8"]
+        django-version: ["2.2"]
+        djangorestframework-version: ["3.1"]
         sphinx-version: ["5.3"]
     env:
       EXAMPLE_ENGINE: sqlite3
@@ -110,8 +114,42 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install django~=2.2
-          pip install djangorestframework~=3.13
+          pip install django~=${{ matrix.django-version }}
+          pip install djangorestframework~=${{ matrix.djangorestframework-version }}
+          pip install sphinx~=${{ matrix.sphinx-version }}
+      - name: Create example project
+        run: python create.py
+      - name: Create configurations file
+        run: python config.py
+      - name: Build documentations
+        run: make --directory docs html
+  upload-docs:
+    name: Upload documentations for GitHub Pages
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7"]
+        django-version: ["2.2"]
+        djangorestframework-version: ["3.1"]
+        sphinx-version: ["5.3"]
+    needs: [lint, test-units, test-docs, build-docs]
+    if: startsWith(github.ref, 'refs/tags/')
+    env:
+      EXAMPLE_ENGINE: sqlite3
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install django~=${{ matrix.django-version }}
+          pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install sphinx~=${{ matrix.sphinx-version }}
       - name: Create example project
         run: python create.py
@@ -129,7 +167,7 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.7"]
-    needs: [lint, test-units, test-docs, build-docs]
+    needs: [upload-docs]
     if: startsWith(github.ref, 'refs/tags/')
     env:
       EXAMPLE_ENGINE: sqlite3
