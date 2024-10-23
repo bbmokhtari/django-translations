@@ -1,6 +1,6 @@
 from tests.test_case import TranslationTestCase
 from django.contrib.contenttypes.models import ContentType
-from django.db import connection, utils
+from django.db import utils
 
 from translations.models import Translation
 
@@ -10,19 +10,6 @@ from sample.utils import create_samples
 
 class TranslationTest(TranslationTestCase):
     """Tests for `Translation`."""
-
-    def setUp(self):
-        self._integrity_error_not_null = {
-            "postgresql": ('null value in column "{field}" of relation ' +
-                           '"{table}" violates not-null constraint'),
-            "sqlite": "NOT NULL constraint failed: {table}.{field}",
-        }.get(connection.vendor)
-        self._integrity_error_unique = {
-            "postgresql": ('duplicate key value violates unique constraint ' +
-                           '"{table}_content_type_id_object_i_82ea2ee3_uniq"'),
-            "sqlite": ('UNIQUE constraint failed: {table}.content_type_id, ' +
-                       '{table}.object_id, {table}.field, {table}.language'),
-        }.get(connection.vendor)
 
     def test_content_type_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
