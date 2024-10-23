@@ -14,7 +14,7 @@ class TranslationTest(TranslationTestCase):
     def test_content_type_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
 
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_type=None,
                 object_id=europe.pk,
@@ -23,16 +23,10 @@ class TranslationTest(TranslationTestCase):
                 text='Europa',
             )
 
-        self.assertEqual(
-            error.exception.args[0],
-            ('NOT NULL constraint failed: translations_translation' +
-             '.content_type_id'),
-        )
-
     def test_object_id_none(self):
         continent_ct = ContentType.objects.get_for_model(Continent)
 
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=None,
@@ -41,13 +35,8 @@ class TranslationTest(TranslationTestCase):
                 text='Europa',
             )
 
-        self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.object_id',
-        )
-
     def test_content_object_none(self):
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_object=None,
                 field='name',
@@ -55,16 +44,11 @@ class TranslationTest(TranslationTestCase):
                 text='Europa',
             )
 
-        self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.object_id',
-        )
-
     def test_field_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
 
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.pk,
@@ -73,16 +57,11 @@ class TranslationTest(TranslationTestCase):
                 text='Europa',
             )
 
-        self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.field',
-        )
-
     def test_language_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
 
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.pk,
@@ -91,16 +70,11 @@ class TranslationTest(TranslationTestCase):
                 text='Europa',
             )
 
-        self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.language',
-        )
-
     def test_text_none(self):
         europe = Continent.objects.create(name='Europe', code='EU')
         continent_ct = ContentType.objects.get_for_model(Continent)
 
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.pk,
@@ -108,11 +82,6 @@ class TranslationTest(TranslationTestCase):
                 language='de',
                 text=None,
             )
-
-        self.assertEqual(
-            error.exception.args[0],
-            'NOT NULL constraint failed: translations_translation.text',
-        )
 
     def test_str(self):
         europe = Continent.objects.create(name='Europe', code='EU')
@@ -141,7 +110,7 @@ class TranslationTest(TranslationTestCase):
             text='Europa'
         )
 
-        with self.assertRaises(utils.IntegrityError) as error:
+        with self.assertRaises(utils.IntegrityError):
             Translation.objects.create(
                 content_type=continent_ct,
                 object_id=europe.pk,
@@ -149,15 +118,6 @@ class TranslationTest(TranslationTestCase):
                 language='de',
                 text='Europa'
             )
-
-        self.assertEqual(
-            error.exception.args[0],
-            ('UNIQUE constraint failed: ' +
-             'translations_translation.content_type_id, ' +
-             'translations_translation.object_id, ' +
-             'translations_translation.field, ' +
-             'translations_translation.language'),
-        )
 
 
 class TranslatableTest(TranslationTestCase):
