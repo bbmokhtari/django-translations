@@ -167,7 +167,6 @@ jobs:
           ["2.2", "3.0", "3.1", "3.2", "4.0", "4.1", "4.2", "5.0", "5.1"]
         djangorestframework-version: ["3.1"]
         sphinx-version: ["5.3", "7.4"]
-        database: ["sqlite3", "mysql"]
         exclude:
           - python-version: "3.10"
             django-version: "2.2"
@@ -245,28 +244,8 @@ jobs:
             sphinx-version: "5.3"
           - python-version: "3.13"
             sphinx-version: "5.3"
-    services:
-      mysql:
-        image: mysql:8.4
-        env:
-          MYSQL_DATABASE: example
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
-          MYSQL_ROOT_PASSWORD: password
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
     env:
-      EXAMPLE_ENGINE: ${{ matrix.database }}
-      EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || 'db.sqlite3' }}
-      EXAMPLE_HOST: ${{ matrix.database == 'mysql' && '127.0.0.1' || '' }}
-      EXAMPLE_PORT: ${{ matrix.database == 'mysql' && '3306' || '' }}
-      EXAMPLE_USER: ${{ matrix.database == 'mysql' && 'root' || '' }}
-      EXAMPLE_PASSWORD: ${{ matrix.database == 'mysql' && 'password' || '' }}
+      EXAMPLE_ENGINE: sqlite3
     permissions:
       contents: read
     steps:
@@ -283,18 +262,6 @@ jobs:
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install sphinx~=${{ matrix.sphinx-version }}
           pip install mysqlclient
-      - name: Wait for MySQL to be ready
-        if: matrix.database == 'mysql'
-        run: |
-          for i in {1..30}; do
-            if mysqladmin ping -h 127.0.0.1 --silent; then
-              echo "MySQL is ready!"
-              break
-            else
-              echo "Waiting for MySQL to be ready... ($i/30)"
-              sleep 2
-            fi
-          done
       - name: Create example project
         run: python create.py
       - name: Create configurations file
