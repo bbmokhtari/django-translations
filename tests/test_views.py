@@ -38,6 +38,25 @@ class GetContinentListTest(TranslationTestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
+                    'code': 'AS',
+                    'name': 'Asia',
+                    'denonym': 'Asian',
+                    'countries': [
+                        {
+                            'code': 'KR',
+                            'name': 'South Korea',
+                            'denonym': 'South Korean',
+                            'cities': [
+                                {
+                                    'id': seoul.id,
+                                    'name': 'Seoul',
+                                    'denonym': 'Seouler'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     'code': 'EU',
                     'name': 'Europe',
                     'denonym': 'European',
@@ -56,25 +75,6 @@ class GetContinentListTest(TranslationTestCase):
                         }
                     ]
                 },
-                {
-                    'code': 'AS',
-                    'name': 'Asia',
-                    'denonym': 'Asian',
-                    'countries': [
-                        {
-                            'code': 'KR',
-                            'name': 'South Korea',
-                            'denonym': 'South Korean',
-                            'cities': [
-                                {
-                                    'id': seoul.id,
-                                    'name': 'Seoul',
-                                    'denonym': 'Seouler'
-                                }
-                            ]
-                        }
-                    ]
-                }
             ]
         )
 
@@ -106,6 +106,25 @@ class GetContinentListTest(TranslationTestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
+                    'code': 'AS',
+                    'name': 'Asien',
+                    'denonym': 'Asiatisch',
+                    'countries': [
+                        {
+                            'code': 'KR',
+                            'name': 'Südkorea',
+                            'denonym': 'Südkoreanisch',
+                            'cities': [
+                                {
+                                    'id': seoul.id,
+                                    'name': 'Seül',
+                                    'denonym': 'Seüler'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     'code': 'EU',
                     'name': 'Europa',
                     'denonym': 'Europäisch',
@@ -124,25 +143,6 @@ class GetContinentListTest(TranslationTestCase):
                         }
                     ]
                 },
-                {
-                    'code': 'AS',
-                    'name': 'Asien',
-                    'denonym': 'Asiatisch',
-                    'countries': [
-                        {
-                            'code': 'KR',
-                            'name': 'Südkorea',
-                            'denonym': 'Südkoreanisch',
-                            'cities': [
-                                {
-                                    'id': seoul.id,
-                                    'name': 'Seül',
-                                    'denonym': 'Seüler'
-                                }
-                            ]
-                        }
-                    ]
-                }
             ]
         )
 
@@ -174,6 +174,25 @@ class GetContinentListTest(TranslationTestCase):
             json.loads(response.content.decode('utf-8')),
             [
                 {
+                    'code': 'AS',
+                    'name': 'Asien',
+                    'denonym': 'Asiatisch',
+                    'countries': [
+                        {
+                            'code': 'KR',
+                            'name': 'Südkorea',
+                            'denonym': 'Südkoreanisch',
+                            'cities': [
+                                {
+                                    'id': seoul.id,
+                                    'name': 'Seül',
+                                    'denonym': 'Seüler'
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
                     'code': 'EU',
                     'name': 'Europa',
                     'denonym': 'Europäisch',
@@ -192,25 +211,6 @@ class GetContinentListTest(TranslationTestCase):
                         }
                     ]
                 },
-                {
-                    'code': 'AS',
-                    'name': 'Asien',
-                    'denonym': 'Asiatisch',
-                    'countries': [
-                        {
-                            'code': 'KR',
-                            'name': 'Südkorea',
-                            'denonym': 'Südkoreanisch',
-                            'cities': [
-                                {
-                                    'id': seoul.id,
-                                    'name': 'Seül',
-                                    'denonym': 'Seüler'
-                                }
-                            ]
-                        }
-                    ]
-                }
             ]
         )
 

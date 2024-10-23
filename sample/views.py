@@ -10,7 +10,7 @@ class ContinentListView(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super(ContinentListView, self).get_queryset()
-        return queryset.translate_related(
+        return queryset.order_by('code').translate_related(
             'countries',
             'countries__cities',
         ).translate()
