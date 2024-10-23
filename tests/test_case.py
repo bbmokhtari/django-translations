@@ -1,7 +1,7 @@
-from django.test import TestCase
+from django.test import TransactionTestCase
 
 
-class TranslationTestCase(TestCase):
+class TranslationTestCase(TransactionTestCase):
     """TestCase for Translation."""
 
     def assertQuerySetEqual(self, *args, **kwargs) -> None:
