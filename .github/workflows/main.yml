@@ -114,6 +114,11 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     env:
       EXAMPLE_ENGINE: ${{ matrix.database }}
       EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || 'db.sqlite3' }}
@@ -136,6 +141,18 @@ jobs:
           pip install django~=${{ matrix.django-version }}
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install mysqlclient
+      - name: Wait for MySQL to be ready
+        if: matrix.database == 'mysql'
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 --silent; then
+              echo "MySQL is ready!"
+              break
+            else
+              echo "Waiting for MySQL to be ready... ($i/30)"
+              sleep 2
+            fi
+          done
       - name: Create example project
         run: python create.py
       - name: Run and test units
@@ -238,6 +255,11 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     env:
       EXAMPLE_ENGINE: ${{ matrix.database }}
       EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || 'db.sqlite3' }}
@@ -261,6 +283,18 @@ jobs:
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install sphinx~=${{ matrix.sphinx-version }}
           pip install mysqlclient
+      - name: Wait for MySQL to be ready
+        if: matrix.database == 'mysql'
+        run: |
+          for i in {1..30}; do
+            if mysqladmin ping -h 127.0.0.1 --silent; then
+              echo "MySQL is ready!"
+              break
+            else
+              echo "Waiting for MySQL to be ready... ($i/30)"
+              sleep 2
+            fi
+          done
       - name: Create example project
         run: python create.py
       - name: Create configurations file
