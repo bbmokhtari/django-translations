@@ -135,6 +135,7 @@ jobs:
           pip install --upgrade pip
           pip install django~=${{ matrix.django-version }}
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
+          pip install mysqlclient
       - name: Create example project
         run: python create.py
       - name: Run and test units
@@ -259,6 +260,7 @@ jobs:
           pip install django~=${{ matrix.django-version }}
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install sphinx~=${{ matrix.sphinx-version }}
+          pip install mysqlclient
       - name: Create example project
         run: python create.py
       - name: Create configurations file
