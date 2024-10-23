@@ -40,6 +40,7 @@ jobs:
         django-version:
           ["2.2", "3.0", "3.1", "3.2", "4.0", "4.1", "4.2", "5.0", "5.1"]
         djangorestframework-version: ["3.1"]
+        database: ["sqlite3", "mysql"]
         exclude:
           - python-version: "3.10"
             django-version: "2.2"
@@ -103,8 +104,23 @@ jobs:
             django-version: "5.1"
           - python-version: "3.9"
             django-version: "5.1"
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: example
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
     env:
-      EXAMPLE_ENGINE: sqlite3
+      EXAMPLE_ENGINE: ${{ matrix.database }}
+      EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || 'db.sqlite3' }}
+      EXAMPLE_HOST: ${{ matrix.database == 'mysql' && '127.0.0.1' || '' }}
+      EXAMPLE_PORT: ${{ matrix.database == 'mysql' && '3306' || '' }}
+      EXAMPLE_USER: ${{ matrix.database == 'mysql' && 'user' || '' }}
+      EXAMPLE_PASSWORD: ${{ matrix.database == 'mysql' && 'password' || '' }}
     permissions:
       contents: read
     steps:
@@ -133,6 +149,7 @@ jobs:
           ["2.2", "3.0", "3.1", "3.2", "4.0", "4.1", "4.2", "5.0", "5.1"]
         djangorestframework-version: ["3.1"]
         sphinx-version: ["5.3", "7.4"]
+        database: ["sqlite3", "mysql"]
         exclude:
           - python-version: "3.10"
             django-version: "2.2"
@@ -210,8 +227,23 @@ jobs:
             sphinx-version: "5.3"
           - python-version: "3.13"
             sphinx-version: "5.3"
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: example
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
     env:
-      EXAMPLE_ENGINE: sqlite3
+      EXAMPLE_ENGINE: ${{ matrix.database }}
+      EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || 'db.sqlite3' }}
+      EXAMPLE_HOST: ${{ matrix.database == 'mysql' && '127.0.0.1' || '' }}
+      EXAMPLE_PORT: ${{ matrix.database == 'mysql' && '3306' || '' }}
+      EXAMPLE_USER: ${{ matrix.database == 'mysql' && 'user' || '' }}
+      EXAMPLE_PASSWORD: ${{ matrix.database == 'mysql' && 'password' || '' }}
     permissions:
       contents: read
     steps:
