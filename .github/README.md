@@ -198,6 +198,10 @@ This can CRUD the translations of any objects (instance, queryset, list) and the
 For more interesting capabilities browse through the
 [documentation](http://bbmokhtari.github.io/django-translations).
 
+## Still Stuck?
+
+Email [bbmokhtari.global@gmail.com](mailto:bbmokhtari.global@gmail.com) if you're really stuck.
+
 ## Support the project
 
 To support the project you can:
