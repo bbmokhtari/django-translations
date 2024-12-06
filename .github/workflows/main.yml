@@ -40,7 +40,7 @@ jobs:
         django-version:
           ["2.2", "3.0", "3.1", "3.2", "4.0", "4.1", "4.2", "5.0", "5.1"]
         djangorestframework-version: ["3.1"]
-        database: ["sqlite3", "mysql"]
+        database: ["sqlite3", "mysql", "postgresql"]
         exclude:
           - python-version: "3.10"
             django-version: "2.2"
@@ -119,13 +119,26 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: example
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U user"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
     env:
       EXAMPLE_ENGINE: ${{ matrix.database }}
-      EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || 'db.sqlite3' }}
-      EXAMPLE_HOST: ${{ matrix.database == 'mysql' && '127.0.0.1' || '' }}
-      EXAMPLE_PORT: ${{ matrix.database == 'mysql' && '3306' || '' }}
-      EXAMPLE_USER: ${{ matrix.database == 'mysql' && 'root' || '' }}
-      EXAMPLE_PASSWORD: ${{ matrix.database == 'mysql' && 'password' || '' }}
+      EXAMPLE_NAME: ${{ matrix.database == 'mysql' && 'example' || matrix.database == 'postgresql' && 'example' || 'db.sqlite3' }}
+      EXAMPLE_HOST: ${{ matrix.database == 'mysql' && '127.0.0.1' || matrix.database == 'postgresql' && '127.0.0.1' || '' }}
+      EXAMPLE_PORT: ${{ matrix.database == 'mysql' && '3306' || matrix.database == 'postgresql' && '5432' || '' }}
+      EXAMPLE_USER: ${{ matrix.database == 'mysql' && 'root' || matrix.database == 'postgresql' && 'user' || '' }}
+      EXAMPLE_PASSWORD: ${{ matrix.database == 'mysql' && 'password' || matrix.database == 'postgresql' && 'password' || '' }}
     permissions:
       contents: read
     steps:
@@ -141,6 +154,7 @@ jobs:
           pip install django~=${{ matrix.django-version }}
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install mysqlclient
+          pip install psycopg2-binary
       - name: Wait for MySQL to be ready
         if: matrix.database == 'mysql'
         run: |
@@ -150,6 +164,18 @@ jobs:
               break
             else
               echo "Waiting for MySQL to be ready... ($i/30)"
+              sleep 2
+            fi
+          done
+      - name: Wait for PostgreSQL to be ready
+        if: matrix.database == 'postgresql'
+        run: |
+          for i in {1..30}; do
+            if pg_isready -h 127.0.0.1 -U user; then
+              echo "PostgreSQL is ready!"
+              break
+            else
+              echo "Waiting for PostgreSQL to be ready... ($i/30)"
               sleep 2
             fi
           done
@@ -261,7 +287,6 @@ jobs:
           pip install django~=${{ matrix.django-version }}
           pip install djangorestframework~=${{ matrix.djangorestframework-version }}
           pip install sphinx~=${{ matrix.sphinx-version }}
-          pip install mysqlclient
       - name: Create example project
         run: python create.py
       - name: Create configurations file

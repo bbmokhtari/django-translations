@@ -1,6 +1,7 @@
 """This module contains the models for the Translations app."""
 
 from django.db import models
+from django.db.models.functions import Cast
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey, \

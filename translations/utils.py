@@ -2,6 +2,7 @@
 
 from django.db import models
 from django.db.models.query import prefetch_related_objects
+from django.db.models.functions import Cast
 from django.db.models.constants import LOOKUP_SEP
 from django.core.exceptions import FieldError
 from django.contrib.contenttypes.models import ContentType
@@ -169,7 +170,7 @@ def _get_purview(entity, hierarchy):
                 nonlocal query
                 query |= models.Q(
                     content_type__id=content_type_id,
-                    object_id=object_id,
+                    object_id_as_str=object_id,
                 )
 
             if hierarchy:
@@ -204,7 +205,9 @@ def _get_purview(entity, hierarchy):
 def _get_translations(query, lang):
     """Return the `Translation` queryset of a query in a language."""
     if (query):
-        queryset = translations.models.Translation.objects.filter(
+        queryset = translations.models.Translation.objects.annotate(
+            object_id_as_str=Cast('object_id', models.CharField())
+        ).filter(
             language=lang,
         ).filter(
             query,
