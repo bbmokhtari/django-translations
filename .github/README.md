@@ -5,6 +5,10 @@
 
 Django model translation for perfectionists with deadlines.
 
+## Documentation
+
+[Jump into the docs!](http://bbmokhtari.github.io/django-translations).
+
 ## Goal
 
 There are two types of content, each of which has its own challenges for translation:
@@ -192,11 +196,6 @@ Use the translation context:
 ```
 
 This can CRUD the translations of any objects (instance, queryset, list) and their relations.
-
-## Documentation
-
-For more interesting capabilities browse through the
-[documentation](http://bbmokhtari.github.io/django-translations).
 
 ## Still Stuck?
 
