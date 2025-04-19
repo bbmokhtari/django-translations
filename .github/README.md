@@ -7,7 +7,7 @@ Django model translation for perfectionists with deadlines.
 
 ## Documentation
 
-[Jump into the docs!](http://bbmokhtari.github.io/django-translations).
+[Jump into the docs!](http://bbmokhtari.github.io/django-translations)
 
 ## Goal
 
